@@ -1,0 +1,1 @@
+export const useEnum = (e, val: string): boolean => e[e[val]] === val;

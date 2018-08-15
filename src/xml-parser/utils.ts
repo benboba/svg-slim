@@ -1,0 +1,1 @@
+export const collapseQuot = (str: string) => str.slice(1, -1);

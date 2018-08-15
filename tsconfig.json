@@ -1,0 +1,21 @@
+{
+	"compilerOptions": {
+		"target": "esnext",
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"baseUrl": ".",
+		"noUnusedLocals": true,
+		"paths": {
+			"ramda": [
+				"location-of-types/npm-ramda-package/index"
+			]
+		}
+	},
+	"include": [
+		"src/*",
+		"src/*/*",
+	],
+	"exclude": [
+		"node_modules",
+	]
+}
