@@ -1,0 +1,34 @@
+{
+  "name": "svg-slimming",
+  "version": "1.1.1",
+  "description": "svg slimming",
+  "main": "lib/svg-slimming.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development webpack --watch --progress --color --profile --bail --display-modules",
+    "build": "cross-env NODE_ENV=production webpack --progress --color --profile --bail --display-modules",
+    "test": "mocha -t 5000"
+  },
+  "keywords": [
+    "svg"
+  ],
+  "author": "Wang Feng <wangfeng-pd@360.cn>",
+  "license": "MIT",
+  "dependencies": {
+    "css": "^2.2.3",
+    "ramda": "^0.25.0"
+  },
+  "devDependencies": {
+    "@types/ramda": "^0.25.36",
+    "chai": "^4.1.2",
+    "copy-webpack-plugin": "^4.5.2",
+    "cross-env": "^3.2.4",
+    "mocha": "^5.2.0",
+    "ts-loader": "^4.4.2",
+    "tslint": "^5.9.1",
+    "tslint-loader": "^3.6.0",
+    "typescript": "^2.7.2",
+    "uglifyjs-webpack-plugin": "^1.2.7",
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0"
+  }
+}

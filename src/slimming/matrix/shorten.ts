@@ -1,0 +1,1 @@
+export const shorten = s => s.replace(/\s*([,()])\s*/g, '$1');
