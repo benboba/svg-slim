@@ -69,11 +69,11 @@
 * 启用 UglifyJSPlugin 压缩代码
 * 把 NodeType 枚举和INode 和 IAttr 接口提升到全局配置，由 svg-slimming 和 xml-parser 两个项目共同依赖
 * 丰富了 INode 接口的功能
-* * attributes 和 childNodes 改为只读
-* * 增加 parentNode 指针，指向当前节点的父节点
-* * 增加 cloneNode 方法，返回当前节点的复制节点，其中 attributes 会深复制， parentNode 和 childNodes 都不会复制
-* * 增加 appendChild | insertBefore | removeChild | replaceChild 方法，用于子节点管理
-* * 增加 hasAttribute | getAttribute | setAttribute | removeAttribute 方法，用于属性管理
+	* attributes 和 childNodes 改为只读
+	* 增加 parentNode 指针，指向当前节点的父节点
+	* 增加 cloneNode 方法，返回当前节点的复制节点，其中 attributes 会深复制， parentNode 和 childNodes 都不会复制
+	* 增加 appendChild | insertBefore | removeChild | replaceChild 方法，用于子节点管理
+	* 增加 hasAttribute | getAttribute | setAttribute | removeAttribute 方法，用于属性管理
 
 ### xml-parser
 
@@ -122,9 +122,9 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 
 * 默认开关：开
 * 说明：
- * 当 g 元素没有子元素时，移除该元素
- * 当 g 元素没有属性值时，用子元素替换该元素
- * 当 g 元素只有一个子元素，且自身没有 id、class、mask 属性时，将 g 元素的属性复制到子元素，并用子元素替换之
+	* 当 g 元素没有子元素时，移除该元素
+	* 当 g 元素没有属性值时，用子元素替换该元素
+	* 当 g 元素只有一个子元素，且自身没有 id、class、mask 属性时，将 g 元素的属性复制到子元素，并用子元素替换之
 
 例如：
 
@@ -139,7 +139,7 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 
 * 默认开关：开
 * 说明：
- * 对于所有嵌套的文本容器，当内部文本容器不包含任何有效属性时，移除该元素，并将文本内容提升为父元素的子节点
+	* 对于所有嵌套的文本容器，当内部文本容器不包含任何有效属性时，移除该元素，并将文本内容提升为父元素的子节点
 
 例如：
 
@@ -154,8 +154,8 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 
 * 默认开关：开
 * 说明：
- * 合并 fill 属性为 none，且除 d 属性之外，其它属性完全相同（顺序可以不一致）的 path 标签
- * **（未实现！）** 当 fill 属性不为 none，但路径没有相交的 path 元素也可以合并
+	* 合并 fill 属性为 none，且除 d 属性之外，其它属性完全相同（顺序可以不一致）的 path 标签
+	* **（未实现！）** 当 fill 属性不为 none，但路径没有相交的 path 元素也可以合并
 
 例如：
 
@@ -170,13 +170,13 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 
 * 默认开关：开
 * 说明：
- * 分析并合并 transform 属性
+	* 分析并合并 transform 属性
 * 配置参数1：
- * 默认值：3
- * 合并后的 matrix 的 a, b, c, d 位置的数值精度
+	* 默认值：3
+	* 合并后的 matrix 的 a, b, c, d 位置的数值精度
 * 配置参数2：
- * 默认值：1
- * 合并后的 matrix 的 e, f 位置的数值精度
+	* 默认值：1
+	* 合并后的 matrix 的 e, f 位置的数值精度
 
 例如：
 
@@ -190,13 +190,13 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 
 * 默认开关：开
 * 说明：
- * 计算 path 的 d 属性，使之变得更短
+	* 计算 path 的 d 属性，使之变得更短
 * 配置参数1：
- * 默认值：false
- * 应用道格拉斯-普克算法抽稀路径节点
+	* 默认值：false
+	* 应用道格拉斯-普克算法抽稀路径节点
 * 配置参数2：
- * 默认值：0
- * 抽稀节点的阈值
+	* 默认值：0
+	* 抽稀节点的阈值
 
 例如：
 
@@ -210,25 +210,25 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 
 * 默认开关：关
 * 说明：
- * 对 polygon 和 polyline 应用道格拉斯-普克算法抽稀路径节点
+	* 对 polygon 和 polyline 应用道格拉斯-普克算法抽稀路径节点
 * 配置参数1：
- * 默认值：0
- * 抽稀节点的阈值
+	* 默认值：0
+	* 抽稀节点的阈值
 
 ### rm-attribute
 
 * 默认开关：开
 * 说明：
- * 移除非规范的属性（不在[SVG规范](https://www.w3.org/TR/SVG2/attindex.html)中，且并非xmlns类的属性）
+	* 移除非规范的属性（不在[SVG规范](https://www.w3.org/TR/SVG2/attindex.html)中，且并非xmlns类的属性）
 * 配置参数1： **（未实现！）**
- * 默认值：true
- * 深度分析属性继承链，移除被覆盖的属性，以及无合法应用对象的属性
+	* 默认值：true
+	* 深度分析属性继承链，移除被覆盖的属性，以及无合法应用对象的属性
 * 配置参数2：
- * 默认值：false
- * 保留所有的[事件监听](https://www.w3.org/TR/SVG2/interact.html#TermEventAttribute)属性，目前默认移除
+	* 默认值：false
+	* 保留所有的[事件监听](https://www.w3.org/TR/SVG2/interact.html#TermEventAttribute)属性，目前默认移除
 * 配置参数3：
- * 默认值：false
- * 保留所有的[aria](https://www.w3.org/TR/wai-aria-1.1/)属性，目前默认移除
+	* 默认值：false
+	* 保留所有的[aria](https://www.w3.org/TR/wai-aria-1.1/)属性，目前默认移除
 
 例如：
 
@@ -242,22 +242,22 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 
 * 默认开关：开
 * 说明：
- * 移除注释
+	* 移除注释
 
 ### rm-doctype
 
 * 默认开关：开
 * 说明：
- * 移除 DOCTYPE 声明
+	* 移除 DOCTYPE 声明
 
 ### rm-hidden
 
 * 默认开关：开
 * 说明：
- * 移除 display 属性为 none 的元素
- * 移除 fill 和 stroke 属性均为 none 的图形类元素
- * 移除没有子节点的文本容器
- * 移除因某些原因不渲染的图形元素
+	* 移除 display 属性为 none 的元素
+	* 移除 fill 和 stroke 属性均为 none 的图形类元素
+	* 移除没有子节点的文本容器
+	* 移除因某些原因不渲染的图形元素
 
 以下内容将被移除：
 
@@ -281,10 +281,10 @@ path 元素没有 d 属性或为空（其它如：polyline 和 polygon 元素没
 
 * 默认开关：开
 * 说明：
- * 移除不规范嵌套的标签
+	* 移除不规范嵌套的标签
 * 配置参数1：
- * 默认值：\[]
- * 配置忽略该规则的标签
+	* 默认值：\[]
+	* 配置忽略该规则的标签
 
 例如：
 
@@ -298,16 +298,16 @@ path 元素没有 d 属性或为空（其它如：polyline 和 polygon 元素没
 
 * 默认开关：开
 * 说明：
- * 移除不在[SVG规范](https://www.w3.org/TR/SVG2/eltindex.html)内的标签
+	* 移除不在[SVG规范](https://www.w3.org/TR/SVG2/eltindex.html)内的标签
 * 配置参数1：
- * 默认值：\[]
- * 配置忽略该规则的标签
+	* 默认值：\[]
+	* 配置忽略该规则的标签
 
 ### rm-px
 
 * 默认开关：开
 * 说明：
- * 移除 px 单位
+	* 移除 px 单位
 
 例如：
 
@@ -321,24 +321,24 @@ path 元素没有 d 属性或为空（其它如：polyline 和 polygon 元素没
 
 * 默认开关：开
 * 说明：
- * 移除不必要的标签
- * **警告！虽然默认并不移除 style 标签，但部分规则（如 shape-to-path）可能会导致样式表中的标签选择器、属性选择器失效！**
- * **警告！由于并没有对 javascript 脚本进行分析处理，如果默认不移除 script 标签，不能保证优化后的代码仍然可以正确执行！**
+	* 移除不必要的标签
+	* **警告！虽然默认并不移除 style 标签，但部分规则（如 shape-to-path）可能会导致样式表中的标签选择器、属性选择器失效！**
+	* **警告！由于并没有对 javascript 脚本进行分析处理，如果默认不移除 script 标签，不能保证优化后的代码仍然可以正确执行！**
 * 配置参数1：
- * 默认值：['desc', 'discard', 'foreignObject', 'video', 'audio', 'iframe', 'canvas', 'metadata', 'script', 'title', 'unknown']
- * 配置需要移除的标签名称，只能移除以下列表中的标签：['desc', 'discard', 'foreignObject', 'video', 'audio', 'iframe', 'canvas', 'metadata', 'script', 'style', 'title', 'unknown'];
+	* 默认值：['desc', 'discard', 'foreignObject', 'video', 'audio', 'iframe', 'canvas', 'metadata', 'script', 'title', 'unknown']
+	* 配置需要移除的标签名称，只能移除以下列表中的标签：['desc', 'discard', 'foreignObject', 'video', 'audio', 'iframe', 'canvas', 'metadata', 'script', 'style', 'title', 'unknown'];
 
 ### rm-version
 
 * 默认开关：开
 * 说明：
- * 移除 svg 标签的 version 属性
+	* 移除 svg 标签的 version 属性
 
 ### rm-viewbox
 
 * 默认开关：开
 * 说明：
- * 当 x、y、width、height 完全相同时，移除 viewBox 属性
+	* 当 x、y、width、height 完全相同时，移除 viewBox 属性
 
 例如：
 
@@ -352,13 +352,13 @@ path 元素没有 d 属性或为空（其它如：polyline 和 polygon 元素没
 
 * 默认开关：开
 * 说明：
- * 移除 xml 声明
+	* 移除 xml 声明
 
 ### rm-xmlns
 
 * 默认开关：开
 * 说明：
- * 移除未被引用的 xmlns 定义，移除包含未定义命名空间的属性
+	* 移除未被引用的 xmlns 定义，移除包含未定义命名空间的属性
 
 例如：
 
@@ -376,7 +376,7 @@ path 元素没有 d 属性或为空（其它如：polyline 和 polygon 元素没
 
 * 默认开关：开
 * 说明：
- * 如果形状映射到 path 的结果更短，则使用 path
+	* 如果形状映射到 path 的结果更短，则使用 path
 
 例如：
 
@@ -390,8 +390,8 @@ path 元素没有 d 属性或为空（其它如：polyline 和 polygon 元素没
 
 * 默认开关：开
 * 说明：
- * 缩短 className
- * 移除不被引用的 className
+	* 缩短 className
+	* 移除不被引用的 className
 
 例如：
 
@@ -407,13 +407,13 @@ path 元素没有 d 属性或为空（其它如：polyline 和 polygon 元素没
 
 * 默认开关：开
 * 说明：
- * 尽可能地缩短颜色定义
+	* 尽可能地缩短颜色定义
 * 配置参数1
- * 默认值：false
- * 是否缩短 rgba、hsla 格式的颜色到 16 进制
+	* 默认值：false
+	* 是否缩短 rgba、hsla 格式的颜色到 16 进制
 * 配置参数2
- * 默认值：2
- * rgba、hsla 格式的颜色 alpha 值的精度
+	* 默认值：2
+	* rgba、hsla 格式的颜色 alpha 值的精度
 
 例如：
 
@@ -427,13 +427,13 @@ path 元素没有 d 属性或为空（其它如：polyline 和 polygon 元素没
 
 * 默认开关：开
 * 说明：
- * 缩小数值精度，以获得更好的压缩比
+	* 缩小数值精度，以获得更好的压缩比
 * 配置参数1
- * 默认值：1
- * 坐标、尺寸类型数值的精度
+	* 默认值：1
+	* 坐标、尺寸类型数值的精度
 * 配置参数2
- * 默认值：2
- * 透明度、角度、弧度等类型数值的精度
+	* 默认值：2
+	* 透明度、角度、弧度等类型数值的精度
 
 例如：
 
@@ -447,25 +447,25 @@ path 元素没有 d 属性或为空（其它如：polyline 和 polygon 元素没
 
 * 默认开关：开
 * 说明：
- * 合并所有的 defs 标签
- * 移除无效的 defs 定义
- * 移除空的 defs 标签
+	* 合并所有的 defs 标签
+	* 移除无效的 defs 定义
+	* 移除空的 defs 标签
 
-    <defs>
-        <circle id="circle-1" fill="#000" cx="60" cy="60" r="60"></circle>
-    </defs>
-    <defs>
-        <circle fill-opacity="0.599999964" fill="#000000" cx="60" cy="60" r="60"></circle>
-    </defs>
+	<defs>
+	    <circle id="circle-1" fill="#000" cx="60" cy="60" r="60"></circle>
+	</defs>
+	<defs>
+	    <circle fill-opacity="0.599999964" fill="#000000" cx="60" cy="60" r="60"></circle>
+	</defs>
 	<mask id="mask-2" fill="white">
 		<use xlink:href="#circle-1" />
 	</mask>
 
 优化后将变为：
 
-    <defs>
-        <circle id="path-1" fill="#000" cx="60" cy="60" r="60"></circle>
-    </defs>
+	<defs>
+	    <circle id="path-1" fill="#000" cx="60" cy="60" r="60"></circle>
+	</defs>
 	<mask id="mask-2" fill="white">
 		<use xlink:href="#path-1" />
 	</mask>
@@ -474,12 +474,12 @@ path 元素没有 d 属性或为空（其它如：polyline 和 polygon 元素没
 
 * 默认开关：开
 * 说明：
- * 缩短 ID
- * 移除不被引用的 ID
+	* 缩短 ID
+	* 移除不被引用的 ID
 
-    <defs>
-        <circle id="circle-1" fill="#000" cx="60" cy="60" r="60"></circle>
-    </defs>
+	<defs>
+	    <circle id="circle-1" fill="#000" cx="60" cy="60" r="60"></circle>
+	</defs>
 	<mask id="mask-2" fill="white">
 		<use xlink:href="#circle-1" />
 	</mask>
@@ -487,9 +487,9 @@ path 元素没有 d 属性或为空（其它如：polyline 和 polygon 元素没
 
 优化后将变为：（rect-3 这个 id 没有被引用，所以被移除了，另外 2 个 id 被缩短）
 
-    <defs>
-        <circle id="a" fill="#000" cx="60" cy="60" r="60"></circle>
-    </defs>
+	<defs>
+	    <circle id="a" fill="#000" cx="60" cy="60" r="60"></circle>
+	</defs>
 	<mask id="b" fill="white">
 		<use xlink:href="#a" />
 	</mask>
@@ -499,13 +499,13 @@ path 元素没有 d 属性或为空（其它如：polyline 和 polygon 元素没
 
 * 默认开关：开
 * 说明：
- * 缩短 style 属性
- * 深度分析 style 属性继承链，移除无可应用对象的属性
- * 如果不存在 style 标签，则根据情况进行 style 和属性的互转
+	* 缩短 style 属性
+	* 深度分析 style 属性继承链，移除无可应用对象的属性
+	* 如果不存在 style 标签，则根据情况进行 style 和属性的互转
 * 配置参数1
- * 默认值：false
- * 无视 style 标签是否存在，强制执行 style 和属性的互转
- * **警告：svg 的样式覆盖规则是 style 属性 > style 标签 > 属性，所以这个规则可能导致不正确的覆盖！**
+	* 默认值：false
+	* 无视 style 标签是否存在，强制执行 style 和属性的互转
+	* **警告：svg 的样式覆盖规则是 style 属性 > style 标签 > 属性，所以这个规则可能导致不正确的覆盖！**
 
 例如：
 
@@ -523,15 +523,15 @@ path 元素没有 d 属性或为空（其它如：polyline 和 polygon 元素没
 
 * 默认开关：开
 * 说明：
- * 缩短 style 标签的内容
- * 移除重复的定义
- * 移除不在[SVG规范](https://www.w3.org/TR/SVG2/propidx.html)内的样式
+	* 缩短 style 标签的内容
+	* 移除重复的定义
+	* 移除不在[SVG规范](https://www.w3.org/TR/SVG2/propidx.html)内的样式
 * 配置参数1
- * 默认值：true
- * 深度分析和优化 style
- * 移除无效的选择器
- * 合并多个相同的选择器
- * 合并多个相同的规则
+	* 默认值：true
+	* 深度分析和优化 style
+	* 移除无效的选择器
+	* 合并多个相同的选择器
+	* 合并多个相同的规则
 
 ## 其它优化工作
 
@@ -578,60 +578,60 @@ path 元素没有 d 属性或为空（其它如：polyline 和 polygon 元素没
 具体定义如下：
 
 * 元素节点 | Tag
- * value：1
- * nodeName：\<tagName>
- * 包含 attributes 属性和 childNodes 属性
+	* value：1
+	* nodeName：\<tagName>
+	* 包含 attributes 属性和 childNodes 属性
 
 
 * 文本节点 | Text
- * value：3
- * nodeName：#text
- * 包含 textContent 属性
+	* value：3
+	* nodeName：#text
+	* 包含 textContent 属性
 
 
 * CDATA
- * value：4
- * nodeName：#cdata
- * 包含 textContent 属性
+	* value：4
+	* nodeName：#cdata
+	* 包含 textContent 属性
 
 
 * OtherSect
- * value：5
- * nodeName：#\<sectName>
- * 包含 textContent 属性
- * 指除了 CDATA 之外的其它区块，如 <!\[INCLUDE\[...\]\]>
+	* value：5
+	* nodeName：#\<sectName>
+	* 包含 textContent 属性
+	* 指除了 CDATA 之外的其它区块，如 <!\[INCLUDE\[...\]\]>
 
 
 * OtherDecl
- * value：6
- * nodeName：#\<declName>
- * 包含 textContent 属性
- * 指除了 DocType 之外的其它声明，如 <!ENTITY ... >
+	* value：6
+	* nodeName：#\<declName>
+	* 包含 textContent 属性
+	* 指除了 DocType 之外的其它声明，如 <!ENTITY ... >
 
 
 * xml声明 | XMLDecl
- * value：7
- * nodeName：#xml-decl
- * 包含 textContent 属性
+	* value：7
+	* nodeName：#xml-decl
+	* 包含 textContent 属性
 
 
 * 注释 | Comments
- * value：8
- * nodeName：#comments
- * 包含 textContent 属性
+	* value：8
+	* nodeName：#comments
+	* 包含 textContent 属性
 
 
 * document节点 | Document
- * value：9
- * nodeName：#document
- * 包含 childNodes 属性
- * 为 xml-parser 解析后输出的根节点对象
+	* value：9
+	* nodeName：#document
+	* 包含 childNodes 属性
+	* 为 xml-parser 解析后输出的根节点对象
 
 
 * DocType
- * value：10
- * nodeName：#doctype
- * 包含 textContent 属性
+	* value：10
+	* nodeName：#doctype
+	* 包含 textContent 属性
 
 
 ## 节点定义（typescript 格式）
@@ -654,7 +654,7 @@ path 元素没有 d 属性或为空（其它如：polyline 和 polygon 元素没
 		replaceChild(childNode: INode, ...children: INode[]): void; // 替换某个子节点
 		removeChild(childNode: INode): void; // 移除某个子节点
 
-    	hasAttribute(name: string, namespace?: string): boolean;
+		hasAttribute(name: string, namespace?: string): boolean;
 		getAttribute(name: string, namespace?: string): string; // 获取某个属性的值
 		setAttribute(name: string, value: string, namespace?: string): void; // 设置某个属性的值
 		removeAttribute(name: string, namespace?: string): void; // 移除某个属性
