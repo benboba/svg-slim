@@ -6,7 +6,7 @@ import { computeH } from './compute-h';
 import { computeV } from './compute-v';
 import { IPathResultItem } from './exec';
 
-export const computeL = (absolute: number[], relative: number[], pathResult: IPathResultItem[], pos: number[]) => {
+export const computeL = (absolute: number[], relative: number[], pathResult: IPathResultItem[], pos: number[]): number[] => {
 	const rLen = pathResult.length;
 	if (relative[0] === 0 || relative[1] === 0) {
 		// 需要转为水平或垂直的情况

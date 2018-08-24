@@ -1,14 +1,19 @@
 import { propEq } from 'ramda';
-import { INode } from '../../node/index';
+import { INode, IAttr } from '../../node/index';
 import { transformAttributes, cantCollapseAttributes } from '../const/definitions';
 import { execStyle } from '../style/exec';
 import { stringifyStyle } from '../style/stringify';
 import { isTag } from '../xml/is-tag';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
+import { ConfigItem } from '../config/config';
+
+interface IAttrObj {
+	[propName: string]: IAttr;
+}
 
 const collapseAttributes = (node1: INode, node2: INode) => {
-	const attrObj = {};
+	const attrObj: IAttrObj = {};
 	const attributes1 = node1.attributes;
 	const attributes2 = node2.attributes;
 	attributes1.forEach(attr => {
@@ -32,7 +37,7 @@ const collapseAttributes = (node1: INode, node2: INode) => {
 };
 
 // 包含某些特定属性，不允许进行合并
-const cantCollapse = node => node.attributes.filter(attr => cantCollapseAttributes.indexOf(attr.fullname) !== -1).length;
+const cantCollapse = (node: INode) => node.attributes.filter(attr => cantCollapseAttributes.indexOf(attr.fullname) !== -1).length;
 
 const doCollapse = (dom: INode) => {
 	traversalNode(propEq('nodeName', 'g'), (node: INode) => {
@@ -52,7 +57,7 @@ const doCollapse = (dom: INode) => {
 	}, dom);
 };
 
-export const collapseG = (rule, dom) => new Promise((resolve, reject) => {
+export const collapseG = (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		doCollapse(dom);
 	}

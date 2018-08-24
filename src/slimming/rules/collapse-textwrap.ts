@@ -2,8 +2,9 @@ import { INode } from '../../node/index';
 import { regularTag } from '../const/regular-tag';
 import { isTag } from '../xml/is-tag';
 import { traversalNode } from '../xml/traversal-node';
+import { ConfigItem } from '../config/config';
 
-export const collapseTextwrap = (rule, dom: INode) => new Promise((resolve, reject) => {
+export const collapseTextwrap = (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		traversalNode(isTag, (node: INode): void => {
 			const tagDefine = regularTag[node.nodeName];

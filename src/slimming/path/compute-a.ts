@@ -15,7 +15,7 @@ const FROM_CX = 2;
 const FROM_CY = 3;
 const DIGIT = 3;
 
-const getCenter = (x1: number, y1: number, x2: number, y2: number, r: number, ccw: boolean) => {
+const getCenter = (x1: number, y1: number, x2: number, y2: number, r: number, ccw: boolean): number[] => {
 	const v = new Vector(x2 - x1, y2 - y1);
 	v.modulo = Math.sqrt(r * r - Math.pow(v.modulo / 2, 2));
 	const arc = ccw ? -Math.PI / 2 : Math.PI / 2;
@@ -26,11 +26,11 @@ const getCenter = (x1: number, y1: number, x2: number, y2: number, r: number, cc
 	return [toFixed(DIGIT, cx), toFixed(DIGIT, cy)];
 };
 
-const combineA = (pathResult, rLen, absolute, center) => {
+const combineA = (pathResult: IPathResultItem[], rLen: number, absolute: number[], center: number[]): boolean => {
 	if (rLen > 0) {
 		const lastItem = pathResult[rLen - 1];
 		if (lastItem.type.toLowerCase() === 'a') {
-			const _eqProps = prop => eqProps(prop, lastItem.val, absolute);
+			const _eqProps = (prop: number) => eqProps(`${prop}`, lastItem.val, absolute);
 			if (all(_eqProps, [APOS_RX, APOS_RY, APOS_ROTATION]) && absolute[APOS_RX] === absolute[APOS_RY] && (lastItem.from[0] !== absolute[APOS_X] || lastItem.from[1] !== absolute[APOS_Y])) {
 				if (whereEq([lastItem.from[FROM_CX], lastItem.from[FROM_CY]], center)) {
 					const vbase = new Vector(lastItem.from[0] - center[0], lastItem.from[1] - center[1]);
@@ -61,7 +61,7 @@ const combineA = (pathResult, rLen, absolute, center) => {
 	return false;
 };
 
-export const computeA = (absolute: number[], relative: number[], pathResult: IPathResultItem[], pos: number[]) => {
+export const computeA = (absolute: number[], relative: number[], pathResult: IPathResultItem[], pos: number[]): number[] => {
 	const rLen = pathResult.length;
 	const center = getCenter(pos[0], pos[1], absolute[APOS_X], absolute[APOS_Y], absolute[APOS_RX], absolute[APOS_LARGE] === absolute[APOS_SWEEP]);
 	const hasCombine = combineA(pathResult, rLen, absolute, center);

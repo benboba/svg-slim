@@ -1,1 +1,1 @@
-export const toArray = item => Array.isArray(item) ? item : [item];
+export const toArray = <T>(item: T) => Array.isArray(item) ? item as Array<{}> : [item];

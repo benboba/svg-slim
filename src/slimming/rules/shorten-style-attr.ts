@@ -1,6 +1,9 @@
 import { has, pipe, propEq } from 'ramda';
 import { INode } from '../../node/index';
-import { regularAttr, IRegularAttr } from '../const/regular-attr';
+import { ConfigItem } from '../config/config';
+import { IRegularAttr, regularAttr } from '../const/regular-attr';
+import { IAttrObj } from '../interface/attr-obj';
+import { IUnique } from '../interface/unique';
 import { checkApply } from '../style/check-apply';
 import { execStyle } from '../style/exec';
 import { shortenStyle } from '../style/shorten';
@@ -13,7 +16,7 @@ import { traversalNode } from '../xml/traversal-node';
 const styleThreshold = 4;
 const style2value = pipe(stringifyStyle, shortenStyle);
 
-export const shortenStyleAttr = (rule, dom) => new Promise((resolve, reject) => {
+export const shortenStyleAttr = (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		let hasStyleTag = false;
 
@@ -22,13 +25,13 @@ export const shortenStyleAttr = (rule, dom) => new Promise((resolve, reject) => 
 		}, dom);
 
 		traversalNode(isTag, (node: INode) => {
-			const attrObj = {};
+			const attrObj: IAttrObj = {};
 			for (let i = node.attributes.length; i--; ) {
 				const attr = node.attributes[i];
 				const attrDefine: IRegularAttr = regularAttr[attr.fullname];
 				if (attr.fullname === 'style') {
 					const styleObj = execStyle(attr.value);
-					const styleUnique = {};
+					const styleUnique: IUnique = {};
 					for (let si = styleObj.length; si--; ) {
 						const styleItem = styleObj[si];
 						const styleDefine: IRegularAttr = regularAttr[styleItem.fullname];
@@ -39,7 +42,7 @@ export const shortenStyleAttr = (rule, dom) => new Promise((resolve, reject) => 
 							||
 							!checkApply(styleDefine, node, dom) // 样式继承链上不存在可应用对象
 							||
-							!legalValue(styleDefine, styleItem.value) // 值不合法
+							!legalValue(styleDefine, styleItem) // 值不合法
 						) {
 							styleObj.splice(si, 1);
 						} else {
@@ -62,7 +65,7 @@ export const shortenStyleAttr = (rule, dom) => new Promise((resolve, reject) => 
 						||
 						!checkApply(attrDefine, node, dom) // 样式继承链上不存在可应用对象
 						||
-						!legalValue(attrDefine, attr.value) // 值不合法
+						!legalValue(attrDefine, attr) // 值不合法
 					) {
 						node.removeAttribute(attr.fullname);
 					} else {

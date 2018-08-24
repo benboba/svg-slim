@@ -2,7 +2,13 @@ const DEFAULT_SIZE_DIGIT = 1;
 const DEFAULT_ACCURATE_DIGIT = 2;
 const DEFAULT_MATRIX_DIGIT = 3;
 
-export const config = {
+export type ConfigItem = (boolean | string | string[] | number)[];
+
+export interface IConfig {
+	[propName: string]: boolean | ConfigItem;
+}
+
+export const config: IConfig = {
 	// 合并 g 标签
 	'collapse-g': true,
 	// 塌陷无意义的文本节点

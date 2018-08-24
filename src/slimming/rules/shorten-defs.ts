@@ -1,6 +1,8 @@
 import { propEq } from 'ramda';
 import { INode } from '../../node/index';
+import { ConfigItem } from '../config/config';
 import { regularAttr } from '../const/regular-attr';
+import { IUnique } from '../interface/unique';
 import { isTag } from '../xml/is-tag';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
@@ -8,7 +10,7 @@ import { traversalNode } from '../xml/traversal-node';
 const funciriReg = /^url\((["']?)#(.+)\1\)$/;
 const iriReg = /^#(.+)$/;
 
-const checkSub = (node: INode, IDList) => {
+const checkSub = (node: INode, IDList: IUnique) => {
 	let hasId = false;
 	const attributes = node.attributes;
 	for (let i = attributes.length; i--; ) {
@@ -38,10 +40,10 @@ const checkSub = (node: INode, IDList) => {
 	}
 };
 
-export const shortenDefs = (rule, dom) => new Promise((resolve, reject) => {
+export const shortenDefs = (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		let firstDefs: INode;
-		const IDList = {};
+		const IDList: IUnique = {};
 
 		// 首先取出所有被引用的 ID
 		traversalNode(isTag, (node: INode) => {

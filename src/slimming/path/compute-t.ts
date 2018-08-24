@@ -6,7 +6,7 @@ import { IPathResultItem } from './exec';
 const POS2 = 2;
 const POS3 = 3;
 
-export const computeT = (absolute: number[], relative: number[], pathResult: IPathResultItem[], pos: number[]) => {
+export const computeT = (absolute: number[], relative: number[], pathResult: IPathResultItem[], pos: number[]): number[] => {
 	const from = pos.slice();
 	const lastItem = pathResult[pathResult.length - 1];
 	if (lastItem.type === 'T') {

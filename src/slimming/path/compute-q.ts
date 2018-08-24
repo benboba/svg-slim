@@ -9,7 +9,7 @@ const QPOS_Y1 = 1;
 const QPOS_X = 2;
 const QPOS_Y = 3;
 
-const canTransformT = (pathResult, rLen, x1, y1) => {
+const canTransformT = (pathResult: IPathResultItem[], rLen: number, x1: number, y1: number) => {
 	if (rLen > 0) {
 		const lastItem = pathResult[rLen - 1];
 		const type = lastItem.type;
@@ -26,7 +26,7 @@ const canTransformT = (pathResult, rLen, x1, y1) => {
 	return false;
 };
 
-export const computeQ = (absolute: number[], relative: number[], pathResult: IPathResultItem[], pos: number[]) => {
+export const computeQ = (absolute: number[], relative: number[], pathResult: IPathResultItem[], pos: number[]): number[] => {
 	const rLen = pathResult.length;
 	if (canTransformT(pathResult, rLen, absolute[QPOS_X1], absolute[QPOS_Y1])) {
 		return computeT(absolute.slice(QPOS_X), relative.slice(QPOS_X), pathResult, pos);

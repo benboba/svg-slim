@@ -24,11 +24,11 @@ const check = (styleDefine: IRegularAttr, node: INode, dom: INode, unique: INode
         if (styleDefine.applyTo.indexOf(childNode.nodeName) !== -1) {
             result = true;
         } else if (childNode.hasAttribute('xlink:href')) {
+            // TODO：只有 xlink:href 吗？其它 IRI 或 funcIRI 属性是否也需要验证？
             // 遇到引用属性，还需要递归验证被引用对象是否可应用样式
-            traversalNode(n => childNode.getAttribute('xlink:href') === `#${n.getAttribute('id')}`, n => {
-                if (check(styleDefine, n, dom, unique)) {
-                    result = true;
-                }
+            const idStr = childNode.getAttribute('xlink:href');
+            traversalNode(n => idStr === `#${n.getAttribute('id')}`, n => {
+                result = check(styleDefine, n, dom, unique) || result;
             }, dom);
         }
     }, node);

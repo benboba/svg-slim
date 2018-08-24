@@ -33,8 +33,8 @@ export const getBySelector = (dom: INode, selector: string): INode[] => {
                         selectorUnit.class.push(specialExec[0].slice(1));
                         break;
                     case '[': // 属性选择器
-                        const attrStr = specialExec[0].slice(1, -1);
-                        const eqIndex: number = attrStr.indexOf['='];
+                        const attrStr: string = specialExec[0].slice(1, -1);
+                        const eqIndex: number = attrStr.indexOf['='] as number;
                         if (eqIndex === -1) {
                             // 没有等号的情况
                             selectorUnit.attr.push({
@@ -45,7 +45,7 @@ export const getBySelector = (dom: INode, selector: string): INode[] => {
                             if (attrModifier[attrStr[eqIndex - 1]]) {
                                 selectorUnit.attr.push({
                                     key: attrStr.slice(0, eqIndex - 1),
-                                    modifier: attrModifier[attrStr[eqIndex - 1]],
+                                    modifier: attrModifier[attrStr[eqIndex - 1]] as number,
                                     value: attrStr.slice(eqIndex + 1)
                                 });
                             } else {
@@ -81,7 +81,7 @@ export const getBySelector = (dom: INode, selector: string): INode[] => {
         if (selectorExec[3]) {
             const combinator = selectorExec[3].trim();
             if (selectorUnitCombinator[combinator]) {
-                selectorUnit.combinator = selectorUnitCombinator[combinator];
+                selectorUnit.combinator = selectorUnitCombinator[combinator] as number;
             }
         }
         selectors.push(selectorUnit);

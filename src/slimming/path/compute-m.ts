@@ -4,7 +4,7 @@ import { plus } from '../math/plus';
 import { numberLength } from '../utils/number-length';
 import { IPathResultItem } from './exec';
 
-export const computeM = (absolute: number[], relative: number[], pathResult: IPathResultItem[], pos: number[]) => {
+export const computeM = (absolute: number[], relative: number[], pathResult: IPathResultItem[], pos: number[]): number[] => {
 	const rLen = pathResult.length;
 	if (rLen > 0 && pathResult[rLen - 1].type.toLowerCase() === 'm') {
 		const lastItem: IPathResultItem = pathResult.pop();

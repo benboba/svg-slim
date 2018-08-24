@@ -3,6 +3,7 @@ import { INode } from '../../node/index';
 import { shapeElements } from '../const/definitions';
 import { createTag } from '../xml/create';
 import { traversalNode } from '../xml/traversal-node';
+import { ConfigItem } from '../config/config';
 
 const rectToPath = (node: INode) => {
 	const shapeAttr = {
@@ -81,7 +82,7 @@ const polyToPath = (node: INode, addZ = false) => {
 	}
 };
 
-export const shapeToPath = (rule, dom) => new Promise((resolve, reject) => {
+export const shapeToPath = (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		traversalNode(node => shapeElements.indexOf(node.nodeName) !== -1, (node: INode) => {
 			const cloneNode: INode = node.cloneNode();

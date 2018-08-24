@@ -12,8 +12,12 @@ const animateAttributes = conditionAndCore.concat(animationAdditionAttributes, a
 const feAttributes = ['result'].concat(coreAttributes, rectAttributes);
 const feFuncAttributes = transferFunctionElementAttributes.concat(coreAttributes);
 
+interface IRegularTagDefine {
+	[propName: string]: IRegularTag;
+}
+
 // tag define
-const regular_tag = {
+const regular_tag: IRegularTagDefine = {
 	'a': {
 		containTextNode: true,
 		legalChildElements: { transparent: true, noself: true, childElements: [] },
@@ -356,7 +360,7 @@ const regular_tag = {
 	},
 };
 
-const undefTag = {
+const undefTag: IRegularTag = {
 	isUndef: true,
 	containTextNode: false,
 	legalChildElements: null,
@@ -371,7 +375,7 @@ export interface IRegularTag {
 }
 
 export const regularTag = new Proxy(regular_tag, {
-	get(obj, prop): IRegularTag {
-		return prop in obj ? obj[prop] as IRegularTag : undefTag;
+	get(obj, prop: string): IRegularTag {
+		return prop in obj ? obj[prop] : undefTag;
 	}
 });

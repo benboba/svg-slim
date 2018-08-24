@@ -12,7 +12,7 @@ const CPOS_X2 = 2;
 const CPOS_X = 4;
 const CPOS_Y = 5;
 
-const canTransformS = (pathResult, rLen, x1, y1) => {
+const canTransformS = (pathResult: IPathResultItem[], rLen: number, x1: number, y1: number): boolean => {
 	if (rLen > 0) {
 		const lastItem = pathResult[rLen - 1];
 		const type = lastItem.type;
@@ -29,7 +29,7 @@ const canTransformS = (pathResult, rLen, x1, y1) => {
 	return false;
 };
 
-export const computeC = (absolute: number[], relative: number[], pathResult: IPathResultItem[], pos: number[]) => {
+export const computeC = (absolute: number[], relative: number[], pathResult: IPathResultItem[], pos: number[]): number[] => {
 	const rLen = pathResult.length;
 	if (canTransformS(pathResult, rLen, absolute[CPOS_X1], absolute[CPOS_Y1])) {
 		return computeS(absolute.slice(CPOS_X2), relative.slice(CPOS_X2), pathResult, pos);

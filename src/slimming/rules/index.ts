@@ -31,9 +31,13 @@ import { shortenDefs } from './shorten-defs';
 import { shortenID } from './shorten-id';
 import { shortenStyleAttr } from './shorten-style-attr';
 import { shortenStyleTag } from './shorten-style-tag';
+import { INode } from '../../node';
+import { ConfigItem } from '../config/config';
 
+export type RuleItem = [1, (dom: INode) => Promise<null>] | [0, (rule: ConfigItem, dom: INode) => Promise<null>, string];
 // [isDefaultRule: boolean, ruleHandler: Function, configKey?: string]
-export const rules = [
+
+export const rules: RuleItem[] = [
 	[1, rmUseless],
 	[1, combineStyle],
 	[1, combineScript],

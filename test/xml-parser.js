@@ -1,11 +1,22 @@
 // const xmlParser = require('../dist/xml-parser.js');
-const xmlParser = require('../dist/xml-parser.min.js');
+// const xmlParser = require('../dist/xml-parser.min.js');
+const svgSlimming = require('../dist/svg-slimming.min.js');
+const xmlParser = {
+    parse: svgSlimming.xmlParser,
+    NodeType: svgSlimming.NodeType
+};
 const NodeType = xmlParser.NodeType;
 const chai = require('chai');
 const should = chai.should();
 const expect = chai.expect;
 
 describe('parse error test', function() {
+    xmlParser.parse(` <?xml version="1.1" ?><svg/>`).catch(err => {
+        it('xml声明必须在最前面', function() {
+            err.message.should.have.match(/^xml声明必须在文档最前面/);
+        });
+    });
+
     xmlParser.parse(`<svg>`).catch(err => {
         it('文档结构错误', function() {
             err.message.should.have.match(/^文档结构错误/);
@@ -15,6 +26,18 @@ describe('parse error test', function() {
     xmlParser.parse(`<svg></html>`).catch(err => {
         it('开始和结束标签无法匹配', function() {
             err.message.should.have.match(/^开始和结束标签无法匹配/);
+        });
+    });
+
+    xmlParser.parse(`<svg/><svg/>`).catch(err => {
+        it('只允许出现一个根元素节点', function() {
+            err.message.should.have.match(/^只允许出现一个根元素节点/);
+        });
+    });
+
+    xmlParser.parse(``).catch(err => {
+        it('没有根元素节点', function() {
+            err.message.should.have.match(/^没有根元素节点/);
         });
     });
 
@@ -58,8 +81,7 @@ describe('parse error test', function() {
 
 
 describe('parse success test', async function() {
-    const testStr = `
-        <?xml?>
+    const testStr = `<?xml version="1.0"?>
         <!DOCTYPE html>
         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">test text node<![CDATA[test cdata node]]><text/><!--test comments--></svg>
         <![TESTSECT[test other section]]>

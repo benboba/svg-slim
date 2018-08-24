@@ -1,11 +1,17 @@
 import { containerElements, gradientElements, graphicsElements, newViewportsElements, shapeElements, textContentElements } from './definitions';
+import { accumulateVal, additiveVal } from './enum';
+import { numberRegFullMatch } from './tokens';
 
 const shapeAndText = shapeElements.concat(textContentElements);
 const viewport = ['pattern', 'marker'].concat(newViewportsElements);
 const useContainerGraphics = ['use'].concat(containerElements, graphicsElements);
 const colorApply = ['animate'].concat(useContainerGraphics, gradientElements);
 
-const regular_attr = {
+interface IRegularAttrDefine {
+	[propName: string]: IRegularAttr;
+}
+
+const regular_attr: IRegularAttrDefine = {
 	accumulate: {
 		couldBeStyle: false,
 		animatable: false,
@@ -14,8 +20,11 @@ const regular_attr = {
 		maybeFuncIRI: false,
 		maybeSizeNumber: false,
 		maybeAccurateNumber: false,
-		legalValues: [],
-		initValue: '',
+		legalValues: [{
+			type: 'enum',
+			enum: accumulateVal
+		}],
+		initValue: 'none',
 		applyTo: [],
 	},
 	additive: {
@@ -26,8 +35,11 @@ const regular_attr = {
 		maybeFuncIRI: false,
 		maybeSizeNumber: false,
 		maybeAccurateNumber: false,
-		legalValues: [],
-		initValue: '',
+		legalValues: [{
+			type: 'enum',
+			enum: additiveVal
+		}],
+		initValue: 'replace',
 		applyTo: [],
 	},
 	amplitude: {
@@ -38,8 +50,11 @@ const regular_attr = {
 		maybeFuncIRI: false,
 		maybeSizeNumber: false,
 		maybeAccurateNumber: true,
-		legalValues: [],
-		initValue: '',
+		legalValues: [{
+			type: 'reg',
+			reg: numberRegFullMatch
+		}],
+		initValue: '1',
 		applyTo: [],
 	},
 	attributeName: {
@@ -50,7 +65,9 @@ const regular_attr = {
 		maybeFuncIRI: false,
 		maybeSizeNumber: false,
 		maybeAccurateNumber: false,
-		legalValues: [],
+		legalValues: [{
+			type: 'attr'
+		}],
 		initValue: '',
 		applyTo: [],
 	},
@@ -385,7 +402,7 @@ const regular_attr = {
 		maybeIRI: false,
 		maybeFuncIRI: false,
 		maybeSizeNumber: false,
-		maybeAccurateNumber: true,
+		maybeAccurateNumber: false,
 		legalValues: [],
 		initValue: '',
 		applyTo: [],
@@ -865,7 +882,7 @@ const regular_attr = {
 		maybeIRI: false,
 		maybeFuncIRI: false,
 		maybeSizeNumber: false,
-		maybeAccurateNumber: true,
+		maybeAccurateNumber: false,
 		legalValues: [],
 		initValue: '',
 		applyTo: [],
@@ -1417,7 +1434,7 @@ const regular_attr = {
 		maybeIRI: false,
 		maybeFuncIRI: false,
 		maybeSizeNumber: false,
-		maybeAccurateNumber: true,
+		maybeAccurateNumber: false, // 在 combine-transform 中单独处理
 		legalValues: [],
 		initValue: '',
 		applyTo: ['svg', 'g', 'symbol', 'marker', 'a', 'switch', 'use', 'foreignObject', 'unknown'].concat(graphicsElements),
@@ -2387,7 +2404,7 @@ const regular_attr = {
 	}
 };
 
-const undefAttr = {
+const undefAttr: IRegularAttr = {
 	isUndef: true,
 	couldBeStyle: false,
 	animatable: false,
@@ -2402,9 +2419,9 @@ const undefAttr = {
 };
 
 export interface ILegalValueItem {
-	type: string;
+	type: 'enum' | 'reg' | 'attr';
 	reg?: RegExp;
-	enum?: Enumerator;
+	enum?: Object;
 }
 
 export interface IRegularAttr {
@@ -2422,7 +2439,7 @@ export interface IRegularAttr {
 }
 
 export const regularAttr = new Proxy(regular_attr, {
-    get(obj, prop): IRegularAttr {
-        return prop in obj ? obj[prop] as IRegularAttr : undefAttr;
+    get(obj, prop: string): IRegularAttr {
+        return prop in obj ? obj[prop] : undefAttr;
     }
 });

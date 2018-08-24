@@ -9,7 +9,7 @@ export interface IPathResultItem extends IPathItem {
 	from: number[];
 }
 
-export const execPath = (str): IPathItem[] => {
+export const execPath = (str: string): IPathItem[] => {
 	const result: IPathItem[] = [];
 
 	// 重置正则匹配位置

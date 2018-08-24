@@ -5,8 +5,9 @@ import { IRegularTag, regularTag } from '../const/regular-tag';
 import { legalValue } from '../validate/legal-value';
 import { isTag } from '../xml/is-tag';
 import { traversalNode } from '../xml/traversal-node';
+import { ConfigItem } from '../config/config';
 
-export const rmAttribute = (rule, dom) => new Promise((resolve, reject) => {
+export const rmAttribute = (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		traversalNode(isTag, (node: INode) => {
 			const tagDefine: IRegularTag = regularTag[node.nodeName];
@@ -35,14 +36,14 @@ export const rmAttribute = (rule, dom) => new Promise((resolve, reject) => {
 					||
 					(!attrDefine.couldBeStyle && attr.fullname.indexOf('xmlns') === -1 && tagDefine.ownAttributes.indexOf(attr.fullname) === -1) // 属性和元素不匹配
 					||
-					!legalValue(attrDefine, attr.value) // 不合法的值
+					!legalValue(attrDefine, attr) // 不合法的值
 				) {
 					node.removeAttribute(attr.fullname);
 					continue;
 				}
 
 				// 不能实现动画的属性被动画属性引用)
-				if (animationAttributes.indexOf(attr.fullname) !== -1 && (!attributeName || !(regularAttr[attributeName] as IRegularAttr).animatable)) {
+				if (animationAttributes.indexOf(attr.fullname) !== -1 && (!attributeName || !regularAttr[attributeName].animatable)) {
 					node.removeAttribute(attr.fullname);
 					// 同时移除 attributeName 属性
 					node.removeAttribute('attributeName');

@@ -1,21 +1,29 @@
 {
   "name": "svg-slimming",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "svg slimming",
   "main": "svg-slimming.min.js",
   "keywords": [
-    "svg"
+    "svg",
+    "xml",
+    "optimization",
+    "minimization",
+    "parse",
+    "svg-slimming",
+    "xml-parser",
+    "javascript",
+    "nodejs"
   ],
   "author": "Wang Feng <benboba@gmail.com>",
   "homepage": "https://github.com/benboba/svg-slimming",
   "maintainers": [
     {
-      "name": "wangfeng-pd",
+      "name": "wangfeng",
       "email": "benboba@gmail.com"
     }
   ],
   "files": [
-    "readme.md",
+    "README.md",
     "package.json",
     "svg-slimming.js",
     "svg-slimming.min.js",

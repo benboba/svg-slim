@@ -6,8 +6,8 @@
  * @param { visited } 避免对象调用自身造成死循环
  */
 
-const traversal = (condition, cb, obj, path, visited) => {
-	if (obj in visited) {
+const traversal = (condition: (o: Object) => boolean, cb: (o: Object, p: Object[]) => void, obj: Object, path: Object[], visited: Object[]) => {
+	if (visited.indexOf(obj) !== -1) {
 		return;
 	}
 	visited.push(obj);
@@ -17,23 +17,23 @@ const traversal = (condition, cb, obj, path, visited) => {
 	}
 	path.push(obj);
 	if (Array.isArray(obj)) {
-		for (let i = 0; i < obj.length; ) {
-			const item = obj[i];
+		for (let i = 0; i < (obj as Object[]).length; ) {
+			const item: Object = (obj as Object[])[i];
 			traversal(condition, cb, item, path, visited);
-			if (item === obj[i]) {
+			if (item === (obj as Object[])[i]) {
 				i++;
 			}
 		}
 	} else {
 		Object.keys(obj).forEach(key => {
 			if (typeof obj[key] === 'object') {
-				traversal(condition, cb, obj[key], path, visited);
+				traversal(condition, cb, obj[key] as Object, path, visited);
 			}
 		});
 	}
 	path.pop();
 };
 
-export const traversalObj = (condition, cb, obj) => {
+export const traversalObj = (condition: (o: Object) => boolean, cb: (o: Object, p: Object[]) => void, obj: Object) => {
 	traversal(condition, cb, obj, [], []);
 };

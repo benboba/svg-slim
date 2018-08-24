@@ -6,7 +6,7 @@ import { minus } from '../math/minus';
 
 import { IPathResultItem } from './exec';
 
-export const computeV = (absolute: number, relative: number, pathResult: IPathResultItem[], pos: number[]) => {
+export const computeV = (absolute: number, relative: number, pathResult: IPathResultItem[], pos: number[]): number[] => {
 	const rLen = pathResult.length;
 	if (rLen > 0 && pathResult[rLen - 1].type.toLowerCase() === 'v') {
 		const lastItem: IPathResultItem = pathResult.pop();
