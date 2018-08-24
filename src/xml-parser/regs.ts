@@ -22,7 +22,7 @@ const AttrVal = `"(?:[^<&"]|${Reference})*"|'(?:[^<&']|${Reference})*'`;
 
 const DeclContent = `(?:[^<>]+|[^<>]*'[^']*'[^<>]*|[^<>]*"[^"]*"[^<>]*|[^<>]*<[^<>]*>[^<>]*)+?`;
 
-export const REG_XML_DECL = new RegExp(`^<\\?xml((?:${VersionInfo}|${EncodingDecl}|${SDDecl})*\\s*)\\?>`);
+export const REG_XML_DECL = new RegExp(`^<\\?xml(${VersionInfo}(?:${EncodingDecl})?(?:${SDDecl})?\\s*)\\?>`);
 export const REG_CDATA_SECT = /^<!\[CDATA\[([\d\D]*?)\]\]>/;
 export const REG_OTHER_SECT = /^<!\[\s?([A-Z]+)\s?\[([\d\D]*?)\]\]>/;
 export const REG_DOCTYPE = new RegExp(`^<!DOCTYPE\\s+(${DeclContent})>`);

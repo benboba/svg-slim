@@ -48,8 +48,10 @@ tester(
     `<svg>
     <path fill="none" d="M0,0H100Z" />
     <path fill="none" d="M100,0H100Z" />
+    <rect />
+    <path fill="none" d="M100,0H100Z" />
     </svg>`,
-    '<svg><path fill="none" d="M0,0H100ZM100,0H100Z"/></svg>',
+    '<svg><path fill="none" d="M0,0H100ZM100,0H100Z"/><rect/><path fill="none" d="M100,0H100Z"/></svg>',
     {
         'combine-path': true
     }
@@ -100,9 +102,9 @@ tester(
         onload="console.log(123)"
         version=""
     >
-        <animate to="c100" attributeName="id" />
+        <animate accumulate="none" attributeName="attributeName" />
     </svg>`,
-    '<svg><animate/></svg>',
+    '<svg><animate accumulate="none"/></svg>',
     {
         'rm-attribute': [true, true, false, false]
     }
@@ -226,10 +228,10 @@ tester(
 
 tester(
     'rm-xmlns',
-    `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace">
-    <a xlink:href="http://localhost"><text>123</text></a>
+    `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:s="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace">
+    <a xlink:href="http://localhost"><s:text>123</s:text></a>
     </svg>`,
-    '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><a xlink:href="http://localhost"><text>123</text></a></svg>',
+    '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:s="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><a xlink:href="http://localhost"><s:text>123</s:text></a></svg>',
     {
         'rm-xmlns': true
     }
@@ -352,10 +354,16 @@ tester(
         fill: yellow;
         flex-wrap: wrap;
     }
+    text[id~=red] {
+        fill: red;
+        fill: blue;
+        fill: yellow;
+        flex-wrap: wrap;
+    }
     </style>
     <text id="redText">123</text>
     </svg>`,
-    '<svg><style>#redText{fill:yellow}</style><text id="redText">123</text></svg>',
+    '<svg><style>#redText{fill:yellow}text[id~=red]{fill:yellow}</style><text id="redText">123</text></svg>',
     {
         'shorten-style-tag': true
     }

@@ -5,9 +5,9 @@ import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
 
 // 合并多个 style 标签，并将文本节点合并到一个子节点
-export const combineStyle = (dom: INode) => new Promise((resolve, reject) => {
+export const combineStyle = (dom: INode): Promise<null> => new Promise((resolve, reject) => {
     let firstStyle: INode;
-    let lastChildNode;
+    let lastChildNode: INode;
 
     const checkCNode = (node: INode) => {
         for (let i = 0; i < node.childNodes.length; i++) {

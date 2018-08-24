@@ -1,7 +1,7 @@
 import { plus } from '../math/plus';
 import { IPathResultItem } from './exec';
 
-export const computeZ = (pathResult: IPathResultItem[], pos: number[]) => {
+export const computeZ = (pathResult: IPathResultItem[], pos: number[]): number[] => {
 	const rLen = pathResult.length;
 	if (rLen > 0) {
 		const lastItem = pathResult[rLen - 1];

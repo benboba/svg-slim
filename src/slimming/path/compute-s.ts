@@ -7,7 +7,7 @@ export const SPOS_Y2 = 1;
 export const SPOS_X = 2;
 export const SPOS_Y = 3;
 
-export const computeS = (absolute: number[], relative: number[], pathResult: IPathResultItem[], pos: number[]) => {
+export const computeS = (absolute: number[], relative: number[], pathResult: IPathResultItem[], pos: number[]): number[] => {
 	if (lt(numberLength(relative), numberLength(absolute))) {
 		pathResult.push({
 			type: 's',

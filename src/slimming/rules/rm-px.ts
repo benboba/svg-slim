@@ -1,10 +1,12 @@
 import { INode } from '../../node/index';
+import { ConfigItem } from '../config/config';
+import { numberPattern } from '../const/tokens';
 import { isTag } from '../xml/is-tag';
 import { traversalNode } from '../xml/traversal-node';
 
-const pxReg = /(^|\(|\s|,|{|;|:)([+-]?\d+(?:\.\d+)?(?:e[+-]?\d+)?)px(?=$|\)|\s|,|;|})/g;
+const pxReg = new RegExp(`(^|\\(|\\s|,|{|;|:)(${numberPattern})px(?=$|\\)|\\s|,|;|})`, 'gi');
 
-export const rmPx = (rule, dom: INode) => {
+export const rmPx = (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		traversalNode(isTag, (node: INode) => {
 			node.attributes.forEach(attr => {
@@ -17,4 +19,5 @@ export const rmPx = (rule, dom: INode) => {
 			}
 		}, dom);
 	}
-};
+	resolve();
+});

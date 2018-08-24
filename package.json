@@ -1,6 +1,6 @@
 {
   "name": "svg-slimming",
-  "version": "1.1.1",
+  "version": "1.2.3",
   "description": "svg slimming",
   "main": "lib/svg-slimming.js",
   "scripts": {
@@ -9,15 +9,24 @@
     "test": "mocha -t 5000"
   },
   "keywords": [
-    "svg"
+    "svg",
+    "xml",
+    "optimization",
+    "minimization",
+    "parse",
+    "svg-slimming",
+    "xml-parser",
+    "javascript",
+    "nodejs"
   ],
-  "author": "Wang Feng <wangfeng-pd@360.cn>",
+  "author": "Wang Feng <benboba@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "css": "^2.2.3",
     "ramda": "^0.25.0"
   },
   "devDependencies": {
+    "@types/css": "0.0.31",
     "@types/ramda": "^0.25.36",
     "chai": "^4.1.2",
     "copy-webpack-plugin": "^4.5.2",

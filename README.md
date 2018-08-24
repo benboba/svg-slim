@@ -1,5 +1,30 @@
 # 更新日志
 
+## 2018.08.24 v1.2.3
+
+### 综合
+
+* 修正了 README.md 的一些格式问题
+* 补全 typescript 类型的定义，保证 no-any 和 no-unsafe-any 规则通过
+
+### xml-parser
+
+* 完善了一些 xml 结构错误，并书写相应的测试用例
+* 错误提示的行号判断，由 \\n 改为 \\n \\r \\r\\n 的任意一种
+
+### svg-slimming
+
+* 数字正则表达式添加 i 修饰符，避免科学计数法 e 大写的情况
+* transform 类的属性，不再对其应用 shorten-decimal-digits 规则（因其会在 combine-transform 规则中进行优化）
+* 修复了 css 属性选择器正则表达式的一个 bug
+* fillin 工具兼容了输入字符位数大于规定位数的情况
+* rm-xmlns 规则现在支持了节点的命名空间
+* combine-path 规则，添加了只有相邻的 path 节点才能合并的限制
+* 为 svg-slimming 包添加了属性指向 xmlParser 和 NodeType，可以通过以下方式调用
+	* const svgSlimming = require('svg-slimming');
+	* svgSlimming.xmlParser('svg string').then(result => { console.log(result); });
+	* console.log(svgSlimming.NodeType);
+
 ## 2018.08.15 v1.2.2
 
 ### 综合
@@ -154,7 +179,7 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 
 * 默认开关：开
 * 说明：
-	* 合并 fill 属性为 none，且除 d 属性之外，其它属性完全相同（顺序可以不一致）的 path 标签
+	* 合并 **fill 或 stroke 属性为 none**，且除 d 属性之外其它属性完全相同（顺序可以不一致）的 **相邻的** path 标签
 	* **（未实现！）** 当 fill 属性不为 none，但路径没有相交的 path 元素也可以合并
 
 例如：
@@ -204,7 +229,7 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 
 优化后将变为：
 
-	<path fill="red" d="M0 0H100V100H0z"/>
+	<path fill="red" d="M0,0H100V100H0z"/>
 
 ### douglas-peucker
 
@@ -451,6 +476,8 @@ path 元素没有 d 属性或为空（其它如：polyline 和 polygon 元素没
 	* 移除无效的 defs 定义
 	* 移除空的 defs 标签
 
+例如：
+
 	<defs>
 	    <circle id="circle-1" fill="#000" cx="60" cy="60" r="60"></circle>
 	</defs>
@@ -476,6 +503,8 @@ path 元素没有 d 属性或为空（其它如：polyline 和 polygon 元素没
 * 说明：
 	* 缩短 ID
 	* 移除不被引用的 ID
+
+例如：
 
 	<defs>
 	    <circle id="circle-1" fill="#000" cx="60" cy="60" r="60"></circle>

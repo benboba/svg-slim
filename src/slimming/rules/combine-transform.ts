@@ -4,14 +4,15 @@ import { combineMatrix } from '../matrix/combine';
 import { shorten } from '../matrix/shorten';
 import { isTag } from '../xml/is-tag';
 import { traversalNode } from '../xml/traversal-node';
+import { ConfigItem } from '../config/config';
 
 const DEFAULT_DIGIT1 = 3;
 const DEFAULT_DIGIT2 = 1;
 
-export const combineTransform = (rule, dom: INode) => {
+export const combineTransform = (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
-		let digit1: number = rule.length > 1 ? rule[1] : DEFAULT_DIGIT1;
-		let digit2: number = rule.length > 2 ? rule[2] : DEFAULT_DIGIT2;
+		let digit1: number = rule.length > 1 ? rule[1] as number : DEFAULT_DIGIT1;
+		let digit2: number = rule.length > 2 ? rule[2] as number : DEFAULT_DIGIT2;
 		traversalNode(isTag, (node: INode) => {
 			const attributes = node.attributes;
 			for (let i = attributes.length; i--; ) {
@@ -34,4 +35,5 @@ export const combineTransform = (rule, dom: INode) => {
 			}
 		}, dom);
 	}
-};
+	resolve();
+});

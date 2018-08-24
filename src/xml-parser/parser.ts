@@ -6,7 +6,7 @@ import { REG_XML_DECL, REG_CDATA_SECT, REG_OTHER_SECT, REG_DOCTYPE, REG_OTHER_DE
 import { collapseQuot } from './utils';
 import { mixWhiteSpace } from '../slimming/utils/mix-white-space';
 
-const configs = [
+const configs: ([number, string, RegExp, number] | [number, RegExp, number])[] = [
 	[1, 'xml-decl', REG_XML_DECL, NodeType.XMLDecl],
 	[1, 'cdata', REG_CDATA_SECT, NodeType.CDATA],
 	[2, REG_OTHER_SECT, NodeType.OtherSect],
@@ -15,11 +15,14 @@ const configs = [
 	[1, 'comments', REG_COMMENTS, NodeType.Comments],
 ];
 
-const updStatus = (pos: number, str: string, status) => {
+const updStatus = (pos: number, str: string, status: IStatus) => {
 	for (; status.lastpos < pos; status.lastpos++) {
-		if (str[status.lastpos] === '\n') {
-			status.line++;
-			status.pos = 0;
+		if (str[status.lastpos] === '\r' || str[status.lastpos] === '\n') {
+			// 换行判断，\r 直接换行，\n 判断一下是不是紧跟在 \r 后面
+			if (str[status.lastpos] === '\r' || str[status.lastpos - 1] !== '\r') {
+				status.line++;
+				status.pos = 0;
+			}
 		} else {
 			status.pos++;
 		}
@@ -27,8 +30,8 @@ const updStatus = (pos: number, str: string, status) => {
 };
 
 // 应对一个捕获组的状况
-const Process1 = (conf, str): { node:Node, str: string } => {
-	const reg = conf[2] as RegExp;
+const Process1 = (conf: [number, string, RegExp, number], str: string): { node:Node, str: string } => {
+	const reg = conf[2];
 	if (reg.test(str)) {
 		const execResult = reg.exec(str);
 		return {
@@ -45,7 +48,7 @@ const Process1 = (conf, str): { node:Node, str: string } => {
 
 
 // 应对两个捕获组的状况
-const Process2 = (conf, str): { node:Node, str: string } => {
+const Process2 = (conf: [number, RegExp, number], str: string): { node:Node, str: string } => {
 	const reg = conf[1];
 	if (reg.test(str)) {
 		const execResult = reg.exec(str);
@@ -167,12 +170,12 @@ const parse = (str: string, status: IStatus): { node:Node, str: string } => {
 
 		for (const cfg of configs) {
 			if (cfg[0] === 1) {
-				const processResult1 = Process1(cfg, str);
+				const processResult1 = Process1(cfg as [number, string, RegExp, number], str);
 				if (processResult1) {
 					return processResult1;
 				}
 			} else {
-				const processResult2 = Process2(cfg, str);
+				const processResult2 = Process2(cfg as [number, RegExp, number], str);
 				if (processResult2) {
 					return processResult2;
 				}
@@ -219,15 +222,26 @@ export function Parser(str: string): Promise<Node> {
 			lastpos: 0
 		};
 
-		let current;
+		let current: { node:Node, str: string };
+		let hasRoot = false;
+		const firstIndex = str.indexOf('<');
+		if (firstIndex > 0 && !!str.slice(0, firstIndex).replace(/\s+/, '')) {
+			reject(new Error(`意外的文本节点！ 在第 ${status.line} 行第 ${status.pos} 位`));
+		}
 		try {
-			current = parse(str.slice(str.indexOf('<')), status); // 第一个 < 之前的全部字符都忽略掉
+			current = parse(str.slice(firstIndex), status); // 第一个 < 之前的全部字符都忽略掉
 		} catch (e) {
 			reject(e);
 		}
+		if (current.node.nodeType === NodeType.XMLDecl && firstIndex > 0) {
+			reject(new Error(`xml声明必须在文档最前面！ 在第 ${status.line} 行第 ${status.pos} 位`));
+		}
 		doc.appendChild(current.node);
-		if (current.node.nodeType === NodeType.Tag && !current.node.selfClose) {
-			stack.push(current.node);
+		if (current.node.nodeType === NodeType.Tag) {
+			hasRoot = true;
+			if (!current.node.selfClose) {
+				stack.push(current.node);
+			}
 		}
 
 		while (current.str) {
@@ -278,11 +292,17 @@ export function Parser(str: string): Promise<Node> {
 					doc.appendChild(current.node);
 				}
 				// 遇到未闭合的节点，扔到stack内
-				if (current.node.nodeType === NodeType.Tag && !current.node.selfClose) {
-					stack.push(current.node);
+				if (current.node.nodeType === NodeType.Tag) {
+					if (!stackLen) {
+						if (hasRoot) {
+							reject(new Error(`只允许出现一个根元素节点！ 在第 ${status.line} 行第 ${status.pos} 位`));
+						}
+						hasRoot = true;
+					}
+					if (!current.node.selfClose) {
+						stack.push(current.node);
+					}
 				}
-
-
 			}
 
 			if (!current.str) {
@@ -293,6 +313,10 @@ export function Parser(str: string): Promise<Node> {
 
 		if (stack.length) {
 			reject(new Error(`文档结构错误！ 在第 ${status.line} 行第 ${status.pos} 位`));
+		}
+
+		if (!hasRoot) {
+			reject(new Error(`没有根元素节点！ 在第 ${status.line} 行第 ${status.pos} 位`));
 		}
 
 		resolve(doc);

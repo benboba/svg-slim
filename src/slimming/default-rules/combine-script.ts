@@ -5,9 +5,9 @@ import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
 
 // 合并多个 script 标签，并将内容合并为一个子节点
-export const combineScript = (dom: INode) => new Promise((resolve, reject) => {
-    let firstScript = null;
-    let lastChildNode;
+export const combineScript = (dom: INode): Promise<null> => new Promise((resolve, reject) => {
+    let firstScript: INode = null;
+    let lastChildNode: INode;
 
     const checkCNode = (node: INode) => {
         for (let i = 0; i < node.childNodes.length; i++) {

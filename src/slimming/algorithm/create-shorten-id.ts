@@ -7,7 +7,7 @@ const sList = startChar.split('');
 let slen = startLen;
 let pi = 0;
 
-export const createShortenID = si => {
+export const createShortenID = (si: number): string => {
 	while (si >= slen) {
 		sList.push.apply(sList, nameChar.split('').map(s => sList[pi] + s));
 		slen += nameLen;

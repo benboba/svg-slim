@@ -1,4 +1,4 @@
-import { parse as cssParse, stringify as cssStringify } from 'css';
+import { parse as cssParse, stringify as cssStringify, Declaration } from 'css';
 import { both, has, pipe, toLower } from 'ramda';
 import { regularAttr } from '../const/regular-attr';
 import { toFixed } from '../math/tofixed';
@@ -11,6 +11,9 @@ import { toHex } from '../utils/tohex';
 import { traversalObj } from '../utils/traversal-obj';
 import { isTag } from '../xml/is-tag';
 import { traversalNode } from '../xml/traversal-node';
+import { ConfigItem } from '../config/config';
+import { INode } from '../../node';
+import { numberPattern } from '../const/tokens';
 
 const operateHex = pipe(toHex, toLower, fillIn(2));
 
@@ -162,10 +165,10 @@ const Circ = 360;
 const Circ6 = 60;
 const half = 0.5;
 
-const validPercent = (max, n) => Math.round(Math.max(Math.min(Hundred, n), 0) * max / Hundred);
-const validNum = (max, n) => Math.max(Math.min(max, Math.round(n)), 0);
-const valid = (p, max, n) => p ? validPercent(max, n) : validNum(max, n);
-const validOpacity = (digit, p, n) => toFixed(digit, Math.max(Math.min(1, p ? n / Hundred : n), 0));
+const validPercent = (max: number, n: number) => Math.round(Math.max(Math.min(Hundred, n), 0) * max / Hundred);
+const validNum = (max: number, n: number) => Math.max(Math.min(max, Math.round(n)), 0);
+const valid = (p: string, max: number, n: string) => p ? validPercent(max, +n) : validNum(max, +n);
+const validOpacity = (digit: number, p: string, n: string) => toFixed(digit, Math.max(Math.min(1, p ? +n / Hundred : +n), 0));
 
 function hsl2rgb(h: number, s: number, l: number): number[] {
 	let _R: number, G: number, B: number, X: number, C: number;
@@ -181,11 +184,10 @@ function hsl2rgb(h: number, s: number, l: number): number[] {
 	return [validNum(FF, _R * FF), validNum(FF, G * FF), validNum(FF, B * FF)];
 }
 
-const numberPattern = '[+-]?(?:\\d+(?:\\.\\d+)?|\\.\\d+)(?:e[+-]?\\d+)?';
 const colorFuncReg = new RegExp(`((?:rgb|hsl)a?)\\((${numberPattern})(%?),(${numberPattern})(%?),(${numberPattern})(%?)(?:,(${numberPattern})(%?))?\\)`, 'gi');
 
-const formatColor = (rgba, digit, str) => {
-	let s = shorten(str).replace(colorFuncReg, (match, func, n1, p1, n2, p2, n3, p3, n4, p4) => {
+const formatColor = (rgba: boolean, digit: number, str: string) => {
+	let s = shorten(str).replace(colorFuncReg, (match, func: string, n1: string, p1: string, n2: string, p2: string, n3: string, p3: string, n4: string, p4: string) => {
 		switch (func) {
 			case 'rgb':
 				if (p1 === p2 && p1 === p3) {
@@ -207,14 +209,14 @@ const formatColor = (rgba, digit, str) => {
 				if (p1 || !p2 || !p3) {
 					return '';
 				} else {
-					const [r, g, b] = hsl2rgb(n1, n2 / Hundred, n3 / Hundred);
+					const [r, g, b] = hsl2rgb(+n1, +n2 / Hundred, +n3 / Hundred);
 					return `#${operateHex(r)}${operateHex(g)}${operateHex(b)}`;
 				}
 			case 'hsla':
 				if (p1 || !p2 || !p3) {
 					return '';
 				} else {
-					const [r, g, b] = hsl2rgb(n1, n2 / Hundred, n3 / Hundred);
+					const [r, g, b] = hsl2rgb(+n1, +n2 / Hundred, +n3 / Hundred);
 					if (rgba) {
 						return `#${operateHex(r)}${operateHex(g)}${operateHex(b)}${operateHex(validOpacity(digit, p4, n4))}`;
 					} else {
@@ -235,17 +237,17 @@ const formatColor = (rgba, digit, str) => {
 	return s;
 };
 
-export const shortenColor = (rule, dom) => new Promise((resolve, reject) => {
+export const shortenColor = (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		traversalNode(isTag, node => {
 			node.attributes.forEach(attr => {
 				if (regularAttr[attr.fullname].maybeColor) {
-					attr.value = formatColor(rule[1], rule[2], attr.value);
+					attr.value = formatColor(rule[1] as boolean, rule[2] as number, attr.value);
 				} else if (attr.fullname === 'style') {
 					const style = execStyle(attr.value);
 					style.forEach(s => {
 						if (regularAttr[s.fullname].maybeColor) {
-							s.value = formatColor(rule[1], rule[2], s.value);
+							s.value = formatColor(rule[1] as boolean, rule[2] as number, s.value);
 						}
 					});
 					attr.value = stringifyStyle(style);
@@ -257,9 +259,9 @@ export const shortenColor = (rule, dom) => new Promise((resolve, reject) => {
 				// 缩短 style 标签内的数值
 				const parsedCss = cssParse(node.childNodes[0].textContent, { silent: true });
 				if (parsedCss) {
-					traversalObj(both(has('property'), has('value')), cssRule => {
+					traversalObj(both(has('property'), has('value')), (cssRule: Declaration) => {
 						if (regularAttr[cssRule.property].maybeColor) { // 可以模糊处理的数字
-							cssRule.value = formatColor(rule[1], rule[2], cssRule.value);
+							cssRule.value = formatColor(rule[1] as boolean, rule[2] as number, cssRule.value);
 						}
 					}, parsedCss.stylesheet.rules);
 					node.childNodes[0].textContent = shortenTag(cssStringify(parsedCss, { compress: true }));

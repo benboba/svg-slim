@@ -15,8 +15,9 @@ import { computeV } from '../path/compute-v';
 import { computeZ } from '../path/compute-z';
 import { execPath, IPathItem, IPathResultItem } from '../path/exec';
 import { traversalNode } from '../xml/traversal-node';
+import { ConfigItem } from '../config/config';
 
-const doCompute = (pathArr) => {
+const doCompute = (pathArr: IPathItem[]): IPathResultItem[] => {
 	const pathResult: IPathResultItem[] = [];
 	let pos: number[] = [0, 0];
 	pathArr.forEach(pathItem => {
@@ -110,7 +111,7 @@ const doCompute = (pathArr) => {
 
 const availTypes = 'LlHhVv';
 
-const DPItemNormalize = pathItem => {
+const DPItemNormalize = (pathItem: IPathResultItem): IPathResultItem => {
 	switch (pathItem.type) {
 		case 'l':
 			pathItem.val[0] = plus(pathItem.val[0], pathItem.from[0]);
@@ -141,12 +142,12 @@ const DPItemNormalize = pathItem => {
 	return pathItem;
 };
 
-const DPItemMerge = (lastItem, pathItem) => {
+const DPItemMerge = (lastItem: IPathResultItem, pathItem: IPathResultItem): void => {
 	lastItem.val = lastItem.val.concat(DPItemNormalize(pathItem).val);
 };
 
-const DPInit = (threshold, pathArr) => {
-	const pathResult = [];
+const DPInit = (threshold: number, pathArr: IPathResultItem[]): IPathResultItem[] => {
+	const pathResult: IPathResultItem[] = [];
 	let len = 0;
 	for (let i = 0, l = pathArr.length; i < l; i++) {
 		const pathItem = pathArr[i];
@@ -174,7 +175,7 @@ const DPInit = (threshold, pathArr) => {
 	return pathResult;
 };
 
-export const computePath = (rule, dom: INode) => new Promise((resolve, reject) => {
+export const computePath = (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		traversalNode(propEq('nodeName', 'path'), (node: INode) => {
 			const attrD = node.getAttribute('d');
@@ -185,7 +186,7 @@ export const computePath = (rule, dom: INode) => new Promise((resolve, reject) =
 
 				// 如果存在道格拉斯 - 普克规则，则执行道格拉斯普克算法，之后需要再次更新
 				if (rule[1] && rule[2]) {
-					pathResult = doCompute(DPInit(rule[2], pathResult));
+					pathResult = doCompute(DPInit(rule[2] as number, pathResult));
 				}
 
 				let d = '';

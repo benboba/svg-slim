@@ -1,12 +1,14 @@
-import { INode } from '../../node/index';
+import { INode, IAttr } from '../../node/index';
 import { shapeElements } from '../const/definitions';
 import { regularTag } from '../const/regular-tag';
 import { execStyle } from '../style/exec';
 import { isTag } from '../xml/is-tag';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
+import { ConfigItem } from '../config/config';
+import { IAttrObj } from '../interface/attr-obj';
 
-export const rmHidden = (rule, dom) => new Promise((resolve, reject) => {
+export const rmHidden = (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
     if (rule[0]) {
         traversalNode(isTag, (node: INode) => {
 
@@ -16,8 +18,8 @@ export const rmHidden = (rule, dom) => new Promise((resolve, reject) => {
                 return;
             }
 
-            const attrObj: any = {};
-            let styleObj = null;
+            const attrObj: IAttrObj = {};
+            let styleObj: IAttr[];
 
             node.attributes.forEach(attr => {
                 if (attr.fullname === 'style') {
@@ -40,8 +42,8 @@ export const rmHidden = (rule, dom) => new Promise((resolve, reject) => {
                 return;
             }
 
-            const noFill: boolean = attrObj.fill === 'none';
-            const noStroke: boolean = attrObj.stroke === 'none';
+            const noFill = attrObj.fill === 'none';
+            const noStroke = attrObj.stroke === 'none';
 
             if (noFill && noStroke) {
                 if (shapeElements.indexOf(node.nodeName) !== -1) {

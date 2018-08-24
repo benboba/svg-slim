@@ -1,1 +1,1 @@
-export const useEnum = (e, val: string): boolean => e[e[val]] === val;
+export const useEnum = (e: Object, val: string): boolean => val in e;

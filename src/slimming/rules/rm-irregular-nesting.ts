@@ -1,18 +1,19 @@
 import { INode } from '../../node/index';
-import { IRegularTag, regularTag } from '../const/regular-tag';
+import { regularTag } from '../const/regular-tag';
 import { isTag } from '../xml/is-tag';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
+import { ConfigItem } from '../config/config';
 
-export const rmIrregularNesting = (rule, dom) => new Promise((resolve, reject) => {
+export const rmIrregularNesting = (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
     	traversalNode(isTag, (node: INode) => {
 			// 在配置的忽略列表中
-			if (Array.isArray(rule[1]) && rule[1].indexOf(node.nodeName) !== -1) {
+			if (Array.isArray(rule[1]) && (rule[1] as string[]).indexOf(node.nodeName) !== -1) {
 				return;
 			}
 
-			let legalRule = (regularTag[node.nodeName] as IRegularTag).legalChildElements;
+			let legalRule = regularTag[node.nodeName].legalChildElements;
 			if (legalRule) {
 				// any 表示可以任意嵌套
 				if (legalRule.any) {
@@ -28,7 +29,7 @@ export const rmIrregularNesting = (rule, dom) => new Promise((resolve, reject) =
 					while (parent.nodeName === 'switch') {
 						parent = parent.parentNode;
 					}
-					legalRule = (regularTag[parent.nodeName] as IRegularTag).legalChildElements;
+					legalRule = regularTag[parent.nodeName].legalChildElements;
 					if (!noself && legalRule.any) {
 						return;
 					}
