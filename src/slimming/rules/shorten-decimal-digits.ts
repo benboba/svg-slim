@@ -11,9 +11,10 @@ import { traversalNode } from '../xml/traversal-node';
 import { animationAttributes } from '../const/definitions';
 import { ConfigItem } from '../config/config';
 import { INode } from '../../node';
-import { numberRegGlobal } from '../const/tokens';
+import { numberGlobal } from '../const/syntax';
+import { toScientific } from '../utils/to-scientific';
 
-const doShorten = curry((digit: number, val: string) => val.replace(numberRegGlobal, s => `${toFixed(digit, parseFloat(s))}`.replace(/^0\./, '.')));
+const doShorten = curry((digit: number, val: string) => val.replace(numberGlobal, s => `${toScientific(toFixed(digit, parseFloat(s)))}`.replace(/^0\./, '.')));
 
 export const shortenDecimalDigits = (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {

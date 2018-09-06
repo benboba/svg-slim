@@ -1,1 +1,1 @@
-export const useReg = (reg: RegExp, val: string): boolean => reg.test(val);
+export const useReg = (reg: RegExp, val: string): boolean => reg.test(val.trim());

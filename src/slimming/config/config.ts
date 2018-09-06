@@ -18,7 +18,8 @@ export const config: IConfig = {
 	// 分析并合并 transform 属性
 	// 合并后的 matrix 的 a, b, c, d 四个位置的数据精度
 	// 合并后的 e, f 位置的数据精度
-	'combine-transform': [true, DEFAULT_MATRIX_DIGIT, DEFAULT_SIZE_DIGIT],
+	// 对角度类数据保留多少位精度
+	'combine-transform': [true, DEFAULT_MATRIX_DIGIT, DEFAULT_SIZE_DIGIT, DEFAULT_ACCURATE_DIGIT],
 	// 计算 path 的 d 属性，使之变得更短
 	// 应用道格拉斯-普克算法抽稀路径节点
 	// 抽稀节点的阈值

@@ -1,6 +1,6 @@
 import { INode } from '../../node/index';
 import { ConfigItem } from '../config/config';
-import { numberPattern } from '../const/tokens';
+import { numberPattern } from '../const/syntax';
 import { isTag } from '../xml/is-tag';
 import { traversalNode } from '../xml/traversal-node';
 

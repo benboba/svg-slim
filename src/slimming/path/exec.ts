@@ -1,3 +1,5 @@
+import { execNumberList } from '../utils/exec-numberlist';
+
 const pathReg = /([mMzZlLhHvVcCsSqQtTaA])(.*?)(?=[mMzZlLhHvVcCsSqQtTaA]|$)/g;
 
 export interface IPathItem {
@@ -20,7 +22,7 @@ export const execPath = (str: string): IPathItem[] => {
 		const val = match[2].trim();
 		result.push({
 			type: match[1],
-			val: val ? val.replace(/(\d)(?=-)/g, '$1 ').split(/[,\s]+/).map(s => parseFloat(s)) : []
+			val: val ? execNumberList(val) : []
 		});
 		match = pathReg.exec(str);
 	}

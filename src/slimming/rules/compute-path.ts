@@ -16,6 +16,7 @@ import { computeZ } from '../path/compute-z';
 import { execPath, IPathItem, IPathResultItem } from '../path/exec';
 import { traversalNode } from '../xml/traversal-node';
 import { ConfigItem } from '../config/config';
+import { toScientific } from '../utils/to-scientific';
 
 const doCompute = (pathArr: IPathItem[]): IPathResultItem[] => {
 	const pathResult: IPathResultItem[] = [];
@@ -191,11 +192,11 @@ export const computePath = (rule: ConfigItem, dom: INode): Promise<null> => new 
 
 				let d = '';
 				pathResult.forEach(pathItem => {
-					d += `${pathItem.type}${pathItem.val.join(',')}`;
+					d += `${pathItem.type}${pathItem.val.map(toScientific).join(',')}`;
 				});
 
-				// 最后移除掉负号前面的空格
-				node.setAttribute('d', d.replace(/,-/g, '-'));
+				// 最后移除掉正、负号前面的逗号，移除掉0.前面的0，移除掉.1,.1或e1,.1这种case中间的逗号
+				node.setAttribute('d', d.replace(/,([+-])/g, '$1').replace(/(^|[^\d])0\./g, '$1.').replace(/([\.eE]\d+),\./g, '$1.'));
 			}
 
 		}, dom);

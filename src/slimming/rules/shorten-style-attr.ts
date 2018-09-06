@@ -42,7 +42,7 @@ export const shortenStyleAttr = (rule: ConfigItem, dom: INode): Promise<null> =>
 							||
 							!checkApply(styleDefine, node, dom) // 样式继承链上不存在可应用对象
 							||
-							!legalValue(styleDefine, styleItem) // 值不合法
+							!legalValue(styleDefine, styleItem, node.nodeName) // 值不合法
 						) {
 							styleObj.splice(si, 1);
 						} else {
@@ -65,7 +65,7 @@ export const shortenStyleAttr = (rule: ConfigItem, dom: INode): Promise<null> =>
 						||
 						!checkApply(attrDefine, node, dom) // 样式继承链上不存在可应用对象
 						||
-						!legalValue(attrDefine, attr) // 值不合法
+						!legalValue(attrDefine, attr, node.nodeName) // 值不合法
 					) {
 						node.removeAttribute(attr.fullname);
 					} else {
