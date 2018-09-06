@@ -36,7 +36,7 @@ export const rmAttribute = (rule: ConfigItem, dom: INode): Promise<null> => new 
 					||
 					(!attrDefine.couldBeStyle && attr.fullname.indexOf('xmlns') === -1 && tagDefine.ownAttributes.indexOf(attr.fullname) === -1) // 属性和元素不匹配
 					||
-					!legalValue(attrDefine, attr) // 不合法的值
+					!legalValue(attrDefine, attr, node.nodeName) // 不合法的值
 				) {
 					node.removeAttribute(attr.fullname);
 					continue;

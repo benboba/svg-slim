@@ -2,7 +2,7 @@ import { parse as cssParse, stringify as cssStringify, Declaration } from 'css';
 import { both, has, pipe, toLower } from 'ramda';
 import { regularAttr } from '../const/regular-attr';
 import { toFixed } from '../math/tofixed';
-import { shorten } from '../matrix/shorten';
+import { shortenFunc } from '../utils/shorten-func';
 import { execStyle } from '../style/exec';
 import { shortenTag } from '../style/shorten-tag';
 import { stringifyStyle } from '../style/stringify';
@@ -13,7 +13,7 @@ import { isTag } from '../xml/is-tag';
 import { traversalNode } from '../xml/traversal-node';
 import { ConfigItem } from '../config/config';
 import { INode } from '../../node';
-import { numberPattern } from '../const/tokens';
+import { numberPattern } from '../const/syntax';
 
 const operateHex = pipe(toHex, toLower, fillIn(2));
 
@@ -187,7 +187,7 @@ function hsl2rgb(h: number, s: number, l: number): number[] {
 const colorFuncReg = new RegExp(`((?:rgb|hsl)a?)\\((${numberPattern})(%?),(${numberPattern})(%?),(${numberPattern})(%?)(?:,(${numberPattern})(%?))?\\)`, 'gi');
 
 const formatColor = (rgba: boolean, digit: number, str: string) => {
-	let s = shorten(str).replace(colorFuncReg, (match, func: string, n1: string, p1: string, n2: string, p2: string, n3: string, p3: string, n4: string, p4: string) => {
+	let s = shortenFunc(str).replace(colorFuncReg, (match, func: string, n1: string, p1: string, n2: string, p2: string, n3: string, p3: string, n4: string, p4: string) => {
 		switch (func) {
 			case 'rgb':
 				if (p1 === p2 && p1 === p3) {

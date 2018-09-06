@@ -1,10 +1,8 @@
-import { toFixed } from '../math/tofixed';
-import { execMatrix, IMatrixFunc } from './exec';
+import { IMatrixFunc } from './exec';
 import { Matrix } from './matrix';
 
-export function combineMatrix(m: string, digit1: number, digit2: number): string {
+export function combineMatrix(operate: IMatrixFunc[]): IMatrixFunc {
 	let matrix = new Matrix();
-	const operate: IMatrixFunc[] = execMatrix(m);
 	for (const item of operate) {
 		switch (item.type) {
 			case 'translate':
@@ -27,14 +25,15 @@ export function combineMatrix(m: string, digit1: number, digit2: number): string
 				matrix = matrix.multiply(ex_matrix);
 				break;
 			default:
-				return 'matrix(1,0,0,1,0,0)';
+				return {
+					type: 'matrix',
+					val: [1, 0, 0, 1, 0, 0],
+					noEffect: true
+				};
 		}
 	}
-	matrix.a = toFixed(digit1, matrix.a);
-	matrix.b = toFixed(digit1, matrix.b);
-	matrix.c = toFixed(digit1, matrix.c);
-	matrix.d = toFixed(digit1, matrix.d);
-	matrix.e = toFixed(digit2, matrix.e);
-	matrix.f = toFixed(digit2, matrix.f);
-	return `matrix(${matrix.toString()})`;
+	return {
+		type: 'matrix',
+		val: [matrix.a, matrix.b, matrix.c, matrix.d, matrix.e, matrix.f]
+	};
 }

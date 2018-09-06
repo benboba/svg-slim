@@ -1,8 +1,9 @@
 const matrixReg = /([a-z]+)\((.+?)\)/gi;
 
 export interface IMatrixFunc {
-	type: string;
-	val: number[];
+	type: string; // 函数类型
+	noEffect?: boolean; // 是否无效
+	val: number[]; // 参数列表
 }
 
 export const execMatrix = (str: string): IMatrixFunc[] => {

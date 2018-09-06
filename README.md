@@ -1,5 +1,19 @@
 # 更新日志
 
+## 2018.08.24 v1.2.4
+
+### svg-slimming
+
+* 添加部分属性的合法值验证规则
+* 修复了在判断动画属性时，没有考虑 values 属性的问题
+* 修复了对枚举类属性合法值验证错误判断的 bug
+* 修复了对 path 元素的 d 属性解析时没有考虑 9+9 或者 .5.5 的情况的bug，同时增加了 0.5 0.5 可以压缩为 .5.5 的逻辑
+* 增加了对数字优化时，整数的尾数含有超过 3 位 0 时转科学计数法的逻辑
+* 改写了 compute-path 规则，修复了之前只针对 lineTo 命令支持多位参数的情况
+* 为 combine-transform 规则增加了相邻的同类 transform 函数合并的逻辑，以保证获得更好的优化结果
+* 现在 combine-transform 规则支持第四个参数，用于定义角度类数据的精度
+* 现在 combine-transform 规则会对原始字符串进行数值精度优化，以保证获得更好的优化结果
+
 ## 2018.08.24 v1.2.3
 
 ### 综合
@@ -21,9 +35,10 @@
 * rm-xmlns 规则现在支持了节点的命名空间
 * combine-path 规则，添加了只有相邻的 path 节点才能合并的限制
 * 为 svg-slimming 包添加了属性指向 xmlParser 和 NodeType，可以通过以下方式调用
-	* const svgSlimming = require('svg-slimming');
-	* svgSlimming.xmlParser('svg string').then(result => { console.log(result); });
-	* console.log(svgSlimming.NodeType);
+
+	const svgSlimming = require('svg-slimming');
+	svgSlimming.xmlParser('svg string').then(result => { console.log(result); });
+	console.log(svgSlimming.NodeType);
 
 ## 2018.08.15 v1.2.2
 
@@ -198,10 +213,13 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 	* 分析并合并 transform 属性
 * 配置参数1：
 	* 默认值：3
-	* 合并后的 matrix 的 a, b, c, d 位置的数值精度
+	* 合并后的 matrix 的 a, b, c, d 位置的数值精度，以及 scale 函数的参数精度
 * 配置参数2：
 	* 默认值：1
-	* 合并后的 matrix 的 e, f 位置的数值精度
+	* 合并后的 matrix 的 e, f 位置的数值精度，以及 translate 函数的参数精度
+* 配置参数3：
+	* 默认值：2
+	* rotate、skewX、skewY 函数的参数精度
 
 例如：
 
