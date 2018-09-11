@@ -13,8 +13,10 @@ import { ConfigItem } from '../config/config';
 import { INode } from '../../node';
 import { numberGlobal } from '../const/syntax';
 import { toScientific } from '../utils/to-scientific';
+import { shortenNumberList } from '../utils/shorten-number-list';
 
-const doShorten = curry((digit: number, val: string) => val.replace(numberGlobal, s => `${toScientific(toFixed(digit, parseFloat(s)))}`.replace(/^0\./, '.')));
+    // 移除掉正、负号前面的逗号，移除掉0.前面的0，移除掉.1,.1或e1,.1这种case中间的逗号
+const doShorten = curry((digit: number, val: string) => shortenNumberList(val.replace(numberGlobal, s => `${toScientific(toFixed(digit, parseFloat(s)))}`)));
 
 export const shortenDecimalDigits = (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {

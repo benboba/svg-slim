@@ -1,0 +1,1 @@
+export const shortenNumberList = (s: string): string => s.trim().replace(/\s*,\s*|\s+/g, ',').replace(/,([+-]\.?\d+)/g, '$1').replace(/(^|[^\d])0(\.\d+)/g, '$1$2').replace(/([\.eE]\d+),(\.\d+)/g, '$1$2');

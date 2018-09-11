@@ -65,7 +65,7 @@ tester(
     <text transform="scale(2.9999999)">2</text>
     <text transform="scale(1.32034) translate(10,0.1) rotate(90)">2</text>
     </svg>`,
-    '<svg><text>1</text><text transform="rotate(90)">2</text><text transform="scale(3)">2</text><text transform="matrix(0,1.32,-1.32,0,13.2,0.1)">2</text></svg>',
+    '<svg><text>1</text><text transform="rotate(90)">2</text><text transform="scale(3)">2</text><text transform="matrix(0,1.32-1.32,0,13.2.1)">2</text></svg>',
     {
         'combine-transform': [true, 2, 1]
     }
@@ -74,12 +74,13 @@ tester(
 tester(
     'compute-path',
     `<svg>
+    <path d="M0,0V100,200,300,299,299" />
     <path d="M5e5.1L0,0,10,0,20,0,50,0,100,0,100,100,0,100Z" />
-    <path d="M80 80 A 45 45, 0, 0, 0, 125 125 A 45 45, 0, 0, 0, 170 80 A 45 45, 0, 0, 0, 125 35 A 45 45, 0, 0, 0, 80 80 Z" />
+    <path d="M80 80 A 45 45, 0, 0, 0, 125 125 45 45, 0, 0, 0, 170 80 45 45, 0, 0, 0, 125 35 45 45, 0, 0, 0, 80 80 Z" />
     <path d="M0 0 Q0 100 100 100 Q 200 100 200 0 Z " />
-    <path d="M 0 0 C 50 0 50 100 100 100 C 150 100 150 50 150 0Z" />
+    <path d="M 0 0 C 50 0 50 100 100 100 150 100 150 50 150 0Z" />
     </svg>`,
-    '<svg><path d="M5e5.1L0,0H100V100H0z"/><path d="M80,80A45,45,0,1,0,125,35A45,45,0,0,0,80,80z"/><path d="M0,0q0,100,100,100T200,0z"/><path d="M0,0C50,0,50,100,100,100S150,50,150,0z"/></svg>',
+    '<svg><path d="M0,0V300v-1"/><path d="M5e5.1L0,0H100V100H0z"/><path d="M80,80A45,45,0,1,0,125,35A45,45,0,0,0,80,80z"/><path d="M0,0q0,100,100,100T200,0z"/><path d="M0,0C50,0,50,100,100,100S150,50,150,0z"/></svg>',
     {
         'compute-path': [true, false, 0]
     }
@@ -104,7 +105,7 @@ tester(
         onload="console.log(123)"
         version=""
     >
-        <path d="Mx,0" />
+        <path d="M0,9,0" />
     </svg>`,
     '<svg><path/></svg>',
     {
@@ -280,11 +281,11 @@ tester(
 tester(
     'shorten-decimal-digits',
     `<svg>
-    <rect stroke-width="1.999" opacity="0.00099999" width="10000" height="100" />
+    <polygon stroke-width="1.999" opacity="0.00099999" points="200000 , 0.1   -1.1 0.5" />
     </svg>`,
-    '<svg><rect stroke-width="2" opacity=".001" width="1e4" height="100"/></svg>',
+    '<svg><polygon stroke-width="2" opacity=".001" points="2e5.1-1.1.5"/></svg>',
     {
-        'shorten-decimal-digits': [true, 0, 3]
+        'shorten-decimal-digits': [true, 1, 3]
     }
 );
 

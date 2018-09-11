@@ -113,9 +113,9 @@ const path_hvto = `[hHvV]\\s*${numberSequence}`;
 const path_cto = `[cC]\\s*(?:${numberPairTriplet}(?:${commaWsp}${numberPairTriplet})*|(?:${numberPairSequence})?${path_z})`;
 const path_sqto = `[cCqQ]\\s*(?:${numberPairDouble}(?:${commaWsp}${numberPairDouble})*|(?:${numberPairSequence})?${path_z})`;
 const path_tto = `[tT]\\s*(?:${numberPairSequence}|${path_z})`;
-const path_a = `${numberPattern}${commaWsp}${numberPattern}${commaWsp}${numberPattern}${commaWsp}[01]${commaWsp}[01]${commaWsp}`;
-const path_a_sequence = `${path_a}${numberPair}(?:${commaWsp}${path_a}${numberPair})*`;
-const path_ato = `[aA]\\s*(?:${path_a_sequence}|(?:${path_a_sequence})?${path_a}${path_z})`;
+const path_a = `${numberPattern}${commaWsp}${numberPattern}${commaWsp}${numberPattern}${commaWsp}[01]${commaWsp}[01]${commaWsp}${numberPair}`;
+const path_a_sequence = `${path_a}(?:${commaWsp}${path_a})*`;
+const path_ato = `[aA]\\s*(?:${path_a_sequence}|(?:${path_a_sequence})?${path_z})`;
 const pathPattern = `(?:${path_mto}|${path_z}|${path_lto}|${path_hvto}|${path_cto}|${path_sqto}|${path_tto}|${path_ato})`;
 export const pathFullMatch = new RegExp(`^${path_mto}(?:${commaWsp}${pathPattern})*$`);
 
