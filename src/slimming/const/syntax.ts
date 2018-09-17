@@ -120,3 +120,25 @@ const pathPattern = `(?:${path_mto}|${path_z}|${path_lto}|${path_hvto}|${path_ct
 export const pathFullMatch = new RegExp(`^${path_mto}(?:${commaWsp}${pathPattern})*$`);
 
 export const preservAspectRatioFullMatch = /^(?:none|xMinYMin|xMidYMin|xMaxYMin|xMinYMid|xMidYMid|xMaxYMid|xMinYMax|xMidYMax|xMaxYMax)(?:\s+(?:meet|slice))?$/;
+
+// properties syntax
+
+// IRI
+export const funcIRIToID = /^url\((["']?)#(.+)\1\)$/;
+const url = 'url\\([^\\)]+\\)';
+export const funcIRIFullMatch = new RegExp(`^${url}$`);
+export const IRIFullMatch = /^#(.+)$/;
+
+const cursorStr = 'auto|default|none|context-menu|help|pointer|progress|wait|cell|crosshair|text|vertical-text|alias|copy|move|no-drop|not-allowed|grab|grabbing|e-resize|n-resize|ne-resize|nw-resize|s-resize|se-resize|sw-resize|w-resize|ew-resize|ns-resize|nesw-resize|nwse-resize|col-resize|row-resize|all-scroll|zoom-in|zoom-out';
+export const cursorFullMatch = new RegExp(`^(?:${url}\\s*(?:${numberPattern}\\s+${numberPattern})?${commaWsp})*\\s*(?:${cursorStr})$`);
+
+// shapes
+export const rectFullMatch = new RegExp(`rect${paren}${numberPattern}(?:(?:${commaWsp})?${numberPattern}){3}${rParen}`);
+
+// color
+const rgb = `rgb${paren}(?:${numberPattern}${commaWsp}${numberPattern}${commaWsp}${numberPattern}|${numberPattern}%${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%)${rParen}`;
+const rgba = `rgba${paren}(?:${numberPattern}${commaWsp}${numberPattern}${commaWsp}${numberPattern}${commaWsp}${numberPattern}%?|${numberPattern}%${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%?)${rParen}`;
+const hsl = `hsl${paren}${numberPattern}${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%${rParen}`;
+const hsla = `hsla${paren}${numberPattern}${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%?${rParen}`;
+const hexColor = '#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})';
+export const colorFullMatch = new RegExp(`^(?:${rgb}|${rgba}|${hsl}|${hsla}|${hexColor})$`);

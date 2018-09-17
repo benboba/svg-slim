@@ -1,6 +1,6 @@
 import { containerElements, gradientElements, graphicsElements, newViewportsElements, shapeElements, textContentElements } from './definitions';
-import { accumulateVal, additiveVal, alignXVal, alignYVal, blendModeVal, booleanVal, calcModelVal, crossoriginVal, durVal, edgeModeVal, inVal, lengthAdjustVal, markerUnitVal, methodVal, operaterVal, operaterVal1, orientVal, playbackorderVal, restartVal, rotateVal, sideVal, spacingVal, spreadMethodVal, stitchVal, targetVal, timelinebeginVal, unitVal, animateTransformType, feColorMatrixType, feFuncType, feTurbulenceType, channelVal, xmlSpaceVal, zoomAndPanVal } from './enum';
-import { angelFullMatch, clockFullMatch, controlPointsFullMatch, cssNameFullMatch, cssNameSpaceSeparatedFullMatch, indentFullMatch, integerFullMatch, langFullMatch, lengthFullMatch, nameFullMatch, numberFullMatch, numberListFullMatch, numberOptionalFullMatch, numberSemiSepatatedFullMatch, pathFullMatch, percentageFullMatch, preservAspectRatioFullMatch, timeListFullMatch, transformListFullMatch, URIFullMatch, viewBoxFullMatch } from './syntax';
+import { accumulateVal, additiveVal, alignmentBaseline, alignXVal, alignYVal, animateTransformType, baselineShift, blendModeVal, booleanVal, calcModelVal, channelVal, crossoriginVal, durVal, edgeModeVal, feColorMatrixType, feFuncType, feTurbulenceType, inVal, lengthAdjustVal, markerUnitVal, methodVal, operaterVal, operaterVal1, orientVal, playbackorderVal, restartVal, rotateVal, sideVal, spacingVal, spreadMethodVal, stitchVal, targetVal, timelinebeginVal, unitVal, xmlSpaceVal, zoomAndPanVal, clipRule, colorKeywords, x11Colors, colorInterpolation, colorRendering } from './enum';
+import { angelFullMatch, clockFullMatch, controlPointsFullMatch, cssNameFullMatch, cssNameSpaceSeparatedFullMatch, indentFullMatch, integerFullMatch, langFullMatch, lengthFullMatch, nameFullMatch, numberFullMatch, numberListFullMatch, numberOptionalFullMatch, numberSemiSepatatedFullMatch, pathFullMatch, percentageFullMatch, preservAspectRatioFullMatch, rectFullMatch, timeListFullMatch, transformListFullMatch, URIFullMatch, viewBoxFullMatch, colorFullMatch, cursorFullMatch } from './syntax';
 
 const shapeAndText = shapeElements.concat(textContentElements);
 const viewport = ['pattern', 'marker'].concat(newViewportsElements);
@@ -259,10 +259,10 @@ const regular_attr: IRegularAttrDefine = {
 		maybeFuncIRI: false,
 		maybeSizeNumber: true,
 		maybeAccurateNumber: false,
-		legalValues: [{
+		legalValues: [/* { TODO：一个不合法的路径也可能被部分渲染，rm-attribute 可能需要更多的配置项
 			type: 'reg',
 			reg: pathFullMatch
-		}],
+		} */],
 		initValue: '',
 		applyTo: [],
 	},
@@ -2369,8 +2369,11 @@ const regular_attr: IRegularAttrDefine = {
 		maybeFuncIRI: false,
 		maybeSizeNumber: false,
 		maybeAccurateNumber: false,
-		legalValues: [],
-		initValue: '',
+		legalValues: [{
+			type: 'enum',
+			enum: alignmentBaseline
+		}],
+		initValue: 'baseline',
 		applyTo: ['tspan', 'textPath'],
 	},
 	'baseline-shift': {
@@ -2381,7 +2384,16 @@ const regular_attr: IRegularAttrDefine = {
 		maybeFuncIRI: false,
 		maybeSizeNumber: true,
 		maybeAccurateNumber: false,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			enum: baselineShift
+		}, {
+			type: 'reg',
+			reg: lengthFullMatch
+		}, {
+			type: 'reg',
+			reg: percentageFullMatch
+		}],
 		initValue: 'baseline',
 		applyTo: ['tspan', 'textPath'],
 	},
@@ -2393,7 +2405,13 @@ const regular_attr: IRegularAttrDefine = {
 		maybeFuncIRI: false,
 		maybeSizeNumber: true,
 		maybeAccurateNumber: false,
-		legalValues: [],
+		legalValues: [{
+			type: 'string',
+			string: 'auto'
+		}, {
+			type: 'reg',
+			reg: rectFullMatch
+		}],
 		initValue: 'auto',
 		applyTo: viewport,
 	},
@@ -2405,7 +2423,24 @@ const regular_attr: IRegularAttrDefine = {
 		maybeFuncIRI: true,
 		maybeSizeNumber: false,
 		maybeAccurateNumber: false,
-		legalValues: [],
+		legalValues: [
+			// {
+			// 	type: 'string',
+			// 	string: 'none'
+			// },
+			// {
+			// 	type: 'enum',
+			// 	enum: clipBox
+			// },
+			// {
+			// 	type: 'reg',
+			// 	reg: funcIRIFullMatch
+			// },
+			// {
+			// 	type: 'reg',
+			// 	reg: TODO：basicShapeFullMatch
+			// }
+		],
 		initValue: 'none',
 		applyTo: useContainerGraphics,
 	},
@@ -2417,7 +2452,10 @@ const regular_attr: IRegularAttrDefine = {
 		maybeFuncIRI: false,
 		maybeSizeNumber: false,
 		maybeAccurateNumber: false,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			enum: clipRule
+		}],
 		initValue: 'nonzero',
 		applyTo: ['use'].concat(graphicsElements),
 	},
@@ -2429,7 +2467,16 @@ const regular_attr: IRegularAttrDefine = {
 		maybeFuncIRI: false,
 		maybeSizeNumber: false,
 		maybeAccurateNumber: false,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			enum: colorKeywords
+		}, {
+			type: 'enum',
+			enum: x11Colors
+		}, {
+			type: 'reg',
+			reg: colorFullMatch
+		}],
 		initValue: '',
 		applyTo: ['feFlood', 'feDiffuseLighting', 'feSpecularLighting', 'stop'].concat(shapeAndText),
 	},
@@ -2441,8 +2488,26 @@ const regular_attr: IRegularAttrDefine = {
 		maybeFuncIRI: false,
 		maybeSizeNumber: false,
 		maybeAccurateNumber: false,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			enum: colorInterpolation
+		}],
 		initValue: 'sRGB',
+		applyTo: colorApply,
+	},
+	'color-interpolation-filters': {
+		couldBeStyle: true,
+		animatable: true,
+		maybeColor: false,
+		maybeIRI: false,
+		maybeFuncIRI: false,
+		maybeSizeNumber: false,
+		maybeAccurateNumber: false,
+		legalValues: [{
+			type: 'enum',
+			enum: colorInterpolation
+		}],
+		initValue: 'auto',
 		applyTo: colorApply,
 	},
 	'color-rendering': {
@@ -2453,7 +2518,10 @@ const regular_attr: IRegularAttrDefine = {
 		maybeFuncIRI: false,
 		maybeSizeNumber: false,
 		maybeAccurateNumber: false,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			enum: colorRendering
+		}],
 		initValue: 'auto',
 		applyTo: colorApply,
 	},
@@ -2465,7 +2533,10 @@ const regular_attr: IRegularAttrDefine = {
 		maybeFuncIRI: true,
 		maybeSizeNumber: false,
 		maybeAccurateNumber: false,
-		legalValues: [],
+		legalValues: [{
+			type: 'reg',
+			reg: cursorFullMatch
+		}],
 		initValue: 'auto',
 		applyTo: useContainerGraphics,
 	},
@@ -2995,6 +3066,18 @@ const regular_attr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [],
 		initValue: 'none',
+		applyTo: textContentElements,
+	},
+	'text-overflow': {
+		couldBeStyle: true,
+		animatable: true,
+		maybeColor: false,
+		maybeIRI: false,
+		maybeFuncIRI: false,
+		maybeSizeNumber: false,
+		maybeAccurateNumber: false,
+		legalValues: [],
+		initValue: 'auto',
 		applyTo: textContentElements,
 	},
 	'text-rendering': {
