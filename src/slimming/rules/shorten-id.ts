@@ -3,14 +3,13 @@ import { INode } from '../../node/index';
 import { createShortenID } from '../algorithm/create-shorten-id';
 import { ConfigItem } from '../config/config';
 import { regularAttr } from '../const/regular-attr';
+import { funcIRIToID, IRIFullMatch } from '../const/syntax';
 import { IExtendRule } from '../interface/extend-rule';
 import { shortenTag } from '../style/shorten-tag';
 import { isTag } from '../xml/is-tag';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
 
-const funciriReg = /^url\((["']?)#(.+)\1\)$/;
-const iriReg = /^#(.+)$/;
 const idSelectorReg = /#([^,\*#>+~:{\s\[\.]+)/gi;
 
 interface IIDCache {
@@ -56,12 +55,12 @@ export const shortenID = (rule: ConfigItem, dom: INode): Promise<null> => new Pr
 			} else {
 				node.attributes.forEach(attr => {
 					if (regularAttr[attr.fullname].maybeFuncIRI) {
-						const firi = funciriReg.exec(attr.value);
+						const firi = funcIRIToID.exec(attr.value);
 						if (firi) {
 							attr.value = `url(#${shorten(node, attr.fullname, firi[2])})`;
 						}
 					} else if (regularAttr[attr.fullname].maybeIRI) {
-						const iri = iriReg.exec(attr.value);
+						const iri = IRIFullMatch.exec(attr.value);
 						if (iri) {
 							attr.value = `#${shorten(node, attr.fullname, iri[1])}`;
 						}
