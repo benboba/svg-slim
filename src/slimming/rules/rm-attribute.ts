@@ -17,6 +17,7 @@ export const rmAttribute = (rule: ConfigItem, dom: INode): Promise<null> => new 
 			for (let i = attributes.length; i--; ) {
 				const attr = attributes[i];
 				const attrDefine: IRegularAttr = regularAttr[attr.fullname];
+				const value = attr.value.trim();
 				if (attrDefine.isUndef) { // 非标准属性
 					let isUndef = true;
 					if (
@@ -32,7 +33,7 @@ export const rmAttribute = (rule: ConfigItem, dom: INode): Promise<null> => new 
 					}
 				}
 				if (
-					!attr.value.trim() // 空属性
+					!value // 空属性
 					||
 					(!attrDefine.couldBeStyle && attr.fullname.indexOf('xmlns') === -1 && tagDefine.ownAttributes.indexOf(attr.fullname) === -1) // 属性和元素不匹配
 					||
@@ -47,10 +48,25 @@ export const rmAttribute = (rule: ConfigItem, dom: INode): Promise<null> => new 
 					node.removeAttribute(attr.fullname);
 					// 同时移除 attributeName 属性
 					node.removeAttribute('attributeName');
+					continue;
+				}
+
+				if (rule[1]) {
+					if (typeof attrDefine.initValue === 'string') {
+						if (value === attrDefine.initValue) {
+							node.removeAttribute('attributeName');
+						}
+					} else {
+						const initValue = attrDefine.initValue as { val: string, tag: string[]}[];
+						for (let ii = 0, il = initValue.length; ii < il; ii++) {
+							if (initValue[ii].tag.indexOf(node.nodeName) !== -1 && initValue[ii].val === value) {
+								node.removeAttribute('attributeName');
+							}
+						}
+					}
 				}
 			}
 		}, dom);
-		// TODO rule[1] 深度分析，移除与继承链相同的属性
 	}
 	resolve();
 });

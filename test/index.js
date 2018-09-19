@@ -107,7 +107,7 @@ tester(
     >
         <path d="M0,9,0" />
     </svg>`,
-    '<svg><path/></svg>',
+    '<svg><path d="M0,9,0"/></svg>',
     {
         'rm-attribute': [true, true, false, false]
     }

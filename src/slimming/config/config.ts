@@ -28,7 +28,7 @@ export const config: IConfig = {
 	// 抽稀节点的阈值
 	'douglas-peucker': [false, 0],
 	// 移除非规范的属性
-	// 深度分析，移除与继承链相同的属性
+	// 移除与默认值相同的属性
 	// 保留所有的事件监听属性
 	// 保留所有的 aria 属性和 role 属性 https://www.w3.org/TR/wai-aria-1.1
 	'rm-attribute': [true, true, false, false],

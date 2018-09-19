@@ -1,4 +1,5 @@
 import { eventAttributes } from './definitions';
+import { colorKeywords, systemColor, x11Colors } from './enum';
 
 // 符合官方定义的 token
 // https://drafts.csswg.org/css-syntax-3
@@ -40,6 +41,7 @@ export const cssNameSpaceSeparatedFullMatch = new RegExp(`^${cssName}(?:\\s+${cs
 // https://www.w3.org/TR/css-syntax-3/#number-token-diagram
 // https://www.w3.org/TR/css-syntax-3/#percentage-token-diagram
 export const numberPattern = '[+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?';
+const zero = '[+-]?(?:0+\\.)?0+(?:[eE][+-]?\\d+)?';
 const numberSequence = `${numberPattern}(?:${commaWsp}${numberPattern})*`;
 const numberPair = `${numberPattern}${commaWsp}${numberPattern}`;
 const numberPairSequence = `${numberPair}(?:${commaWsp}${numberPair})*`;
@@ -53,14 +55,19 @@ export const numberSemiSepatatedFullMatch = new RegExp(`^${numberPattern}(?:${se
 export const integerFullMatch = /^[+-]?(?:\d+|(?:\d*\.)?\d+[eE][+-]?\d+)$/;
 
 // https://www.w3.org/TR/css-values-3/#angle-value
-export const angelFullMatch = new RegExp(`^${numberPattern}(?:deg|grad|rad|turn)$`);
+const angel = `${numberPattern}(?:deg|grad|rad|turn)`;
+export const angelFullMatch = new RegExp(`^${angel}$`);
 
 const controlPoint = `${numberPattern}${commaWsp}${numberPattern}${commaWsp}${numberPattern}${commaWsp}${numberPattern}`;
 export const controlPointsFullMatch = new RegExp(`^${controlPoint}(?:${semi}${controlPoint})*(?:${semi})?$`);
 
 const Units = '(?:em|ex|ch|rem|vx|vw|vmin|vmax|cm|mm|Q|in|pt|pc|px)';
 export const percentageFullMatch = new RegExp(`^${numberPattern}%$`);
-export const lengthFullMatch = new RegExp(`^${numberPattern}${Units}?$`);
+const length = `${numberPattern}${Units}?`;
+const percentageLength = `(?:${length}|${numberPattern}%)`;
+export const lengthFullMatch = new RegExp(`^${length}$`);
+
+export const dasharrayFullMatch = new RegExp(`^(?:${percentageLength}(?:${commaWsp}${percentageLength}))?$`);
 
 export const viewBoxFullMatch = new RegExp(`^${controlPoint}$`);
 
@@ -107,16 +114,20 @@ export const indentFullMatch = new RegExp(`^${indentToken}$`, uModifier);
 
 // https://svgwg.org/svg2-draft/paths.html#PathDataBNF
 const path_z = '[zZ]';
-const path_mto = `[mM]\\s*${numberPairSequence}${path_z}?`;
-const path_lto = `[lL]\\s*(?:${numberPairSequence}|${path_z})`;
-const path_hvto = `[hHvV]\\s*${numberSequence}`;
-const path_cto = `[cC]\\s*(?:${numberPairTriplet}(?:${commaWsp}${numberPairTriplet})*|(?:${numberPairSequence})?${path_z})`;
-const path_sqto = `[cCqQ]\\s*(?:${numberPairDouble}(?:${commaWsp}${numberPairDouble})*|(?:${numberPairSequence})?${path_z})`;
-const path_tto = `[tT]\\s*(?:${numberPairSequence}|${path_z})`;
+const path_mto_strict = `[mM]\\s*${numberPairSequence}${path_z}?`;
+const path_mto = `[mM]\\s*${numberSequence}`;
+const path_to = `[lLhHvVcCsSqQtTaA]\\s*${numberSequence}`;
+const path_lto_strict = `[lL]\\s*(?:${numberPairSequence}|${path_z})`;
+const path_hvto_strict = `[hHvV]\\s*${numberSequence}`;
+const path_cto_strict = `[cC]\\s*(?:${numberPairTriplet}(?:${commaWsp}${numberPairTriplet})*|(?:${numberPairSequence})?${path_z})`;
+const path_sqto_strict = `[sSqQ]\\s*(?:${numberPairDouble}(?:${commaWsp}${numberPairDouble})*|(?:${numberPairSequence})?${path_z})`;
+const path_tto_strict = `[tT]\\s*(?:${numberPairSequence}|${path_z})`;
 const path_a = `${numberPattern}${commaWsp}${numberPattern}${commaWsp}${numberPattern}${commaWsp}[01]${commaWsp}[01]${commaWsp}${numberPair}`;
 const path_a_sequence = `${path_a}(?:${commaWsp}${path_a})*`;
 const path_ato = `[aA]\\s*(?:${path_a_sequence}|(?:${path_a_sequence})?${path_z})`;
-const pathPattern = `(?:${path_mto}|${path_z}|${path_lto}|${path_hvto}|${path_cto}|${path_sqto}|${path_tto}|${path_ato})`;
+const pathPatternStrict = `(?:${path_mto_strict}|${path_z}|${path_lto_strict}|${path_hvto_strict}|${path_cto_strict}|${path_sqto_strict}|${path_tto_strict}|${path_ato})`;
+const pathPattern = `(?:${path_mto}|${path_z}|${path_to})`;
+export const pathFullMatchStrict = new RegExp(`^${path_mto}(?:${commaWsp}${pathPatternStrict})*$`);
 export const pathFullMatch = new RegExp(`^${path_mto}(?:${commaWsp}${pathPattern})*$`);
 
 export const preservAspectRatioFullMatch = /^(?:none|xMinYMin|xMidYMin|xMaxYMin|xMinYMid|xMidYMid|xMaxYMid|xMinYMax|xMidYMax|xMaxYMax)(?:\s+(?:meet|slice))?$/;
@@ -134,6 +145,8 @@ export const cursorFullMatch = new RegExp(`^(?:${url}\\s*(?:${numberPattern}\\s+
 
 // shapes
 export const rectFullMatch = new RegExp(`rect${paren}${numberPattern}(?:(?:${commaWsp})?${numberPattern}){3}${rParen}`);
+// TODO：这个正则不够严谨
+export const basicShapeFullMatch = /^(?:inset|circle|ellipse|polygon)\([^\(\)]+\)$/;
 
 // color
 const rgb = `rgb${paren}(?:${numberPattern}${commaWsp}${numberPattern}${commaWsp}${numberPattern}|${numberPattern}%${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%)${rParen}`;
@@ -142,3 +155,18 @@ const hsl = `hsl${paren}${numberPattern}${commaWsp}${numberPattern}%${commaWsp}$
 const hsla = `hsla${paren}${numberPattern}${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%?${rParen}`;
 const hexColor = '#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})';
 export const colorFullMatch = new RegExp(`^(?:${rgb}|${rgba}|${hsl}|${hsla}|${hexColor})$`);
+export const iccColorFullMatch = new RegExp(`^icc-color${paren}${Name}(?:${commaWsp}${numberPattern})+${rParen}$`);
+
+export const childFuncFullMatch = /^child\(\d+\)$/;
+
+// filter
+const blur = `blur${paren}(?:${length})?${rParen}`;
+const filterFuncNumberPercentage = `(?:brightness|contrast|grayscale|invert|opacity|saturate|sepia)${paren}(?:${numberPattern}%?)?${rParen}`;
+const dropShadow = `drop-shadow${paren}(?:(?:${rgb}|${rgba}|${hsl}|${hsla}|${hexColor}|${Object.keys(colorKeywords).join('|')}|${Object.keys(systemColor).join('|')}|${Object.keys(x11Colors).join('|')})?${commaWsp}(?:${length}|${numberPattern}%){2,3})?${rParen}`;
+const hueRotate = `hue-rotate${paren}(?:${angel}|${zero})?${rParen}`;
+const filterFunc = `(?:${blur}|${filterFuncNumberPercentage}|${dropShadow}|${hueRotate})`;
+export const filterListFullMatch = new RegExp(`(?:(?:${filterFunc}|${url})${commaWsp})+`);
+
+export const fontWeightFullMatch = /^normal|bold|bolder|lighter|[1-9]00$/;
+export const textOrientationFullMatch = /^mixed|upright|sideways|auto|0deg|0|90deg|90$/;
+export const vectorEffectFullMatch = new RegExp(`^(?:(?:non-scaling-stroke|non-scaling-size|non-rotation|fixed-position)${commaWsp})+${commaWsp}(?:viewport|screen)?$`);
