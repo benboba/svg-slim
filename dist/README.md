@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2018.10.11 v1.2.6
+
+### svg-slimming
+
+* 修复了 syntax.ts 中一个正则表达式字符集溢出的 bug
+* 优化 shape-to-path 规则，现在当 rect 转 path 的时候，会从 hvh 和 vhv 中选择较小的一种情况
+* 优化了 combine-transform 的规则，增加了 matrix 反向转为简易函数的逻辑
+
 ## 2018.09.19 v1.2.5
 
 ### svg-slimming

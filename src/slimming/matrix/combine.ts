@@ -1,7 +1,8 @@
 import { IMatrixFunc } from './exec';
 import { Matrix } from './matrix';
+import { shorten } from './shorten';
 
-export function combineMatrix(operate: IMatrixFunc[]): IMatrixFunc {
+export function combineMatrix(operate: IMatrixFunc[], digit1: number, digit2: number, digit3: number): IMatrixFunc {
 	let matrix = new Matrix();
 	for (const item of operate) {
 		switch (item.type) {
@@ -32,8 +33,8 @@ export function combineMatrix(operate: IMatrixFunc[]): IMatrixFunc {
 				};
 		}
 	}
-	return {
+	return shorten({
 		type: 'matrix',
 		val: [matrix.a, matrix.b, matrix.c, matrix.d, matrix.e, matrix.f]
-	};
+	}, digit1, digit2, digit3);
 }

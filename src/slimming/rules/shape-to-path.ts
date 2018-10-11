@@ -28,7 +28,11 @@ const rectToPath = (node: INode) => {
 	}
 
 	node.nodeName = 'path';
-	node.setAttribute('d', `M${shapeAttr.x},${shapeAttr.y}h${shapeAttr.width}v${shapeAttr.height}h${-shapeAttr.width}z`);
+
+	// 此处考虑到宽和高的字节数差异，应该取较小的那种
+	const hvh = `M${shapeAttr.x},${shapeAttr.y}h${shapeAttr.width}v${shapeAttr.height}h${-shapeAttr.width}z`;
+	const vhv = `M${shapeAttr.x},${shapeAttr.y}v${shapeAttr.height}h${shapeAttr.width}v${-shapeAttr.height}z`;
+	node.setAttribute('d', vhv.length < hvh.length ? vhv : hvh);
 };
 
 const lineToPath = (node: INode) => {

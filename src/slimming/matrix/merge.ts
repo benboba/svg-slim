@@ -35,7 +35,7 @@ export const merge = (func1: IMatrixFunc, func2: IMatrixFunc, digit1: number, di
             break;
 
         case 'matrix':
-            return combineMatrix([func1, func2]);
+            return combineMatrix([func1, func2], digit1, digit2, digit3);
 
         default:
             break;

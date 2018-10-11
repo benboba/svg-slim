@@ -61,13 +61,15 @@ tester(
     'combine-transform',
     `<svg>
     <text transform="scale(2) translate(100,100) skewX(-15) skewX(15) translate(-100,-100) scale(0.5)">1</text>
-    <text transform="scale(2.0001) scale(0.5) rotate(90)">2</text>
     <text transform="scale(2.9999999)">2</text>
     <text transform="scale(1.32034) translate(10,0.1) rotate(90)">2</text>
+    <text transform="matrix(2,0,0,3,0,0)">2</text>
+    <text transform="matrix(1,0,0,1,1,0)">2</text>
+    <text transform="matrix(0.988,-0.156,0.156,0.988,0,0)">2</text>
     </svg>`,
-    '<svg><text>1</text><text transform="rotate(90)">2</text><text transform="scale(3)">2</text><text transform="matrix(0,1.32-1.32,0,13.2.1)">2</text></svg>',
+    '<svg><text>1</text><text transform="scale(3)">2</text><text transform="matrix(0,1.32-1.32,0,13.2.1)">2</text><text transform="scale(2,3)">2</text><text transform="translate(1)">2</text><text transform="rotate(-8.97)">2</text></svg>',
     {
-        'combine-transform': [true, 2, 1]
+        'combine-transform': [true, 3, 1]
     }
 );
 
@@ -244,8 +246,9 @@ tester(
     'shape-to-path',
     `<svg>
     <rect fill="red" width="100" height="100"/>
+    <rect fill="red" width="1000" height="100"/>
     </svg>`,
-    '<svg><path fill="red" d="M0,0h100v100h-100z"/></svg>',
+    '<svg><path fill="red" d="M0,0h100v100h-100z"/><path fill="red" d="M0,0v100h1000v-100z"/></svg>',
     {
         'shape-to-path': true
     }
