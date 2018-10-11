@@ -1,5 +1,6 @@
 import { IMatrixFunc } from './exec';
 import { toFixed } from '../math/tofixed';
+import { simplify } from './simplify';
 
 const matrixValLen = 6;
 const matrixEPos = 4;
@@ -63,5 +64,5 @@ export const shorten = (m: IMatrixFunc, digit1: number, digit2: number, digit3: 
         default:
             break;
     }
-    return res;
+    return simplify(res, digit1, digit2, digit3);
 };

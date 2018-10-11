@@ -39,7 +39,7 @@ export const combineTransform = (rule: ConfigItem, dom: INode): Promise<null> =>
 						}
 					});
 					if (transform.length) {
-						const matrix = combineMatrix(transform);
+						const matrix = combineMatrix(transform, digit1, digit2, digit3);
 						const transformStr = stringify(transform, digit1, digit2, digit3);
 						const matrixStr = stringify([matrix], digit1, digit2, digit3);
 						if (matrix.noEffect) {

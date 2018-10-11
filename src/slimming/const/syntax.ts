@@ -155,7 +155,7 @@ const hsl = `hsl${paren}${numberPattern}${commaWsp}${numberPattern}%${commaWsp}$
 const hsla = `hsla${paren}${numberPattern}${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%?${rParen}`;
 const hexColor = '#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})';
 export const colorFullMatch = new RegExp(`^(?:${rgb}|${rgba}|${hsl}|${hsla}|${hexColor})$`);
-export const iccColorFullMatch = new RegExp(`^icc-color${paren}${Name}(?:${commaWsp}${numberPattern})+${rParen}$`);
+export const iccColorFullMatch = new RegExp(`^icc-color${paren}${Name}(?:${commaWsp}${numberPattern})+${rParen}$`, uModifier);
 
 export const childFuncFullMatch = /^child\(\d+\)$/;
 
