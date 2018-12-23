@@ -1,6 +1,6 @@
 import { execNumberList } from '../utils/exec-numberlist';
 
-const pathReg = /([mMzZlLhHvVcCsSqQtTaA])(.*?)(?=[mMzZlLhHvVcCsSqQtTaA]|$)/g;
+const pathReg = /([mMzZlLhHvVcCsSqQtTaA])(.*?)(?=[mMzZlLhHvVcCsSqQtTaA]|$)/gm;
 
 export interface IPathItem {
 	type: string;

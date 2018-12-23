@@ -23,7 +23,9 @@ export const config: IConfig = {
 	// 计算 path 的 d 属性，使之变得更短
 	// 应用道格拉斯-普克算法抽稀路径节点
 	// 抽稀节点的阈值
-	'compute-path': [true, false, 0],
+	// 尺寸相关数据的精度
+	// 角度相关数据的精度
+	'compute-path': [true, false, 0, DEFAULT_SIZE_DIGIT, DEFAULT_ACCURATE_DIGIT],
 	// 对 polygon 和 polyline 应用道格拉斯-普克算法抽稀路径节点
 	// 抽稀节点的阈值
 	'douglas-peucker': [false, 0],

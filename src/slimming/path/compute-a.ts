@@ -4,13 +4,14 @@ import { Vector } from '../math/vector';
 import { numberLength } from '../utils/number-length';
 import { IPathResultItem } from './exec';
 
-const APOS_RX = 0;
-const APOS_RY = 1;
-const APOS_ROTATION = 2;
+export const APOS_RX = 0;
+export const APOS_RY = 1;
+export const APOS_ROTATION = 2;
 const APOS_LARGE = 3;
 const APOS_SWEEP = 4;
 export const APOS_X = 5;
 export const APOS_Y = 6;
+export const APOS_LEN = 7;
 const FROM_CX = 2;
 const FROM_CY = 3;
 const DIGIT = 3;

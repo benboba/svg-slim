@@ -257,7 +257,7 @@ const regular_attr: IRegularAttrDefine = {
 		maybeColor: false,
 		maybeIRI: false,
 		maybeFuncIRI: false,
-		maybeSizeNumber: true,
+		maybeSizeNumber: false,
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
