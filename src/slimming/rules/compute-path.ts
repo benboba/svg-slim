@@ -17,6 +17,7 @@ import { execPath, IPathItem, IPathResultItem } from '../path/exec';
 import { traversalNode } from '../xml/traversal-node';
 import { ConfigItem } from '../config/config';
 import { stringifyFuncVal } from '../utils/stringify-funcval';
+import { shortenDigit } from '../path/shorten-digit';
 
 const cArgLen = 6;
 const sArgLen = 4;
@@ -238,7 +239,7 @@ export const computePath = (rule: ConfigItem, dom: INode): Promise<null> => new 
 
 				let d = '';
 				pathResult.forEach(pathItem => {
-					d += `${pathItem.type}${stringifyFuncVal(pathItem.val)}`;
+					d += `${pathItem.type}${stringifyFuncVal(shortenDigit(pathItem, rule['3'] as number, rule['4'] as number))}`;
 				});
 				node.setAttribute('d', d);
 			}

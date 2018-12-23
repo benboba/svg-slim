@@ -13,7 +13,7 @@ import { traversalNode } from '../xml/traversal-node';
 const classSelectorReg = /\.([^,\*#>+~:{\s\[\.]+)/gi;
 
 interface IClassList {
-	[propName: string]: [string, number];
+	[propName: string]: [string, number, boolean];
 }
 
 export const shortenClass = (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
@@ -29,7 +29,7 @@ export const shortenClass = (rule: ConfigItem, dom: INode): Promise<null> => new
 				return classList[key][0];
 			}
 			const sid = createShortenID(si++);
-			classList[key] = [sid, rid];
+			classList[key] = [sid, rid, false];
 			return sid;
 		};
 
@@ -61,7 +61,7 @@ export const shortenClass = (rule: ConfigItem, dom: INode): Promise<null> => new
 				for (let ci = className.length; ci--; ) {
 					if (classList[className[ci]]) {
 						const cName = classList[className[ci]][0];
-						delete classList[className[ci]];
+						classList[className[ci]][2] = true;
 						className[ci] = cName;
 					} else {
 						className.splice(ci, 1);
@@ -77,6 +77,9 @@ export const shortenClass = (rule: ConfigItem, dom: INode): Promise<null> => new
 
 		// 最后移除不存在的 class 引用
 		Object.values(classList).forEach(item => {
+			if (item[2]) {
+				return;
+			}
 			const reg = new RegExp(`.${item[0]}(?=[,\\*#>+~:{\\s\\[\\.]|$)`);
 			for (let ri = parsedCss.stylesheet.rules.length; ri--; ) {
 				const cssRule: IExtendRule = parsedCss.stylesheet.rules[ri];

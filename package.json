@@ -1,6 +1,6 @@
 {
 	"name": "svg-slimming",
-	"version": "1.2.8",
+	"version": "1.2.9",
 	"description": "svg slimming",
 	"main": "lib/svg-slimming.js",
 	"scripts": {

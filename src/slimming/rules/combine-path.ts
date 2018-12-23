@@ -44,9 +44,9 @@ export const combinePath = (rule: ConfigItem, dom: INode): Promise<null> => new 
 					if (d) {
 						const key = `&${Object.keys(attrObj).map(k => `${k}=${attrObj[k]}`).join('&')}&&style&&${styles.map(attr => `${attr.name}=${attr.value}`).join('&')}&`;
 						if (has(key, pathChildren)) {
-							// TODO，此处用了简单粗暴的处理逻辑，没有 fill 或 stroke ，并且相邻的 path 节点才可以合并
-							// 更妥善的做法是：1、相邻；2、没有fill或者stroke；3、路径没有相交或包含
-							if (pathChildren[key].index === tagIndex - 1 && (key.indexOf('&fill=none&') !== -1 || key.indexOf('&stroke=none&') !== -1 || key.indexOf('&stroke=') === -1)) {
+							// TODO，此处用了简单粗暴的处理逻辑，没有 fill，没有 class，没有 ID，并且相邻的 path 节点才可以合并
+							// 更妥善的做法是：1、相邻；2、没有fill；3、路径没有相交或包含
+							if (pathChildren[key].index === tagIndex - 1 && key.indexOf('&fill=none&') !== -1 && key.indexOf('&class=') === -1 && key.indexOf('&id=') === -1) {
 								pathChildren[key].attr.value += d.value;
 								rmNode(childNode);
 								i--;

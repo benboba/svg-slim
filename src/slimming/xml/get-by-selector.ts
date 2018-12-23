@@ -34,7 +34,7 @@ export const getBySelector = (dom: INode, selector: string): INode[] => {
                         break;
                     case '[': // 属性选择器
                         const attrStr: string = specialExec[0].slice(1, -1);
-                        const eqIndex: number = attrStr.indexOf['='] as number;
+                        const eqIndex: number = attrStr.indexOf('=');
                         if (eqIndex === -1) {
                             // 没有等号的情况
                             selectorUnit.attr.push({

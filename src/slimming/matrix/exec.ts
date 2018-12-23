@@ -1,4 +1,4 @@
-const matrixReg = /([a-z]+)\((.+?)\)/gi;
+const matrixReg = /([a-z]+)\((.+?)\)/gim;
 
 export interface IMatrixFunc {
 	type: string; // 函数类型

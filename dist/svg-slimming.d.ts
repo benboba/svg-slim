@@ -13,7 +13,7 @@ export interface IConfig {
 export declare const config: IConfig;
 
 interface ISvgSlimming {
-    (data: string, userConfig: IConfig): Promise<string>;
+    (data: string, userConfig?: IConfig): Promise<string>;
     xmlParser?(s: string): Promise<INode>;
     NodeType?: Object;
 }
