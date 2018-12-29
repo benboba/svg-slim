@@ -37,3 +37,9 @@ export interface ISelector {
     pseudo: IPseudo[];
     combinator?: selectorUnitCombinator;
 }
+
+export interface ISeletorPriority {
+    id: number;
+    class: number;
+    tag: number;
+}

@@ -44,12 +44,12 @@ tester(
 tester(
 	'combine-path',
 	`<svg>
-    <path fill="none" d="M0,0H100Z" />
-    <path fill="none" d="M100,0H100Z" />
+    <path d="M0,0h100V100H0Z"/>
+    <path d="M110,0l100,0,0,100,-100,0Z"/>
     <rect />
     <path fill="none" d="M100.5.5H100Z" />
     </svg>`,
-	'<svg><path fill="none" d="M0,0H100ZM100,0H100Z"/><rect/><path fill="none" d="M100.5.5H100Z"/></svg>', {
+	'<svg><path d="M0,0h100V100H0ZM110,0l100,0,0,100,-100,0Z"/><rect/><path fill="none" d="M100.5.5H100Z"/></svg>', {
 		'combine-path': true
 	}
 );
@@ -57,7 +57,7 @@ tester(
 tester(
 	'combine-transform',
 	`<svg>
-    <text transform="scale(2) translate(100,100) skewX(-15) skewX(15) translate(-100,-100) scale(0.5)">1</text>
+    <text transform="scale(2) translate(100,100) skewX(-15) skewX(15) translate(-100-100) scale(0.5)">1</text>
     <text transform="scale(2.9999999)">2</text>
     <text transform="scale(1.32034) translate(10,0.1) rotate(90)">2</text>
     <text transform="matrix(2,0,0,3,0,0)">2</text>
