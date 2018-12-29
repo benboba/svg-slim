@@ -1,6 +1,6 @@
 {
 	"name": "svg-slimming",
-	"version": "1.2.10",
+	"version": "1.2.11",
 	"description": "svg slimming",
 	"main": "svg-slimming.min.js",
 	"keywords": [
@@ -25,8 +25,10 @@
 		"package.json",
 		"svg-slimming.js",
 		"svg-slimming.min.js",
+		"svg-slimming.d.ts",
 		"xml-parser.js",
-		"xml-parser.min.js"
+		"xml-parser.min.js",
+		"xml-parser.d.ts"
 	],
 	"license": "MIT",
 	"dependencies": {
