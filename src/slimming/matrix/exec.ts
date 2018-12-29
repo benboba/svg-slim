@@ -1,3 +1,5 @@
+import { execNumberList } from '../utils/exec-numberlist';
+
 const matrixReg = /([a-z]+)\((.+?)\)/gim;
 
 export interface IMatrixFunc {
@@ -16,7 +18,7 @@ export const execMatrix = (str: string): IMatrixFunc[] => {
 	while (match !== null) {
 		result.push({
 			type: match[1],
-			val: match[2].trim().split(/[,\s]+/).map(s => parseFloat(s.trim()))
+			val: execNumberList(match[2]),
 		});
 		match = matrixReg.exec(str);
 	}

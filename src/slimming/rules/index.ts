@@ -1,3 +1,6 @@
+import { ConfigItem } from '../config/config';
+import { IStyleNode } from '../interface/node';
+
 // default rules
 import { combineScript } from '../default-rules/combine-script';
 import { combineStyle } from '../default-rules/combine-style';
@@ -31,10 +34,8 @@ import { shortenDefs } from './shorten-defs';
 import { shortenID } from './shorten-id';
 import { shortenStyleAttr } from './shorten-style-attr';
 import { shortenStyleTag } from './shorten-style-tag';
-import { INode } from '../../node';
-import { ConfigItem } from '../config/config';
 
-export type RuleItem = [1, (dom: INode) => Promise<null>] | [0, (rule: ConfigItem, dom: INode) => Promise<null>, string];
+export type RuleItem = [1, (dom: IStyleNode) => Promise<null>] | [0, (rule: ConfigItem, dom: IStyleNode) => Promise<null>, string];
 // [isDefaultRule: boolean, ruleHandler: Function, configKey?: string]
 
 export const rules: RuleItem[] = [
@@ -53,18 +54,18 @@ export const rules: RuleItem[] = [
 	[0, shortenID, 'shorten-id'],
 	[0, shortenClass, 'shorten-class'],
 	[0, shortenDefs, 'shorten-defs'],
-	[0, collapseG, 'collapse-g'],
 	[0, rmHidden, 'rm-hidden'],
 	[0, rmPx, 'rm-px'],
-	[0, shortenDecimalDigits, 'shorten-decimal-digits'],
-	[0, shortenColor, 'shorten-color'],
+	[0, combineTransform, 'combine-transform'],
 	[0, shortenStyleAttr, 'shorten-style-attr'],
 	[0, shortenStyleTag, 'shorten-style-tag'],
 	[0, douglasPeucker, 'douglas-peucker'],
 	[0, shapeToPath, 'shape-to-path'],
 	[0, combinePath, 'combine-path'],
+	[0, collapseG, 'collapse-g'],
 	[0, computePath, 'compute-path'],
-	[0, combineTransform, 'combine-transform'],
+	[0, shortenDecimalDigits, 'shorten-decimal-digits'],
+	[0, shortenColor, 'shorten-color'],
 	[0, collapseTextwrap, 'collapse-textwrap'],
 	[1, combineTextNode],
 	[0, rmXMLNS, 'rm-xmlns'],

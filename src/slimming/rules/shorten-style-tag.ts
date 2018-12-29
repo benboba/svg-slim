@@ -10,6 +10,7 @@ import { traversalObj } from '../utils/traversal-obj';
 import { legalValue } from '../validate/legal-value';
 import { getBySelector } from '../xml/get-by-selector';
 import { traversalNode } from '../xml/traversal-node';
+import { execSelector } from '../style/exec-selector';
 
 interface ICSSUnique {
 	[propName: string]: Rule;
@@ -63,7 +64,7 @@ export const shortenStyleTag = (rule: ConfigItem, dom: INode): Promise<null> => 
 					if (styleRule.type === 'rule') {
 						// 移除无效的选择器
 						for (let si = styleRule.selectors.length; si--; ) {
-							if (!getBySelector(dom, styleRule.selectors[si]).length) {
+							if (!getBySelector(dom, execSelector(styleRule.selectors[si])).length) {
 								styleRule.selectors.splice(si, 1);
 							}
 						}
