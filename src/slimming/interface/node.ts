@@ -14,3 +14,7 @@ export interface IStyleNode extends INode {
 	readonly childNodes: ReadonlyArray<IStyleNode>;
 	parentNode?: IStyleNode;
 }
+
+export interface ISubNode extends INode {
+	parentNode: INode;
+}

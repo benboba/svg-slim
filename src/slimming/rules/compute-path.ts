@@ -76,6 +76,9 @@ const DPInit = (threshold: number, pathArr: IPathResultItem[]): IPathResultItem[
 	return pathResult;
 };
 
+const PATH_CONFIG_DIGIT_1 = 3;
+const PATH_CONFIG_DIGIT_2 = 4;
+
 export const computePath = (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		traversalNode(propEq('nodeName', 'path'), (node: INode) => {
@@ -91,7 +94,7 @@ export const computePath = (rule: ConfigItem, dom: INode): Promise<null> => new 
 
 				let d = '';
 				pathResult.forEach(pathItem => {
-					d += `${pathItem.type}${stringifyFuncVal(shortenDigit(pathItem, rule['3'] as number, rule['4'] as number))}`;
+					d += `${pathItem.type}${stringifyFuncVal(shortenDigit(pathItem, rule[PATH_CONFIG_DIGIT_1] as number, rule[PATH_CONFIG_DIGIT_2] as number))}`;
 				});
 				node.setAttribute('d', d);
 			}
