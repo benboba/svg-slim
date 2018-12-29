@@ -20,7 +20,7 @@
 		"no-non-null-assertion": true,
 		"no-parameter-reassignment": true,
 		"no-reference": false,
-		"no-unnecessary-type-assertion": true,
+		"no-unnecessary-type-assertion": false,
 		"no-var-requires": false,
 		"only-arrow-functions": false,
 		"prefer-for-of": false,

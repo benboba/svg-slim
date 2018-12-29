@@ -37,10 +37,10 @@ export function execSelector(selector: string): ISelector[] {
                             });
                         } else {
                             // 取出等号修饰符
-                            if (attrModifier[attrStr[eqIndex - 1]]) {
+                            if (typeof attrModifier[attrStr[eqIndex - 1] as keyof typeof attrModifier] === 'number') {
                                 selectorUnit.attr.push({
                                     key: attrStr.slice(0, eqIndex - 1),
-                                    modifier: attrModifier[attrStr[eqIndex - 1]] as number,
+                                    modifier: attrModifier[attrStr[eqIndex - 1] as keyof typeof attrModifier] as number,
                                     value: attrStr.slice(eqIndex + 1)
                                 });
                             } else {
@@ -75,8 +75,8 @@ export function execSelector(selector: string): ISelector[] {
         }
         if (selectorExec[3]) {
             const combinator = selectorExec[3].trim();
-            if (selectorUnitCombinator[combinator]) {
-                selectorUnit.combinator = selectorUnitCombinator[combinator] as number;
+            if (typeof selectorUnitCombinator[combinator as keyof typeof selectorUnitCombinator] === 'number') {
+                selectorUnit.combinator = selectorUnitCombinator[combinator as keyof typeof selectorUnitCombinator] as number;
             }
         }
         selectors.push(selectorUnit);

@@ -1,6 +1,6 @@
 {
 	"name": "svg-slimming",
-	"version": "1.2.11",
+	"version": "1.2.12",
 	"description": "svg slimming",
 	"main": "lib/svg-slimming.js",
 	"scripts": {
@@ -32,11 +32,11 @@
 		"copy-webpack-plugin": "^4.5.2",
 		"cross-env": "^3.2.4",
 		"mocha": "^5.2.0",
+		"terser-webpack-plugin": "^1.2.1",
 		"ts-loader": "^4.4.2",
 		"tslint": "^5.9.1",
 		"tslint-loader": "^3.6.0",
-		"typescript": "^2.7.2",
-		"uglifyjs-webpack-plugin": "^1.2.7",
+		"typescript": "^3.2.2",
 		"webpack": "^4.16.5",
 		"webpack-cli": "^3.1.0"
 	}

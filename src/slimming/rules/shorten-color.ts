@@ -1,4 +1,4 @@
-import { parse as cssParse, stringify as cssStringify, Declaration } from 'css';
+import { parse as cssParse, stringify as cssStringify, Declaration, StyleRules } from 'css';
 import { both, has, pipe, toLower } from 'ramda';
 import { regularAttr } from '../const/regular-attr';
 import { toFixed } from '../math/tofixed';
@@ -229,7 +229,7 @@ const formatColor = (rgba: boolean, digit: number, str: string) => {
 	});
 
 	s = s.replace(/#([0-9a-f])\1([0-9a-f])\2([0-9a-f])\3(?=[^0-9a-f]|$)/gi, '#$1$2$3');
-	s = s.replace(shortenReg1, ($0, $1, $2) => `${$1}${shortenMap1[$2]}`).replace(shortenReg2, $0 => `${shortenMap2[$0]}`);
+	s = s.replace(shortenReg1, ($0, $1, $2) => `${$1}${shortenMap1[$2 as keyof typeof shortenMap1]}`).replace(shortenReg2, $0 => `${shortenMap2[$0 as keyof typeof shortenMap2]}`);
 	if (rgba) {
 		s = s.replace(/#([0-9a-f])\1([0-9a-f])\2([0-9a-f])\3([0-9a-f])\4(?=[^0-9a-f]|$)/gi, '#$1$2$3$4');
 		s = s.replace(/transparent/gi, '#0000');
@@ -257,13 +257,13 @@ export const shortenColor = (rule: ConfigItem, dom: INode): Promise<null> => new
 			if (node.nodeName === 'style') {
 
 				// 缩短 style 标签内的数值
-				const parsedCss = cssParse(node.childNodes[0].textContent, { silent: true });
+				const parsedCss = cssParse(node.childNodes[0].textContent as string, { silent: true });
 				if (parsedCss) {
 					traversalObj(both(has('property'), has('value')), (cssRule: Declaration) => {
-						if (regularAttr[cssRule.property].maybeColor) { // 可以模糊处理的数字
-							cssRule.value = formatColor(rule[1] as boolean, rule[2] as number, cssRule.value);
+						if (regularAttr[cssRule.property as string].maybeColor) { // 可以模糊处理的数字
+							cssRule.value = formatColor(rule[1] as boolean, rule[2] as number, cssRule.value as string);
 						}
-					}, parsedCss.stylesheet.rules);
+					}, (parsedCss.stylesheet as StyleRules).rules);
 					node.childNodes[0].textContent = shortenTag(cssStringify(parsedCss, { compress: true }));
 				}
 

@@ -5,6 +5,7 @@ import { REG_XML_DECL, REG_CDATA_SECT, REG_OTHER_SECT, REG_DOCTYPE, REG_OTHER_DE
 
 import { collapseQuot } from './utils';
 import { mixWhiteSpace } from '../slimming/utils/mix-white-space';
+import { IUnique } from 'src/slimming/interface/unique';
 
 const configs: ([number, string, RegExp, number] | [number, RegExp, number])[] = [
 	[1, 'xml-decl', REG_XML_DECL, NodeType.XMLDecl],
@@ -30,10 +31,10 @@ const updStatus = (pos: number, str: string, status: IStatus) => {
 };
 
 // 应对一个捕获组的状况
-const Process1 = (conf: [number, string, RegExp, number], str: string): { node:Node, str: string } => {
+const Process1 = (conf: [number, string, RegExp, number], str: string): { node:Node, str: string } | null => {
 	const reg = conf[2];
-	if (reg.test(str)) {
-		const execResult = reg.exec(str);
+	const execResult = reg.exec(str);
+	if (execResult) {
 		return {
 			node: new Node({
 				nodeType: conf[3],
@@ -48,10 +49,10 @@ const Process1 = (conf: [number, string, RegExp, number], str: string): { node:N
 
 
 // 应对两个捕获组的状况
-const Process2 = (conf: [number, RegExp, number], str: string): { node:Node, str: string } => {
+const Process2 = (conf: [number, RegExp, number], str: string): { node:Node, str: string } | null => {
 	const reg = conf[1];
-	if (reg.test(str)) {
-		const execResult = reg.exec(str);
+	const execResult = reg.exec(str);
+	if (execResult) {
 		return {
 			node: new Node({
 				nodeType: conf[2],
@@ -72,12 +73,10 @@ interface IStatus {
 
 
 // 处理标签
-const ProcessTag = (str: string, status: IStatus):  { node:Node, str: string } => {
-	if (REG_START_TAG.test(str)) {
-
+const ProcessTag = (str: string, status: IStatus):  { node:Node, str: string } | null => {
+	const execResult = REG_START_TAG.exec(str);
+	if (execResult) {
 		const tempStatus: IStatus = { line: status.line, pos: status.pos, lastpos: 0 };
-
-		const execResult = REG_START_TAG.exec(str);
 		const result = {
 			node: new Node({
 				nodeType: NodeType.Tag,
@@ -107,7 +106,7 @@ const ProcessTag = (str: string, status: IStatus):  { node:Node, str: string } =
 		REG_ATTR.lastIndex = 0;
 
 		let attrExec = REG_ATTR.exec(execResult[2]);
-		const attrUnique = {};
+		const attrUnique: IUnique = {};
 		while (attrExec) {
 			updStatus(attrExec.index + execResult[1].length + 1, execResult[0], tempStatus);
 
@@ -136,9 +135,9 @@ const ProcessTag = (str: string, status: IStatus):  { node:Node, str: string } =
 };
 
 
-const ProcessEndTag = (str: string, status: IStatus):  { node:Node, str: string } => {
-	if (REG_END_TAG.test(str)) {
-		const execResult = REG_END_TAG.exec(str);
+const ProcessEndTag = (str: string, status: IStatus):  { node:Node, str: string } | null => {
+	const execResult = REG_END_TAG.exec(str);
+	if (execResult) {
 		const result = {
 			node: new Node({
 				nodeType: NodeType.EndTag,
@@ -232,6 +231,7 @@ export function Parser(str: string): Promise<Node> {
 			current = parse(str.slice(firstIndex), status); // 第一个 < 之前的全部字符都忽略掉
 		} catch (e) {
 			reject(e);
+			return;
 		}
 		if (current.node.nodeType === NodeType.XMLDecl && firstIndex > 0) {
 			reject(new Error(`xml声明必须在文档最前面！ 在第 ${status.line} 行第 ${status.pos} 位`));
@@ -251,7 +251,7 @@ export function Parser(str: string): Promise<Node> {
 				current = parse(current.str, status); // 第一个 < 之前的全部字符都忽略掉
 			} catch (e) {
 				reject(e);
-				break;
+				return;
 			}
 
 			const stackLen = stack.length;
@@ -284,7 +284,7 @@ export function Parser(str: string): Promise<Node> {
 					stack[stackLen - 1].appendChild(current.node);
 				} else if (current.node.nodeType === NodeType.Text || current.node.nodeType === NodeType.CDATA) {
 					// 没有节点而出现了非空文本节点
-					if (current.node.textContent.replace(/\s/g, '')) {
+					if ((current.node.textContent as string).replace(/\s/g, '')) {
 						reject(new Error(`意外的文本节点！ 在第 ${status.line} 行第 ${status.pos} 位`));
 					}
 				} else {

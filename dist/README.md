@@ -1,10 +1,13 @@
 # 更新日志
 
-## 2018.12.29 v1.2.10 & v1.2.11
+## 2018.12.29 v1.2.10 ~ v1.2.12
 
 ### 综合
 
 * 将 .d.ts 声明文件放置到 package.json 中
+* 更新 typescript 版本到 3.2.2
+* tsconfig.json 启用更严格的选项
+* 放弃 uglifyjs-webpack-plugin，改用 terser-webpack-plugin
 
 ### svg-slimming
 

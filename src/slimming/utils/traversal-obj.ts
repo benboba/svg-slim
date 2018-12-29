@@ -1,3 +1,5 @@
+import { IUnknownObj } from '../interface/unknown-obj';
+
 /*
  * 深度遍历所有的 Object 属性
  * @param { function } 条件
@@ -26,8 +28,8 @@ const traversal = (condition: (o: Object) => boolean, cb: (o: Object, p: Object[
 		}
 	} else {
 		Object.keys(obj).forEach(key => {
-			if (typeof obj[key] === 'object') {
-				traversal(condition, cb, obj[key] as Object, path, visited);
+			if (typeof (obj as IUnknownObj)[key] === 'object') {
+				traversal(condition, cb, (obj as IUnknownObj)[key] as Object, path, visited);
 			}
 		});
 	}

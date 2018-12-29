@@ -7,6 +7,7 @@ import { isTag } from '../xml/is-tag';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
 import { ConfigItem } from '../config/config';
+import { ISubNode } from '../interface/node';
 
 interface IAttrObj {
 	[propName: string]: IAttr;
@@ -20,7 +21,7 @@ const collapseAttributes = (node1: INode, node2: INode) => {
 		attrObj[attr.fullname] = attr;
 	});
 	attributes2.forEach(attr => {
-		if (attrObj[attr.fullname]) {
+		if (attrObj.hasOwnProperty(attr.fullname)) {
 			if (transformAttributes.indexOf(attr.fullname) !== -1) {
 				attrObj[attr.fullname].value = `${attr.value} ${attrObj[attr.fullname].value}`;
 			} else if (attr.fullname === 'style') {
@@ -49,9 +50,9 @@ const doCollapse = (dom: INode) => {
 			if (childTags.length === 1) { // 只有一个子节点
 				const childNode = childTags[0];
 				collapseAttributes(childNode, node);
-				node.parentNode.replaceChild(node, ...childNodes);
+				(node as ISubNode).parentNode.replaceChild(node, ...childNodes);
 			} else if (!node.attributes.length) { // 没有属性
-				node.parentNode.replaceChild(node, ...childNodes);
+				(node as ISubNode).parentNode.replaceChild(node, ...childNodes);
 			}
 		}
 	}, dom);

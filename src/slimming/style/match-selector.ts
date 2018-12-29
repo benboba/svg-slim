@@ -2,8 +2,8 @@ import { INode } from '../../node';
 import { ISelector, attrModifier } from './define';
 
 // 验证 selector 和 node 是否匹配
-export const matchSelector = (node: INode, selector: ISelector): boolean => {
-    if (!selector) {
+export const matchSelector = (node: INode | undefined, selector: ISelector): boolean => {
+    if (!selector || !node) {
         return false;
     }
 

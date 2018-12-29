@@ -19,7 +19,7 @@ const rectToPath = (node: INode) => {
 	for (let i = attributes.length; i--;) {
 		const attr = attributes[i];
 		if (has(attr.fullname, shapeAttr)) {
-			shapeAttr[attr.fullname] = attr.value;
+			shapeAttr[attr.fullname as keyof typeof shapeAttr] = attr.value;
 			node.removeAttribute(attr.fullname);
 		}
 	}
@@ -47,7 +47,7 @@ const lineToPath = (node: INode) => {
 	for (let i = attributes.length; i--;) {
 		const attr = attributes[i];
 		if (has(attr.fullname, shapeAttr)) {
-			shapeAttr[attr.fullname] = attr.value;
+			shapeAttr[attr.fullname as keyof typeof shapeAttr] = attr.value;
 			node.removeAttribute(attr.fullname);
 		}
 	}
