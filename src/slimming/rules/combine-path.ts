@@ -141,10 +141,12 @@ export const combinePath = (rule: ConfigItem, dom: IStyleNode): Promise<null> =>
 					if (d) {
 						const key = `${k}|${getKey(childNode)}`;
 						if (has(key, pathChildren)) {
-							// 允许路径合并的条件：1、所有属性和样式（包括继承样式）相同；2、相邻；3、没有 fill 或 stroke；4、路径没有相交或包含
+							// 允许路径合并的条件：1、所有属性和样式（包括继承样式）相同；2、相邻；3、没有 fill 或 stroke；4、路径没有相交或包含（未实现）
 							if (pathChildren[key].index === tagIndex - 1 && canbeCombine(childNode, pathChildren[key].node, d)) {
-								pathChildren[key].attr.value += d.value;
+								// 路径拼合时，第一个 m 要转为绝对，否则会有 bug
+								pathChildren[key].attr.value += d.value.replace(/^m/, 'M');
 								rmNode(childNode);
+								tagIndex--;
 								i--;
 							} else {
 								pathChildren[key] = {
