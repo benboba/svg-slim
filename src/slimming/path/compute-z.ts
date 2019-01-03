@@ -5,6 +5,7 @@ export const computeZ = (pathResult: IPathResultItem[], pos: number[]): number[]
 	const rLen = pathResult.length;
 	if (rLen > 0) {
 		const lastItem = pathResult[rLen - 1];
+		// 如果 z 指令紧跟着 z 或 m 指令，直接抛弃
 		if (lastItem.type.toLowerCase() !== 'z' && lastItem.type.toLowerCase() !== 'm') {
 			let i = rLen - 1;
 			let zpos: number[] = null;

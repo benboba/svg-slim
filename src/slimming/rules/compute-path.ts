@@ -92,6 +92,13 @@ export const computePath = (rule: ConfigItem, dom: INode): Promise<null> => new 
 					pathResult = doCompute(DPInit(rule[2] as number, pathResult));
 				}
 
+				// 移除掉末尾无意义的 m 指令
+				let len = pathResult.length;
+				while (pathResult[len - 1].type.toLowerCase() === 'm') {
+					len--;
+					pathResult.length = len;
+				}
+
 				let d = '';
 				pathResult.forEach(pathItem => {
 					d += `${pathItem.type}${stringifyFuncVal(shortenDigit(pathItem, rule[PATH_CONFIG_DIGIT_1] as number, rule[PATH_CONFIG_DIGIT_2] as number))}`;

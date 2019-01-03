@@ -30,3 +30,6 @@ export const animationTimingAttributes = ['begin', 'dur', 'end', 'min', 'max', '
 export const animationValueAttributes = ['calcMode', 'values', 'keyTimes', 'keySplines', 'from', 'to', 'by'];
 export const rectAttributes = ['x', 'y', 'width', 'height'];
 export const transferFunctionElementAttributes = ['type', 'tableValues', 'slope', 'intercept', 'amplitude', 'exponent', 'offset'];
+
+export const validPseudoClass = ['hover', 'link', 'active', 'visited', 'focus', 'first-child', 'lang'];
+export const validPseudoElement = ['first-letter', 'first-line'];
