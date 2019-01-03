@@ -75,7 +75,7 @@ tester(
     <path d="M0,0V100,200,300,299,299" />
     <path d="M5e5.1L0,0,10,0,20,0,50,0,100,0,100,100,0,100Z" />
     <path d="M80 80 A 45 45, 0, 0, 0, 125 125 45 45, 0, 0, 0, 170 80 45 45, 0, 0, 0, 125 35 45 45, 0, 0, 0, 80 80 Z" />
-    <path d="M0 0 Q0 100 100 100 Q 200 100 200 0 Z " />
+    <path d="M0 0 Q0 100 100 100 Q 200 100 200 0 Z m0 0zZzZM100 100 m 30 30" />
     <path d="M 0 0 C 50 0 50 100 100 100 150 100 150 50 150 0Z" />
     </svg>`,
 	'<svg><path d="M0,0V299"/><path d="M5e5.1L0,0H100V100H0z"/><path d="M80,80A45,45,0,1,0,125,35A45,45,0,0,0,80,80z"/><path d="M0,0q0,100,100,100T200,0z"/><path d="M0,0C50,0,50,100,100,100S150,50,150,0z"/></svg>', {
@@ -340,11 +340,17 @@ tester(
         fill: blue;
         fill: yellow;
         flex-wrap: wrap;
-    }
+	}
+	a::first-letter {
+		fill:blue;
+	}
+	text::before {
+		fill:green;
+	}
     </style>
-    <text id="redText">123</text>
+    <a><text id="redText">123</text></a>
     </svg>`,
-	'<svg><style>#redText,text[id^=red]{fill:yellow}</style><text id="redText">123</text></svg>', {
+	'<svg><style>#redText,text[id^=red]{fill:yellow}a::first-letter{fill:blue}</style><a><text id="redText">123</text></a></svg>', {
 		'shorten-style-tag': [true, true]
 	}
 );

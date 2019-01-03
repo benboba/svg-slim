@@ -17,7 +17,7 @@ export function execSelector(selector: string): ISelector[] {
         }
         if (selectorExec[2]) {
             let specialStr = selectorExec[2];
-            const specialReg = new RegExp(`^(?:${idChar}|${classChar}|${attrChar}|${pseudoChar}?:)`);
+            const specialReg = new RegExp(`^(?:${idChar}|${classChar}|${attrChar}|${pseudoChar})`);
             let specialExec = specialReg.exec(specialStr);
             while (specialExec) {
                 switch (specialExec[0][0]) {
@@ -52,8 +52,8 @@ export function execSelector(selector: string): ISelector[] {
                         }
                         break;
                     case ':': // 伪类，伪元素
-                        const pseudoStr = specialExec[0].replace(/^:+/, '');
-                        const parenIndex: number = pseudoStr.indexOf('(');
+                    const pseudoStr = specialExec[0].replace(/^:+/, '');
+                    const parenIndex: number = pseudoStr.indexOf('(');
                         if (parenIndex === -1) {
                             // 不是函数型伪类
                             selectorUnit.pseudo.push({

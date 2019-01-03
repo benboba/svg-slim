@@ -1,5 +1,8 @@
 import { INode } from '../../node';
 import { ISelector, attrModifier } from './define';
+import { validPseudoClass, validPseudoElement } from '../const/definitions';
+import { traversalNode } from '../xml/traversal-node';
+import { isTag } from '../xml/is-tag';
 
 // 验证 selector 和 node 是否匹配
 export const matchSelector = (node: INode | undefined, selector: ISelector): boolean => {
@@ -91,10 +94,35 @@ export const matchSelector = (node: INode | undefined, selector: ISelector): boo
         }
     }
 
-    // TODO：未验证伪类和伪元素
-    // if (selector.pseudo) {
-    //     return true;
-    // }
+    // 验证伪类和伪元素
+    // 根据 SVG 标准只验证 CSS 2.1 规范的伪类和伪元素
+    // https://www.w3.org/TR/SVG2/styling.html#RequiredCSSFeatures
+    if (selector.pseudo) {
+        for (let pi = selector.pseudo.length; pi--; ) {
+            const pseudoSelector = selector.pseudo[pi];
+            if (validPseudoClass.indexOf(pseudoSelector.func) === -1 && validPseudoElement.indexOf(pseudoSelector.func) === -1) {
+                return false;
+            }
+
+            // 命中伪元素，需要验证作用域链上是否存在文本节点 text
+            if (validPseudoElement.indexOf(pseudoSelector.func) !== -1) {
+                let hasText = false;
+                if (node.nodeName === 'text') {
+                    hasText = true;
+                } else {
+                    traversalNode(isTag, (n: INode) => {
+                        console.log(n.nodeName);
+                        if (n.nodeName === 'text') {
+                            hasText = true;
+                        }
+                    }, node);
+                }
+                if (!hasText) {
+                    return false;
+                }
+            }
+        }
+    }
 
     return true;
 };

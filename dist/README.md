@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2019.01.03 v1.2.14
+
+### svg-slimming
+
+* 现在 compute-path 规则会把路径末尾的移动指令(m M)移除
+* 修复了解析 css 伪类伪元素失败的 bug
+* 为 shorten-style-tag 规则增加了伪类和伪元素的验证，按 SVG 规范，只验证 CSS 2.1 规范的伪类和部分伪元素
+
 ## 2019.01.02 v1.2.13
 
 ### svg-slimming

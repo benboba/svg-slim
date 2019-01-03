@@ -261,7 +261,7 @@ const regular_attr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: pathFullMatch // TODO：这里用的是宽泛规则，是否需要采用严格规则 pathFullMatchStrict 验证？
+			reg: pathFullMatch // TODO：这里用的是宽泛规则，严格正则是 pathFullMatchStrict ，但是浏览器存在纠错机制，使用严格正则可能导致意外的过滤
 		}],
 		initValue: '',
 		applyTo: [],

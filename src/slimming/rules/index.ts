@@ -54,7 +54,6 @@ export const rules: RuleItem[] = [
 	[0, shortenID, 'shorten-id'],
 	[0, shortenClass, 'shorten-class'],
 	[0, shortenDefs, 'shorten-defs'],
-	[0, rmHidden, 'rm-hidden'],
 	[0, rmPx, 'rm-px'],
 	[0, combineTransform, 'combine-transform'],
 	[0, shortenStyleAttr, 'shorten-style-attr'],
@@ -69,4 +68,5 @@ export const rules: RuleItem[] = [
 	[0, collapseTextwrap, 'collapse-textwrap'],
 	[1, combineTextNode],
 	[0, rmXMLNS, 'rm-xmlns'],
+	[0, rmHidden, 'rm-hidden'],
 ];
