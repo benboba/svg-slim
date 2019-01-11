@@ -1,4 +1,4 @@
-import { INode } from 'src/node/';
+import { INode, IAttr } from '../../node/';
 import { ISeletorPriority } from '../style/define';
 
 export interface IStyleObj {
@@ -9,12 +9,15 @@ export interface IStyleObj {
     };
 }
 
-export interface IStyleNode extends INode {
+export interface ITagNode extends INode {
+	readonly childNodes: INode[];
+	readonly attributes: IAttr[];
+	cloneNode(): ITagNode;
     styles?: IStyleObj;
-	readonly childNodes: ReadonlyArray<IStyleNode>;
-	parentNode?: IStyleNode;
 }
 
-export interface ISubNode extends INode {
-	parentNode: INode;
+export interface ITextNode extends INode {
+	readonly childNodes: null;
+    readonly attributes: null;
+    textContent: string;
 }

@@ -20,18 +20,19 @@ const aArgLen = 7;
 export const doCompute = (pathArr: IPathItem[]): IPathResultItem[] => {
 	const pathResult: IPathResultItem[] = [];
 	let pos: number[] = [0, 0];
+	// tslint:disable-next-line:cyclomatic-complexity
 	pathArr.forEach(pathItem => {
 		switch (pathItem.type) {
 			// 平移 - 绝对
 			case 'M':
 				// 移动命令只有最后一组有意义
-				const last_M = pathItem.val.length - pathItem.val.length % 2 - 2;
-				pos = computeM(pathItem.val, [minus(pathItem.val[last_M], pos[0]), minus(pathItem.val[last_M + 1], pos[1])], pathResult, pos);
+				const lastM = pathItem.val.length - pathItem.val.length % 2 - 2;
+				pos = computeM(pathItem.val, [minus(pathItem.val[lastM], pos[0]), minus(pathItem.val[lastM + 1], pos[1])], pathResult, pos);
 				break;
 			// 平移 - 相对
 			case 'm':
-				const last_m = pathItem.val.length - pathItem.val.length % 2 - 2;
-				pos = computeM([plus(pathItem.val[last_m], pos[0]), plus(pathItem.val[last_m + 1], pos[1])], pathItem.val, pathResult, pos);
+				const lastm = pathItem.val.length - pathItem.val.length % 2 - 2;
+				pos = computeM([plus(pathItem.val[lastm], pos[0]), plus(pathItem.val[lastm + 1], pos[1])], pathItem.val, pathResult, pos);
 				break;
 			case 'Z':
 			case 'z':
@@ -76,71 +77,71 @@ export const doCompute = (pathArr: IPathItem[]): IPathResultItem[] => {
 			// 三次贝塞尔曲线 - 绝对
 			case 'C':
 				for (let i = 0, l = pathItem.val.length; i < l; i += cArgLen) {
-					const C_args = pathItem.val.slice(i, i + cArgLen);
-					pos = computeC(C_args, C_args.map((s, index) => minus(s, pos[index % 2])), pathResult, pos);
+					const CArgs = pathItem.val.slice(i, i + cArgLen);
+					pos = computeC(CArgs, CArgs.map((s, index) => minus(s, pos[index % 2])), pathResult, pos);
 				}
 				break;
 			// 三次贝塞尔曲线 - 相对
 			case 'c':
 				for (let i = 0, l = pathItem.val.length; i < l; i += cArgLen) {
-					const c_args = pathItem.val.slice(i, i + cArgLen);
-					pos = computeC(c_args.map((s, index) => plus(s, pos[index % 2])), c_args, pathResult, pos);
+					const cArgs = pathItem.val.slice(i, i + cArgLen);
+					pos = computeC(cArgs.map((s, index) => plus(s, pos[index % 2])), cArgs, pathResult, pos);
 				}
 				break;
 			// 三次连续贝塞尔曲线 - 绝对
 			case 'S':
 				for (let i = 0, l = pathItem.val.length; i < l; i += sArgLen) {
-					const S_args = pathItem.val.slice(i, i + sArgLen);
-					pos = computeS(S_args, S_args.map((s, index) => minus(s, pos[index % 2])), pathResult, pos);
+					const SArgs = pathItem.val.slice(i, i + sArgLen);
+					pos = computeS(SArgs, SArgs.map((s, index) => minus(s, pos[index % 2])), pathResult, pos);
 				}
 				break;
 			// 三次连续贝塞尔曲线 - 相对
 			case 's':
 				for (let i = 0, l = pathItem.val.length; i < l; i += sArgLen) {
-					const s_args = pathItem.val.slice(i, i + sArgLen);
-					pos = computeS(s_args.map((s, index) => plus(s, pos[index % 2])), s_args, pathResult, pos);
+					const sArgs = pathItem.val.slice(i, i + sArgLen);
+					pos = computeS(sArgs.map((s, index) => plus(s, pos[index % 2])), sArgs, pathResult, pos);
 				}
 				break;
 			// 二次贝塞尔曲线 - 绝对
 			case 'Q':
 				for (let i = 0, l = pathItem.val.length; i < l; i += qArgLen) {
-					const Q_args = pathItem.val.slice(i, i + qArgLen);
-					pos = computeQ(Q_args, Q_args.map((s, index) => minus(s, pos[index % 2])), pathResult, pos);
+					const QArgs = pathItem.val.slice(i, i + qArgLen);
+					pos = computeQ(QArgs, QArgs.map((s, index) => minus(s, pos[index % 2])), pathResult, pos);
 				}
 				break;
 			// 二次贝塞尔曲线 - 相对
 			case 'q':
 				for (let i = 0, l = pathItem.val.length; i < l; i += qArgLen) {
-					const q_args = pathItem.val.slice(i, i + qArgLen);
-					pos = computeQ(q_args.map((s, index) => plus(s, pos[index % 2])), q_args, pathResult, pos);
+					const qArgs = pathItem.val.slice(i, i + qArgLen);
+					pos = computeQ(qArgs.map((s, index) => plus(s, pos[index % 2])), qArgs, pathResult, pos);
 				}
 				break;
 			// 二次连续贝塞尔曲线 - 绝对
 			case 'T':
 				for (let i = 0, l = pathItem.val.length; i < l; i += 2) {
-					const T_args = pathItem.val.slice(i, i + 2);
-					pos = computeT(T_args, T_args.map((s, index) => minus(s, pos[index % 2])), pathResult, pos);
+					const TArgs = pathItem.val.slice(i, i + 2);
+					pos = computeT(TArgs, TArgs.map((s, index) => minus(s, pos[index % 2])), pathResult, pos);
 				}
 				break;
 			// 二次连续贝塞尔曲线 - 相对
 			case 't':
 				for (let i = 0, l = pathItem.val.length; i < l; i += 2) {
-					const t_args = pathItem.val.slice(i, i + 2);
-					pos = computeT(t_args.map((s, index) => plus(s, pos[index % 2])), t_args, pathResult, pos);
+					const tArgs = pathItem.val.slice(i, i + 2);
+					pos = computeT(tArgs.map((s, index) => plus(s, pos[index % 2])), tArgs, pathResult, pos);
 				}
 				break;
 			// 圆弧 - 绝对
 			case 'A':
 				for (let i = 0, l = pathItem.val.length; i < l; i += aArgLen) {
-					const A_args = pathItem.val.slice(i, i + aArgLen);
-					pos = computeA(A_args, A_args.map((s, index) => index < APOS_X ? s : minus(s, pos[1 - (index % 2)])), pathResult, pos);
+					const AArgs = pathItem.val.slice(i, i + aArgLen);
+					pos = computeA(AArgs, AArgs.map((s, index) => index < APOS_X ? s : minus(s, pos[1 - (index % 2)])), pathResult, pos);
 				}
 				break;
 			// 圆弧 - 相对
 			case 'a':
 				for (let i = 0, l = pathItem.val.length; i < l; i += aArgLen) {
-					const a_args = pathItem.val.slice(i, i + aArgLen);
-					pos = computeA(a_args.map((s, index) => index < APOS_X ? s : plus(s, pos[1 - (index % 2)])), a_args, pathResult, pos);
+					const aArgs = pathItem.val.slice(i, i + aArgLen);
+					pos = computeA(aArgs.map((s, index) => index < APOS_X ? s : plus(s, pos[1 - (index % 2)])), aArgs, pathResult, pos);
 				}
 				break;
 			default:

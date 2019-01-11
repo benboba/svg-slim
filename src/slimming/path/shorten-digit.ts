@@ -6,12 +6,16 @@ export const shortenDigit = (pathItem: IPathResultItem, digit1: number, digit2: 
     if (pathItem.type.toLowerCase() === 'a') {
         return pathItem.val.map((val, index) => {
             const i = index % APOS_LEN;
-            if (i === APOS_RX || i === APOS_RY || i === APOS_X || i === APOS_Y) {
-                return toFixed(digit1, val);
-            } else if (i === APOS_ROTATION) {
-                return toFixed(digit2, val);
-            } else {
-                return val;
+            switch (i) {
+                case APOS_RX:
+                case APOS_RY:
+                case APOS_X:
+                case APOS_Y:
+                    return toFixed(digit1, val);
+                case APOS_ROTATION:
+                    return toFixed(digit2, val);
+                default:
+                    return val;
             }
         });
     } else {

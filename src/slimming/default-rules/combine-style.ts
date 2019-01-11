@@ -1,22 +1,23 @@
 import { propEq } from 'ramda';
 import { INode, NodeType } from '../../node/index';
+import { ITagNode } from '../interface/node';
 import { mixWhiteSpace } from '../utils/mix-white-space';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
 
 // 合并多个 style 标签，并将文本节点合并到一个子节点
-export const combineStyle = (dom: INode): Promise<null> => new Promise((resolve, reject) => {
-    let firstStyle: INode;
-    let lastChildNode: INode;
+export const combineStyle = async (dom: INode): Promise<null> => new Promise((resolve, reject) => {
+    let firstStyle: ITagNode | undefined;
+    let lastChildNode: INode | undefined;
 
-    const checkCNode = (node: INode) => {
+    const checkCNode = (node: ITagNode) => {
         for (let i = 0; i < node.childNodes.length; i++) {
             const cNode = node.childNodes[i];
             if (cNode.nodeType !== NodeType.Text && cNode.nodeType !== NodeType.CDATA) {
                 rmNode(cNode);
                 i--;
             } else {
-                cNode.textContent = mixWhiteSpace(cNode.textContent.trim());
+                cNode.textContent = mixWhiteSpace((cNode.textContent as string).trim());
                 if (cNode.nodeType === NodeType.Text) {
                     cNode.nodeType = NodeType.CDATA;
                 }
@@ -31,7 +32,7 @@ export const combineStyle = (dom: INode): Promise<null> => new Promise((resolve,
         }
     };
 
-    traversalNode(propEq('nodeName', 'style'), (node: INode) => {
+    traversalNode<ITagNode>(propEq('nodeName', 'style'), node => {
         if (firstStyle) {
             checkCNode(node);
             rmNode(node);
@@ -43,8 +44,8 @@ export const combineStyle = (dom: INode): Promise<null> => new Promise((resolve,
 
     if (firstStyle) {
         const childNodes = firstStyle.childNodes;
-        if (childNodes.length === 0 || !childNodes[0].textContent.replace(/\s/g, '')) { // 如果内容为空，则移除style节点
-            firstStyle.parentNode.removeChild(firstStyle);
+        if (childNodes.length === 0 || !childNodes[0].textContent || !childNodes[0].textContent.replace(/\s/g, '')) { // 如果内容为空，则移除style节点
+            rmNode(firstStyle);
         } else if (childNodes[0].textContent.indexOf('<') === -1) { // 如果没有危险代码，则由 CDATA 转为普通文本类型
             childNodes[0].nodeType = NodeType.Text;
         }

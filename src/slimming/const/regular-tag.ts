@@ -17,7 +17,7 @@ interface IRegularTagDefine {
 }
 
 // tag define
-const regular_tag: IRegularTagDefine = {
+const _regularTag: IRegularTagDefine = {
 	'a': {
 		containTextNode: true,
 		legalChildElements: { transparent: true, noself: true, childElements: [] },
@@ -363,8 +363,8 @@ const regular_tag: IRegularTagDefine = {
 const undefTag: IRegularTag = {
 	isUndef: true,
 	containTextNode: false,
-	legalChildElements: null,
-	ownAttributes: null,
+	legalChildElements: {},
+	ownAttributes: [],
 };
 
 export interface IRegularTag {
@@ -374,7 +374,7 @@ export interface IRegularTag {
 	ownAttributes: string[];
 }
 
-export const regularTag = new Proxy(regular_tag, {
+export const regularTag = new Proxy(_regularTag, {
 	get(obj, prop: string): IRegularTag {
 		return prop in obj ? obj[prop] : undefTag;
 	}

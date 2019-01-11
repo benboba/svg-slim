@@ -1,5 +1,5 @@
 import { has, pipe, propEq } from 'ramda';
-import { INode } from '../../node/index';
+import { INode, IAttr } from '../../node/index';
 import { ConfigItem } from '../config/config';
 import { IRegularAttr, regularAttr } from '../const/regular-attr';
 import { IAttrObj } from '../interface/attr-obj';
@@ -11,12 +11,13 @@ import { stringifyStyle } from '../style/stringify';
 import { legalValue } from '../validate/legal-value';
 import { isTag } from '../xml/is-tag';
 import { traversalNode } from '../xml/traversal-node';
+import { ITagNode } from '../interface/node';
 
 // 属性转 style 的临界值
 const styleThreshold = 4;
 const style2value = pipe(stringifyStyle, shortenStyle);
 
-export const shortenStyleAttr = (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const shortenStyleAttr = async (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		let hasStyleTag = false;
 
@@ -24,7 +25,7 @@ export const shortenStyleAttr = (rule: ConfigItem, dom: INode): Promise<null> =>
 			hasStyleTag = true;
 		}, dom);
 
-		traversalNode(isTag, (node: INode) => {
+		traversalNode<ITagNode>(isTag, node => {
 			const attrObj: IAttrObj = {};
 			for (let i = node.attributes.length; i--; ) {
 				const attr = node.attributes[i];
@@ -76,12 +77,11 @@ export const shortenStyleAttr = (rule: ConfigItem, dom: INode): Promise<null> =>
 
 			if (!hasStyleTag || rule[1]) {
 				// [warning] svg 的样式覆盖规则是 style 属性 > style 标签 > 属性，所以以下代码可能导致不正确的覆盖！
-				const attributes = node.attributes;
 				if (Object.keys(attrObj).length > styleThreshold) {
 
 					// 属性转 style
-					for (let j = attributes.length; j--; ) {
-						const attr = attributes[j];
+					for (let j = node.attributes.length; j--; ) {
+						const attr = node.attributes[j];
 						if (regularAttr[attr.fullname].couldBeStyle || attr.fullname === 'style') {
 							node.removeAttribute(attr.fullname);
 						}
@@ -98,8 +98,9 @@ export const shortenStyleAttr = (rule: ConfigItem, dom: INode): Promise<null> =>
 
 					// style 转属性
 					node.removeAttribute('style');
-					attributes.forEach(attr => {
+					node.attributes.forEach(attr => {
 						if (has(attr.fullname, attrObj)) {
+							// tslint:disable-next-line:no-dynamic-delete
 							delete attrObj[attr.fullname];
 						}
 					});

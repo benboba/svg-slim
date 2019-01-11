@@ -8,7 +8,7 @@ export const computeH = (absolute: number, relative: number, pathResult: IPathRe
 	const rLen = pathResult.length;
 	// 如果前一个函数也是水平移动，判断是否可以合并
 	if (rLen > 0 && pathResult[rLen - 1].type.toLowerCase() === 'h') {
-		const lastItem: IPathResultItem = pathResult.pop();
+		const lastItem: IPathResultItem = pathResult.pop() as IPathResultItem;
 		// 判断的依据是：相对值的积为正数（即同向移动）
 		if (lastItem.type === 'h') {
 			if (lastItem.val[0] * relative >= 0) {

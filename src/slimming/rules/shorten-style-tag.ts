@@ -1,6 +1,5 @@
 import { AtRule, Declaration, KeyFrame, parse as cssParse, Rule, stringify as cssStringify, StyleRules } from 'css';
 import { has, propEq } from 'ramda';
-import { INode } from '../../node/index';
 import { ConfigItem } from '../config/config';
 import { regularAttr } from '../const/regular-attr';
 import { IUnique } from '../interface/unique';
@@ -11,14 +10,16 @@ import { legalValue } from '../validate/legal-value';
 import { getBySelector } from '../xml/get-by-selector';
 import { traversalNode } from '../xml/traversal-node';
 import { execSelector } from '../style/exec-selector';
+import { ITagNode } from '../interface/node';
+import { INode } from '../../node';
 
 interface ICSSUnique {
 	[propName: string]: Rule;
 }
 
-export const shortenStyleTag = (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
-	if (rule[0]){
-		traversalNode(propEq('nodeName', 'style'), (node: INode) => {
+export const shortenStyleTag = async (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+	if (rule[0]) {
+		traversalNode<ITagNode>(propEq('nodeName', 'style'), node => {
 			const cssContent = node.childNodes[0];
 			const parsedCss = cssParse(cssContent.textContent as string);
 			const cssRules = (parsedCss.stylesheet as StyleRules).rules;
@@ -28,7 +29,7 @@ export const shortenStyleTag = (rule: ConfigItem, dom: INode): Promise<null> => 
 				const declared: IUnique = {};
 				const declarations = cssRule.declarations as Declaration[];
 				for (let i = declarations.length; i--; ) {
-					const ruleItem = declarations[i] as Declaration;
+					const ruleItem = declarations[i];
 					const property = ruleItem.property as string;
 					/*
 					 * 1、排重
@@ -82,8 +83,8 @@ export const shortenStyleTag = (rule: ConfigItem, dom: INode): Promise<null> => 
 						theSelectors.sort((a, b) => a < b ? -1 : 1);
 						styleRule.selectors = theSelectors.map(s => mixWhiteSpace(s.trim()));
 						const selectorKey = styleRule.selectors.join(',');
-						if (selectorUnique[selectorKey]) {
-							const declarations = (selectorUnique[selectorKey].declarations as Declaration[]).concat(styleRule.declarations as Declaration[]) as Declaration[];
+						if (selectorUnique.hasOwnProperty(selectorKey)) {
+							const declarations = (selectorUnique[selectorKey].declarations as Declaration[]).concat(styleRule.declarations as Declaration[]);
 							// 合并之后依然要排重
 							const declared: IUnique = {};
 							for (let j = declarations.length; j--; ) {
@@ -105,7 +106,7 @@ export const shortenStyleTag = (rule: ConfigItem, dom: INode): Promise<null> => 
 						// 合并相同规则
 						(styleRule.declarations as Declaration[]).sort((a: Declaration, b: Declaration) => (a.property as string) < (b.property as string) ? -1 : 1);
 						const declareKey = (styleRule.declarations as Declaration[]).map((d: Declaration) => `${d.property}:${d.value}`).join(';');
-						if (declareUnique[declareKey]) {
+						if (declareUnique.hasOwnProperty(declareKey)) {
 							const selectors: string[] = (declareUnique[declareKey].selectors as string[]).concat(styleRule.selectors);
 							const selected: IUnique = {};
 							for (let j = selectors.length; j--; ) {

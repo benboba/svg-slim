@@ -1,34 +1,35 @@
 import { INode, NodeType } from '../../node/index';
 import { mixWhiteSpace } from '../utils/mix-white-space';
+import { ITagNode } from '../interface/node';
 
 export function createNode(node: INode): string {
 	let xml = '';
+	const textContent = node.textContent;
 	switch (node.nodeType) {
 		case NodeType.Tag:
-			xml += createTag(node);
+			xml += createTag(node as ITagNode);
 			break;
 		case NodeType.Text:
-			xml += node.textContent;
+			xml += textContent;
 			break;
 		case NodeType.XMLDecl:
-			xml += `<?xml${mixWhiteSpace(` ${node.textContent}`).replace(/\s(?="|=|$)/g, '')}?>`;
+			xml += `<?xml${mixWhiteSpace(` ${textContent}`).replace(/\s(?="|=|$)/g, '')}?>`;
 			break;
 		case NodeType.Comments:
-			const comments = mixWhiteSpace(node.textContent).trim();
+			const comments = mixWhiteSpace(textContent as string).trim();
 			if (comments) {
 				xml += `<!--${comments}-->`;
 			}
 			break;
 		case NodeType.CDATA:
-			const cdata = node.textContent;
-			if (cdata.indexOf('<') === -1) {
-				xml += cdata;
+			if ((textContent as string).indexOf('<') === -1) {
+				xml += textContent;
 			} else {
-				xml += `<![CDATA[${cdata}]]>`;
+				xml += `<![CDATA[${textContent}]]>`;
 			}
 			break;
 		case NodeType.DocType:
-			xml += `<!DOCTYPE${mixWhiteSpace(` ${node.textContent.trim()}`)}>`;
+			xml += `<!DOCTYPE${mixWhiteSpace(` ${(textContent as string).trim()}`)}>`;
 			break;
 		default:
 			break;
@@ -36,7 +37,7 @@ export function createNode(node: INode): string {
 	return xml;
 }
 
-export function createTag(node: INode): string {
+export function createTag(node: ITagNode): string {
 	let xml = '';
 	xml += `<${node.namespace ? `${node.namespace}:` : ''}${node.nodeName}`;
 	if (node.attributes.length) {
@@ -59,7 +60,7 @@ export function createTag(node: INode): string {
 	return xml;
 }
 
-export const createXML = (dom: INode): string => {
+export const createXML = (dom: ITagNode | undefined | null): string => {
 	if (!dom) {
 		return '';
 	}

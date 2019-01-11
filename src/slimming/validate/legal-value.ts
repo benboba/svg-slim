@@ -12,13 +12,13 @@ export const legalValue = (attrDefine: IRegularAttr, attr: IAttr, nodeName = '')
 			switch (legalRule.type) {
 				// 用正则判断
 				case 'reg':
-					if (useReg(legalRule.reg, attr.value) && legalTag) {
+					if (legalRule.reg && useReg(legalRule.reg, attr.value) && legalTag) {
 						return true;
 					}
 					break;
 				// 用枚举判断
 				case 'enum':
-					if (useEnum(legalRule.enum, attr.value) && legalTag) {
+					if (legalRule.enum && useEnum(legalRule.enum, attr.value) && legalTag) {
 						return true;
 					}
 					break;
@@ -27,11 +27,13 @@ export const legalValue = (attrDefine: IRegularAttr, attr: IAttr, nodeName = '')
 					if (!regularAttr[attr.value].isUndef && attr.fullname !== attr.value && legalTag) {
 						return true;
 					}
+					break;
 				// 值应该是一个特定字符串
 				case 'string':
 					if (legalRule.string === attr.value && legalTag) {
 						return true;
 					}
+					break;
 				default:
 					break;
 			}

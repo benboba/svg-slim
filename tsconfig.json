@@ -4,10 +4,7 @@
 		"module": "commonjs",
 		"moduleResolution": "node",
 		"baseUrl": ".",
-		"noImplicitAny": true,
-		"noImplicitThis": true,
-		"alwaysStrict": true,
-		"strictFunctionTypes": true,
+		"strict": true,
 		"paths": {
 			"ramda": [
 				"location-of-types/npm-ramda-package/index"

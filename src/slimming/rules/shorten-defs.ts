@@ -1,5 +1,5 @@
 import { propEq } from 'ramda';
-import { INode } from '../../node/index';
+import { INode, IAttr } from '../../node/index';
 import { ConfigItem } from '../config/config';
 import { regularAttr } from '../const/regular-attr';
 import { funcIRIToID, IRIFullMatch } from '../const/syntax';
@@ -7,12 +7,12 @@ import { IUnique } from '../interface/unique';
 import { isTag } from '../xml/is-tag';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
+import { ITagNode } from '../interface/node';
 
-const checkSub = (node: INode, IDList: IUnique) => {
+const checkSub = (node: ITagNode, IDList: IUnique) => {
 	let hasId = false;
-	const attributes = node.attributes;
-	for (let i = attributes.length; i--; ) {
-		const attr = attributes[i];
+	for (let i = node.attributes.length; i--; ) {
+		const attr = node.attributes[i];
 		if (attr.fullname === 'id') {
 			if (IDList[attr.value]) {
 				hasId = true;
@@ -23,11 +23,10 @@ const checkSub = (node: INode, IDList: IUnique) => {
 		}
 	}
 	if (!hasId) {
-		const childNodes = node.childNodes;
-		for (let ci = childNodes.length; ci--; ) {
-			const childNode = childNodes[ci];
+		for (let ci = node.childNodes.length; ci--; ) {
+			const childNode = node.childNodes[ci];
 			if (isTag(childNode)) {
-				checkSub(childNode, IDList);
+				checkSub(childNode as ITagNode, IDList);
 			} else {
 				rmNode(childNode);
 			}
@@ -38,13 +37,13 @@ const checkSub = (node: INode, IDList: IUnique) => {
 	}
 };
 
-export const shortenDefs = (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const shortenDefs = async (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
-		let firstDefs: INode;
+		let firstDefs: ITagNode | undefined;
 		const IDList: IUnique = {};
 
 		// 首先取出所有被引用的 ID
-		traversalNode(isTag, (node: INode) => {
+		traversalNode<ITagNode>(isTag, node => {
 			node.attributes.forEach(attr => {
 				if (regularAttr[attr.fullname].maybeFuncIRI) {
 					const firi = funcIRIToID.exec(attr.value);
@@ -61,10 +60,10 @@ export const shortenDefs = (rule: ConfigItem, dom: INode): Promise<null> => new 
 		}, dom);
 
 		// 合并 defs 标签
-		traversalNode(propEq('nodeName', 'defs'), (node: INode) => {
+		traversalNode<ITagNode>(propEq('nodeName', 'defs'), node => {
 			if (firstDefs) {
 				node.childNodes.forEach(childNode => {
-					firstDefs.appendChild(childNode);
+					(firstDefs as INode).appendChild(childNode);
 				});
 				rmNode(node);
 			} else {

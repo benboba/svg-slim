@@ -14,25 +14,28 @@ import { INode } from '../../node';
 import { numberGlobal } from '../const/syntax';
 import { toScientific } from '../utils/to-scientific';
 import { shortenNumberList } from '../utils/shorten-number-list';
+import { ITagNode } from '../interface/node';
 
     // 移除掉正、负号前面的逗号，移除掉0.前面的0，移除掉.1,.1或e1,.1这种case中间的逗号
 const doShorten = curry((digit: number, val: string) => shortenNumberList(val.replace(numberGlobal, s => `${toScientific(toFixed(digit, parseFloat(s)))}`)));
 
-export const shortenDecimalDigits = (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const shortenDecimalDigits = async (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		const fuzzyDigit = doShorten(rule[1] as number);
 		const accurateDigit = doShorten(rule[2] as number);
-		traversalNode(isTag, node => {
+		traversalNode<ITagNode>(isTag, node => {
 			if (node.nodeName === 'style') {
 
 				// 缩短 style 标签内的数值
-				const parsedCss = cssParse(node.childNodes[0].textContent, { silent: true });
-				if (parsedCss) {
+				const parsedCss = cssParse(node.childNodes[0].textContent as string, { silent: true });
+				if (parsedCss.stylesheet) {
 					traversalObj(both(has('property'), has('value')), (cssRule: Declaration) => {
-						if (regularAttr[cssRule.property].maybeSizeNumber) { // 可以模糊处理的数字
-							cssRule.value = fuzzyDigit(cssRule.value);
-						} else if (regularAttr[cssRule.property].maybeAccurateNumber) { // 需要较精确的数字
-							cssRule.value = accurateDigit(cssRule.value);
+						if (cssRule.property && cssRule.value) {
+							if (regularAttr[cssRule.property].maybeSizeNumber) { // 可以模糊处理的数字
+								cssRule.value = fuzzyDigit(cssRule.value);
+							} else if (regularAttr[cssRule.property].maybeAccurateNumber) { // 需要较精确的数字
+								cssRule.value = accurateDigit(cssRule.value);
+							}
 						}
 					}, parsedCss.stylesheet.rules);
 					node.childNodes[0].textContent = shortenTag(cssStringify(parsedCss, { compress: true }));
@@ -50,10 +53,12 @@ export const shortenDecimalDigits = (rule: ConfigItem, dom: INode): Promise<null
 				} else if (regularAttr[attr.fullname].maybeAccurateNumber) { // 需要较精确的数字
 					attr.value = accurateDigit(attr.value);
 				} else if (animationAttributes.indexOf(attr.fullname) !== -1) { // 动画处理的属性，需要根据 attributeName 属性判断
-					if (regularAttr[attributeName].maybeSizeNumber) {
-						attr.value = fuzzyDigit(attr.value);
-					} else if (regularAttr[attributeName].maybeAccurateNumber) {
-						attr.value = accurateDigit(attr.value);
+					if (attributeName) {
+						if (regularAttr[attributeName].maybeSizeNumber) {
+							attr.value = fuzzyDigit(attr.value);
+						} else if (regularAttr[attributeName].maybeAccurateNumber) {
+							attr.value = accurateDigit(attr.value);
+						}
 					}
 				} else if (attr.fullname === 'style') { // css 样式处理，和属性类似
 					const style = execStyle(attr.value);

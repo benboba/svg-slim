@@ -16,14 +16,17 @@ const canTransformS = (pathResult: IPathResultItem[], rLen: number, x1: number, 
 	if (rLen > 0) {
 		const lastItem = pathResult[rLen - 1];
 		const type = lastItem.type;
-		if (type === 'C') {
-			return matchControl(lastItem.val.slice(CPOS_X2), 0, 0, x1, y1);
-		} else if (type === 'c') {
-			return matchControl(lastItem.val.slice(CPOS_X2), lastItem.from[0], lastItem.from[1], x1, y1);
-		} else if (type === 'S') {
-			return matchControl(lastItem.val, 0, 0, x1, y1);
-		} else if (type === 's') {
-			return matchControl(lastItem.val, lastItem.from[0], lastItem.from[1], x1, y1);
+		switch (type) {
+			case 'C':
+				return matchControl(lastItem.val.slice(CPOS_X2), 0, 0, x1, y1);
+			case 'c':
+				return matchControl(lastItem.val.slice(CPOS_X2), lastItem.from[0], lastItem.from[1], x1, y1);
+			case 'S':
+				return matchControl(lastItem.val, 0, 0, x1, y1);
+			case 's':
+				return matchControl(lastItem.val, lastItem.from[0], lastItem.from[1], x1, y1);
+			default:
+				return false;
 		}
 	}
 	return false;

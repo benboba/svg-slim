@@ -1,8 +1,10 @@
 // 合并属性和样式完全相同的路径
 import { has } from 'ramda';
-import { IAttr } from 'src/node';
+import { IAttr, INode } from '../../node';
+import { exec as execColor } from '../color/exec';
+import { validOpacity } from '../color/valid';
 import { ConfigItem } from '../config/config';
-import { IStyleNode } from '../interface/node';
+import { IStyleObj, ITagNode } from '../interface/node';
 // import { doCompute } from '../path/do-compute';
 // import { execPath } from '../path/exec';
 import { execStyleTree } from '../xml/exec-style-tree';
@@ -14,7 +16,7 @@ import { traversalNode } from '../xml/traversal-node';
 interface IPathChildrenItem {
 	attr: IAttr;
 	index: number;
-	node: IStyleNode;
+	node: ITagNode;
 }
 
 interface IPathChildren {
@@ -99,36 +101,52 @@ interface IPathChildren {
 // 	return true;
 // }
 
-function canbeCombine(node1: IStyleNode, node2: IStyleNode, attr: IAttr): boolean {
-	const styles = node1.styles;
-	return !!(styles.fill && styles.fill.value === 'none') || !styles.stroke || styles.stroke.value === 'none'/* || noJoin(attr.value, node2.getAttribute('d'))*/;
+function execOpacity(opacity: string): number {
+	if (opacity[opacity.length - 1] === '%') {
+		return validOpacity(opacity.length, '%', opacity.slice(0, opacity.length - 1));
+	} else {
+		return validOpacity(opacity.length, '', opacity);
+	}
 }
 
-function getKey(node: IStyleNode): string {
+function canbeCombine(node1: ITagNode, node2: ITagNode, attr: IAttr, combineFill: boolean, combineOpacity: boolean): boolean {
+	const styles = node1.styles as IStyleObj;
+	const noOpacity: boolean = !styles.hasOwnProperty('opacity') || execOpacity(styles.opacity.value) === 1;
+	const noStrokeOpacity: boolean = execColor(styles.hasOwnProperty('stroke') ? styles.stroke.value : '').a === 1 && (!styles.hasOwnProperty('stroke-opacity') || execOpacity(styles['stroke-opacity'].value) === 1);
+	const noFillOpacity: boolean = execColor(styles.hasOwnProperty('fill') ? styles.fill.value : '').a === 1 && (!styles.hasOwnProperty('fill-opacity') || execOpacity(styles['fill-opacity'].value) === 1);
+	// fill 为空
+	const noFill: boolean = styles.hasOwnProperty('fill') && styles.fill.value === 'none' && (combineOpacity || (noOpacity && noStrokeOpacity));
+	// stroke 为空
+	const noStroke: boolean = (!styles.hasOwnProperty('stroke') || styles.stroke.value === 'none') && (combineOpacity || (noOpacity && noFillOpacity));
+	return noFill || (combineFill && noStroke)/* || noJoin(attr.value, node2.getAttribute('d'))*/;
+}
+
+function getKey(node: ITagNode): string {
 	const keyObj = {
 		attr: '',
 		inline: '',
 		styletag: '',
 		inherit: ''
 	};
-	Object.keys(node.styles).forEach(key => {
-		const define = node.styles[key];
+	const styles = node.styles as IStyleObj;
+	Object.keys(styles).forEach(key => {
+		const define = styles[key];
 		keyObj[define.from] += `${key}=${define.value}&`;
 	});
 	return `attr:${keyObj.attr}|inline:${keyObj.inline}|styletag:${keyObj.styletag}|inherit:${keyObj.inherit}`;
 }
 
-export const combinePath = (rule: ConfigItem, dom: IStyleNode): Promise<null> => new Promise((resolve, reject) => {
+export const combinePath = async (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
-		execStyleTree(dom);
+		execStyleTree(dom as ITagNode);
 
-		traversalNode(isTag, (node: IStyleNode) => {
+		traversalNode<ITagNode>(isTag, node => {
 			const pathChildren: IPathChildren = {};
 			let tagIndex = 0;
 			for (let i = 0; i < node.childNodes.length; i++) {
-				const childNode = node.childNodes[i];
+				const childNode = node.childNodes[i] as ITagNode;
 				if (childNode.nodeName === 'path') {
-					let d: IAttr;
+					let d: IAttr | undefined;
 					let k = '';
 					childNode.attributes.forEach(attr => {
 						if (attr.fullname === 'd') {
@@ -141,8 +159,8 @@ export const combinePath = (rule: ConfigItem, dom: IStyleNode): Promise<null> =>
 					if (d) {
 						const key = `${k}|${getKey(childNode)}`;
 						if (has(key, pathChildren)) {
-							// 允许路径合并的条件：1、所有属性和样式（包括继承样式）相同；2、相邻；3、没有 fill 或 stroke；4、路径没有相交或包含（未实现）
-							if (pathChildren[key].index === tagIndex - 1 && canbeCombine(childNode, pathChildren[key].node, d)) {
+							// 允许路径合并的条件：1、所有属性和样式（包括继承样式）相同；2、相邻；3、没有 fill 或 stroke；4、所有可见透明度 ≥ 1；5、路径没有相交或包含（未实现）
+							if (pathChildren[key].index === tagIndex - 1 && canbeCombine(childNode, pathChildren[key].node, d, rule[1] as boolean, rule[2] as boolean)) {
 								// 路径拼合时，第一个 m 要转为绝对，否则会有 bug
 								pathChildren[key].attr.value += d.value.replace(/^m/, 'M');
 								rmNode(childNode);

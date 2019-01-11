@@ -5,7 +5,7 @@ import { REG_XML_DECL, REG_CDATA_SECT, REG_OTHER_SECT, REG_DOCTYPE, REG_OTHER_DE
 
 import { collapseQuot } from './utils';
 import { mixWhiteSpace } from '../slimming/utils/mix-white-space';
-import { IUnique } from 'src/slimming/interface/unique';
+import { IUnique } from '../slimming/interface/unique';
 
 const configs: ([number, string, RegExp, number] | [number, RegExp, number])[] = [
 	[1, 'xml-decl', REG_XML_DECL, NodeType.XMLDecl],
@@ -207,7 +207,7 @@ const parse = (str: string, status: IStatus): { node:Node, str: string } => {
 	}
 };
 
-export function Parser(str: string): Promise<Node> {
+export async function Parser(str: string): Promise<Node> {
 
 	return new Promise((resolve, reject) => {
 		const doc = new Node({
@@ -263,7 +263,8 @@ export function Parser(str: string): Promise<Node> {
 					// 结束标签和开始标签匹配
 					if (stack[stackLen - 1].nodeName === current.node.nodeName && stack[stackLen - 1].namespace === current.node.namespace) {
 						// 无子节点，则转为自闭合节点
-						if (!stack[stackLen - 1].childNodes.length) {
+						const childNodes = stack[stackLen - 1].childNodes;
+						if (!childNodes || !childNodes.length) {
 							stack[stackLen - 1].selfClose = true;
 						}
 						stack.pop();

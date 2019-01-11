@@ -29,8 +29,8 @@ export interface INode {
 	selfClose?: boolean;
 	textContent?: string;
 
-	readonly attributes: ReadonlyArray<IAttr>;
-	readonly childNodes: ReadonlyArray<INode>;
+	readonly attributes: ReadonlyArray<IAttr> | null;
+	readonly childNodes: ReadonlyArray<INode> | null;
 
 	parentNode?: INode;
 
@@ -42,7 +42,7 @@ export interface INode {
 	removeChild(childNode: INode): void;
 
     hasAttribute(name: string, namespace?: string): boolean;
-	getAttribute(name: string, namespace?: string): string;
+	getAttribute(name: string, namespace?: string): string | null;
 	setAttribute(name: string, value: string, namespace?: string): void;
 	removeAttribute(name: string, namespace?: string): void;
 }

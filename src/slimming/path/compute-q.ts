@@ -13,14 +13,17 @@ const canTransformT = (pathResult: IPathResultItem[], rLen: number, x1: number, 
 	if (rLen > 0) {
 		const lastItem = pathResult[rLen - 1];
 		const type = lastItem.type;
-		if (type === 'Q') {
-			return matchControl(lastItem.val, 0, 0, x1, y1);
-		} else if (type === 'q') {
-			return matchControl(lastItem.val, lastItem.from[0], lastItem.from[1], x1, y1);
-		} else if (type === 'T') {
-			return matchControl(lastItem.from.slice(2).concat(lastItem.val), lastItem.from[0], lastItem.from[1], x1, y1);
-		} else if (type === 't') {
-			return matchControl(lastItem.from.slice(2).concat(lastItem.val), lastItem.from[0], lastItem.from[1], x1, y1);
+		switch (type) {
+			case 'Q':
+				return matchControl(lastItem.val, 0, 0, x1, y1);
+			case 'q':
+				return matchControl(lastItem.val, lastItem.from[0], lastItem.from[1], x1, y1);
+			case 'T':
+				return matchControl(lastItem.from.slice(2).concat(lastItem.val), lastItem.from[0], lastItem.from[1], x1, y1);
+			case 't':
+				return matchControl(lastItem.from.slice(2).concat(lastItem.val), lastItem.from[0], lastItem.from[1], x1, y1);
+			default:
+				return false;
 		}
 	}
 	return false;

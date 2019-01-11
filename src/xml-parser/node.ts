@@ -29,12 +29,12 @@ export class Node implements INode {
 	public textContent?: string;
 
 	private _attributes?: IAttr[];
-	public get attributes(): ReadonlyArray<IAttr> {
+	public get attributes(): ReadonlyArray<IAttr> | null {
 		return this._attributes ? Object.freeze(this._attributes.slice()) : null;
 	}
 
-	private _childNodes?: INode[];
-	public get childNodes() : ReadonlyArray<INode> {
+	private readonly _childNodes?: INode[];
+	public get childNodes() : ReadonlyArray<INode> | null {
 		return this._childNodes ? Object.freeze(this._childNodes.slice()) : null;
 	}
 
@@ -69,7 +69,7 @@ export class Node implements INode {
 		if (this._childNodes) {
 			// 如果子节点原本有父节点，则先从原本的父节点中移除
 			if (childNode.parentNode && childNode.parentNode !== this) {
-				const pindex = childNode.parentNode.childNodes.indexOf(childNode);
+				const pindex = (childNode.parentNode.childNodes as INode[]).indexOf(childNode);
 				if (pindex !== -1) {
 					childNode.parentNode.removeChild(childNode);
 				}
@@ -90,14 +90,14 @@ export class Node implements INode {
 	public insertBefore(childNode: INode, previousTarget: INode): void {
 		if (this._childNodes) {
 			// 首先判断目标节点是否在自己的子节点列表中
-			let pindex = this._childNodes.indexOf(previousTarget);
+			const pindex = this._childNodes.indexOf(previousTarget);
 			if (pindex !== -1) {
 				// 首先判断子节点是否在自己的子节点列表中，如果在，则先移除
 				const index = this._childNodes.indexOf(childNode);
 				if (index !== -1) {
 					this._childNodes.splice(index, 1);
 				}
-				childNode.parentNode = null;
+				delete childNode.parentNode;
 			}
 		}
 	}
@@ -108,7 +108,7 @@ export class Node implements INode {
 			const index = this._childNodes.indexOf(childNode);
 			if (index !== -1) {
 				this._childNodes.splice(index, 1, ...children);
-				childNode.parentNode = null;
+				delete childNode.parentNode;
 				children.forEach(child => {
 					child.parentNode = this;
 				});
@@ -122,7 +122,7 @@ export class Node implements INode {
 			const index = this._childNodes.indexOf(childNode);
 			if (index !== -1) {
 				this._childNodes.splice(index, 1);
-				childNode.parentNode = null;
+				delete childNode.parentNode;
 			}
 		}
 	}
@@ -139,7 +139,7 @@ export class Node implements INode {
 		return false;
 	}
 
-	public getAttribute(name: string, namespace?: string): string {
+	public getAttribute(name: string, namespace?: string): string | null {
 		if (this._attributes) {
 			for (const attr of this._attributes) {
 				if ((!namespace && attr.fullname === name) || (attr.name === name && attr.namespace === namespace)) {

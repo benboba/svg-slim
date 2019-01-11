@@ -24,8 +24,8 @@ export interface INode {
     namespace?: string;
     selfClose?: boolean;
     textContent?: string;
-    readonly attributes: ReadonlyArray<IAttr>;
-    readonly childNodes: ReadonlyArray<INode>;
+    readonly attributes: ReadonlyArray<IAttr> | null;
+    readonly childNodes: ReadonlyArray<INode> | null;
     parentNode?: INode;
     cloneNode(): INode;
     appendChild(childNode: INode): void;
@@ -33,7 +33,7 @@ export interface INode {
     replaceChild(childNode: INode, ...children: INode[]): void;
     removeChild(childNode: INode): void;
     hasAttribute(name: string, namespace?: string): boolean;
-    getAttribute(name: string, namespace?: string): string;
+    getAttribute(name: string, namespace?: string): string | null;
     setAttribute(name: string, value: string, namespace?: string): void;
     removeAttribute(name: string, namespace?: string): void;
 }
@@ -54,9 +54,9 @@ export declare class Node implements INode {
     selfClose?: boolean;
     textContent?: string;
     private _attributes?;
-    readonly attributes: ReadonlyArray<IAttr>;
+    readonly attributes: ReadonlyArray<IAttr> | null;
     private _childNodes?;
-    readonly childNodes: ReadonlyArray<INode>;
+    readonly childNodes: ReadonlyArray<INode> | null;
     parentNode?: INode;
     cloneNode(): INode;
     appendChild(childNode: INode): void;
@@ -64,7 +64,7 @@ export declare class Node implements INode {
     replaceChild(childNode: INode, ...children: INode[]): void;
     removeChild(childNode: INode): void;
     hasAttribute(name: string, namespace?: string): boolean;
-    getAttribute(name: string, namespace?: string): string;
+    getAttribute(name: string, namespace?: string): string | null;
     setAttribute(name: string, value: string, namespace?: string): void;
     removeAttribute(name: string, namespace?: string): void;
 }

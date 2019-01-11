@@ -43,7 +43,7 @@ export class Vector {
 
 	// 转为单位向量
 	public normalize() {
-		let modulo = this.modulo;
+		const modulo = this.modulo;
 		if (modulo !== 0) {
 			this.x /= modulo;
 			this.y /= modulo;
@@ -84,7 +84,7 @@ export class Vector {
 			this.x *= n;
 			this.y *= n;
 			return this;
-		} else if (n instanceof Vector) {
+		} else {
 			return this.x * n.x + this.y * n.y;
 		}
 	}
@@ -125,7 +125,7 @@ export class Vector {
 	public static multiplied(v1: Vector, n: Vector|number): number|Vector {
 		if (typeof n === 'number') {
 			return new Vector(v1.x * n, v1.y * n);
-		} else if (n instanceof Vector) {
+		} else {
 			return v1.x * n.x + v1.y * n.y;
 		}
 	}
@@ -174,5 +174,4 @@ export class Vector {
 	public static distance(v1: Vector, v2: Vector) {
 		return Vector.substract(v1, v2).modulo;
 	}
-
 }

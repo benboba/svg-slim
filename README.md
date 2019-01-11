@@ -1,12 +1,25 @@
 # 更新日志
 
+## 2019.01.11 v1.3.0
+
+### svg-slimming
+
+* 升级 tslint，采用了更严格的规范
+* 在 tsconfig 中开启 strict 模式
+* 增加了对 [he](https://www.npmjs.com/package/he) 的依赖，修复解析 style 属性时遇到 HTML entities 导致解析失败的 bug
+* 调整了 id 属性的验证规则，修复了因 id 验证导致不正确移除 id 属性的 bug
+* 在颜色合法性验证中添加了 rebeccapurple 关键字的支持
+* 调整了 collapse-g 规则，如果父元素具有 style 属性，则不可以合并，否则可能导致错误的样式覆盖
+* 调整了 combine-path 规则，现在不会合并 fill 或 stroke 的透明度小于 1 的情况
+* 为 combine-path 增加 2 个配置参数：1、是否合并 stroke 属性为 none 的路径；2、是否无视透明度进行合并
+
 ## 2019.01.03 v1.2.14
 
 ### svg-slimming
 
 * 现在 compute-path 规则会把路径末尾的移动指令(m M)移除
 * 修复了解析 css 伪类伪元素失败的 bug
-* 为 shorten-style-tag 规则增加了伪类和伪元素的验证，按 SVG 规范，只验证 CSS 2.1 规范的伪类和部分伪元素
+* 为 shorten-style-tag 规则增加了伪类和伪元素的验证，按 [SVG 规范](https://www.w3.org/TR/SVG2/styling.html#RequiredCSSFeatures)，只验证 CSS 2.1 规范的伪类和部分伪元素
 
 ## 2019.01.02 v1.2.13
 
@@ -270,8 +283,14 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 
 * 默认开关：开
 * 说明：
-	* 合并满足以下条件的路径节点： 1、所有属性和样式（包括继承样式）相同；2、相邻；3、没有 fill 或 stroke；4、路径没有相交或包含
-	* **路径相交目前只判断了非曲线路径**
+	* 合并满足以下条件的路径节点： 1、所有属性和样式（包括继承样式）相同；2、相邻；3、没有 fill 或 stroke；4、透明度或颜色透明度不小于 1
+* 配置参数1：
+	* 默认值：false
+	* 遇到 stroke 为空的路径是否进行合并
+	* **警告，因为没有进行深度的几何解析，合并 fill 不为空的路径可能会导致意外的镂空情况出现！**
+* 配置参数2：
+	* 默认值：false
+	* 是否无视透明度进行合并
 
 例如：
 

@@ -1,8 +1,8 @@
-import { INode } from 'src/node';
+import { INode } from '../../node';
 import { traversalNode } from './traversal-node';
 
-export function getById(idStr: string, dom: INode): INode {
-    let result: INode = null;
+export function getById(idStr: string, dom: INode): INode | undefined {
+    let result: INode | undefined;
     traversalNode(n => idStr === `#${n.getAttribute('id')}`, n => {
         if (!result) {
             result = n;

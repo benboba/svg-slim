@@ -6,10 +6,11 @@ import { legalValue } from '../validate/legal-value';
 import { isTag } from '../xml/is-tag';
 import { traversalNode } from '../xml/traversal-node';
 import { ConfigItem } from '../config/config';
+import { ITagNode } from '../interface/node';
 
-export const rmAttribute = (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const rmAttribute = async (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
-		traversalNode(isTag, (node: INode) => {
+		traversalNode<ITagNode>(isTag, node => {
 			const tagDefine: IRegularTag = regularTag[node.nodeName];
 			// 先取出来 attributeName 属性
 			const attributeName = node.getAttribute('attributeName');
@@ -23,8 +24,8 @@ export const rmAttribute = (rule: ConfigItem, dom: INode): Promise<null> => new 
 					if (
 						(rule[2] && eventAttributes.indexOf(attr.fullname) !== -1) // 事件属性是否保留
 						||
-						(rule[3] && ariaAttributes.indexOf(attr.fullname) !== -1)) // aria 属性是否保留
-					{
+						(rule[3] && ariaAttributes.indexOf(attr.fullname) !== -1) // aria 属性是否保留
+					) {
 						isUndef = false;
 					}
 					if (isUndef) {
