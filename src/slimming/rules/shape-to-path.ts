@@ -4,8 +4,9 @@ import { shapeElements } from '../const/definitions';
 import { createTag } from '../xml/create';
 import { traversalNode } from '../xml/traversal-node';
 import { ConfigItem } from '../config/config';
+import { ITagNode } from '../interface/node';
 
-const rectToPath = (node: INode) => {
+const rectToPath = (node: ITagNode) => {
 	const shapeAttr = {
 		x: '0',
 		y: '0',
@@ -35,7 +36,7 @@ const rectToPath = (node: INode) => {
 	node.setAttribute('d', vhv.length < hvh.length ? vhv : hvh);
 };
 
-const lineToPath = (node: INode) => {
+const lineToPath = (node: ITagNode) => {
 	const shapeAttr = {
 		x1: '0',
 		y1: '0',
@@ -86,10 +87,10 @@ const polyToPath = (node: INode, addZ = false) => {
 	}
 };
 
-export const shapeToPath = (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const shapeToPath = async (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
-		traversalNode(node => shapeElements.indexOf(node.nodeName) !== -1, (node: INode) => {
-			const cloneNode: INode = node.cloneNode();
+		traversalNode(node => shapeElements.indexOf(node.nodeName) !== -1, (node: ITagNode) => {
+			const cloneNode = node.cloneNode();
 			switch (node.nodeName) {
 				case 'rect':
 					rectToPath(cloneNode);

@@ -8,7 +8,7 @@ export const computeZ = (pathResult: IPathResultItem[], pos: number[]): number[]
 		// 如果 z 指令紧跟着 z 或 m 指令，直接抛弃
 		if (lastItem.type.toLowerCase() !== 'z' && lastItem.type.toLowerCase() !== 'm') {
 			let i = rLen - 1;
-			let zpos: number[] = null;
+			let zpos: number[] = [0, 0];
 			while (i--) {
 				if (pathResult[i].type === 'm') {
 					zpos = [plus(pathResult[i].val[0], pathResult[i].from[0]), plus(pathResult[i].val[1], pathResult[i].from[1])];
@@ -17,9 +17,6 @@ export const computeZ = (pathResult: IPathResultItem[], pos: number[]): number[]
 					zpos = [pathResult[i].val[0], pathResult[i].val[1]];
 					break;
 				}
-			}
-			if (zpos === null) {
-				zpos = [0, 0];
 			}
 			pathResult.push({
 				type: 'z',

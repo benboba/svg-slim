@@ -1,11 +1,11 @@
 export const toScientific = (s: number): string => {
-    let _s = s.toString();
-    let __s = _s;
+    const sStr = s.toString();
+    let _s = sStr;
     let e = 0;
-    while (__s.slice(-1) === '0') {
-        __s = __s.slice(0, -1);
+    while (_s.slice(-1) === '0') {
+        _s = _s.slice(0, -1);
         e++;
     }
-    __s = `${__s}e${e}`;
-    return __s.length < _s.length ? __s : _s;
+    _s = `${_s}e${e}`;
+    return _s.length < sStr.length ? _s : sStr;
 };

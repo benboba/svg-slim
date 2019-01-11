@@ -8,6 +8,7 @@ import { execPath, IPathResultItem } from '../path/exec';
 import { shortenDigit } from '../path/shorten-digit';
 import { stringifyFuncVal } from '../utils/stringify-funcval';
 import { traversalNode } from '../xml/traversal-node';
+import { ITagNode } from '../interface/node';
 
 
 const availTypes = 'LlHhVv';
@@ -79,9 +80,9 @@ const DPInit = (threshold: number, pathArr: IPathResultItem[]): IPathResultItem[
 const PATH_CONFIG_DIGIT_1 = 3;
 const PATH_CONFIG_DIGIT_2 = 4;
 
-export const computePath = (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const computePath = async (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
-		traversalNode(propEq('nodeName', 'path'), (node: INode) => {
+		traversalNode<ITagNode>(propEq('nodeName', 'path'), node => {
 			const attrD = node.getAttribute('d');
 
 			if (attrD) {

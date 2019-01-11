@@ -11,7 +11,8 @@ interface IRegularAttrDefine {
 	[propName: string]: IRegularAttr;
 }
 
-const regular_attr: IRegularAttrDefine = {
+// tslint:disable:max-file-line-count
+const _regularAttr: IRegularAttrDefine = {
 	accumulate: {
 		couldBeStyle: false,
 		animatable: false,
@@ -639,7 +640,7 @@ const regular_attr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: cssNameFullMatch
+			reg: nameFullMatch
 		}],
 		initValue: '',
 		applyTo: [],
@@ -3487,7 +3488,7 @@ export interface IRegularAttr {
 	applyTo: string[];
 }
 
-export const regularAttr = new Proxy(regular_attr, {
+export const regularAttr = new Proxy(_regularAttr, {
     get(obj, prop: string): IRegularAttr {
         return prop in obj ? obj[prop] : undefAttr;
     }

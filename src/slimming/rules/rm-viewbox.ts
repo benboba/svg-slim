@@ -2,6 +2,7 @@ import { equals } from 'ramda';
 import { traversalNode } from '../xml/traversal-node';
 import { ConfigItem } from '../config/config';
 import { INode } from '../../node';
+import { ITagNode } from '../interface/node';
 
 interface IViewBox {
 	x: string;
@@ -10,9 +11,9 @@ interface IViewBox {
 	height: string;
 }
 
-export const rmViewBox = (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const rmViewBox = async (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
-		traversalNode(node => node.hasAttribute('viewBox'), node => {
+		traversalNode<ITagNode>(node => node.hasAttribute('viewBox'), node => {
 			const size: IViewBox = {
 				x: '0',
 				y: '0',

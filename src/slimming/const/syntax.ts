@@ -5,14 +5,14 @@ import { colorKeywords, systemColor, x11Colors } from './enum';
 // https://drafts.csswg.org/css-syntax-3
 
 // 是否支持 unicode
-let support_unicode = true;
+let supportUnicode = true;
 try {
-	support_unicode = /\u{20BB7}/u.test('𠮷');
+	supportUnicode = /\u{20BB7}/u.test('𠮷');
 } catch (e) {
-	support_unicode = false;
+	supportUnicode = false;
 }
 
-const uModifier = support_unicode ? 'u' : '';
+const uModifier = supportUnicode ? 'u' : '';
 
 // definition
 const commaWsp = '(?:\\s*,\\s*|\\s*)';
@@ -22,13 +22,13 @@ const rParen = '\\s*\\)';
 
 // name token
 // https://www.w3.org/TR/xml/#NT-Name
-const NameStartChar = `:A-Z_a-z\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD${support_unicode ? '\\u{10000}-\\u{EFFFF}' : ''}`;
+const NameStartChar = `:A-Z_a-z\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD${supportUnicode ? '\\u{10000}-\\u{EFFFF}' : ''}`;
 const NameChar = `${NameStartChar}\\-\\.0-9\\u00B7\\u0300-\\u036F\\u203F-\\u2040`;
 const Name = `[${NameStartChar}][${NameChar}]*`;
 
 // css syntax
 // https://drafts.csswg.org/css-syntax-3/#non-ascii-code-point
-const cssNameStartChar = `A-Za-z_\\u0080-\\uFFFF${support_unicode ? '\\u{10000}-\\u{EFFFF}' : ''}`;
+const cssNameStartChar = `A-Za-z_\\u0080-\\uFFFF${supportUnicode ? '\\u{10000}-\\u{EFFFF}' : ''}`;
 const cssNameChar = `${cssNameStartChar}\\-0-9`;
 const cssName = `[${cssNameStartChar}][${cssNameChar}]*`;
 
@@ -113,22 +113,22 @@ const indentToken = `(?:--|-?(?:[${cssNameStartChar}]|${escape}))(?:[${cssNameCh
 export const indentFullMatch = new RegExp(`^${indentToken}$`, uModifier);
 
 // https://svgwg.org/svg2-draft/paths.html#PathDataBNF
-const path_z = '[zZ]';
-const path_mto_strict = `[mM]\\s*${numberPairSequence}${path_z}?`;
-const path_mto = `[mM]\\s*${numberSequence}`;
-const path_to = `[lLhHvVcCsSqQtTaA]\\s*${numberSequence}`;
-const path_lto_strict = `[lL]\\s*(?:${numberPairSequence}|${path_z})`;
-const path_hvto_strict = `[hHvV]\\s*${numberSequence}`;
-const path_cto_strict = `[cC]\\s*(?:${numberPairTriplet}(?:${commaWsp}${numberPairTriplet})*|(?:${numberPairSequence})?${path_z})`;
-const path_sqto_strict = `[sSqQ]\\s*(?:${numberPairDouble}(?:${commaWsp}${numberPairDouble})*|(?:${numberPairSequence})?${path_z})`;
-const path_tto_strict = `[tT]\\s*(?:${numberPairSequence}|${path_z})`;
-const path_a = `${numberPattern}${commaWsp}${numberPattern}${commaWsp}${numberPattern}${commaWsp}[01]${commaWsp}[01]${commaWsp}${numberPair}`;
-const path_a_sequence = `${path_a}(?:${commaWsp}${path_a})*`;
-const path_ato = `[aA]\\s*(?:${path_a_sequence}|(?:${path_a_sequence})?${path_z})`;
-const pathPatternStrict = `(?:${path_mto_strict}|${path_z}|${path_lto_strict}|${path_hvto_strict}|${path_cto_strict}|${path_sqto_strict}|${path_tto_strict}|${path_ato})`;
-const pathPattern = `(?:${path_mto}|${path_z}|${path_to})`;
-export const pathFullMatchStrict = new RegExp(`^${path_mto}(?:${commaWsp}${pathPatternStrict})*$`);
-export const pathFullMatch = new RegExp(`^${path_mto}(?:${commaWsp}${pathPattern})*$`);
+const pathZ = '[zZ]';
+const pathMToStrict = `[mM]\\s*${numberPairSequence}${pathZ}?`;
+const pathMTo = `[mM]\\s*${numberSequence}`;
+const pathTo = `[lLhHvVcCsSqQtTaA]\\s*${numberSequence}`;
+const pathLToStrict = `[lL]\\s*(?:${numberPairSequence}|${pathZ})`;
+const pathHVToStrict = `[hHvV]\\s*${numberSequence}`;
+const pathCToStrict = `[cC]\\s*(?:${numberPairTriplet}(?:${commaWsp}${numberPairTriplet})*|(?:${numberPairSequence})?${pathZ})`;
+const pathSQToStrict = `[sSqQ]\\s*(?:${numberPairDouble}(?:${commaWsp}${numberPairDouble})*|(?:${numberPairSequence})?${pathZ})`;
+const pathTToStrict = `[tT]\\s*(?:${numberPairSequence}|${pathZ})`;
+const pathA = `${numberPattern}${commaWsp}${numberPattern}${commaWsp}${numberPattern}${commaWsp}[01]${commaWsp}[01]${commaWsp}${numberPair}`;
+const pathASequence = `${pathA}(?:${commaWsp}${pathA})*`;
+const pathATo = `[aA]\\s*(?:${pathASequence}|(?:${pathASequence})?${pathZ})`;
+const pathPatternStrict = `(?:${pathMToStrict}|${pathZ}|${pathLToStrict}|${pathHVToStrict}|${pathCToStrict}|${pathSQToStrict}|${pathTToStrict}|${pathATo})`;
+const pathPattern = `(?:${pathMTo}|${pathZ}|${pathTo})`;
+export const pathFullMatchStrict = new RegExp(`^${pathMTo}(?:${commaWsp}${pathPatternStrict})*$`);
+export const pathFullMatch = new RegExp(`^${pathMTo}(?:${commaWsp}${pathPattern})*$`);
 
 export const preservAspectRatioFullMatch = /^(?:none|xMinYMin|xMidYMin|xMaxYMin|xMinYMid|xMidYMid|xMaxYMid|xMinYMax|xMidYMax|xMaxYMax)(?:\s+(?:meet|slice))?$/;
 

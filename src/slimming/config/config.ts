@@ -14,7 +14,9 @@ export const config: IConfig = {
 	// 塌陷无意义的文本节点
 	'collapse-textwrap': true,
 	// 合并 path 标签
-	'combine-path': true,
+	// 合并 fill 不为 none 的 path
+	// 无视透明度进行合并
+	'combine-path': [true, false, false],
 	// 分析并合并 transform 属性
 	// 合并后的 matrix 的 a, b, c, d 四个位置的数据精度
 	// 合并后的 e, f 位置的数据精度

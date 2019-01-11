@@ -7,7 +7,7 @@ import { IPathResultItem } from './exec';
 export const computeM = (absolute: number[], relative: number[], pathResult: IPathResultItem[], pos: number[]): number[] => {
 	const rLen = pathResult.length;
 	if (rLen > 0 && pathResult[rLen - 1].type.toLowerCase() === 'm') {
-		const lastItem: IPathResultItem = pathResult.pop();
+		const lastItem: IPathResultItem = pathResult.pop() as IPathResultItem;
 		if (lastItem.type === 'm') {
 			return computeM(absolute, [plus(relative[0], lastItem.val[0]), plus(relative[1], lastItem.val[1])], pathResult, lastItem.from);
 		} else {

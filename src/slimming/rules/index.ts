@@ -1,5 +1,5 @@
+import { INode } from '../../node';
 import { ConfigItem } from '../config/config';
-import { IStyleNode } from '../interface/node';
 
 // default rules
 import { combineScript } from '../default-rules/combine-script';
@@ -35,7 +35,7 @@ import { shortenID } from './shorten-id';
 import { shortenStyleAttr } from './shorten-style-attr';
 import { shortenStyleTag } from './shorten-style-tag';
 
-export type RuleItem = [1, (dom: IStyleNode) => Promise<null>] | [0, (rule: ConfigItem, dom: IStyleNode) => Promise<null>, string];
+export type RuleItem = [1, (dom: INode) => Promise<null>] | [0, (rule: ConfigItem, dom: INode) => Promise<null>, string];
 // [isDefaultRule: boolean, ruleHandler: Function, configKey?: string]
 
 export const rules: RuleItem[] = [
@@ -50,10 +50,10 @@ export const rules: RuleItem[] = [
 	[0, rmIrregularNesting, 'rm-irregular-nesting'],
 	[0, rmUnnecessary, 'rm-unnecessary'],
 	[0, rmViewBox, 'rm-viewbox'],
-	[0, rmAttribute, 'rm-attribute'],
 	[0, shortenID, 'shorten-id'],
 	[0, shortenClass, 'shorten-class'],
 	[0, shortenDefs, 'shorten-defs'],
+	[0, rmAttribute, 'rm-attribute'],
 	[0, rmPx, 'rm-px'],
 	[0, combineTransform, 'combine-transform'],
 	[0, shortenStyleAttr, 'shorten-style-attr'],

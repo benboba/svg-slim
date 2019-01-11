@@ -22,8 +22,7 @@ export function combineMatrix(operate: IMatrixFunc[], digit1: number, digit2: nu
 				matrix = matrix.skewY(item.val[0]);
 				break;
 			case 'matrix':
-				const ex_matrix = new Matrix(...item.val);
-				matrix = matrix.multiply(ex_matrix);
+				matrix = matrix.multiply(new Matrix(...item.val));
 				break;
 			default:
 				return {

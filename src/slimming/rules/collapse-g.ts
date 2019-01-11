@@ -7,13 +7,13 @@ import { isTag } from '../xml/is-tag';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
 import { ConfigItem } from '../config/config';
-import { ISubNode } from '../interface/node';
+import { ITagNode } from '../interface/node';
 
 interface IAttrObj {
 	[propName: string]: IAttr;
 }
 
-const collapseAttributes = (node1: INode, node2: INode) => {
+const collapseAttributes = (node1: ITagNode, node2: ITagNode) => {
 	const attrObj: IAttrObj = {};
 	const attributes1 = node1.attributes;
 	const attributes2 = node2.attributes;
@@ -38,27 +38,27 @@ const collapseAttributes = (node1: INode, node2: INode) => {
 };
 
 // 包含某些特定属性，不允许进行合并
-const cantCollapse = (node: INode) => node.attributes.filter(attr => cantCollapseAttributes.indexOf(attr.fullname) !== -1).length;
+const cantCollapse = (node: ITagNode) => node.attributes.filter(attr => cantCollapseAttributes.indexOf(attr.fullname) !== -1).length;
 
 const doCollapse = (dom: INode) => {
-	traversalNode(propEq('nodeName', 'g'), (node: INode) => {
+	traversalNode<ITagNode>(propEq('nodeName', 'g'), node => {
 		const childNodes = node.childNodes;
-		const childTags = childNodes.filter(isTag);
+		const childTags = childNodes.filter(isTag) as ITagNode[];
 		if (!childTags.length) {
 			rmNode(node);
 		} else if (!cantCollapse(node)) {
 			if (childTags.length === 1) { // 只有一个子节点
 				const childNode = childTags[0];
 				collapseAttributes(childNode, node);
-				(node as ISubNode).parentNode.replaceChild(node, ...childNodes);
+				(node.parentNode as INode).replaceChild(node, ...childNodes);
 			} else if (!node.attributes.length) { // 没有属性
-				(node as ISubNode).parentNode.replaceChild(node, ...childNodes);
+				(node.parentNode as INode).replaceChild(node, ...childNodes);
 			}
 		}
 	}, dom);
 };
 
-export const collapseG = (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const collapseG = async (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		doCollapse(dom);
 	}

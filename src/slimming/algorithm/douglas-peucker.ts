@@ -1,33 +1,28 @@
 import { Vector } from '../math/vector';
 import { minus } from '../math/minus';
 
-const check = (threshold: number, start_i: number, end_i: number, paths: number[]) => {
+const check = (threshold: number, startI: number, endI: number, paths: number[]) => {
 	let max = 0;
 	let maxI = 0;
 	// 拿到基础向量
-	const baseVector = new Vector(minus(paths[end_i], paths[start_i]), minus(paths[end_i + 1], paths[start_i + 1]));
-	for (let i = start_i + 2; i < end_i; i += 2) {
+	const baseVector = new Vector(minus(paths[endI], paths[startI]), minus(paths[endI + 1], paths[startI + 1]));
+	for (let i = startI + 2; i < endI; i += 2) {
 		// 拿到垂直分量
-		const vector_pann = new Vector(minus(paths[i], paths[start_i]), minus(paths[i + 1], paths[start_i + 1]));
-		let distance: number;
-		if (vector_pann.isZero) {
-			distance = 0;
-		} else {
-			distance = Vector.plumb(vector_pann, baseVector).modulo;
-		}
+		const vectorPann = new Vector(minus(paths[i], paths[startI]), minus(paths[i + 1], paths[startI + 1]));
+		const distance: number = vectorPann.isZero ? 0 : Vector.plumb(vectorPann, baseVector).modulo;
 		if (distance > max) {
 			max = distance;
 			maxI = i;
 		}
 	}
 	if (max <= threshold) {
-		paths.splice(start_i + 2, end_i - start_i - 2);
+		paths.splice(startI + 2, endI - startI - 2);
 	} else {
-		if (maxI < end_i - 2) {
-			check(threshold, maxI, end_i, paths);
+		if (maxI < endI - 2) {
+			check(threshold, maxI, endI, paths);
 		}
-		if (maxI > start_i + 2) {
-			check(threshold, start_i, maxI, paths);
+		if (maxI > startI + 2) {
+			check(threshold, startI, maxI, paths);
 		}
 	}
 };

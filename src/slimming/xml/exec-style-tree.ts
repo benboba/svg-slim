@@ -1,8 +1,8 @@
 import { Declaration, parse as cssParse, Rule, Stylesheet } from 'css';
 import { propEq } from 'ramda';
-import { IAttr } from 'src/node';
+import { IAttr } from '../../node';
 import { regularAttr } from '../const/regular-attr';
-import { IStyleNode } from '../interface/node';
+import { IStyleObj, ITagNode } from '../interface/node';
 import { ISeletorPriority } from '../style/define';
 import { execStyle } from '../style/exec';
 import { execSelector } from '../style/exec-selector';
@@ -15,36 +15,40 @@ import { traversalNode } from './traversal-node';
 interface IStyleItem {
     styles: IAttr[];
     selectorPriority: ISeletorPriority;
-    nodes: IStyleNode[];
+    nodes: ITagNode[];
 }
 
-function check(dom: IStyleNode, styleItems: IStyleItem[]) {
-    traversalNode<IStyleNode>(isTag, node => {
-        if (!node.styles) {
-            node.styles = {};
+function check(dom: ITagNode, styleItems: IStyleItem[]) {
+    traversalNode<ITagNode>(isTag, node => {
+        let nodeStyle: IStyleObj = {};
+        if (node.styles) {
+            nodeStyle = node.styles;
+        } else {
+            node.styles = nodeStyle;
         }
 
         // 可能有 xlink 引用，css 样式会影响到 xlink 引用的节点
-        let xlinkObj: IStyleNode;
+        let xlinkObj: ITagNode | undefined;
 
         node.attributes.forEach(attr => {
             if (attr.fullname === 'style') {
                 // 行内样式优先级最高
                 const styles = execStyle(attr.value);
                 styles.forEach(style => {
-                    node.styles[style.name] = {
+                    nodeStyle[style.name] = {
                         value: style.value,
                         from: 'inline'
                     };
                 });
             } else if (attr.fullname === 'xlink:href') {
                 // 获取 xlink 引用
-                xlinkObj = getById(node.getAttribute('xlink:href'), dom);
+                xlinkObj = getById(node.getAttribute('xlink:href') as string, dom) as ITagNode;
             } else if (regularAttr[attr.fullname].couldBeStyle) {
                 // 属性优先级最低，但可以覆盖继承
-                const styleDefine = node.styles[attr.fullname];
+                const styleDefine = nodeStyle[attr.fullname];
+                // tslint:disable-next-line
                 if (!styleDefine || styleDefine.from === 'inherit') {
-                    node.styles[attr.fullname] = {
+                    nodeStyle[attr.fullname] = {
                         value: attr.value,
                         from: 'attr'
                     };
@@ -56,9 +60,10 @@ function check(dom: IStyleNode, styleItems: IStyleItem[]) {
         styleItems.forEach(styleItem => {
             if (styleItem.nodes.indexOf(node) !== -1) {
                 styleItem.styles.forEach(style => {
-                    const styleDefine = node.styles[style.name];
-                    if (!styleDefine || styleDefine.from === 'attr' || styleDefine.from === 'inherit' || (styleDefine.from === 'styletag' && overrideAble(styleItem.selectorPriority, styleDefine.selectorPriority))) {
-                        node.styles[style.name] = {
+                    const styleDefine = nodeStyle[style.name];
+                    // tslint:disable-next-line
+                    if (!styleDefine || styleDefine.from === 'attr' || styleDefine.from === 'inherit' || (styleDefine.from === 'styletag' && styleDefine.selectorPriority && overrideAble(styleItem.selectorPriority, styleDefine.selectorPriority))) {
+                        nodeStyle[style.name] = {
                             value: style.value,
                             from: 'styletag',
                             selectorPriority: styleItem.selectorPriority
@@ -68,27 +73,32 @@ function check(dom: IStyleNode, styleItems: IStyleItem[]) {
             }
         });
 
-        if (node.parentNode && node.parentNode.styles) {
+        const parentNode = node.parentNode as ITagNode | undefined;
+        if (parentNode && parentNode.styles) {
             // 可能从父元素继承的样式
-            Object.keys(node.parentNode.styles).forEach(key => {
-                if (!node.styles[key]) {
-                    const parentDefine = node.parentNode.styles[key];
-                    node.styles[key] = {
-                        value: parentDefine.value,
-                        from: 'inherit'
-                    };
+            Object.keys(parentNode.styles).forEach(key => {
+                if (!nodeStyle.hasOwnProperty(key)) {
+                    if (parentNode.styles && parentNode.styles.hasOwnProperty(key)) {
+                        nodeStyle[key] = {
+                            value: parentNode.styles[key].value,
+                            from: 'inherit'
+                        };
+                    }
                 }
             });
         }
 
         if (xlinkObj) {
-            if (!xlinkObj.styles) {
-                xlinkObj.styles = {};
+            let styleObj: IStyleObj = {};
+            if (xlinkObj.styles) {
+                styleObj = xlinkObj.styles;
+            } else {
+                xlinkObj.styles = styleObj;
             }
-            Object.keys(node.styles).forEach(key => {
-                if (!xlinkObj.styles[key]) {
-                    xlinkObj.styles[key] = {
-                        value: node.styles[key].value,
+            Object.keys(nodeStyle).forEach(key => {
+                if (!styleObj.hasOwnProperty(key)) {
+                    styleObj[key] = {
+                        value: nodeStyle[key].value,
                         from: 'inherit'
                     };
                 }
@@ -99,9 +109,9 @@ function check(dom: IStyleNode, styleItems: IStyleItem[]) {
 }
 
 // 解析样式树，为每个节点增加 styles 属性，标记当前节点生效的样式信息
-export function execStyleTree(dom: IStyleNode) {
+export function execStyleTree(dom: ITagNode) {
     // 首先清理掉曾经被解析过的样式树
-    traversalNode<IStyleNode>(isTag, node => {
+    traversalNode<ITagNode>(isTag, node => {
         if (node.styles) {
             delete node.styles;
         }
@@ -111,36 +121,40 @@ export function execStyleTree(dom: IStyleNode) {
     const styleItems: IStyleItem[] = [];
 
     // 首先对 style 标签做处理，解析出所有起作用的 css 定义，并记录它们的选择器权重和影响到的节点
-    traversalNode<IStyleNode>(propEq('nodeName', 'style'), node => {
+    traversalNode<ITagNode>(propEq('nodeName', 'style'), node => {
         const cssContent = node.childNodes[0];
-        parsedCss = cssParse(cssContent.textContent);
+        parsedCss = cssParse(cssContent.textContent as string);
 
-        parsedCss.stylesheet.rules.forEach((styleRule: Rule) => {
-            // 只针对规则类
-            if (styleRule.type === 'rule') {
-                const styles: IAttr[] = [];
-                styleRule.declarations.forEach((ruleItem: Declaration) => {
-                    styles.push({
-                        name: ruleItem.property,
-                        fullname: ruleItem.property,
-                        value: ruleItem.value
+        if (parsedCss.stylesheet) {
+            parsedCss.stylesheet.rules.forEach((styleRule: Rule) => {
+                // 只针对规则类
+                if (styleRule.type === 'rule' && styleRule.declarations && styleRule.selectors) {
+                    const styles: IAttr[] = [];
+                    styleRule.declarations.forEach((ruleItem: Declaration) => {
+                        if (ruleItem.property && ruleItem.value) {
+                            styles.push({
+                                name: ruleItem.property,
+                                fullname: ruleItem.property,
+                                value: ruleItem.value
+                            });
+                        }
                     });
-                });
 
-                for (let si = styleRule.selectors.length; si--; ) {
-                    const selector = execSelector(styleRule.selectors[si]);
-                    const selectorPriority = getSelectorPriority(selector);
-                    const nodes = getBySelector(dom, selector);
-                    if (nodes.length) {
-                        styleItems.push({
-                            styles,
-                            selectorPriority,
-                            nodes
-                        });
+                    for (let si = styleRule.selectors.length; si--; ) {
+                        const selector = execSelector(styleRule.selectors[si]);
+                        const selectorPriority = getSelectorPriority(selector);
+                        const nodes = getBySelector(dom, selector);
+                        if (nodes.length) {
+                            styleItems.push({
+                                styles,
+                                selectorPriority,
+                                nodes
+                            });
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
     }, dom);
 
     check(dom, styleItems);

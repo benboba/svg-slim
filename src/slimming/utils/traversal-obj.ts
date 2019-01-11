@@ -28,6 +28,7 @@ const traversal = (condition: (o: Object) => boolean, cb: (o: Object, p: Object[
 		}
 	} else {
 		Object.keys(obj).forEach(key => {
+			// tslint:disable-next-line
 			if (typeof (obj as IUnknownObj)[key] === 'object') {
 				traversal(condition, cb, (obj as IUnknownObj)[key] as Object, path, visited);
 			}

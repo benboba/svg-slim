@@ -25,8 +25,9 @@ tester(
 	`<svg>
         <g fill="red"><g><text>1</text></g></g>
         <g id="nonono"><text>2</text></g>
+        <g style="fill:none"><g class="b"><text>3</text></g></g>
     </svg>`,
-	'<svg><text fill="red">1</text><g id="nonono"><text>2</text></g></svg>', {
+	'<svg><text fill="red">1</text><g id="nonono"><text>2</text></g><g style="fill:none"><g class="b"><text>3</text></g></g></svg>', {
 		'collapse-g': true
 	}
 );
@@ -44,13 +45,38 @@ tester(
 tester(
 	'combine-path',
 	`<svg>
+    <path fill="none" stroke-opacity="0.5" d="M0,0h100V100H0Z"/>
+    <path fill="none" stroke-opacity="0.5" d="M110,0l100,0,0,100,-100,0Z"/>
     <path d="M0,0h100V100H0Z"/>
     <path d="M110,0l100,0,0,100,-100,0Z"/>
     <rect />
     <path fill="none" d="M100.5.5H100Z" />
+    <path fill="none" d="M200.5.5H100Z" />
     </svg>`,
-	'<svg><path d="M0,0h100V100H0ZM110,0l100,0,0,100,-100,0Z"/><rect/><path fill="none" d="M100.5.5H100Z"/></svg>', {
+	'<svg><path fill="none" stroke-opacity="0.5" d="M0,0h100V100H0Z"/><path fill="none" stroke-opacity="0.5" d="M110,0l100,0,0,100,-100,0Z"/><path d="M0,0h100V100H0Z"/><path d="M110,0l100,0,0,100,-100,0Z"/><rect/><path fill="none" d="M100.5.5H100ZM200.5.5H100Z"/></svg>', {
 		'combine-path': true
+	}
+);
+
+tester(
+	'combine-path',
+	`<svg>
+    <path d="M0,0h100V100H0Z"/>
+    <path d="M110,0l100,0,0,100,-100,0Z"/>
+    </svg>`,
+	'<svg><path d="M0,0h100V100H0ZM110,0l100,0,0,100,-100,0Z"/></svg>', {
+		'combine-path': [true, true]
+	}
+);
+
+tester(
+	'combine-path',
+	`<svg>
+    <path fill="none" stroke-opacity="0.5" d="M0,0h100V100H0Z"/>
+    <path fill="none" stroke-opacity="0.5" d="M110,0l100,0,0,100,-100,0Z"/>
+    </svg>`,
+	'<svg><path fill="none" stroke-opacity="0.5" d="M0,0h100V100H0ZM110,0l100,0,0,100,-100,0Z"/></svg>', {
+		'combine-path': [true, false, true]
 	}
 );
 
@@ -253,9 +279,9 @@ tester(
 tester(
 	'shorten-color',
 	`<svg>
-    <rect fill="#ff0000" stroke="yellow" color="hsla(0,100%,100%,0)" width="100" height="100" />
+    <rect fill="#ff0000" stroke="rebeccapurple" color="hsla(0,100%,100%,0)" width="100" height="100" />
     </svg>`,
-	'<svg><rect fill="red" stroke="#ff0" color="#fff0" width="100" height="100"/></svg>', {
+	'<svg><rect fill="red" stroke="#639" color="#fff0" width="100" height="100"/></svg>', {
 		'shorten-color': [true, true]
 	}
 );
@@ -318,9 +344,9 @@ tester(
 tester(
 	'shorten-style-attr',
 	`<svg>
-    <text fill="red" stroke="blue" style="fill: yellow; stroke: blue; flex-grow: 1;">123</text>
+    <text fill="red" stroke="blue" style="font-family: &quot;微软雅黑&quot;;fill: rebeccapurple; stroke: blue; flex-grow: 1;">123</text>
     </svg>`,
-	'<svg><text stroke="blue" fill="yellow">123</text></svg>', {
+	'<svg><text stroke="blue" fill="rebeccapurple" font-family="&quot;微软雅黑&quot;">123</text></svg>', {
 		'shorten-style-attr': true
 	}
 );

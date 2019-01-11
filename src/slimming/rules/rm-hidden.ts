@@ -7,10 +7,11 @@ import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
 import { ConfigItem } from '../config/config';
 import { IAttrObj } from '../interface/attr-obj';
+import { ITagNode } from '../interface/node';
 
-export const rmHidden = (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const rmHidden = async (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
     if (rule[0]) {
-        traversalNode(isTag, (node: INode) => {
+        traversalNode<ITagNode>(isTag, node => {
 
             // 未包含子节点的文本容器视为隐藏节点
             if (!node.childNodes.length && regularTag[node.nodeName].containTextNode) {
@@ -19,7 +20,7 @@ export const rmHidden = (rule: ConfigItem, dom: INode): Promise<null> => new Pro
             }
 
             const attrObj: IAttrObj = {};
-            let styleObj: IAttr[];
+            let styleObj: IAttr[] | undefined;
 
             node.attributes.forEach(attr => {
                 if (attr.fullname === 'style') {

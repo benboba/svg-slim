@@ -26,7 +26,7 @@ export class Matrix {
 		return this.multiply(new Matrix(Math.cos(arg), Math.sin(arg), -Math.sin(arg), Math.cos(arg), 0, 0));
 	}
 
-	public scale(xscale: number, yscale: number = null): Matrix {
+	public scale(xscale: number, yscale: number | null = null): Matrix {
 		return this.multiply(new Matrix(xscale, 0, 0, yscale === null ? xscale : yscale, 0, 0));
 	}
 

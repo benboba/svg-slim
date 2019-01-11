@@ -7,24 +7,27 @@ import { getById } from '../xml/get-by-id';
 function getXlink(styleDefine: IRegularAttr, idStr: string, dom: INode, unique: INode[]) {
     // TODO：只有 xlink:href 吗？其它 IRI 或 funcIRI 属性是否也需要验证？
     // 遇到引用属性，还需要递归验证被引用对象是否可应用样式
-    return check(styleDefine, getById(idStr, dom), dom, unique) || false;
+    return check(styleDefine, getById(idStr, dom), dom, unique);
 }
 
-function check(styleDefine: IRegularAttr, node: INode, dom: INode, unique: INode[]): boolean {
+function check(styleDefine: IRegularAttr, node: INode | undefined, dom: INode, unique: INode[]): boolean {
+    if (!node) return false;
+
     if (styleDefine.applyTo.indexOf(node.nodeName) !== -1) {
         return true;
     }
 
     // 因为递归可能存在循环引用，所以需要排重
     if (unique.indexOf(node) !== -1) {
-        return;
+        return false;
     }
+
     unique.push(node);
 
     let result = false;
 
     if (node.hasAttribute('xlink:href')) {
-        result = getXlink(styleDefine, node.getAttribute('xlink:href'), dom, unique);
+        result = getXlink(styleDefine, node.getAttribute('xlink:href') as string, dom, unique);
     }
 
     traversalNode(isTag, (childNode: INode) => {
@@ -36,7 +39,7 @@ function check(styleDefine: IRegularAttr, node: INode, dom: INode, unique: INode
         if (styleDefine.applyTo.indexOf(childNode.nodeName) !== -1) {
             result = true;
         } else if (childNode.hasAttribute('xlink:href')) {
-            result = getXlink(styleDefine, childNode.getAttribute('xlink:href'), dom, unique) || result;
+            result = getXlink(styleDefine, childNode.getAttribute('xlink:href') as string, dom, unique) || result;
         }
     }, node);
     return result;

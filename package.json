@@ -1,43 +1,45 @@
 {
-	"name": "svg-slimming",
-	"version": "1.2.14",
-	"description": "svg slimming",
-	"main": "lib/svg-slimming.js",
-	"scripts": {
-		"dev": "cross-env NODE_ENV=development webpack --watch --progress --color --profile --bail --display-modules",
-		"build": "cross-env NODE_ENV=production webpack --progress --color --profile --bail --display-modules",
-		"test": "mocha -t 5000"
-	},
-	"keywords": [
-		"svg",
-		"xml",
-		"optimization",
-		"minimization",
-		"parse",
-		"svg-slimming",
-		"xml-parser",
-		"javascript",
-		"nodejs"
-	],
-	"author": "Wang Feng <benboba@gmail.com>",
-	"license": "MIT",
-	"dependencies": {
-		"css": "^2.2.3",
-		"ramda": "^0.25.0"
-	},
-	"devDependencies": {
-		"@types/css": "0.0.31",
-		"@types/ramda": "^0.25.36",
-		"chai": "^4.1.2",
-		"copy-webpack-plugin": "^4.5.2",
-		"cross-env": "^3.2.4",
-		"mocha": "^5.2.0",
-		"terser-webpack-plugin": "^1.2.1",
-		"ts-loader": "^4.4.2",
-		"tslint": "^5.9.1",
-		"tslint-loader": "^3.6.0",
-		"typescript": "^3.2.2",
-		"webpack": "^4.16.5",
-		"webpack-cli": "^3.1.0"
-	}
+  "name": "svg-slimming",
+  "version": "1.3.0",
+  "description": "svg slimming",
+  "main": "dist/svg-slimming.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development webpack --watch --progress --color --profile --bail --display-modules",
+    "build": "cross-env NODE_ENV=production webpack --progress --color --profile --bail --display-modules",
+    "test": "mocha -t 5000"
+  },
+  "keywords": [
+    "svg",
+    "xml",
+    "optimization",
+    "minimization",
+    "parse",
+    "svg-slimming",
+    "xml-parser",
+    "javascript",
+    "nodejs"
+  ],
+  "author": "Wang Feng <benboba@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "css": "^2.2.3",
+    "he": "^1.2.0",
+    "ramda": "^0.25.0"
+  },
+  "devDependencies": {
+    "@types/css": "0.0.31",
+    "@types/he": "^1.1.0",
+    "@types/ramda": "^0.25.36",
+    "chai": "^4.1.2",
+    "copy-webpack-plugin": "^4.5.2",
+    "cross-env": "^3.2.4",
+    "mocha": "^5.2.0",
+    "terser-webpack-plugin": "^1.2.1",
+    "ts-loader": "^4.4.2",
+    "tslint": "^5.12.0",
+    "tslint-loader": "^3.6.0",
+    "typescript": "^3.2.2",
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0"
+  }
 }
