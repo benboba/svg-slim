@@ -1,8 +1,9 @@
 import { INode } from '../../node/index';
-import { IRegularAttr } from '../const/regular-attr';
-import { traversalNode } from '../xml/traversal-node';
-import { isTag } from '../xml/is-tag';
+import { IRegularAttr, regularAttr } from '../const/regular-attr';
 import { getById } from '../xml/get-by-id';
+import { isTag } from '../xml/is-tag';
+import { traversalNode } from '../xml/traversal-node';
+import { execStyle } from './exec';
 
 function getXlink(styleDefine: IRegularAttr, idStr: string, dom: INode, unique: INode[]) {
     // TODO：只有 xlink:href 吗？其它 IRI 或 funcIRI 属性是否也需要验证？
@@ -38,6 +39,15 @@ function check(styleDefine: IRegularAttr, node: INode | undefined, dom: INode, u
         unique.push(childNode);
         if (styleDefine.applyTo.indexOf(childNode.nodeName) !== -1) {
             result = true;
+            if (childNode.attributes) {
+                for (let i = (childNode.attributes).length; i--; ) {
+                    const attr = childNode.attributes[i];
+                    if (attr.fullname === 'style') {
+                        const childStyle = execStyle(attr.value);
+                        result = !childStyle.some(style => style.fullname === styleDefine.name);
+                    }
+                }
+            }
         } else if (childNode.hasAttribute('xlink:href')) {
             result = getXlink(styleDefine, childNode.getAttribute('xlink:href') as string, dom, unique) || result;
         }

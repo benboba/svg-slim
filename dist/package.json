@@ -20,16 +20,6 @@
 		"name": "wangfeng",
 		"email": "benboba@gmail.com"
 	}],
-	"files": [
-		"README.md",
-		"package.json",
-		"svg-slimming.js",
-		"svg-slimming.min.js",
-		"svg-slimming.d.ts",
-		"xml-parser.js",
-		"xml-parser.min.js",
-		"xml-parser.d.ts"
-	],
 	"license": "MIT",
 	"dependencies": {
 		"css": "^2.2.3",

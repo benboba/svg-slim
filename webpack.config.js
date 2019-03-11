@@ -60,7 +60,7 @@ module.exports = {
 	},
 	plugins: [
 		new CopyWebpackPlugin([
-			{ from: path.resolve('README.md'), to: distpath }
+			{ from: path.resolve('*.md'), to: distpath }
 		])
 	],
 	optimization: {
