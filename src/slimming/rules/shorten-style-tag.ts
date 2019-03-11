@@ -68,6 +68,7 @@ export const shortenStyleTag = async (rule: ConfigItem, dom: INode): Promise<nul
 						const theSelectors = styleRule.selectors as string[];
 						// 移除无效的选择器
 						for (let si = theSelectors.length; si--; ) {
+							// TODO：getBySelector 之后也需要 check-apply
 							if (!getBySelector(dom, execSelector(theSelectors[si])).length) {
 								theSelectors.splice(si, 1);
 							}

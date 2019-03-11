@@ -18,8 +18,7 @@ export const rmXMLNS = async (rule: ConfigItem, dom: INode): Promise<null> => ne
 		const traversalNode = (node: INode, nsStack: IXmlnsDefine[]) => {
 			if (isTag(node)) {
 				const _node = node as ITagNode;
-				const xmlnsObj: IXmlnsDefine = {};
-				Object.assign(xmlnsObj, nsStack[nsStack.length - 1]);
+				const xmlnsObj: IXmlnsDefine = Object.create(nsStack[nsStack.length - 1]) as IXmlnsDefine;
 
 				// 首先判断节点是否存在命名空间
 				if (node.namespace) {

@@ -13,7 +13,8 @@ interface IRegularAttrDefine {
 
 // tslint:disable:max-file-line-count
 const _regularAttr: IRegularAttrDefine = {
-	accumulate: {
+	'accumulate': {
+		name: 'accumulate',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -28,7 +29,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'none',
 		applyTo: [],
 	},
-	additive: {
+	'additive': {
+		name: 'additive',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -43,7 +45,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'replace',
 		applyTo: [],
 	},
-	amplitude: {
+	'amplitude': {
+		name: 'amplitude',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -58,7 +61,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '1',
 		applyTo: [],
 	},
-	attributeName: {
+	'attributeName': {
+		name: 'attributeName',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -72,7 +76,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	azimuth: {
+	'azimuth': {
+		name: 'azimuth',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -87,7 +92,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '0',
 		applyTo: [],
 	},
-	baseFrequency: {
+	'baseFrequency': {
+		name: 'baseFrequency',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -102,7 +108,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '0',
 		applyTo: [],
 	},
-	begin: {
+	'begin': {
+		name: 'begin',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -117,7 +124,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '0s',
 		applyTo: [],
 	},
-	bias: {
+	'bias': {
+		name: 'bias',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -132,7 +140,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '0',
 		applyTo: [],
 	},
-	by: {
+	'by': {
+		name: 'by',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -144,7 +153,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	calcMode: {
+	'calcMode': {
+		name: 'calcMode',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -159,7 +169,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	class: {
+	'class': {
+		name: 'class',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -174,7 +185,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	clipPathUnits: {
+	'clipPathUnits': {
+		name: 'clipPathUnits',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -189,7 +201,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'userSpaceOnUse',
 		applyTo: [],
 	},
-	crossorigin: {
+	'crossorigin': {
+		name: 'crossorigin',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -204,7 +217,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	cx: {
+	'cx': {
+		name: 'cx',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -228,7 +242,8 @@ const _regularAttr: IRegularAttrDefine = {
 		}],
 		applyTo: [],
 	},
-	cy: {
+	'cy': {
+		name: 'cy',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -252,7 +267,8 @@ const _regularAttr: IRegularAttrDefine = {
 		}],
 		applyTo: [],
 	},
-	d: {
+	'd': {
+		name: 'd',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -267,7 +283,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	diffuseConstant: {
+	'diffuseConstant': {
+		name: 'diffuseConstant',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -282,7 +299,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '1',
 		applyTo: [],
 	},
-	divisor: {
+	'divisor': {
+		name: 'divisor',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -297,7 +315,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	download: {
+	'download': {
+		name: 'download',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -309,7 +328,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	dur: {
+	'dur': {
+		name: 'dur',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -327,7 +347,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	dx: {
+	'dx': {
+		name: 'dx',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -360,7 +381,8 @@ const _regularAttr: IRegularAttrDefine = {
 		}],
 		applyTo: [],
 	},
-	dy: {
+	'dy': {
+		name: 'dy',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -393,7 +415,8 @@ const _regularAttr: IRegularAttrDefine = {
 		}],
 		applyTo: [],
 	},
-	edgeMode: {
+	'edgeMode': {
+		name: 'edgeMode',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -414,7 +437,8 @@ const _regularAttr: IRegularAttrDefine = {
 		}],
 		applyTo: [],
 	},
-	elevation: {
+	'elevation': {
+		name: 'elevation',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -429,7 +453,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '0',
 		applyTo: [],
 	},
-	end: {
+	'end': {
+		name: 'end',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -444,7 +469,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	exponent: {
+	'exponent': {
+		name: 'exponent',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -459,7 +485,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '1',
 		applyTo: [],
 	},
-	filterUnits: {
+	'filterUnits': {
+		name: 'filterUnits',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -474,7 +501,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'objectBoundingBox',
 		applyTo: [],
 	},
-	fr: {
+	'fr': {
+		name: 'fr',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -492,7 +520,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '0%',
 		applyTo: [],
 	},
-	from: {
+	'from': {
+		name: 'from',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -504,7 +533,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	fx: {
+	'fx': {
+		name: 'fx',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -522,7 +552,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	fy: {
+	'fy': {
+		name: 'fy',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -540,7 +571,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	gradientTransform: {
+	'gradientTransform': {
+		name: 'gradientTransform',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -555,7 +587,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	gradientUnits: {
+	'gradientUnits': {
+		name: 'gradientUnits',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -570,7 +603,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'objectBoundingBox',
 		applyTo: [],
 	},
-	height: {
+	'height': {
+		name: 'height',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -600,7 +634,8 @@ const _regularAttr: IRegularAttrDefine = {
 		}],
 		applyTo: [],
 	},
-	href: {
+	'href': {
+		name: 'href',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -615,7 +650,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	hreflang: {
+	'hreflang': {
+		name: 'hreflang',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -630,7 +666,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	id: {
+	'id': {
+		name: 'id',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -645,7 +682,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	in: {
+	'in': {
+		name: 'in',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -663,7 +701,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	in2: {
+	'in2': {
+		name: 'in2',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -681,7 +720,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	intercept: {
+	'intercept': {
+		name: 'intercept',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -696,7 +736,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '0',
 		applyTo: [],
 	},
-	k1: {
+	'k1': {
+		name: 'k1',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -711,7 +752,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '0',
 		applyTo: [],
 	},
-	k2: {
+	'k2': {
+		name: 'k2',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -726,7 +768,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '0',
 		applyTo: [],
 	},
-	k3: {
+	'k3': {
+		name: 'k3',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -741,7 +784,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '0',
 		applyTo: [],
 	},
-	k4: {
+	'k4': {
+		name: 'k4',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -756,7 +800,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '0',
 		applyTo: [],
 	},
-	kernelMatrix: {
+	'kernelMatrix': {
+		name: 'kernelMatrix',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -771,7 +816,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	kernelUnitLength: {
+	'kernelUnitLength': {
+		name: 'kernelUnitLength',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -786,7 +832,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '2 2',
 		applyTo: [],
 	},
-	keyPoints: {
+	'keyPoints': {
+		name: 'keyPoints',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -801,7 +848,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	keySplines: {
+	'keySplines': {
+		name: 'keySplines',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -816,7 +864,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	keyTimes: {
+	'keyTimes': {
+		name: 'keyTimes',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -831,7 +880,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	lang: {
+	'lang': {
+		name: 'lang',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -846,7 +896,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	lengthAdjust: {
+	'lengthAdjust': {
+		name: 'lengthAdjust',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -861,7 +912,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'spacing',
 		applyTo: [],
 	},
-	limitingConeAngle: {
+	'limitingConeAngle': {
+		name: 'limitingConeAngle',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -876,7 +928,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	markerHeight: {
+	'markerHeight': {
+		name: 'markerHeight',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -894,7 +947,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '3',
 		applyTo: [],
 	},
-	markerUnits: {
+	'markerUnits': {
+		name: 'markerUnits',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -909,7 +963,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'strokeWidth',
 		applyTo: [],
 	},
-	markerWidth: {
+	'markerWidth': {
+		name: 'markerWidth',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -927,7 +982,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '3',
 		applyTo: [],
 	},
-	maskContentUnits: {
+	'maskContentUnits': {
+		name: 'maskContentUnits',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -942,7 +998,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'userSpaceOnUse',
 		applyTo: [],
 	},
-	maskUnits: {
+	'maskUnits': {
+		name: 'maskUnits',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -957,7 +1014,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'objectBoundingBox',
 		applyTo: [],
 	},
-	max: {
+	'max': {
+		name: 'max',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -975,7 +1033,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	media: {
+	'media': {
+		name: 'media',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -987,7 +1046,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	method: {
+	'method': {
+		name: 'method',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1002,7 +1062,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'align',
 		applyTo: [],
 	},
-	min: {
+	'min': {
+		name: 'min',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -1020,7 +1081,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '0',
 		applyTo: [],
 	},
-	mode: {
+	'mode': {
+		name: 'mode',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1035,7 +1097,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'normal',
 		applyTo: [],
 	},
-	numOctaves: {
+	'numOctaves': {
+		name: 'numOctaves',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1050,7 +1113,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '1',
 		applyTo: [],
 	},
-	offset: {
+	'offset': {
+		name: 'offset',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1069,7 +1133,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '0',
 		applyTo: [],
 	},
-	operator: {
+	'operator': {
+		name: 'operator',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1095,7 +1160,8 @@ const _regularAttr: IRegularAttrDefine = {
 		}],
 		applyTo: [],
 	},
-	order: {
+	'order': {
+		name: 'order',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1110,7 +1176,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '3',
 		applyTo: [],
 	},
-	orient: {
+	'orient': {
+		name: 'orient',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1131,7 +1198,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '0',
 		applyTo: [],
 	},
-	origin: {
+	'origin': {
+		name: 'origin',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -1146,7 +1214,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'default',
 		applyTo: [],
 	},
-	path: {
+	'path': {
+		name: 'path',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1161,7 +1230,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	pathLength: {
+	'pathLength': {
+		name: 'pathLength',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1176,7 +1246,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	patternContentUnits: {
+	'patternContentUnits': {
+		name: 'patternContentUnits',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1191,7 +1262,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'userSpaceOnUse',
 		applyTo: [],
 	},
-	patternTransform: {
+	'patternTransform': {
+		name: 'patternTransform',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1206,7 +1278,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	patternUnits: {
+	'patternUnits': {
+		name: 'patternUnits',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1221,7 +1294,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'objectBoundingBox',
 		applyTo: [],
 	},
-	playbackorder: {
+	'playbackorder': {
+		name: 'playbackorder',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -1236,7 +1310,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'all',
 		applyTo: [],
 	},
-	points: {
+	'points': {
+		name: 'points',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1251,7 +1326,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	pointsAtX: {
+	'pointsAtX': {
+		name: 'pointsAtX',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1266,7 +1342,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '0',
 		applyTo: [],
 	},
-	pointsAtY: {
+	'pointsAtY': {
+		name: 'pointsAtY',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1281,7 +1358,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '0',
 		applyTo: [],
 	},
-	pointsAtZ: {
+	'pointsAtZ': {
+		name: 'pointsAtZ',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1296,7 +1374,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '0',
 		applyTo: [],
 	},
-	preserveAlpha: {
+	'preserveAlpha': {
+		name: 'preserveAlpha',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1311,7 +1390,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'false',
 		applyTo: [],
 	},
-	preserveAspectRatio: {
+	'preserveAspectRatio': {
+		name: 'preserveAspectRatio',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1326,7 +1406,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'xMidYMid meet',
 		applyTo: [],
 	},
-	primitiveUnits: {
+	'primitiveUnits': {
+		name: 'primitiveUnits',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1341,7 +1422,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'userSpaceOnUse.',
 		applyTo: [],
 	},
-	r: {
+	'r': {
+		name: 'r',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1365,7 +1447,8 @@ const _regularAttr: IRegularAttrDefine = {
 		}],
 		applyTo: [],
 	},
-	radius: {
+	'radius': {
+		name: 'radius',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1380,7 +1463,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '0',
 		applyTo: [],
 	},
-	refX: {
+	'refX': {
+		name: 'refX',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1404,7 +1488,8 @@ const _regularAttr: IRegularAttrDefine = {
 		}],
 		applyTo: [],
 	},
-	refY: {
+	'refY': {
+		name: 'refY',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1428,7 +1513,8 @@ const _regularAttr: IRegularAttrDefine = {
 		}],
 		applyTo: [],
 	},
-	rel: {
+	'rel': {
+		name: 'rel',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1440,7 +1526,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	repeatCount: {
+	'repeatCount': {
+		name: 'repeatCount',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -1458,7 +1545,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	repeatDur: {
+	'repeatDur': {
+		name: 'repeatDur',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -1476,7 +1564,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	requiredExtensions: {
+	'requiredExtensions': {
+		name: 'requiredExtensions',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -1488,7 +1577,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	restart: {
+	'restart': {
+		name: 'restart',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -1503,7 +1593,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'always',
 		applyTo: [],
 	},
-	result: {
+	'result': {
+		name: 'result',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1518,7 +1609,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	rotate: {
+	'rotate': {
+		name: 'rotate',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1537,7 +1629,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '0',
 		applyTo: [],
 	},
-	rx: {
+	'rx': {
+		name: 'rx',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1558,7 +1651,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'auto',
 		applyTo: [],
 	},
-	ry: {
+	'ry': {
+		name: 'ry',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1579,7 +1673,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'auto',
 		applyTo: [],
 	},
-	scale: {
+	'scale': {
+		name: 'scale',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1594,7 +1689,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '0',
 		applyTo: [],
 	},
-	seed: {
+	'seed': {
+		name: 'seed',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1609,7 +1705,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '0',
 		applyTo: [],
 	},
-	side: {
+	'side': {
+		name: 'side',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1624,7 +1721,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'left',
 		applyTo: [],
 	},
-	slope: {
+	'slope': {
+		name: 'slope',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1639,7 +1737,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '1',
 		applyTo: [],
 	},
-	spacing: {
+	'spacing': {
+		name: 'spacing',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1654,7 +1753,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'exact',
 		applyTo: [],
 	},
-	specularConstant: {
+	'specularConstant': {
+		name: 'specularConstant',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1669,7 +1769,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '1',
 		applyTo: [],
 	},
-	specularExponent: {
+	'specularExponent': {
+		name: 'specularExponent',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1684,7 +1785,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '1',
 		applyTo: [],
 	},
-	spreadMethod: {
+	'spreadMethod': {
+		name: 'spreadMethod',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1699,7 +1801,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'pad',
 		applyTo: [],
 	},
-	startOffset: {
+	'startOffset': {
+		name: 'startOffset',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1717,7 +1820,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '0',
 		applyTo: [],
 	},
-	stdDeviation: {
+	'stdDeviation': {
+		name: 'stdDeviation',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1738,7 +1842,8 @@ const _regularAttr: IRegularAttrDefine = {
 		}],
 		applyTo: [],
 	},
-	stitchTiles: {
+	'stitchTiles': {
+		name: 'stitchTiles',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1753,7 +1858,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'noStitch',
 		applyTo: [],
 	},
-	style: {
+	'style': {
+		name: 'style',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -1765,7 +1871,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	surfaceScale: {
+	'surfaceScale': {
+		name: 'surfaceScale',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1780,7 +1887,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '1',
 		applyTo: [],
 	},
-	systemLanguage: {
+	'systemLanguage': {
+		name: 'systemLanguage',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -1792,7 +1900,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	tabindex: {
+	'tabindex': {
+		name: 'tabindex',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -1807,7 +1916,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	tableValues: {
+	'tableValues': {
+		name: 'tableValues',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1822,7 +1932,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	target: {
+	'target': {
+		name: 'target',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1840,7 +1951,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '_self',
 		applyTo: [],
 	},
-	targetX: {
+	'targetX': {
+		name: 'targetX',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1855,7 +1967,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	targetY: {
+	'targetY': {
+		name: 'targetY',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1870,7 +1983,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	textLength: {
+	'textLength': {
+		name: 'textLength',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1888,7 +2002,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	timelinebegin: {
+	'timelinebegin': {
+		name: 'timelinebegin',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -1903,7 +2018,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'loadend',
 		applyTo: [],
 	},
-	title: {
+	'title': {
+		name: 'title',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -1915,7 +2031,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	to: {
+	'to': {
+		name: 'to',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -1927,7 +2044,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	transform: {
+	'transform': {
+		name: 'transform',
 		couldBeStyle: false, // TODO 最新规则已经放到了 properties 但此属性使用率较高，且浏览器尚未支持，故此先设置为 false
 		animatable: true,
 		maybeColor: false,
@@ -1942,7 +2060,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: ['svg', 'g', 'symbol', 'marker', 'a', 'switch', 'use', 'foreignObject', 'unknown'].concat(graphicsElements),
 	},
-	type: {
+	'type': {
+		name: 'type',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1982,7 +2101,8 @@ const _regularAttr: IRegularAttrDefine = {
 		}],
 		applyTo: [],
 	},
-	values: {
+	'values': {
+		name: 'values',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -1998,7 +2118,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	viewBox: {
+	'viewBox': {
+		name: 'viewBox',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -2013,7 +2134,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	width: {
+	'width': {
+		name: 'width',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -2043,7 +2165,8 @@ const _regularAttr: IRegularAttrDefine = {
 		}],
 		applyTo: [],
 	},
-	x: {
+	'x': {
+		name: 'x',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -2079,7 +2202,8 @@ const _regularAttr: IRegularAttrDefine = {
 		}],
 		applyTo: [],
 	},
-	x1: {
+	'x1': {
+		name: 'x1',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -2103,7 +2227,8 @@ const _regularAttr: IRegularAttrDefine = {
 		}],
 		applyTo: [],
 	},
-	x2: {
+	'x2': {
+		name: 'x2',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -2127,7 +2252,8 @@ const _regularAttr: IRegularAttrDefine = {
 		}],
 		applyTo: [],
 	},
-	xChannelSelector: {
+	'xChannelSelector': {
+		name: 'xChannelSelector',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -2143,6 +2269,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: [],
 	},
 	'xlink:href': {
+		name: 'xlink:href',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -2158,6 +2285,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: [],
 	},
 	'xlink:title': {
+		name: 'xlink:title',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -2170,6 +2298,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: [],
 	},
 	'xml:space': {
+		name: 'xml:space',
 		isUndef: true, // 此属性与本优化工具有冲突，没有实际意义
 		couldBeStyle: false,
 		animatable: false,
@@ -2186,6 +2315,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: [],
 	},
 	'xmlns': {
+		name: 'xmlns',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -2201,6 +2331,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: [],
 	},
 	'xmlns:xml': {
+		name: 'xmlns:xml',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -2216,6 +2347,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: [],
 	},
 	'xmlns:xlink': {
+		name: 'xmlns:xlink',
 		couldBeStyle: false,
 		animatable: false,
 		maybeColor: false,
@@ -2230,7 +2362,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '',
 		applyTo: [],
 	},
-	y: {
+	'y': {
+		name: 'y',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -2266,7 +2399,8 @@ const _regularAttr: IRegularAttrDefine = {
 		}],
 		applyTo: [],
 	},
-	y1: {
+	'y1': {
+		name: 'y1',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -2290,7 +2424,8 @@ const _regularAttr: IRegularAttrDefine = {
 		}],
 		applyTo: [],
 	},
-	y2: {
+	'y2': {
+		name: 'y2',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -2314,7 +2449,8 @@ const _regularAttr: IRegularAttrDefine = {
 		}],
 		applyTo: [],
 	},
-	yChannelSelector: {
+	'yChannelSelector': {
+		name: 'yChannelSelector',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -2329,7 +2465,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'A',
 		applyTo: [],
 	},
-	z: {
+	'z': {
+		name: 'z',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -2344,7 +2481,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '0',
 		applyTo: [],
 	},
-	zoomAndPan: {
+	'zoomAndPan': {
+		name: 'zoomAndPan',
 		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
@@ -2363,6 +2501,7 @@ const _regularAttr: IRegularAttrDefine = {
 	// 下面是 property
 
 	'alignment-baseline': {
+		name: 'alignment-baseline',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -2378,6 +2517,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: ['tspan', 'textPath'],
 	},
 	'baseline-shift': {
+		name: 'baseline-shift',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -2398,7 +2538,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '0',
 		applyTo: ['tspan', 'textPath'],
 	},
-	clip: {
+	'clip': {
+		name: 'clip',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -2417,6 +2558,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: viewport,
 	},
 	'clip-path': {
+		name: 'clip-path',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -2446,6 +2588,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: useContainerGraphics,
 	},
 	'clip-rule': {
+		name: 'clip-rule',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -2460,7 +2603,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'nonzero',
 		applyTo: ['use'].concat(graphicsElements),
 	},
-	color: {
+	'color': {
+		name: 'color',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: true,
@@ -2485,6 +2629,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: ['feFlood', 'feDiffuseLighting', 'feSpecularLighting', 'stop'].concat(shapeAndText),
 	},
 	'color-interpolation': {
+		name: 'color-interpolation',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -2500,6 +2645,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: colorApply,
 	},
 	'color-interpolation-filters': {
+		name: 'color-interpolation-filters',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -2515,6 +2661,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: colorApply,
 	},
 	'color-rendering': {
+		name: 'color-rendering',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -2529,7 +2676,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'auto',
 		applyTo: colorApply,
 	},
-	cursor: {
+	'cursor': {
+		name: 'cursor',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -2544,7 +2692,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'auto',
 		applyTo: useContainerGraphics,
 	},
-	direction: {
+	'direction': {
+		name: 'direction',
 		couldBeStyle: true,
 		animatable: false,
 		maybeColor: false,
@@ -2559,7 +2708,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'ltr',
 		applyTo: textContentElements,
 	},
-	display: {
+	'display': {
+		name: 'display',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -2575,6 +2725,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: ['svg', 'g', 'switch', 'a', 'foreignObject', 'use'].concat(graphicsElements),
 	},
 	'dominant-baseline': {
+		name: 'dominant-baseline',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -2589,7 +2740,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'auto',
 		applyTo: textContentElements,
 	},
-	fill: {
+	'fill': {
+		name: 'fill',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: true,
@@ -2623,6 +2775,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: shapeAndText,
 	},
 	'fill-opacity': {
+		name: 'fill-opacity',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -2641,6 +2794,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: shapeAndText,
 	},
 	'fill-rule': {
+		name: 'fill-rule',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -2655,7 +2809,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'nonzero',
 		applyTo: shapeAndText,
 	},
-	filter: {
+	'filter': {
+		name: 'filter',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -2674,6 +2829,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: useContainerGraphics,
 	},
 	'flood-color': {
+		name: 'flood-color',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: true,
@@ -2698,6 +2854,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: ['feFlood'],
 	},
 	'flood-opacity': {
+		name: 'flood-opacity',
 		couldBeStyle: true,
 		animatable: false,
 		maybeColor: false,
@@ -2715,7 +2872,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '1',
 		applyTo: ['feFlood'],
 	},
-	font: {
+	'font': {
+		name: 'font',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -2728,6 +2886,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: textContentElements,
 	},
 	'font-family': {
+		name: 'font-family',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -2740,6 +2899,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: textContentElements,
 	},
 	'font-size': {
+		name: 'font-size',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -2764,6 +2924,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: textContentElements,
 	},
 	'font-size-adjust': {
+		name: 'font-size-adjust',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -2782,6 +2943,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: textContentElements,
 	},
 	'font-stretch': {
+		name: 'font-stretch',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -2797,6 +2959,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: textContentElements,
 	},
 	'font-style': {
+		name: 'font-style',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -2812,6 +2975,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: textContentElements,
 	},
 	'font-variant': {
+		name: 'font-variant',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -2827,6 +2991,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: textContentElements,
 	},
 	'font-weight': {
+		name: 'font-weight',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -2842,6 +3007,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: textContentElements,
 	},
 	'glyph-orientation-vertical': {
+		name: 'glyph-orientation-vertical',
 		couldBeStyle: true,
 		animatable: false,
 		maybeColor: false,
@@ -2857,6 +3023,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: textContentElements,
 	},
 	'image-rendering': {
+		name: 'image-rendering',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -2872,6 +3039,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: ['image'],
 	},
 	'letter-spacing': {
+		name: 'letter-spacing',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -2890,6 +3058,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: textContentElements,
 	},
 	'lighting-color': {
+		name: 'lighting-color',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: true,
@@ -2914,6 +3083,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: ['feDiffuseLighting', 'feSpecularLighting'],
 	},
 	'line-height': {
+		name: 'line-height',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: true,
@@ -2937,7 +3107,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'normal',
 		applyTo: ['text'],
 	},
-	marker: {
+	'marker': {
+		name: 'marker',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -2950,6 +3121,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: shapeElements,
 	},
 	'marker-end': {
+		name: 'marker-end',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -2968,6 +3140,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: shapeElements,
 	},
 	'marker-mid': {
+		name: 'marker-mid',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -2986,6 +3159,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: shapeElements,
 	},
 	'marker-start': {
+		name: 'marker-start',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -3003,7 +3177,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'none',
 		applyTo: shapeElements,
 	},
-	mask: {
+	'mask': {
+		name: 'mask',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -3015,7 +3190,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'none',
 		applyTo: useContainerGraphics,
 	},
-	opacity: {
+	'opacity': {
+		name: 'opacity',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -3033,7 +3209,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '1',
 		applyTo: ['svg', 'g', 'symbol', 'marker', 'a', 'switch', 'use', 'unknown'].concat(graphicsElements),
 	},
-	overflow: {
+	'overflow': {
+		name: 'overflow',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -3049,6 +3226,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: viewport,
 	},
 	'paint-order': {
+		name: 'paint-order',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -3064,6 +3242,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: shapeAndText,
 	},
 	'pointer-events': {
+		name: 'pointer-events',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -3079,6 +3258,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: useContainerGraphics,
 	},
 	'shape-rendering': {
+		name: 'shape-rendering',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -3094,6 +3274,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: shapeElements,
 	},
 	'stop-color': {
+		name: 'stop-color',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: true,
@@ -3121,6 +3302,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: ['stop'],
 	},
 	'stop-opacity': {
+		name: 'stop-opacity',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -3138,7 +3320,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: '1',
 		applyTo: ['stop'],
 	},
-	stroke: {
+	'stroke': {
+		name: 'stroke',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: true,
@@ -3172,6 +3355,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: shapeAndText,
 	},
 	'stroke-dasharray': {
+		name: 'stroke-dasharray',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -3190,6 +3374,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: shapeAndText,
 	},
 	'stroke-dashoffset': {
+		name: 'stroke-dashoffset',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -3208,6 +3393,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: shapeAndText,
 	},
 	'stroke-linecap': {
+		name: 'stroke-linecap',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -3223,6 +3409,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: shapeAndText,
 	},
 	'stroke-linejoin': {
+		name: 'stroke-linejoin',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -3238,6 +3425,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: shapeAndText,
 	},
 	'stroke-miterlimit': {
+		name: 'stroke-miterlimit',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -3253,6 +3441,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: shapeAndText,
 	},
 	'stroke-opacity': {
+		name: 'stroke-opacity',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -3271,6 +3460,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: shapeAndText,
 	},
 	'stroke-width': {
+		name: 'stroke-width',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -3289,6 +3479,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: shapeAndText,
 	},
 	'text-anchor': {
+		name: 'text-anchor',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -3304,6 +3495,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: textContentElements,
 	},
 	'text-decoration': {
+		name: 'text-decoration',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -3319,6 +3511,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: textContentElements,
 	},
 	'text-overflow': {
+		name: 'text-overflow',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -3334,6 +3527,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: textContentElements,
 	},
 	'text-rendering': {
+		name: 'text-rendering',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -3349,6 +3543,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: ['text'],
 	},
 	'unicode-bidi': {
+		name: 'unicode-bidi',
 		couldBeStyle: true,
 		animatable: false,
 		maybeColor: false,
@@ -3364,6 +3559,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: textContentElements,
 	},
 	'vector-effect': {
+		name: 'vector-effect',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -3381,7 +3577,8 @@ const _regularAttr: IRegularAttrDefine = {
 		initValue: 'none',
 		applyTo: ['use'].concat(graphicsElements),
 	},
-	visibility: {
+	'visibility': {
+		name: 'visibility',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -3397,6 +3594,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: ['use', 'a'].concat(graphicsElements),
 	},
 	'white-space': {
+		name: 'white-space',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -3412,6 +3610,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: textContentElements,
 	},
 	'word-spacing': {
+		name: 'word-spacing',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
@@ -3433,6 +3632,7 @@ const _regularAttr: IRegularAttrDefine = {
 		applyTo: textContentElements,
 	},
 	'writing-mode': {
+		name: 'writing-mode',
 		couldBeStyle: true,
 		animatable: false,
 		maybeColor: false,
@@ -3450,6 +3650,7 @@ const _regularAttr: IRegularAttrDefine = {
 };
 
 const undefAttr: IRegularAttr = {
+	name: '',
 	isUndef: true,
 	couldBeStyle: false,
 	animatable: false,
@@ -3472,6 +3673,7 @@ export interface ILegalValueItem {
 }
 
 export interface IRegularAttr {
+	name: string;
 	isUndef?: boolean;
 	couldBeStyle: boolean;
 	animatable: boolean;
