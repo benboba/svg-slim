@@ -12,6 +12,8 @@ import { traversalNode } from '../xml/traversal-node';
 import { execSelector } from '../style/exec-selector';
 import { ITagNode } from '../interface/node';
 import { INode } from '../../node';
+import { checkApply } from '../style/check-apply';
+import { rmNode } from '../xml/rm-node';
 
 interface ICSSUnique {
 	[propName: string]: Rule;
@@ -68,9 +70,24 @@ export const shortenStyleTag = async (rule: ConfigItem, dom: INode): Promise<nul
 						const theSelectors = styleRule.selectors as string[];
 						// 移除无效的选择器
 						for (let si = theSelectors.length; si--; ) {
-							// TODO：getBySelector 之后也需要 check-apply
-							if (!getBySelector(dom, execSelector(theSelectors[si])).length) {
+							const matchNodes = getBySelector(dom, execSelector(theSelectors[si]));
+							if (!matchNodes.length) {
 								theSelectors.splice(si, 1);
+							} else {
+								if (styleRule.declarations) {
+									let anyMatch = false;
+									const declarations = styleRule.declarations as Declaration[];
+									for (let mi = declarations.length; mi--; ) {
+										const ruleItem = declarations[mi];
+										const property = ruleItem.property as string;
+										if (matchNodes.some(matchNode => checkApply(regularAttr[property], matchNode, dom, true))) {
+											anyMatch = true;
+										}
+									}
+									if (!anyMatch) {
+										theSelectors.splice(si, 1);
+									}
+								}
 							}
 						}
 						if (!theSelectors.length) {
@@ -130,6 +147,11 @@ export const shortenStyleTag = async (rule: ConfigItem, dom: INode): Promise<nul
 			}
 
 			cssContent.textContent = shortenTag(cssStringify(parsedCss, { compress: true }));
+
+			// 如果最终样式内容为空，则直接移除 style 标签
+			if (!cssContent.textContent) {
+				rmNode(node);
+			}
 
 		}, dom);
 	}

@@ -14,7 +14,8 @@ interface ISvgSlimming {
 
 const exportFunc: ISvgSlimming = async (data: string, userConfig: IConfig = {}): Promise<string> => new Promise((resolve, reject) => {
 	parse(data).then((dom: INode) => {
-		const finalConfig: IConfig = Object.create(config) as IConfig;
+		const finalConfig: IConfig = {};
+		Object.assign(finalConfig, config);
 		Object.keys(userConfig).forEach(key => {
 			if (finalConfig.hasOwnProperty(key)) {
 				const conf1 = toArray(finalConfig[key]);

@@ -29,13 +29,13 @@ export const shortenStyleAttr = async (rule: ConfigItem, dom: INode): Promise<nu
 			const attrObj: IAttrObj = {};
 			for (let i = node.attributes.length; i--; ) {
 				const attr = node.attributes[i];
-				const attrDefine: IRegularAttr = regularAttr[attr.fullname];
+				const attrDefine = regularAttr[attr.fullname];
 				if (attr.fullname === 'style') {
 					const styleObj = execStyle(attr.value);
 					const styleUnique: IUnique = {};
 					for (let si = styleObj.length; si--; ) {
 						const styleItem = styleObj[si];
-						const styleDefine: IRegularAttr = regularAttr[styleItem.fullname];
+						const styleDefine = regularAttr[styleItem.fullname];
 						if (
 							styleUnique[styleItem.fullname] // 排重
 							||
@@ -55,7 +55,7 @@ export const shortenStyleAttr = async (rule: ConfigItem, dom: INode): Promise<nu
 						}
 					}
 
-					if (Object.keys(styleObj).length) {
+					if (styleObj.length) {
 						attr.value = style2value(styleObj);
 					} else {
 						node.removeAttribute(attr.fullname);
@@ -76,7 +76,7 @@ export const shortenStyleAttr = async (rule: ConfigItem, dom: INode): Promise<nu
 			}
 
 			if (!hasStyleTag || rule[1]) {
-				// [warning] svg 的样式覆盖规则是 style 属性 > style 标签 > 属性，所以以下代码可能导致不正确的覆盖！
+				// [warning] svg 的样式覆盖规则是 style 属性 > style 标签 > 属性，所以以下代码可能导致不正确的样式覆盖！
 				if (Object.keys(attrObj).length > styleThreshold) {
 
 					// 属性转 style
