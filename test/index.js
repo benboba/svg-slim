@@ -344,9 +344,11 @@ tester(
 tester(
 	'shorten-style-attr',
 	`<svg>
-    <text fill="red" stroke="blue" style="font-family: &quot;微软雅黑&quot;;fill: rebeccapurple; stroke: blue; flex-grow: 1;">123</text>
+	<g fill="none" style="fill:blue">
+	<text fill="red" stroke="blue" style="font-family: &quot;微软雅黑&quot;;fill: rebeccapurple; stroke: blue; flex-grow: 1;">123</text>
+	</g>
     </svg>`,
-	'<svg><text stroke="blue" fill="rebeccapurple" font-family="&quot;微软雅黑&quot;">123</text></svg>', {
+	'<svg><g><text stroke="blue" fill="rebeccapurple" font-family="&quot;微软雅黑&quot;">123</text></g></svg>', {
 		'shorten-style-attr': true
 	}
 );
@@ -377,6 +379,27 @@ tester(
     <a><text id="redText">123</text></a>
     </svg>`,
 	'<svg><style>#redText,text[id^=red]{fill:yellow}a::first-letter{fill:blue}</style><a><text id="redText">123</text></a></svg>', {
+		'shorten-style-tag': [true, true]
+	}
+);
+
+tester(
+	'shorten-style-tag',
+	`<svg>
+    <style>
+    #redText {
+        fill: yellow;
+    }
+    text[id^=red] {
+        fill: red;
+	}
+	a::first-letter {
+		fill:blue;
+	}
+    </style>
+    <a><text id="redText" style="fill:blue">123</text></a>
+    </svg>`,
+	'<svg><a><text id="redText" style="fill:blue">123</text></a></svg>', {
 		'shorten-style-tag': [true, true]
 	}
 );
