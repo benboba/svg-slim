@@ -1,6 +1,6 @@
 # 更新日志
 
-[查看更新日志](./UPDATE.md)
+[查看更新日志](https://github.com/benboba/svg-slimming/blob/master/UPDATE.md)
 
 # SVG瘦身工具【svg slimming】
 

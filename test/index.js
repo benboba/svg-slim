@@ -346,9 +346,12 @@ tester(
 	`<svg>
 	<g fill="none" style="fill:blue">
 	<text fill="red" stroke="blue" style="font-family: &quot;微软雅黑&quot;;fill: rebeccapurple; stroke: blue; flex-grow: 1;">123</text>
+	<g fill="#fff">
+		<rect/>
+	</g>
 	</g>
     </svg>`,
-	'<svg><g><text stroke="blue" fill="rebeccapurple" font-family="&quot;微软雅黑&quot;">123</text></g></svg>', {
+	'<svg><g><text stroke="blue" fill="rebeccapurple" font-family="&quot;微软雅黑&quot;">123</text><g fill="#fff"><rect/></g></g></svg>', {
 		'shorten-style-attr': true
 	}
 );
