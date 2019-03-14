@@ -34,7 +34,7 @@ export class Node implements INode {
 	}
 
 	private readonly _childNodes?: INode[];
-	public get childNodes() : ReadonlyArray<INode> | null {
+	public get childNodes(): ReadonlyArray<INode> | null {
 		return this._childNodes ? Object.freeze(this._childNodes.slice()) : null;
 	}
 
@@ -159,7 +159,7 @@ export class Node implements INode {
 				}
 			}
 
-			const newAttr:IAttr = {
+			const newAttr: IAttr = {
 				name,
 				value,
 				fullname: name
@@ -174,7 +174,7 @@ export class Node implements INode {
 
 	public removeAttribute(name: string, namespace?: string): void {
 		if (this._attributes) {
-			for (let i = this._attributes.length; i--; ) {
+			for (let i = this._attributes.length; i--;) {
 				const attr = this._attributes[i];
 				if ((!namespace && attr.fullname === name) || (attr.name === name && attr.namespace === namespace)) {
 					this._attributes.splice(i, 1);

@@ -63,7 +63,7 @@ export const shortenClass = async (rule: ConfigItem, dom: INode): Promise<null> 
 			if (classAttr !== null) {
 				const className = mixWhiteSpace(classAttr.trim()).split(/\s/);
 
-				for (let ci = className.length; ci--; ) {
+				for (let ci = className.length; ci--;) {
 					if (classList.hasOwnProperty(className[ci])) {
 						const cName = classList[className[ci]][0];
 						classList[className[ci]][2] = true;
@@ -86,10 +86,10 @@ export const shortenClass = async (rule: ConfigItem, dom: INode): Promise<null> 
 				return;
 			}
 			const reg = new RegExp(`.${item[0]}(?=[,\\*#>+~:{\\s\\[\\.]|$)`);
-			for (let ri = cssRules.rules.length; ri--; ) {
+			for (let ri = cssRules.rules.length; ri--;) {
 				const cssRule: IExtendRule = cssRules.rules[ri];
 				if (cssRule.ruleId === item[1] && cssRule.selectors) {
-					for (let i = cssRule.selectors.length; i--; ) {
+					for (let i = cssRule.selectors.length; i--;) {
 						if (reg.test(cssRule.selectors[i])) {
 							cssRule.selectors.splice(i, 1);
 						}

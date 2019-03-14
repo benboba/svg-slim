@@ -1,4 +1,4 @@
-import { parse as cssParse, stringify as cssStringify, Declaration} from 'css';
+import { parse as cssParse, stringify as cssStringify, Declaration } from 'css';
 import { both, curry, has } from 'ramda';
 import { regularAttr } from '../const/regular-attr';
 import { toFixed } from '../math/tofixed';
@@ -16,7 +16,7 @@ import { toScientific } from '../utils/to-scientific';
 import { shortenNumberList } from '../utils/shorten-number-list';
 import { ITagNode } from '../interface/node';
 
-    // 移除掉正、负号前面的逗号，移除掉0.前面的0，移除掉.1,.1或e1,.1这种case中间的逗号
+// 移除掉正、负号前面的逗号，移除掉0.前面的0，移除掉.1,.1或e1,.1这种case中间的逗号
 const doShorten = curry((digit: number, val: string) => shortenNumberList(val.replace(numberGlobal, s => `${toScientific(toFixed(digit, parseFloat(s)))}`)));
 
 export const shortenDecimalDigits = async (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {

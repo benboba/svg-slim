@@ -406,3 +406,19 @@ tester(
 		'shorten-style-tag': [true, true]
 	}
 );
+
+tester(
+	'shorten-style-tag',
+	`<svg>
+    <style>
+    #redText {
+		fill: yellow;
+		marker-end: none;
+    }
+    </style>
+    <text id="redText">123</text>
+    </svg>`,
+	'<svg><style>#redText{fill:yellow}</style><text id="redText">123</text></svg>', {
+		'shorten-style-tag': [true, true]
+	}
+);

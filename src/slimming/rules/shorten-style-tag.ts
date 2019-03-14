@@ -30,7 +30,7 @@ export const shortenStyleTag = async (rule: ConfigItem, dom: INode): Promise<nul
 			traversalObj(has('declarations'), (cssRule: Rule, parents: AtRule[]) => {
 				const declared: IUnique = {};
 				const declarations = cssRule.declarations as Declaration[];
-				for (let i = declarations.length; i--; ) {
+				for (let i = declarations.length; i--;) {
 					const ruleItem = declarations[i];
 					const property = ruleItem.property as string;
 					/*
@@ -68,28 +68,41 @@ export const shortenStyleTag = async (rule: ConfigItem, dom: INode): Promise<nul
 					// 只针对规则类
 					if (styleRule.type === 'rule') {
 						const theSelectors = styleRule.selectors as string[];
+						const declarations = styleRule.declarations as Declaration[];
+						// 记录命中对象但存在无效属性的情况
+						const usedRule: IUnique = {};
 						// 移除无效的选择器
-						for (let si = theSelectors.length; si--; ) {
+						for (let si = theSelectors.length; si--;) {
 							const matchNodes = getBySelector(dom, execSelector(theSelectors[si]));
 							if (!matchNodes.length) {
 								theSelectors.splice(si, 1);
 							} else {
-								if (styleRule.declarations) {
-									let anyMatch = false;
-									const declarations = styleRule.declarations as Declaration[];
-									for (let mi = declarations.length; mi--; ) {
-										const ruleItem = declarations[mi];
-										const property = ruleItem.property as string;
-										if (matchNodes.some(matchNode => checkApply(regularAttr[property], matchNode, dom, true))) {
-											anyMatch = true;
-										}
+								let anyMatch = false;
+								for (let mi = declarations.length; mi--;) {
+									const ruleItem = declarations[mi];
+									const property = ruleItem.property as string;
+									// 判断每一条属性与每一个命中元素的匹配情况
+									if (matchNodes.some(matchNode => checkApply(regularAttr[property], matchNode, dom, true))) {
+										// 只要有一条匹配存在，就证明该选择器有效
+										anyMatch = true;
+										// 同时标记该属性有效
+										usedRule[property] = true;
 									}
-									if (!anyMatch) {
-										theSelectors.splice(si, 1);
-									}
+								}
+								if (!anyMatch) {
+									theSelectors.splice(si, 1);
 								}
 							}
 						}
+
+						// 验证属性的有效性，移除无效的属性
+						for (let ci = declarations.length; ci--;) {
+							if (!usedRule[declarations[ci].property as string]) {
+								declarations.splice(ci, 1);
+							}
+						}
+
+						// 如果选择器列表经过筛选后为空，则移除该条规则
 						if (!theSelectors.length) {
 							cssRules.splice(i, 1);
 							i--;
@@ -102,17 +115,17 @@ export const shortenStyleTag = async (rule: ConfigItem, dom: INode): Promise<nul
 						styleRule.selectors = theSelectors.map(s => mixWhiteSpace(s.trim()));
 						const selectorKey = styleRule.selectors.join(',');
 						if (selectorUnique.hasOwnProperty(selectorKey)) {
-							const declarations = (selectorUnique[selectorKey].declarations as Declaration[]).concat(styleRule.declarations as Declaration[]);
+							const uDeclarations = (selectorUnique[selectorKey].declarations as Declaration[]).concat(styleRule.declarations as Declaration[]);
 							// 合并之后依然要排重
 							const declared: IUnique = {};
-							for (let j = declarations.length; j--; ) {
-								if (declared[declarations[j].property as string]) {
-									declarations.splice(j, 1);
+							for (let j = uDeclarations.length; j--;) {
+								if (declared[uDeclarations[j].property as string]) {
+									uDeclarations.splice(j, 1);
 								} else {
-									declared[declarations[j].property as string] = true;
+									declared[uDeclarations[j].property as string] = true;
 								}
 							}
-							selectorUnique[selectorKey].declarations = declarations;
+							selectorUnique[selectorKey].declarations = uDeclarations;
 							cssRules.splice(i, 1);
 							i--;
 							l--;
@@ -127,7 +140,7 @@ export const shortenStyleTag = async (rule: ConfigItem, dom: INode): Promise<nul
 						if (declareUnique.hasOwnProperty(declareKey)) {
 							const selectors: string[] = (declareUnique[declareKey].selectors as string[]).concat(styleRule.selectors);
 							const selected: IUnique = {};
-							for (let j = selectors.length; j--; ) {
+							for (let j = selectors.length; j--;) {
 								if (selected[selectors[j]]) {
 									selectors.splice(j, 1);
 								} else {

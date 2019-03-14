@@ -3684,14 +3684,14 @@ export interface IRegularAttr {
 	maybeAccurateNumber: boolean;
 	legalValues: ILegalValueItem[];
 	initValue: string | {
-		val: string,
-		tag: string[]
+		val: string;
+		tag: string[];
 	}[];
 	applyTo: string[];
 }
 
 export const regularAttr = new Proxy(_regularAttr, {
-    get(obj, prop: string): IRegularAttr {
-        return prop in obj ? obj[prop] : undefAttr;
-    }
+	get(obj, prop: string): IRegularAttr {
+		return prop in obj ? obj[prop] : undefAttr;
+	}
 });

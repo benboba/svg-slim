@@ -31,7 +31,7 @@ const updStatus = (pos: number, str: string, status: IStatus) => {
 };
 
 // 应对一个捕获组的状况
-const Process1 = (conf: [number, string, RegExp, number], str: string): { node:Node, str: string } | null => {
+const Process1 = (conf: [number, string, RegExp, number], str: string): { node: Node; str: string } | null => {
 	const reg = conf[2];
 	const execResult = reg.exec(str);
 	if (execResult) {
@@ -49,7 +49,7 @@ const Process1 = (conf: [number, string, RegExp, number], str: string): { node:N
 
 
 // 应对两个捕获组的状况
-const Process2 = (conf: [number, RegExp, number], str: string): { node:Node, str: string } | null => {
+const Process2 = (conf: [number, RegExp, number], str: string): { node: Node; str: string } | null => {
 	const reg = conf[1];
 	const execResult = reg.exec(str);
 	if (execResult) {
@@ -73,7 +73,7 @@ interface IStatus {
 
 
 // 处理标签
-const ProcessTag = (str: string, status: IStatus):  { node:Node, str: string } | null => {
+const ProcessTag = (str: string, status: IStatus): { node: Node; str: string } | null => {
 	const execResult = REG_START_TAG.exec(str);
 	if (execResult) {
 		const tempStatus: IStatus = { line: status.line, pos: status.pos, lastpos: 0 };
@@ -135,7 +135,7 @@ const ProcessTag = (str: string, status: IStatus):  { node:Node, str: string } |
 };
 
 
-const ProcessEndTag = (str: string, status: IStatus):  { node:Node, str: string } | null => {
+const ProcessEndTag = (str: string, status: IStatus): { node: Node; str: string } | null => {
 	const execResult = REG_END_TAG.exec(str);
 	if (execResult) {
 		const result = {
@@ -163,7 +163,7 @@ const ProcessEndTag = (str: string, status: IStatus):  { node:Node, str: string 
 };
 
 
-const parse = (str: string, status: IStatus): { node:Node, str: string } => {
+const parse = (str: string, status: IStatus): { node: Node; str: string } => {
 	const startCharPos = str.indexOf('<');
 	if (startCharPos === 0) { // 以 < 开始的情况都按节点处理
 
@@ -221,7 +221,7 @@ export async function Parser(str: string): Promise<Node> {
 			lastpos: 0
 		};
 
-		let current: { node:Node, str: string };
+		let current: { node: Node; str: string };
 		let hasRoot = false;
 		const firstIndex = str.indexOf('<');
 		if (firstIndex > 0 && !!str.slice(0, firstIndex).replace(/\s+/, '')) {

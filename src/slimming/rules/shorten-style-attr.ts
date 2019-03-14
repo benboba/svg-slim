@@ -27,13 +27,13 @@ export const shortenStyleAttr = async (rule: ConfigItem, dom: INode): Promise<nu
 
 		traversalNode<ITagNode>(isTag, node => {
 			const attrObj: IAttrObj = {};
-			for (let i = node.attributes.length; i--; ) {
+			for (let i = node.attributes.length; i--;) {
 				const attr = node.attributes[i];
 				const attrDefine = regularAttr[attr.fullname];
 				if (attr.fullname === 'style') {
 					const styleObj = execStyle(attr.value);
 					const styleUnique: IUnique = {};
-					for (let si = styleObj.length; si--; ) {
+					for (let si = styleObj.length; si--;) {
 						const styleItem = styleObj[si];
 						const styleDefine = regularAttr[styleItem.fullname];
 						if (
@@ -80,7 +80,7 @@ export const shortenStyleAttr = async (rule: ConfigItem, dom: INode): Promise<nu
 				if (Object.keys(attrObj).length > styleThreshold) {
 
 					// 属性转 style
-					for (let j = node.attributes.length; j--; ) {
+					for (let j = node.attributes.length; j--;) {
 						const attr = node.attributes[j];
 						if (regularAttr[attr.fullname].couldBeStyle || attr.fullname === 'style') {
 							node.removeAttribute(attr.fullname);
