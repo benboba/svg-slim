@@ -29,7 +29,7 @@ const exportFunc: ISvgSlimming = async (data: string, userConfig: IConfig = {}):
 			}
 		});
 
-		(async () => {
+		(async () => { // tslint:disable-line
 			for (const item of rules) {
 				if (item[0]) {
 					await (item[1] as (n: INode) => Promise<null>)(dom as ITagNode);

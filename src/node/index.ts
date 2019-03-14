@@ -41,7 +41,7 @@ export interface INode {
 	replaceChild(childNode: INode, ...children: INode[]): void;
 	removeChild(childNode: INode): void;
 
-    hasAttribute(name: string, namespace?: string): boolean;
+	hasAttribute(name: string, namespace?: string): boolean;
 	getAttribute(name: string, namespace?: string): string | null;
 	setAttribute(name: string, value: string, namespace?: string): void;
 	removeAttribute(name: string, namespace?: string): void;

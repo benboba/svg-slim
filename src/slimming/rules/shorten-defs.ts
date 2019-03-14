@@ -11,7 +11,7 @@ import { ITagNode } from '../interface/node';
 
 const checkSub = (node: ITagNode, IDList: IUnique) => {
 	let hasId = false;
-	for (let i = node.attributes.length; i--; ) {
+	for (let i = node.attributes.length; i--;) {
 		const attr = node.attributes[i];
 		if (attr.fullname === 'id') {
 			if (IDList[attr.value]) {
@@ -23,7 +23,7 @@ const checkSub = (node: ITagNode, IDList: IUnique) => {
 		}
 	}
 	if (!hasId) {
-		for (let ci = node.childNodes.length; ci--; ) {
+		for (let ci = node.childNodes.length; ci--;) {
 			const childNode = node.childNodes[ci];
 			if (isTag(childNode)) {
 				checkSub(childNode as ITagNode, IDList);

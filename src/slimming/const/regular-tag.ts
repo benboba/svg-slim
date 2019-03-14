@@ -370,7 +370,7 @@ const undefTag: IRegularTag = {
 export interface IRegularTag {
 	isUndef?: boolean;
 	containTextNode: boolean;
-	legalChildElements: { transparent?: boolean, noself?: boolean, any?: boolean, childElements?: string[] };
+	legalChildElements: { transparent?: boolean; noself?: boolean; any?: boolean; childElements?: string[] };
 	ownAttributes: string[];
 }
 

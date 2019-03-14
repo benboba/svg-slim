@@ -12,7 +12,7 @@ export const collapseTextwrap = async (rule: ConfigItem, dom: INode): Promise<nu
 			// 规则执行的前提：文本容器嵌套关系
 			if (tagDefine.containTextNode && node.parentNode && regularTag[node.parentNode.nodeName].containTextNode) {
 				const attributes = node.attributes;
-				for (let i = attributes.length; i--; ) {
+				for (let i = attributes.length; i--;) {
 					// 只要有一个非空属性，就不执行塌陷
 					if (attributes[i].value.trim()) {
 						return;

@@ -6,7 +6,7 @@ import { ConfigItem } from '../config/config';
 
 export const rmComments = async (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
-    	traversalNode(propEq('nodeType', NodeType.Comments), rmNode, dom);
+		traversalNode(propEq('nodeType', NodeType.Comments), rmNode, dom);
 	}
 	resolve();
 });

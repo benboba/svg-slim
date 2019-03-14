@@ -94,10 +94,10 @@ export const shortenID = async (rule: ConfigItem, dom: INode): Promise<null> => 
 			} else {
 				const reg = new RegExp(`#${item[0]}(?=[,\\*#>+~:{\\s\\[\\.]|$)`);
 				if (parsedCss.stylesheet) {
-					for (let ri = parsedCss.stylesheet.rules.length; ri--; ) {
+					for (let ri = parsedCss.stylesheet.rules.length; ri--;) {
 						const cssRule: IExtendRule = parsedCss.stylesheet.rules[ri];
 						if (cssRule.ruleId === item[2] && cssRule.selectors) {
-							for (let i = cssRule.selectors.length; i--; ) {
+							for (let i = cssRule.selectors.length; i--;) {
 								if (reg.test(cssRule.selectors[i])) {
 									cssRule.selectors.splice(i, 1);
 								}

@@ -1,10 +1,40 @@
 # 更新日志
 
-## 2019.03.13 v1.3.1
+## 2019.03.14 v1.3.3
+
+### 综合
+
+* 采用了更严格的 tslint 规范，并统一了代码格式
+
+### svg-slimming
+
+* 进一步改进了 shorten-style-tag 的优化结果，现在会验证每一条 css 规则的有效性，去除无效的 css 规则
+
+例如：
+
+	<svg><style>#redText{fill:yellow;marker-end:none}</style><text id="redText">123</text></svg>
+
+现在会优化为：
+
+	<svg><style>#redText{fill:yellow}</style><text id="redText">123</text></svg>
+
+## 2019.03.13 v1.3.2
 
 ### svg-slimming
 
 * 解决了 style/check-apply 命中穿透情况的一个 badcase
+
+例如：
+
+	<svg><g id="a" fill="red"><rect fill="white"/><g fill="blue"><rect/></g></g></svg>
+
+旧的优化结果为：
+
+	<svg><g id="a" fill="red"><rect fill="white"/><rect fill="blue"/></g></svg>
+
+现在会优化为：
+
+	<svg><g id="a"><rect fill="white"/><rect fill="blue"/></g></svg>
 
 ## 2019.03.12 v1.3.1
 

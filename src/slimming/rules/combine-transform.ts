@@ -21,7 +21,7 @@ export const combineTransform = async (rule: ConfigItem, dom: INode): Promise<nu
 		const digit3: number = rule.length > 3 ? rule[3] as number : DEFAULT_DIGIT3;
 		traversalNode<ITagNode>(isTag, node => {
 			const attributes = node.attributes;
-			for (let i = attributes.length; i--; ) {
+			for (let i = attributes.length; i--;) {
 				const attr = attributes[i];
 				if (transformAttributes.indexOf(attr.name) !== -1) {
 					const transform: IMatrixFunc[] = [];

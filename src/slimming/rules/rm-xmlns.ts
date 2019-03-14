@@ -32,7 +32,7 @@ export const rmXMLNS = async (rule: ConfigItem, dom: INode): Promise<null> => ne
 				}
 
 				// 遍历节点属性的命名空间
-				for (let i = _node.attributes.length; i--; ) {
+				for (let i = _node.attributes.length; i--;) {
 					const attr = _node.attributes[i];
 					if (attr.namespace === 'xmlns') {
 						xmlnsObj[attr.name] = {

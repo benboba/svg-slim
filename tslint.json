@@ -1,6 +1,9 @@
 {
 	"defaultSeverity": "error",
 	"rules": {
+        // https://palantir.github.io/tslint/rules/
+
+
         // ***************************
         // *** TypeScript-specific ***
         // ***************************
@@ -8,65 +11,84 @@
         // 通过将自然相关的项目组合在一起来提高可读性和组织性
 		// @off 不强制
 		"adjacent-overload-signatures": false,
-		// 无视注释中的 @ts-ignore
+
+        // 无视注释中的 @ts-ignore
 		// @off 有时候是必须的
-		"ban-ts-ignore": false,
-		// 禁止某些特定类型
+        "ban-ts-ignore": false,
+
+        // 禁止某些特定类型
 		// @off 不作限制
 		"ban-types": false,
-		// 需要类成员的显式可见性声明 public/private/protected
+
+        // 需要类成员的显式可见性声明 public/private/protected
 		// 不需要声明 public，因为默认如此
 		// getter/setter 必须为 public
 		// constructor 必须为 public
 		"member-access": [true, "no-public", "check-accessor", "check-constructor"],
-		// 类成员排序规则
+
+        // 类成员排序规则
 		// @off 不关心
 		"member-ordering": false,
-		// 禁止显示声明变量为 any 类型
+
+        // 禁止显示声明变量为 any 类型
 		"no-any": true,
-		// 禁止定义空的接口
+
+        // 禁止定义空的接口
 		"no-empty-interface": true,
-		// 避免影响静态验证的 import
+
+        // 避免影响静态验证的 import
 		"no-import-side-effect": {
 			"severity": "warning"
 		},
-		// 对于初始化为数字，字符串或布尔值的变量或参数，禁止显式类型声明
+
+        // 对于初始化为数字，字符串或布尔值的变量或参数，禁止显式类型声明
 		"no-inferrable-types": true,
-		// 禁止内部模块，使用 namespace 代替
+
+        // 禁止内部模块，使用 namespace 代替
         "no-internal-module": true,
+
         // 禁止魔法数字
         // 允许直接使用 -1 到 10 的数字
         "no-magic-numbers": [true, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+
         // 禁止内部命名空间和模块
         "no-namespace": true,
+
         // 禁止使用 ! 进行空类型（null | undefined）断言
         // 如：var a = string | undefined; a!.split(',');
         "no-non-null-assertion": true,
+
         // 禁止给参数重新赋值
         "no-parameter-reassignment": true,
+
         // 禁止三斜线指令，用 es6 的 import 来代替
         "no-reference": true,
+
         // 禁止无意义的类型断言
         // 如：let a = true; if (a as boolean) { ... }
         "no-unnecessary-type-assertion": true,
+
         // 禁止在 import 语句之外使用 require 语句
         // 使用 es6 imports 或者 import foo = require('foo') 来代替 var module = require("module")
         "no-var-requires": true,
+
         // 如果上下文中没有 this，则只允许使用箭头函数
         // 允许独立的函数声明
         // 允许具名的函数声明，匿名函数必须转为箭头函数
         "only-arrow-functions": [true, "allow-declarations", "allow-named-functions"],
+
         // 当不需要访问索引时，应使用 for-of 循环代替 for 循环
         "prefer-for-of": true,
+
         // 所有返回 Promise 的方法必须标记为 async
         "promise-function-async": true,
+
         // 需要进行类型定义
         "typedef": true,
-        // 类型定义的冒号前面是否需要空格
-        // @off 不限制
-        "typedef-whitespace": false,
+
         // 禁止无意义的重载（如修改可选参数即可实现的重载）
 		"unified-signatures": true,
+
 
         // *********************
         // *** Functionality ***
@@ -74,125 +96,179 @@
 
         // 禁止对非 Promise like 的表达式使用 await
         "await-promise": true,
-		// 禁止逗号运算符
+
+        // 禁止逗号运算符
         "ban-comma-operator": true,
+
         // 禁止使用特定的功能或全局方法
         // @off 不限制
         "ban": false,
+
         // if / for / do / while 语句必须使用大括号
         // 允许在单行中省略大括号
         "curly": [true, "ignore-same-line"],
+
         // 在 for-in 循环中，必须使用 hasOwnProperty 检查
         "forin": true,
+
         // 禁止使用 Function 构造函数，如 new Function('xxx')
         "function-constructor": true,
+
         // 定义导入/导出黑名单
         // @off 不限制
         "import-blacklist": false,
+
         // 只允许在合理的位置使用标签
         "label-position": true,
+
         // 禁用 arguments.callee
         "no-arg": true,
+
         // 禁止位运算
         // @off 不必禁止
         "no-bitwise": false,
+
         // 禁止在条件判断语句中赋值
         "no-conditional-assignment": true,
+
         // 禁止 console
         // 调试需要，警告但不报错
         "no-console": {
 			"severity": "warning"
 		},
+
         // 禁止使用 String、Boolean、Number 构造函数
         "no-construct": true,
+
         // 禁止 debugger
         // 调试需要，警告但不报错
         "no-debugger": {
 			"severity": "warning"
 		},
+
         // 禁止构造函数中多次调用 super
         "no-duplicate-super": true,
+
         // 禁止 switch 中出现重复的 case
         "no-duplicate-switch-case": true,
+
         // 禁止在同一个块级作用域内出现重复的变量声明
         "no-duplicate-variable": true,
+
         // 禁止在 delete 运算符后使用需要计算 key 的表达式
         "no-dynamic-delete": true,
+
         // 禁止空代码块
         // 允许 try catch 的 catch 块为空
         "no-empty": [true, "allow-empty-catch"],
+
         // 禁用 eval
         "no-eval": true,
+
         // 所有的 Promise 都必须妥善处理
-		"no-floating-promises": false,
+        "no-floating-promises": true,
+
         // 禁止使用for-in循环迭代数组
         "no-for-in-array": true,
+
         // 禁止在项目的 package.json 中导入未列为依赖项的模块
         "no-implicit-dependencies": true,
+
         // 禁止在调用函数和构造函数时使用空对象类型（{}）推断
         "no-inferred-empty-object-type": true,
+
         // 禁止在普通字符串中出现“${}”
         "no-invalid-template-strings": true,
+
         // 禁止在类成员之外使用 this 关键字
         // @off 与 mixin 等用法有冲突
         "no-invalid-this": false,
+
         // 禁止为接口定义构造函数
         "no-misused-new": true,
+
         // 禁止使用 null 关键字
         // @off 很难避免
         "no-null-keyword": false,
+
         // 禁止在类型断言中使用 object 字面量
         // 例如：const x = { ... } as T，应该使用 const x: T = { ... };
         "no-object-literal-type-assertion": true,
+
+        // 禁止调用特定的全局变量
+        // 禁止调用全局 event
+        "no-restricted-globals": [true, "event"],
+
         // 禁止不必要的 return await
         "no-return-await": true,
+
         // 禁止在嵌套作用域中出现重复的变量声明
         "no-shadowed-variable": true,
+
         // 禁止数组字面量中出现空成员（即连续的逗号）
         "no-sparse-arrays": true,
+
         // 禁止不必要的字符串字面量属性访问
         // 如 object['property']，应该使用 object.property
         "no-string-literal": true,
+
         // throw 语句必须抛出 Error 对象，禁止直接抛出字符串
         "no-string-throw": true,
+
         // 禁止导入任何子模块
         // @off 按需导入子模块很难避免
         "no-submodule-imports": false,
+
         // switch 语句的每一个 case 都必须 break
         // 可以通过 /* falls through */ 注释来部分允许
         "no-switch-case-fall-through": true,
+
         // 禁止不必要的 this 引用，可使用箭头函数来避免
         "no-this-assignment": true,
+
         // 类实例的方法只能在类实例上调用（缓存类实例的方法，会导致内部的 this 关键字指向全局）
         // 静态方法不作限制
         "no-unbound-method": [true, "ignore-static"],
+
         // 禁止非严格必要的 class
         "no-unnecessary-class": true,
+
         // 禁止动态使用 any 类型的表达式
         "no-unsafe-any": true,
+
         // 禁止在 try-catch-finally 的 finally 块中使用 return/contiue/break/throw
         "no-unsafe-finally": true,
+
         // 禁止未使用的表达式
         // 允许快速的 null 验证，如：e && e.preventDefault()
         // 允许单独的 new Class()
         "no-unused-expression": [true, "allow-fast-null-checks", "allow-new"],
+
         // 禁止未使用的导入、变量、函数和私有类成员
         // @off 建议使用 tsconfig 的 noUnusedParameters 和 noUnusedLocals
         "no-unused-variable": false,
+
         // 禁止在声明之前使用
         "no-use-before-declare": true,
+
         // 禁止使用 var 定义变量，请使用 let 或 const 代替
         "no-var-keyword": true,
+
         // 禁止 void 表达式，无返回值函数不定义返回值即可
         "no-void-expression": true,
+
         // 使用三元表达式来代替 if-else 对同一变量赋值
         "prefer-conditional-expression": true,
+
         // 在适当的地方强制使用 es2018 对象扩展运算符，来取代 Object.assign
         "prefer-object-spread": true,
+
         // parseInt 必须指定进制参数
         "radix": true,
+
         // + 运算符两侧必须都是数值或字符串
         "restrict-plus-operands": true,
+
         // 在需要用到布尔值表达式的地方，不允许使用其它类型
         // 允许含有 null 的类型
         // 允许含有 undefined 的类型
@@ -200,21 +276,29 @@
         // 允许单独判断数值类型
         // 允许只存在一种假值的混合类型
         "strict-boolean-expressions": [true, "allow-null-union", "allow-undefined-union", "allow-string", "allow-number", "allow-mix"],
+
         // 禁止始终为 true 或 false 的条件判断
         // 需要 tsconfig.json 打开 strictNullChecks
         "strict-type-predicates": true,
+
         // switch 语句必须出现 default 块
         "switch-default": true,
+
         // 禁止 == 和 !=，必须使用 === 和 !==
         "triple-equals": true,
+
         // typeof 的结果必须和正确的字符串比对
         "typeof-compare": true,
+
         // 禁止空的构造函数
         "unnecessary-constructor": true,
+
         // 禁止将默认值赋值给类型参数
         "use-default-type-parameter": true,
+
         // 禁止与 NaN 进行比较，必须使用 isNaN
         "use-isnan": true,
+
 
         // ***********************
         // *** Maintainability ***
@@ -223,208 +307,300 @@
         // 禁止复杂度超过 30 的代码块
         // catch、if、else、else-if、三元表达式、&&、||、for、for-of、for-in、while、do-while、case
         "cyclomatic-complexity": [true, 30],
+
         // 禁止使用已弃用的 api
         "deprecation": true,
-        // 文件必须以换行符作为结尾
-        "eofline": true,
-        // 缩进规则
-        // @off 不作限制
-        "indent": false,
-        // 换行符使用规则
-        // @off 不作限制
-        "linebreak-style": false,
+
         // 一个文件不允许声明超过 5 个的类
         "max-classes-per-file": [true, 5],
-        // 单个文件最大行数限制不超过 600 行
-        "max-file-line-count": {
-            "severity": "warning",
-            "options": [600]
-        },
-        // 单行最大字节数
-        // @off 不作限制
-        "max-line-length": false,
+
+        // 单个文件最大行数限制不超过 800 行
+        "max-file-line-count": [true, 800],
+
         // 禁止默认导出 export default
         // 警告但不报错
         "no-default-export": {
             "severity": "warning"
         },
+
         // 禁止默认导入
         // 警告但不报错
         "no-default-import": {
             "severity": "warning"
         },
+
         // 禁止重复导入
         "no-duplicate-imports": true,
+
         // 禁止在同一个文件内使用可合并的命名空间
         "no-mergeable-namespace": true,
+
         // 禁止使用 require 导入模块
         // 警告但不报错
         "no-require-imports": {
             "severity": "warning"
         },
+
         // 对象键值按字母序排列
         // @off 不限制，有可能影响可读性
         "object-literal-sort-keys": false,
+
         // 如果一个变量只在声明时赋值，则应使用 const
         "prefer-const": [true, {"destructuring": "all"}],
+
         // 如果一个私有变量只在构造函数中赋值，应定义为只读 readonly
         "prefer-readonly": true,
-        // 数组和对象字面量、解构、函数类型、命名导入和导出中是否使用尾逗号
-        // @off 不限制
-        "trailing-comma": false,
+
 
         // *************
         // *** Style ***
         // *************
 
-        // 强制垂直对齐
-        // @off 不限制
-        "align": false,
         // 数组类型的定义强制使用中括号或数组泛型
         // @off 不限制
         "array-type": false,
-        // 箭头函数的参数是否必须使用小括号
-        // @off 不限制
-        "arrow-parens": false,
+
         // 箭头函数内只有一个 return 语句时，强制省略大括号和 return
         "arrow-return-shorthand": true,
+
         // 二进制表达式应尽可能将字面量放在右侧，变量放在左侧
         "binary-expression-operand-order": true,
+
         // 只有调用签名的接口或文字类型可以写为函数类型
         // @off 不作限制
         "callable-types": false,
+
         // 类名和接口名首字母必须大写
         "class-name": true,
+
         // 检查注释规则
         // 注释必须以空格开始
         "comment-format": [true, "check-space"],
+
         // 只允许特定的注释类型
         // @off 不限制
         "comment-type": false,
+
         // 强制对重要内容添加 jsDoc 风格注释
         // @off 不限制
         "completed-docs": false,
+
         // 验证文件编码，只允许 utf-8
         "encoding": true,
+
         // 对所有文件执行某个标题注释，并使用正则表达式进行匹配
         // @off 没搞懂使用场景
         "file-header": false,
+
         // 文件命名规则
         // 只允许“小写字母 + 中横线”的命名规则
         "file-name-casing": [true, "kebab-case"],
-        // import 语句关键字周围应有适当间距
-        "import-spacing": true,
+
         // 强制使用 i += 1 代替 i++
         // @off 不限制
         "increment-decrement": false,
+
         // 接口名必须以大写 I 开始
         "interface-name": [true, "always-prefix"],
+
         // 在可以使用 interface 声明类型时，避免使用 type
         "interface-over-type-literal": true,
-        // 强制使用 jsDoc 风格的注释
-        // @off 不限制
-        "jsdoc-format": false,
+
         // 要求默认导入与其导入的声明具有相同的名称
         "match-default-export-name": true,
-        // return 语句前强制增加空白行
-        // @off 没必要
-        "newline-before-return": false,
+
         // 链式调用之间应强制换行
         // @off 没必要
         "newline-per-chained-call": false,
-        // new 关键字实例化类时，必须使用小括号
-        "new-parens": true,
+
         // 类型断言强制使用 as 语法取代尖括号语法
         // @off 不限制
         "no-angle-bracket-type-assertion": false,
+
         // 禁止与布尔值进行比较，如：x === true
         "no-boolean-literal-compare": true,
-        // 禁止出现连续三个以上的空行
-        "no-consecutive-blank-lines": [true, 3],
-        // 禁止使用不规范的空格
-        "no-irregular-whitespace": true,
+
         // 禁止为构造函数的参数使用 public/private/protected 修饰符
         // 这样会使代码难以理解或导致意外的类成员定义，应该首先在类定义中声明属性，再在构造函数中进行赋值
         "no-parameter-properties": true,
+
         // 禁止JSDoc复制TypeScript功能
         // @off 不限制
         "no-redundant-jsdoc": false,
+
         // 不使用 reference 来导入模块
         "no-reference-import": true,
-        // 禁止行尾空白
-        "no-trailing-whitespace": true,
+
         // 禁止无意义的函数封装，例如：(x) => f(x)，应直接使用 f
         "no-unnecessary-callback-wrapper": true,
+
         // 禁止无意义的初始化，如：let x = undefined
         "no-unnecessary-initializer": true,
+
         // 禁止无意义的命名空间限定符
         "no-unnecessary-qualifier": true,
-        // 小数不允许以 . 开头，应该使用 0.；小数末尾不允许有额外的 0
-        "number-literal-format": true,
+
         // 对象字面量的 key 强制使用或不使用引号
         // @off 不限制
         "object-literal-key-quotes": false,
+
         // 强制使用 es6 的对象缩略定义
         // 用 x = { a } 来代替 x = { a: a }
         "object-literal-shorthand": true,
+
         // if/else/catch 等关键字必须和大括号写在同一行
         "one-line": [true, "check-catch", "check-finally", "check-else", "check-open-brace", "check-whitespace"],
+
         // 强制合并一组连续的变量声明
         // @off 不宜合并
         "one-variable-per-declaration": false,
+
         // 对 import 语句按首字母排序
         // @off 没必要
         "ordered-imports": false,
+
         // 类成员方法如果不包含 this 关键字，应定义为 static
         // protected 成员除外
         "prefer-function-over-method": [true, "allow-protected"],
+
         // 在 interface 和 type 中应使用 foo(): void 来取代 foo() => void
         "prefer-method-signature": true,
+
         // 条件少于 3 个时，应使用 if 来取代 switch
         "prefer-switch": true,
+
         // 字符串拼接应优先使用模板字符串
         // 忽略只有一个加号的情况
         "prefer-template": [true, "allow-single-concat"],
+
         // 在没有初始化变量和增量时，应优先使用 while 循环
         "prefer-while": true,
-        // 字符串字面量应使用单引号
-        // 忽略内容包含单引号的字面量
-        // 忽略模板字符串
-        "quotemark": [true, "single", "avoid-escape", "avoid-template"],
+
         // 应使用 return; 来代替 return undefined;
         "return-undefined": true,
-        // 语句结尾必须加分号
-        "semicolon": [true, "always"],
+
         // 函数的小括号前不能有空格
-        // @off 不限制
-        "space-before-function-paren": false,
-        // 小括号内必须使用或禁用空格
-        // @off 不限制
-        "space-within-parens": false,
+        // async 箭头函数的小括号前必须加空格
+        "space-before-function-paren": [true, {
+            "anonymous": "never",
+            "named": "never",
+            "asyncArrow": "always",
+            "method": "never",
+            "constructor": "never"
+        }],
+
+        // 小括号内禁止空格
+        "space-within-parens": [true, 0],
+
         // switch 的 final 条件最后必须 break
         "switch-final-break": [true, "always"],
+
         // 类型成员必须以分号间隔，多行类型末尾必须加分号
-        // @off 不限制
-        "type-literal-delimiter": false,
+        "type-literal-delimiter": true,
+
         // 禁止无效的 bind，如：对箭头函数使用 bind
         "unnecessary-bind": true,
+
         // 变量名的格式限制
         // 只允许 首字母小写驼峰式 或 全大写+下划线
         // 允许以下划线开头
         // 允许帕斯卡命名法（首字母大写驼峰式）
         // 禁止使用关键字作为变量名
-        "variable-name": {
-            "severity": "warning",
-            "options":  ["check-format", "allow-leading-underscore", "allow-pascal-case", "ban-keywords"]
-        },
+        "variable-name": [true, "check-format", "allow-leading-underscore", "allow-pascal-case", "ban-keywords"],
+
+
+        // ******************
+        // *** Formatting ***
+        // ******************
+
+        // 强制垂直对齐
+        // @off 不限制
+        "align": false,
+        
+        // 箭头函数的参数必须使用小括号
+        // 单一参数禁止小括号
+        "arrow-parens": [true, "ban-single-arg-parens"],
+
+        // 文件必须以换行符作为结尾
+        "eofline": true,
+
+        // import 语句关键字周围应有适当间距
+        "import-spacing": true,
+
+        // 强制使用 tab 缩进
+        "indent": [true, "tabs"],
+
+        // 强制使用 jsDoc 风格的注释
+        // @off 不限制
+        "jsdoc-format": false,
+
+        // 换行符使用规则
+        // @off 不作限制
+        "linebreak-style": false,
+
+        // 单行最大字节数
+        // @off 不作限制
+        "max-line-length": false,
+
+        // return 语句前强制增加空白行
+        // @off 没必要
+        "newline-before-return": false,
+
+        // new 关键字实例化类时，必须使用小括号
+        "new-parens": true,
+
+        // 禁止出现连续三个以上的空行
+        "no-consecutive-blank-lines": [true, 3],
+
+        // 禁止使用不规范的空格
+        "no-irregular-whitespace": true,
+
+        // 禁止行尾空白
+        "no-trailing-whitespace": true,
+
+        // 小数不允许以 . 开头，应该使用 0.；小数末尾不允许有额外的 0
+        "number-literal-format": true,
+
+        // 字符串字面量应使用单引号
+        // 忽略内容包含单引号的字面量
+        // 忽略模板字符串
+        "quotemark": [true, "single", "avoid-escape", "avoid-template"],
+
+        // 语句结尾必须加分号
+        "semicolon": [true, "always"],
+
+        // 数组和对象字面量、解构、函数类型、命名导入和导出中是否使用尾逗号
+        // @off 不限制
+        "trailing-comma": false,
+
+        // 类型定义的冒号前后是否需要空格
+        // 冒号前禁止空格
+        // 冒号后只允许 1 个空格
+        "typedef-whitespace": [true, {
+            "call-signature": "nospace",
+            "index-signature": "nospace",
+            "parameter": "nospace",
+            "property-declaration": "nospace",
+            "variable-declaration": "nospace"
+        }, {
+            "call-signature": "onespace",
+            "index-signature": "onespace",
+            "parameter": "onespace",
+            "property-declaration": "onespace",
+            "variable-declaration": "onespace"
+        }],
+
         // 空格使用规则
         // if/else/for/while 后必须跟随空格
         // 变量声明的等号前后必须有空格
         // 运算符前后必须加空格
+        // import/export 后必须加空格
+        // 逗号、分号作为分隔符时，之后必须加空格
+        // 解构操作符 ... 之后禁止空格
+        // 类型声明之前必须加空格
+        // 类型断言 as 前后必须加空格
         // 左大括号之前必须加空格
-		"whitespace": {
-            "severity": "warning",
-            "options": ["check-branch", "check-decl", "check-operator", "check-preblock"]
-        }
+		"whitespace": [true, "check-branch", "check-decl", "check-operator", "check-module", "check-separator", "check-rest-spread", "check-type", "check-typecast", "check-preblock"]
+
 	}
 }

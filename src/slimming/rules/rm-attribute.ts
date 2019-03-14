@@ -15,7 +15,7 @@ export const rmAttribute = async (rule: ConfigItem, dom: INode): Promise<null> =
 			// 先取出来 attributeName 属性
 			const attributeName = node.getAttribute('attributeName');
 			const attributes = node.attributes;
-			for (let i = attributes.length; i--; ) {
+			for (let i = attributes.length; i--;) {
 				const attr = attributes[i];
 				const attrDefine: IRegularAttr = regularAttr[attr.fullname];
 				const value = attr.value.trim();
@@ -58,7 +58,7 @@ export const rmAttribute = async (rule: ConfigItem, dom: INode): Promise<null> =
 							node.removeAttribute('attributeName');
 						}
 					} else {
-						const initValue = attrDefine.initValue as { val: string, tag: string[]}[];
+						const initValue = attrDefine.initValue as { val: string; tag: string[]}[];
 						for (let ii = 0, il = initValue.length; ii < il; ii++) {
 							if (initValue[ii].tag.indexOf(node.nodeName) !== -1 && initValue[ii].val === value) {
 								node.removeAttribute('attributeName');

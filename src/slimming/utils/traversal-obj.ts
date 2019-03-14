@@ -19,7 +19,7 @@ const traversal = (condition: (o: Object) => boolean, cb: (o: Object, p: Object[
 	}
 	path.push(obj);
 	if (Array.isArray(obj)) {
-		for (let i = 0; i < (obj as Object[]).length; ) {
+		for (let i = 0; i < (obj as Object[]).length;) {
 			const item: Object = (obj as Object[])[i];
 			traversal(condition, cb, item, path, visited);
 			if (item === (obj as Object[])[i]) {

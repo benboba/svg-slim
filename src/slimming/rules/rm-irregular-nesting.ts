@@ -8,7 +8,7 @@ import { ITagNode } from '../interface/node';
 
 export const rmIrregularNesting = async (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
-    	traversalNode<ITagNode>(isTag, node => {
+		traversalNode<ITagNode>(isTag, node => {
 			// 在配置的忽略列表中
 			if (Array.isArray(rule[1]) && (rule[1] as string[]).indexOf(node.nodeName) !== -1) {
 				return;
@@ -34,7 +34,7 @@ export const rmIrregularNesting = async (rule: ConfigItem, dom: INode): Promise<
 				if (!noself && legalRule.any) return;
 			}
 
-			for (let i = node.childNodes.length; i--; ) {
+			for (let i = node.childNodes.length; i--;) {
 				const childNode = node.childNodes[i];
 				// 只针对 tag 类的子节点作处理
 				if (!isTag(childNode)) {
@@ -49,7 +49,7 @@ export const rmIrregularNesting = async (rule: ConfigItem, dom: INode): Promise<
 					rmNode(childNode);
 				}
 			}
-    	}, dom);
+		}, dom);
 	}
 	resolve();
 });

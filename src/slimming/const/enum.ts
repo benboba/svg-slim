@@ -1,498 +1,498 @@
 // 存储所有的枚举值
 
 export enum accumulateVal {
-    none,
-    sum,
+	none,
+	sum,
 }
 
 export enum additiveVal {
-    replace,
-    sum,
+	replace,
+	sum,
 }
 
 export enum calcModelVal {
-    discrete,
-    linear,
-    paced,
-    spline,
+	discrete,
+	linear,
+	paced,
+	spline,
 }
 
 export enum unitVal {
-    userSpaceOnUse,
-    objectBoundingBox,
+	userSpaceOnUse,
+	objectBoundingBox,
 }
 
 export enum crossoriginVal {
-    '',
-    anonymous,
-    'use-credentials',
+	'',
+	anonymous,
+	'use-credentials',
 }
 
 export enum durVal {
-    media,
-    indefinite,
+	media,
+	indefinite,
 }
 
 export enum edgeModeVal {
-    duplicate,
-    wrap,
-    none,
+	duplicate,
+	wrap,
+	none,
 }
 
 export enum inVal {
-    SourceGraphic,
-    SourceAlpha,
-    BackgroundImage,
-    BackgroundAlpha,
-    FillPaint,
-    StrokePaint
+	SourceGraphic,
+	SourceAlpha,
+	BackgroundImage,
+	BackgroundAlpha,
+	FillPaint,
+	StrokePaint
 }
 
 export enum lengthAdjustVal {
-    spacing,
-    spacingAndGlyphs
+	spacing,
+	spacingAndGlyphs
 }
 
 export enum markerUnitVal {
-    strokeWidth,
-    userSpaceOnUse
+	strokeWidth,
+	userSpaceOnUse
 }
 
 export enum methodVal {
-    align,
-    stretch
+	align,
+	stretch
 }
 
 export enum blendModeVal {
-    normal,
-    multiply,
-    screen,
-    overlay,
-    darken,
-    lighten,
-    'color-dodge',
-    'color-burn',
-    'hard-light',
-    'soft-light',
-    difference,
-    exclusion,
-    hue,
-    saturation,
-    color,
-    luminosity
+	normal,
+	multiply,
+	screen,
+	overlay,
+	darken,
+	lighten,
+	'color-dodge',
+	'color-burn',
+	'hard-light',
+	'soft-light',
+	difference,
+	exclusion,
+	hue,
+	saturation,
+	color,
+	luminosity
 }
 
 export enum operaterVal {
-    over,
-    in,
-    out,
-    atop,
-    xor,
-    lighter,
-    arithmetic
+	over,
+	in,
+	out,
+	atop,
+	xor,
+	lighter,
+	arithmetic
 }
 
 export enum operaterVal1 {
-    erode,
-    dilate
+	erode,
+	dilate
 }
 
 export enum orientVal {
-    auto,
-    'auto-start-reverse'
+	auto,
+	'auto-start-reverse'
 }
 
 export enum playbackorderVal {
-    forwardonly,
-    all
+	forwardonly,
+	all
 }
 
 export enum booleanVal {
-    false,
-    true
+	false,
+	true
 }
 
 export enum alignXVal {
-    left,
-    center,
-    right
+	left,
+	center,
+	right
 }
 
 export enum alignYVal {
-    top,
-    center,
-    bottom
+	top,
+	center,
+	bottom
 }
 
 export enum restartVal {
-    always,
-    whenNotActive,
-    never
+	always,
+	whenNotActive,
+	never
 }
 
 export enum rotateVal {
-    auto,
-    'auto-reverse'
+	auto,
+	'auto-reverse'
 }
 
 export enum sideVal {
-    left,
-    right
+	left,
+	right
 }
 
 export enum spacingVal {
-    auto,
-    exact
+	auto,
+	exact
 }
 
 export enum spreadMethodVal {
-    pad,
-    reflect,
-    repeat
+	pad,
+	reflect,
+	repeat
 }
 
 export enum stitchVal {
-    stitch,
-    noStitch
+	stitch,
+	noStitch
 }
 
 export enum targetVal {
-    _self,
-    _parent,
-    _top,
-    _blank
+	_self,
+	_parent,
+	_top,
+	_blank
 }
 
 export enum timelinebeginVal {
-    loadend,
-    loadbegin
+	loadend,
+	loadbegin
 }
 
 export enum animateTransformType {
-    translate,
-    scale,
-    rotate,
-    skewX,
-    skewY
+	translate,
+	scale,
+	rotate,
+	skewX,
+	skewY
 }
 
 export enum feColorMatrixType {
-    matrix,
-    saturate,
-    hueRotate,
-    luminanceToAlpha
+	matrix,
+	saturate,
+	hueRotate,
+	luminanceToAlpha
 }
 
 export enum feFuncType {
-    identity,
-    table,
-    discrete,
-    linear,
-    gamma
+	identity,
+	table,
+	discrete,
+	linear,
+	gamma
 }
 
 export enum feTurbulenceType {
-    fractalNoise,
-    turbulence
+	fractalNoise,
+	turbulence
 }
 
 export enum channelVal {
-    R,
-    G,
-    B,
-    A
+	R,
+	G,
+	B,
+	A
 }
 
 export enum xmlSpaceVal {
-    default,
-    preserve
+	default,
+	preserve
 }
 
 export enum zoomAndPanVal {
-    disable,
-    magnify
+	disable,
+	magnify
 }
 
 export enum alignmentBaseline {
-    auto,
-    baseline,
-    'before-edge',
-    'text-before-edge',
-    middle,
-    central,
-    'after-edge',
-    'text-after-edge',
-    ideographic,
-    alphabetic,
-    hanging,
-    mathematical
+	auto,
+	baseline,
+	'before-edge',
+	'text-before-edge',
+	middle,
+	central,
+	'after-edge',
+	'text-after-edge',
+	ideographic,
+	alphabetic,
+	hanging,
+	mathematical
 }
 
 export enum baselineShift {
-    sub,
-    super
+	sub,
+	super
 }
 
 export enum clipBox {
-    'border-box',
-    'padding-box',
-    'content-box',
-    'margin-box',
-    'fill-box',
-    'stroke-box',
-    'view-box'
+	'border-box',
+	'padding-box',
+	'content-box',
+	'margin-box',
+	'fill-box',
+	'stroke-box',
+	'view-box'
 }
 
 export enum nonzeroEvenodd {
-    nonzero,
-    evenodd
+	nonzero,
+	evenodd
 }
 
 export enum colorKeywords {
-    inherit,
-    currentColor,
-    transparent
+	inherit,
+	currentColor,
+	transparent
 }
 
 export enum x11Colors {
-    aliceblue, antiquewhite, aqua, aquamarine, azure, beige, bisque, black, blanchedalmond, blue, blueviolet, brown, burlywood, cadetblue, chartreuse, chocolate, coral, cornflowerblue, cornsilk, crimson, cyan, darkblue, darkcyan, darkgoldenrod, darkgray, darkgreen, darkgrey, darkkhaki, darkmagenta, darkolivegreen, darkorange, darkorchid, darkred, darksalmon, darkseagreen, darkslateblue, darkslategray, darkslategrey, darkturquoise, darkviolet, deeppink, deepskyblue, dimgray, dimgrey, dodgerblue, firebrick, floralwhite, forestgreen, fuchsia, gainsboro, ghostwhite, gold, goldenrod, gray, green, greenyellow, grey, honeydew, hotpink, indianred, indigo, ivory, khaki, lavender, lavenderblush, lawngreen, lemonchiffon, lightblue, lightcoral, lightcyan, lightgoldenrodyellow, lightgray, lightgreen, lightgrey, lightpink, lightsalmon, lightseagreen, lightskyblue, lightslategray, lightslategrey, lightsteelblue, lightyellow, lime, limegreen, linen, magenta, maroon, mediumaquamarine, mediumblue, mediumorchid, mediumpurple, mediumseagreen, mediumslateblue, mediumspringgreen, mediumturquoise, mediumvioletred, midnightblue, mintcream, mistyrose, moccasin, navajowhite, navy, oldlace, olive, olivedrab, orange, orangered, orchid, palegoldenrod, palegreen, paleturquoise, palevioletred, papayawhip, peachpuff, peru, pink, plum, powderblue, purple, rebeccapurple, red, rosybrown, royalblue, saddlebrown, salmon, sandybrown, seagreen, seashell, sienna, silver, skyblue, slateblue, slategray, slategrey, snow, springgreen, steelblue, tan, teal, thistle, tomato, turquoise, violet, wheat, white, whitesmoke, yellow, yellowgreen
+	aliceblue, antiquewhite, aqua, aquamarine, azure, beige, bisque, black, blanchedalmond, blue, blueviolet, brown, burlywood, cadetblue, chartreuse, chocolate, coral, cornflowerblue, cornsilk, crimson, cyan, darkblue, darkcyan, darkgoldenrod, darkgray, darkgreen, darkgrey, darkkhaki, darkmagenta, darkolivegreen, darkorange, darkorchid, darkred, darksalmon, darkseagreen, darkslateblue, darkslategray, darkslategrey, darkturquoise, darkviolet, deeppink, deepskyblue, dimgray, dimgrey, dodgerblue, firebrick, floralwhite, forestgreen, fuchsia, gainsboro, ghostwhite, gold, goldenrod, gray, green, greenyellow, grey, honeydew, hotpink, indianred, indigo, ivory, khaki, lavender, lavenderblush, lawngreen, lemonchiffon, lightblue, lightcoral, lightcyan, lightgoldenrodyellow, lightgray, lightgreen, lightgrey, lightpink, lightsalmon, lightseagreen, lightskyblue, lightslategray, lightslategrey, lightsteelblue, lightyellow, lime, limegreen, linen, magenta, maroon, mediumaquamarine, mediumblue, mediumorchid, mediumpurple, mediumseagreen, mediumslateblue, mediumspringgreen, mediumturquoise, mediumvioletred, midnightblue, mintcream, mistyrose, moccasin, navajowhite, navy, oldlace, olive, olivedrab, orange, orangered, orchid, palegoldenrod, palegreen, paleturquoise, palevioletred, papayawhip, peachpuff, peru, pink, plum, powderblue, purple, rebeccapurple, red, rosybrown, royalblue, saddlebrown, salmon, sandybrown, seagreen, seashell, sienna, silver, skyblue, slateblue, slategray, slategrey, snow, springgreen, steelblue, tan, teal, thistle, tomato, turquoise, violet, wheat, white, whitesmoke, yellow, yellowgreen
 }
 
 export enum systemColor {
-    ActiveBorder,
-    ActiveCaption,
-    AppWorkspace,
-    Background,
-    ButtonFace,
-    ButtonHighlight,
-    ButtonShadow,
-    ButtonText,
-    CaptionText,
-    GrayText,
-    Highlight,
-    HighlightText,
-    InactiveBorder,
-    InactiveCaption,
-    InactiveCaptionText,
-    InfoBackground,
-    InfoText,
-    Menu,
-    MenuText,
-    Scrollbar,
-    ThreeDDarkShadow,
-    ThreeDFace,
-    ThreeDHighlight,
-    ThreeDLightShadow,
-    ThreeDShadow,
-    Window,
-    WindowFrame,
-    WindowText
+	ActiveBorder,
+	ActiveCaption,
+	AppWorkspace,
+	Background,
+	ButtonFace,
+	ButtonHighlight,
+	ButtonShadow,
+	ButtonText,
+	CaptionText,
+	GrayText,
+	Highlight,
+	HighlightText,
+	InactiveBorder,
+	InactiveCaption,
+	InactiveCaptionText,
+	InfoBackground,
+	InfoText,
+	Menu,
+	MenuText,
+	Scrollbar,
+	ThreeDDarkShadow,
+	ThreeDFace,
+	ThreeDHighlight,
+	ThreeDLightShadow,
+	ThreeDShadow,
+	Window,
+	WindowFrame,
+	WindowText
 }
 
 export enum colorInterpolation {
-    auto,
-    sRGB,
-    linearRGB
+	auto,
+	sRGB,
+	linearRGB
 }
 
 export enum colorRendering {
-    auto,
-    optimizeSpeed,
-    optimizeQuality
+	auto,
+	optimizeSpeed,
+	optimizeQuality
 }
 
 export enum direction {
-    ltr,
-    rtl
+	ltr,
+	rtl
 }
 
 export enum display {
-    inline,
-    block,
-    'list-item',
-    'run-in',
-    compact,
-    marker,
-    table,
-    'inline-table',
-    'table-row-group',
-    'table-header-group',
-    'table-footer-group',
-    'table-row',
-    'table-column-group',
-    'table-column',
-    'table-cell',
-    'table-caption',
-    none
+	inline,
+	block,
+	'list-item',
+	'run-in',
+	compact,
+	marker,
+	table,
+	'inline-table',
+	'table-row-group',
+	'table-header-group',
+	'table-footer-group',
+	'table-row',
+	'table-column-group',
+	'table-column',
+	'table-cell',
+	'table-caption',
+	none
 }
 
 export enum dominantBaseline {
-    auto,
-    'use-script',
-    'no-change',
-    'reset-size',
-    ideographic,
-    alphabetic,
-    hanging,
-    mathematical,
-    central,
-    middle,
-    'text-after-edge',
-    'text-before-edge'
+	auto,
+	'use-script',
+	'no-change',
+	'reset-size',
+	ideographic,
+	alphabetic,
+	hanging,
+	mathematical,
+	central,
+	middle,
+	'text-after-edge',
+	'text-before-edge'
 }
 
 export enum paintKeywords {
-    none,
-    child,
-    'context-fill',
-    'context-stroke'
+	none,
+	child,
+	'context-fill',
+	'context-stroke'
 }
 
 export enum absoluteSize {
-    'xx-small',
-    'x-small',
-    small,
-    medium,
-    large,
-    'x-large',
-    'xx-large'
+	'xx-small',
+	'x-small',
+	small,
+	medium,
+	large,
+	'x-large',
+	'xx-large'
 }
 
 export enum relativeSize {
-    larger,
-    smaller
+	larger,
+	smaller
 }
 
 export enum fontStretch {
-    normal,
-    'ultra-condensed',
-    'extra-condensed',
-    condensed,
-    'semi-condensed',
-    'semi-expanded',
-    expanded,
-    'extra-expanded',
-    'ultra-expanded'
+	normal,
+	'ultra-condensed',
+	'extra-condensed',
+	condensed,
+	'semi-condensed',
+	'semi-expanded',
+	expanded,
+	'extra-expanded',
+	'ultra-expanded'
 }
 
 export enum fontStyle {
-    normal,
-    italic,
-    oblique
+	normal,
+	italic,
+	oblique
 }
 
 export enum fontVariant {
-    normal,
-    none,
-    'common-ligatures',
-    'no-common-ligatures',
-    'discretionary-ligatures',
-    'no-discretionary-ligatures',
-    'historical-ligatures',
-    'no-historical-ligatures',
-    contextual,
-    'no-contextual'
+	normal,
+	none,
+	'common-ligatures',
+	'no-common-ligatures',
+	'discretionary-ligatures',
+	'no-discretionary-ligatures',
+	'historical-ligatures',
+	'no-historical-ligatures',
+	contextual,
+	'no-contextual'
 }
 
 export enum overflow {
-    visible,
-    hidden,
-    scroll,
-    auto
+	visible,
+	hidden,
+	scroll,
+	auto
 }
 
 export enum paintOrder {
-    normal,
-    fill,
-    stroke,
-    markers
+	normal,
+	fill,
+	stroke,
+	markers
 }
 
 export enum pointerEvents {
-    'bounding-box',
-    visiblePainted,
-    visibleFill,
-    visibleStroke,
-    visible,
-    painted,
-    fill,
-    stroke,
-    all,
-    none
+	'bounding-box',
+	visiblePainted,
+	visibleFill,
+	visibleStroke,
+	visible,
+	painted,
+	fill,
+	stroke,
+	all,
+	none
 }
 
 export enum shapeRendering {
-    auto,
-    optimizeSpeed,
-    crispEdges,
-    geometricPrecision
+	auto,
+	optimizeSpeed,
+	crispEdges,
+	geometricPrecision
 }
 
 export enum linecap {
-    butt,
-    round,
-    square
+	butt,
+	round,
+	square
 }
 
 export enum linejoin {
-    miter,
-    'miter-clip',
-    round,
-    bevel,
-    arcs
+	miter,
+	'miter-clip',
+	round,
+	bevel,
+	arcs
 }
 
 export enum textAnchor {
-    start,
-    middle,
-    end
+	start,
+	middle,
+	end
 }
 
 export enum textDecoration {
-    none,
-    underline,
-    overline,
-    'line-through',
-    blink
+	none,
+	underline,
+	overline,
+	'line-through',
+	blink
 }
 
 export enum textOverflow {
-    clip,
-    ellipsis
+	clip,
+	ellipsis
 }
 
 export enum unicodeBidi {
-    normal,
-    embed,
-    isolate,
-    'bidi-override',
-    'isolate-override',
-    plaintext
+	normal,
+	embed,
+	isolate,
+	'bidi-override',
+	'isolate-override',
+	plaintext
 }
 
 export enum visibility {
-    visible,
-    hidden,
-    collapse,
-    inherit
+	visible,
+	hidden,
+	collapse,
+	inherit
 }
 
 export enum whitespace {
-    normal,
-    pre,
-    nowrap,
-    'pre-wrap',
-    'pre-line'
+	normal,
+	pre,
+	nowrap,
+	'pre-wrap',
+	'pre-line'
 }
 
 export enum writingMode {
-    'horizontal-tb',
-    'vertical-rl',
-    'vertical-lr',
-    'lr',
-    'lr-tb',
-    'rl',
-    'rl-tb',
-    'tb',
-    'tb-rl'
+	'horizontal-tb',
+	'vertical-rl',
+	'vertical-lr',
+	'lr',
+	'lr-tb',
+	'rl',
+	'rl-tb',
+	'tb',
+	'tb-rl'
 }
