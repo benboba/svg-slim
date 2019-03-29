@@ -127,9 +127,10 @@ tester(
         onload="console.log(123)"
         version=""
     >
-        <path d="M0,9,0" />
+		<path d="M0,9,0" />
+		<feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.1 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
     </svg>`,
-	'<svg><path d="M0,9,0"/></svg>', {
+	'<svg><path d="M0,9,0"/><feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0" type="matrix" in="shadowBlurOuter1"/></svg>', {
 		'rm-attribute': [true, true, false, false]
 	}
 );
