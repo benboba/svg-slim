@@ -1,5 +1,5 @@
 import { INode } from '../../node/index';
-import { animationAttributes, ariaAttributes, eventAttributes } from '../const/definitions';
+import { animationAttributes, ariaAttributes, eventAttributes, animationElements } from '../const/definitions';
 import { IRegularAttr, regularAttr } from '../const/regular-attr';
 import { IRegularTag, regularTag } from '../const/regular-tag';
 import { legalValue } from '../validate/legal-value';
@@ -33,6 +33,7 @@ export const rmAttribute = async (rule: ConfigItem, dom: INode): Promise<null> =
 						continue;
 					}
 				}
+
 				if (
 					!value // 空属性
 					||
@@ -45,7 +46,7 @@ export const rmAttribute = async (rule: ConfigItem, dom: INode): Promise<null> =
 				}
 
 				// 不能实现动画的属性被动画属性引用)
-				if (animationAttributes.indexOf(attr.fullname) !== -1 && (!attributeName || !regularAttr[attributeName].animatable)) {
+				if (animationAttributes.indexOf(attr.fullname) !== -1 && animationElements.indexOf(node.nodeName) !== -1 && (!attributeName || !regularAttr[attributeName].animatable)) {
 					node.removeAttribute(attr.fullname);
 					// 同时移除 attributeName 属性
 					node.removeAttribute('attributeName');
@@ -58,7 +59,7 @@ export const rmAttribute = async (rule: ConfigItem, dom: INode): Promise<null> =
 							node.removeAttribute('attributeName');
 						}
 					} else {
-						const initValue = attrDefine.initValue as { val: string; tag: string[]}[];
+						const initValue = attrDefine.initValue;
 						for (let ii = 0, il = initValue.length; ii < il; ii++) {
 							if (initValue[ii].tag.indexOf(node.nodeName) !== -1 && initValue[ii].val === value) {
 								node.removeAttribute('attributeName');

@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2019.03.29 v1.3.4
+
+### svg-slimming
+
+* 改进了 rm-attribute 规则中对动画属性引用的判断逻辑，修复了意外删除 feColorMatrix 的 values 属性的 bug
+
 ## 2019.03.14 v1.3.3
 
 ### 综合
