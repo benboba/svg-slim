@@ -24,6 +24,7 @@ export interface IAttrSelector {
 // 伪类选择器接口定义
 export interface IPseudo {
 	func: string;
+	isClass: boolean;
 	value?: string;
 }
 

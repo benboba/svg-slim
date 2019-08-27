@@ -1,5 +1,47 @@
 # 更新日志
 
+## 2019.08.27 v1.4.0
+
+### 综合
+
+* 引入了 nyc 进行单元测试覆盖率检验
+* 引入 ts-node 对 ts 模块执行单元测试
+* 追加大量单元测试，并有针对性地修复了部分 bug（见下文）
+
+### xml-parser
+
+* 修正了 Doctype 正则表达式对引号不匹配的漏检情况
+* 修正了 xml-parser.d.ts 导出成员名称不对的 bug
+
+### svg-slimming
+
+* 修正了 config 合并时，没有验证数组类型，导致传入对象或函数可能意外报错的问题
+* 现在所有依赖 css 模块进行解析的地方都加了 try ... catch，以应对非法字符串导致 css 模块报错影响优化结果的问题
+* 不再使用 toFixed 处理数值，改用 Math.round(Math.abs)，以解决 1.15.toFixed(1) = 1.1 的问题
+* 改进了道格拉斯普克算法，现在不会直接修改输入的原始数组，而是会先 clone 一个副本进行计算，最后会返回副本作为计算结果
+* 改进了 16 进制颜色的解析，添加了 1% ~ 100% 的对照表，修复了 #00000080 无法正确解析为 rgba(0,0,0,0.5) 的 bug
+* 修复了连续解析 rgb|hsl|rgba|hsla 颜色时，正则表达式没有重置的 bug
+* 修正了颜色解析逻辑和 W3C 规则不一致的问题，现在 rgb 和 hsl 会处理 alpha 值，rgba 和 hsla 会正确处理不存在 alpha 值的情况，hsl 会处理 hue 的值带单位的情况
+* 移除了 shorten-color 限制 alpha 值位数的参数，现在对于所有的颜色 alpha 值，统一采用小数点后第 3 位来处理，和 chrome 浏览器 (v76.0.3809.87) 保持一致
+* 修正了属性选择器的正则表达式的一个错误
+* combine-script 现在会将合并后的 script 标签移到 svg 元素尾部，并且移除尾分号
+* 修复了 skewX 和 skewY 函数合并时直接将角度相加的错误运算方式，改为进行真实的矩阵乘法运算
+* 修正了 matrix 的解析规则，现在遇到错误的 matrix 格式会直接跳出，而不会继续解析。现在会全字匹配完整的 matrix 字符串，避免了字符串存在错误依然被正确解析的问题
+* 修正了 matrix 转化为简易函数时没有对简易函数再次优化的问题
+* 修正了 matrix 优化时遇到 -0 没有正确转为 0 的问题
+* 现在会更严格地解析 path，遇到有问题的格式会截断 d 属性，行为和浏览器保持一致
+* 现在 path 中椭圆和有旋转角度的 a 指令会正确合并
+* 现在 path 中同方向的 l 指令会正确合并，并修复了反方向 h 和 v 指令会被合并的错误
+* 修复了 rm-attribute 规则中保留 aria 和保留 eventHandler 两个选项无效的问题
+* rm-attribute 现在会验证所有样式类属性的值是否匹配 css 全局关键字 initial、inherit、unset
+* 修复了 rm-hidden 规则没有深度解析样式，可能导致错误删除或未删除的问题
+* rm-irregular-nesting 现在父元素命中了忽略规则后，将不再处理子元素
+* 修复了部分 numberlist 属性没有按照 numberlist 解析，导致一些解析错误的问题
+* rm-viewbox 规则现在会验证 viewBox 属性解析后长度是否为 4，且 width 和 height 不能为负
+* shorten-style-tag 规则现在会移除 comment 和空的 keyframes、 mediaquery、font-face 等 css 节点
+* 修复了解析 CSS 选择器时遇到属性、class、id、伪类选择器组合时会错误地只解析到组合最后一个 case 的问题
+* 修复了根据选择器获取元素中，兄弟选择器会丢失部分匹配项的问题
+
 ## 2019.03.29 v1.3.4
 
 ### svg-slimming

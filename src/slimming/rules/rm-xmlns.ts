@@ -1,7 +1,7 @@
 import { INode } from '../../node/index';
 import { isTag } from '../xml/is-tag';
 import { rmNode } from '../xml/rm-node';
-import { ConfigItem } from '../config/config';
+import { TConfigItem } from '../config/config';
 import { ITagNode } from '../interface/node';
 
 interface IXmlnsDefineUnit {
@@ -13,7 +13,7 @@ interface IXmlnsDefine {
 	[propName: string]: IXmlnsDefineUnit;
 }
 
-export const rmXMLNS = async (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const rmXMLNS = async (rule: TConfigItem[], dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		const traversalNode = (node: INode, nsStack: IXmlnsDefine[]) => {
 			if (isTag(node)) {

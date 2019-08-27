@@ -22,26 +22,26 @@ export class Node implements INode {
 		}
 	}
 
-	public nodeName: string;
-	public nodeType: NodeType;
-	public namespace?: string;
-	public selfClose?: boolean;
-	public textContent?: string;
+	nodeName: string;
+	nodeType: NodeType;
+	namespace?: string;
+	selfClose?: boolean;
+	textContent?: string;
 
 	private _attributes?: IAttr[];
-	public get attributes(): ReadonlyArray<IAttr> | null {
+	get attributes(): ReadonlyArray<IAttr> | null {
 		return this._attributes ? Object.freeze(this._attributes.slice()) : null;
 	}
 
 	private readonly _childNodes?: INode[];
-	public get childNodes(): ReadonlyArray<INode> | null {
+	get childNodes(): ReadonlyArray<INode> | null {
 		return this._childNodes ? Object.freeze(this._childNodes.slice()) : null;
 	}
 
-	public parentNode?: INode;
+	parentNode?: INode;
 
 	// 复制自身，但是不复制节点树关系链
-	public cloneNode(): INode {
+	cloneNode(): INode {
 		const cloneNode = new Node({
 			nodeName: this.nodeName,
 			nodeType: this.nodeType,
@@ -65,7 +65,7 @@ export class Node implements INode {
 	}
 
 	// 追加子节点
-	public appendChild(childNode: INode): void {
+	appendChild(childNode: INode): void {
 		if (this._childNodes) {
 			// 如果子节点原本有父节点，则先从原本的父节点中移除
 			if (childNode.parentNode && childNode.parentNode !== this) {
@@ -87,7 +87,7 @@ export class Node implements INode {
 	}
 
 	// 插入到子节点之前
-	public insertBefore(childNode: INode, previousTarget: INode): void {
+	insertBefore(childNode: INode, previousTarget: INode): void {
 		if (this._childNodes) {
 			// 首先判断目标节点是否在自己的子节点列表中
 			const pindex = this._childNodes.indexOf(previousTarget);
@@ -103,7 +103,7 @@ export class Node implements INode {
 	}
 
 	// 替换子节点
-	public replaceChild(childNode: INode, ...children: INode[]): void {
+	replaceChild(childNode: INode, ...children: INode[]): void {
 		if (this._childNodes) {
 			const index = this._childNodes.indexOf(childNode);
 			if (index !== -1) {
@@ -117,7 +117,7 @@ export class Node implements INode {
 	}
 
 	// 移除子节点
-	public removeChild(childNode: INode): void {
+	removeChild(childNode: INode): void {
 		if (this._childNodes) {
 			const index = this._childNodes.indexOf(childNode);
 			if (index !== -1) {
@@ -128,7 +128,7 @@ export class Node implements INode {
 	}
 
 	// 是否存在属性
-	public hasAttribute(name: string, namespace?: string): boolean {
+	hasAttribute(name: string, namespace?: string): boolean {
 		if (this._attributes) {
 			for (const attr of this._attributes) {
 				if ((!namespace && attr.fullname === name) || (attr.name === name && attr.namespace === namespace)) {
@@ -139,7 +139,7 @@ export class Node implements INode {
 		return false;
 	}
 
-	public getAttribute(name: string, namespace?: string): string | null {
+	getAttribute(name: string, namespace?: string): string | null {
 		if (this._attributes) {
 			for (const attr of this._attributes) {
 				if ((!namespace && attr.fullname === name) || (attr.name === name && attr.namespace === namespace)) {
@@ -150,7 +150,7 @@ export class Node implements INode {
 		return null;
 	}
 
-	public setAttribute(name: string, value: string, namespace?: string): void {
+	setAttribute(name: string, value: string, namespace?: string): void {
 		if (this._attributes) {
 			for (const attr of this._attributes) {
 				if ((!namespace && attr.fullname === name) || (attr.name === name && attr.namespace === namespace)) {
@@ -172,7 +172,7 @@ export class Node implements INode {
 		}
 	}
 
-	public removeAttribute(name: string, namespace?: string): void {
+	removeAttribute(name: string, namespace?: string): void {
 		if (this._attributes) {
 			for (let i = this._attributes.length; i--;) {
 				const attr = this._attributes[i];

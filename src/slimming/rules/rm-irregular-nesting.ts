@@ -1,25 +1,19 @@
+import { both, curry } from 'ramda';
 import { INode } from '../../node/index';
 import { regularTag } from '../const/regular-tag';
 import { isTag } from '../xml/is-tag';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
-import { ConfigItem } from '../config/config';
+import { TConfigItem } from '../config/config';
 import { ITagNode } from '../interface/node';
 
-export const rmIrregularNesting = async (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+// 在配置的忽略列表中
+const notIgnore = curry((tags: string[], node: INode) => tags.indexOf(node.nodeName) === -1);
+
+export const rmIrregularNesting = async (rule: TConfigItem[], dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
-		traversalNode<ITagNode>(isTag, node => {
-			// 在配置的忽略列表中
-			if (Array.isArray(rule[1]) && (rule[1] as string[]).indexOf(node.nodeName) !== -1) {
-				return;
-			}
-
+		traversalNode<ITagNode>(both(isTag, notIgnore(rule[1] as string[])), node => {
 			let legalRule = regularTag[node.nodeName].legalChildElements;
-			// any 表示可以任意嵌套
-			if (legalRule.any) {
-				return;
-			}
-
 			// noself 表示不允许嵌套自身
 			const noself = legalRule.noself;
 
@@ -29,9 +23,7 @@ export const rmIrregularNesting = async (rule: ConfigItem, dom: INode): Promise<
 				while (parent && parent.nodeName === 'switch') {
 					parent = parent.parentNode;
 				}
-				if (!parent) return;
-				legalRule = regularTag[parent.nodeName].legalChildElements;
-				if (!noself && legalRule.any) return;
+				legalRule = regularTag[(parent as INode).nodeName].legalChildElements;
 			}
 
 			for (let i = node.childNodes.length; i--;) {
@@ -43,13 +35,14 @@ export const rmIrregularNesting = async (rule: ConfigItem, dom: INode): Promise<
 
 				if (noself && childNode.nodeName === node.nodeName) { // 不允许嵌套自身
 					rmNode(childNode);
-				} else if (legalRule.any) { // transparent 和 noself 并存的情况（其实只有 a）
+				} else if (legalRule.any) {
+					// any 表示可以任意嵌套
 					continue;
 				} else if (legalRule.childElements && legalRule.childElements.indexOf(childNode.nodeName) === -1) { // 不在嵌套列表中的情况
 					rmNode(childNode);
 				}
 			}
-		}, dom);
+		}, dom, true);
 	}
 	resolve();
 });

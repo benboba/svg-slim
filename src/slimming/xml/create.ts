@@ -2,7 +2,7 @@ import { INode, NodeType } from '../../node/index';
 import { mixWhiteSpace } from '../utils/mix-white-space';
 import { ITagNode } from '../interface/node';
 
-export function createNode(node: INode): string {
+export const createNode = (node: INode): string => {
 	let xml = '';
 	const textContent = node.textContent;
 	switch (node.nodeType) {
@@ -35,9 +35,9 @@ export function createNode(node: INode): string {
 			break;
 	}
 	return xml;
-}
+};
 
-export function createTag(node: ITagNode): string {
+export const createTag = (node: ITagNode): string => {
 	let xml = '';
 	xml += `<${node.namespace ? `${node.namespace}:` : ''}${node.nodeName}`;
 	if (node.attributes.length) {
@@ -58,7 +58,7 @@ export function createTag(node: ITagNode): string {
 		xml += '/>';
 	}
 	return xml;
-}
+};
 
 export const createXML = (dom: ITagNode | undefined | null): string => {
 	if (!dom) {

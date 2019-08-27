@@ -1,27 +1,19 @@
 import { propEq } from 'ramda';
 import { INode } from '../../node/index';
 import { douglasPeucker } from '../algorithm/douglas-peucker';
-import { ConfigItem } from '../config/config';
+import { TConfigItem } from '../config/config';
 import { plus } from '../math/plus';
 import { doCompute } from '../path/do-compute';
 import { execPath, IPathResultItem } from '../path/exec';
-import { shortenDigit } from '../path/shorten-digit';
-import { stringifyFuncVal } from '../utils/stringify-funcval';
 import { traversalNode } from '../xml/traversal-node';
 import { ITagNode } from '../interface/node';
-
-
-const availTypes = 'LlHhVv';
+import { stringifyPath } from '../path/stringify';
 
 const DPItemNormalize = (pathItem: IPathResultItem): IPathResultItem => {
 	switch (pathItem.type) {
 		case 'l':
 			pathItem.val[0] = plus(pathItem.val[0], pathItem.from[0]);
 			pathItem.val[1] = plus(pathItem.val[1], pathItem.from[1]);
-			for (let i = 2, l = pathItem.val.length; i < l; i += 2) {
-				pathItem.val[i] = plus(pathItem.val[i], pathItem.val[i - 2]);
-				pathItem.val[i + 1] = plus(pathItem.val[i + 1], pathItem.val[i - 1]);
-			}
 			break;
 		case 'H':
 			pathItem.val.push(pathItem.from[1]);
@@ -48,12 +40,15 @@ const DPItemMerge = (lastItem: IPathResultItem, pathItem: IPathResultItem): void
 	lastItem.val = lastItem.val.concat(DPItemNormalize(pathItem).val);
 };
 
+// 道格拉斯普克只支持直线类型
+const DPAvailTypes = 'LlHhVv';
+
 const DPInit = (threshold: number, pathArr: IPathResultItem[]): IPathResultItem[] => {
 	const pathResult: IPathResultItem[] = [];
 	let len = 0;
 	for (let i = 0, l = pathArr.length; i < l; i++) {
 		const pathItem = pathArr[i];
-		if (availTypes.indexOf(pathItem.type) !== -1) {
+		if (DPAvailTypes.indexOf(pathItem.type) !== -1) {
 			const lastItem = pathResult[len - 1];
 			if (lastItem.type === 'L') {
 				DPItemMerge(lastItem, pathItem);
@@ -80,7 +75,7 @@ const DPInit = (threshold: number, pathArr: IPathResultItem[]): IPathResultItem[
 const PATH_CONFIG_DIGIT_1 = 3;
 const PATH_CONFIG_DIGIT_2 = 4;
 
-export const computePath = async (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const computePath = async (rule: TConfigItem[], dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		traversalNode<ITagNode>(propEq('nodeName', 'path'), node => {
 			const attrD = node.getAttribute('d');
@@ -100,11 +95,7 @@ export const computePath = async (rule: ConfigItem, dom: INode): Promise<null> =
 					pathResult.length = len;
 				}
 
-				let d = '';
-				pathResult.forEach(pathItem => {
-					d += `${pathItem.type}${stringifyFuncVal(shortenDigit(pathItem, rule[PATH_CONFIG_DIGIT_1] as number, rule[PATH_CONFIG_DIGIT_2] as number))}`;
-				});
-				node.setAttribute('d', d);
+				node.setAttribute('d', stringifyPath(pathResult, rule[PATH_CONFIG_DIGIT_1] as number, rule[PATH_CONFIG_DIGIT_2] as number));
 			}
 
 		}, dom);

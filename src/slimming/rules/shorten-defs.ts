@@ -1,6 +1,6 @@
 import { propEq } from 'ramda';
 import { INode, IAttr } from '../../node/index';
-import { ConfigItem } from '../config/config';
+import { TConfigItem } from '../config/config';
 import { regularAttr } from '../const/regular-attr';
 import { funcIRIToID, IRIFullMatch } from '../const/syntax';
 import { IUnique } from '../interface/unique';
@@ -37,7 +37,7 @@ const checkSub = (node: ITagNode, IDList: IUnique) => {
 	}
 };
 
-export const shortenDefs = async (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const shortenDefs = async (rule: TConfigItem[], dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		let firstDefs: ITagNode | undefined;
 		const IDList: IUnique = {};

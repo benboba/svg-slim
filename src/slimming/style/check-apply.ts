@@ -1,40 +1,34 @@
-import { INode } from '../../node/index';
+import { INode, IAttr } from '../../node/index';
 import { IRegularAttr } from '../const/regular-attr';
 import { getById } from '../xml/get-by-id';
 import { isTag } from '../xml/is-tag';
 import { execStyle } from './exec';
 
-function getXlink(styleDefine: IRegularAttr, idStr: string, dom: INode, unique: INode[], fromStyleTag = false) {
-	// TODO：只有 xlink:href 吗？其它 IRI 或 funcIRI 属性是否也需要验证？
-	// 遇到引用属性，还需要递归验证被引用对象是否可应用样式
-	return check(styleDefine, getById(idStr, dom), dom, unique, fromStyleTag);
-}
+// TODO：只有 xlink:href 吗？其它 IRI 或 funcIRI 属性是否也需要验证？
+// 遇到引用属性，还需要递归验证被引用对象是否可应用样式
+const getXlink = (styleDefine: IRegularAttr, idStr: string, dom: INode, unique: INode[], fromStyleTag: boolean) => check(styleDefine, getById(idStr, dom), dom, unique, fromStyleTag);
 
 // 定义一个特殊的遍历方法，只接收一个 condition 方法，只有该方法返回 true 才继续遍历子元素
-function traversal(condition: (n: INode) => boolean, node: INode): void {
+const traversal = (condition: (n: INode) => boolean, node: INode): void => {
 	// 此处不能用 forEach ，for 循环可以避免当前节点被移除导致下一个节点不会被遍历到的问题
-	if (node.childNodes) {
-		for (const childNode of node.childNodes) {
-			if (condition(childNode) && childNode.childNodes && childNode.childNodes.length) {
-				traversal(condition, childNode);
-			}
+	for (const childNode of node.childNodes as INode[]) {
+		if (condition(childNode) && childNode.childNodes && childNode.childNodes.length) {
+			traversal(condition, childNode);
 		}
 	}
-}
+};
 
-function check(styleDefine: IRegularAttr, node: INode | undefined, dom: INode, unique: INode[], fromStyleTag = false): boolean {
+const check = (styleDefine: IRegularAttr, node: INode | undefined, dom: INode, unique: INode[], fromStyleTag: boolean): boolean => {
 	if (!node) return false;
 
 	// 如果是检测 style 标签的样式，则只要遇到同名的 style 属性就返回 false
 	if (fromStyleTag) {
-		if (node.attributes) {
-			for (let i = node.attributes.length; i--;) {
-				const attr = node.attributes[i];
-				if (attr.fullname === 'style') {
-					const childStyle = execStyle(attr.value);
-					if (childStyle.some(style => style.fullname === styleDefine.name)) {
-						return false;
-					}
+		for (let i = (node.attributes as IAttr[]).length; i--;) {
+			const attr = (node.attributes as IAttr[])[i];
+			if (attr.fullname === 'style') {
+				const childStyle = execStyle(attr.value);
+				if (childStyle.some(style => style.fullname === styleDefine.name)) {
+					return false;
 				}
 			}
 		}
@@ -52,7 +46,7 @@ function check(styleDefine: IRegularAttr, node: INode | undefined, dom: INode, u
 	let result = false;
 
 	if (node.hasAttribute('xlink:href')) {
-		result = getXlink(styleDefine, node.getAttribute('xlink:href') as string, dom, unique);
+		result = getXlink(styleDefine, node.getAttribute('xlink:href') as string, dom, unique, false);
 	}
 
 	// 已经命中就不需要再继续了
@@ -71,17 +65,15 @@ function check(styleDefine: IRegularAttr, node: INode | undefined, dom: INode, u
 		unique.push(childNode);
 
 		// 检查属性看是否被覆盖，是就不再继续
-		if (childNode.attributes) {
-			for (let i = childNode.attributes.length; i--;) {
-				const attr = childNode.attributes[i];
-				if (attr.fullname === 'style') {
-					const childStyle = execStyle(attr.value);
-					if (childStyle.some(style => style.fullname === styleDefine.name)) {
-						return false;
-					}
-				} else if (attr.fullname === styleDefine.name) {
+		for (let i = (childNode.attributes as IAttr[]).length; i--;) {
+			const attr = (childNode.attributes as IAttr[])[i];
+			if (attr.fullname === 'style') {
+				const childStyle = execStyle(attr.value);
+				if (childStyle.some(style => style.fullname === styleDefine.name)) {
 					return false;
 				}
+			} else if (attr.fullname === styleDefine.name) {
+				return false;
 			}
 		}
 
@@ -101,7 +93,7 @@ function check(styleDefine: IRegularAttr, node: INode | undefined, dom: INode, u
 		}
 	}, node);
 	return result;
-}
+};
 
 // 深度分析，判断样式继承链上是否存在可应用对象
 export const checkApply = (
@@ -109,6 +101,4 @@ export const checkApply = (
 	node: INode,
 	dom: INode,
 	fromStyleTag = false // 标记是否为检测 style 标签的样式
-): boolean => {
-	return check(styleDefine, node, dom, [], fromStyleTag);
-};
+): boolean => check(styleDefine, node, dom, [], fromStyleTag);

@@ -3,7 +3,7 @@ import { has } from 'ramda';
 import { IAttr, INode } from '../../node';
 import { exec as execColor } from '../color/exec';
 import { validOpacity } from '../color/valid';
-import { ConfigItem } from '../config/config';
+import { TConfigItem } from '../config/config';
 import { IStyleObj, ITagNode } from '../interface/node';
 // import { doCompute } from '../path/do-compute';
 // import { execPath } from '../path/exec';
@@ -24,7 +24,7 @@ interface IPathChildren {
 }
 
 // // TODO 验证路径是否相交
-// function checkPath(str: string) {
+// const checkPath = (str: string) => {
 // 	const paths: number[][] = [];
 // 	const pathItems = doCompute(execPath(str));
 // 	let verify = true;
@@ -92,7 +92,7 @@ interface IPathChildren {
 // 	};
 // }
 
-// function noJoin(attr1: string, attr2: string): boolean {
+// const noJoin = (attr1: string, attr2: string): boolean => {
 // 	const checkResult1 = checkPath(attr1);
 // 	const checkResult2 = checkPath(attr2);
 // 	if (checkResult1.verify && checkResult2.verify) {
@@ -101,15 +101,15 @@ interface IPathChildren {
 // 	return true;
 // }
 
-function execOpacity(opacity: string): number {
+const execOpacity = (opacity: string): number => {
 	if (opacity[opacity.length - 1] === '%') {
 		return validOpacity(opacity.length, '%', opacity.slice(0, opacity.length - 1));
 	} else {
 		return validOpacity(opacity.length, '', opacity);
 	}
-}
+};
 
-function canbeCombine(node1: ITagNode, node2: ITagNode, attr: IAttr, combineFill: boolean, combineOpacity: boolean): boolean {
+const canbeCombine = (node1: ITagNode, node2: ITagNode, attr: IAttr, combineFill: boolean, combineOpacity: boolean): boolean => {
 	const styles = node1.styles as IStyleObj;
 	const noOpacity: boolean = !styles.hasOwnProperty('opacity') || execOpacity(styles.opacity.value) === 1;
 	const noStrokeOpacity: boolean = execColor(styles.hasOwnProperty('stroke') ? styles.stroke.value : '').a === 1 && (!styles.hasOwnProperty('stroke-opacity') || execOpacity(styles['stroke-opacity'].value) === 1);
@@ -119,9 +119,9 @@ function canbeCombine(node1: ITagNode, node2: ITagNode, attr: IAttr, combineFill
 	// stroke 为空
 	const noStroke: boolean = (!styles.hasOwnProperty('stroke') || styles.stroke.value === 'none') && (combineOpacity || (noOpacity && noFillOpacity));
 	return noFill || (combineFill && noStroke)/* || noJoin(attr.value, node2.getAttribute('d'))*/;
-}
+};
 
-function getKey(node: ITagNode): string {
+const getKey = (node: ITagNode): string => {
 	const keyObj = {
 		attr: '',
 		inline: '',
@@ -134,9 +134,9 @@ function getKey(node: ITagNode): string {
 		keyObj[define.from] += `${key}=${define.value}&`;
 	});
 	return `attr:${keyObj.attr}|inline:${keyObj.inline}|styletag:${keyObj.styletag}|inherit:${keyObj.inherit}`;
-}
+};
 
-export const combinePath = async (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const combinePath = async (rule: TConfigItem[], dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		execStyleTree(dom as ITagNode);
 

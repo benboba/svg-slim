@@ -248,8 +248,14 @@ export enum nonzeroEvenodd {
 	evenodd
 }
 
-export enum colorKeywords {
+// css 值的全局关键字
+export enum CSSWideKeywords {
 	inherit,
+	initial,
+	unset
+}
+
+export enum colorKeywords {
 	currentColor,
 	transparent
 }

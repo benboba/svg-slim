@@ -1,16 +1,55 @@
-import { INode, IAttr } from '../../node/index';
+import { INode } from '../../node/index';
+import { TConfigItem } from '../config/config';
 import { shapeElements } from '../const/definitions';
 import { regularTag } from '../const/regular-tag';
-import { execStyle } from '../style/exec';
+import { IStyleObj, ITagNode } from '../interface/node';
+import { execStyleTree } from '../xml/exec-style-tree';
 import { isTag } from '../xml/is-tag';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
-import { ConfigItem } from '../config/config';
-import { IAttrObj } from '../interface/attr-obj';
-import { ITagNode } from '../interface/node';
 
-export const rmHidden = async (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+const checkNumberAttr = (node: ITagNode, key: string): boolean => {
+	const styles = node.styles as IStyleObj;
+	if (!styles.hasOwnProperty(key) && !node.hasAttribute(key)) {
+		return false;
+	}
+	if (styles.hasOwnProperty(key) && parseFloat(styles[key].value) > 0) {
+		return true;
+	}
+	if (parseFloat(`${node.getAttribute(key)}`) > 0) {
+		return true;
+	}
+	return false;
+};
+
+const checkRequired = (node: ITagNode, key: string): boolean => node.hasAttribute(key) && node.getAttribute(key) !== '';
+
+const getAttr = (node: ITagNode, key: string, defaultVal: string): string => {
+	let val = defaultVal;
+	if (node.hasAttribute(key)) {
+		val = node.getAttribute(key) as string;
+	}
+	const styles = node.styles as IStyleObj;
+	if (styles.hasOwnProperty(key)) {
+		val = styles[key].value;
+	}
+	return val;
+};
+
+const checkLine = (node: ITagNode) => {
+	const x1 = getAttr(node, 'x1', '0');
+	const y1 = getAttr(node, 'y1', '0');
+	const x2 = getAttr(node, 'x2', '0');
+	const y2 = getAttr(node, 'y2', '0');
+	if (x1 === x2 && y1 === y2) {
+		rmNode(node);
+	}
+};
+
+export const rmHidden = async (rule: TConfigItem[], dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
+		execStyleTree(dom as ITagNode);
+
 		traversalNode<ITagNode>(isTag, node => {
 
 			// 未包含子节点的文本容器视为隐藏节点
@@ -19,97 +58,65 @@ export const rmHidden = async (rule: ConfigItem, dom: INode): Promise<null> => n
 				return;
 			}
 
-			const attrObj: IAttrObj = {};
-			let styleObj: IAttr[] | undefined;
+			const styles = node.styles as IStyleObj;
 
-			node.attributes.forEach(attr => {
-				if (attr.fullname === 'style') {
-					styleObj = execStyle(attr.value);
-				} else {
-					attrObj[attr.fullname] = attr.value;
-				}
-			});
-
-			// style 覆盖 attr
-			if (styleObj) {
-				// 考虑到可能未排重
-				styleObj.forEach(s => {
-					attrObj[s.name] = s.value;
-				});
-			}
-
-			if (attrObj.display === 'none') {
+			if (styles.hasOwnProperty('display') && styles.display.value === 'none') {
 				rmNode(node);
 				return;
 			}
 
-			const noFill = attrObj.fill === 'none';
-			const noStroke = attrObj.stroke === 'none';
+			const noFill = styles.hasOwnProperty('fill') && styles.fill.value === 'none';
+			const noStroke = !styles.hasOwnProperty('stroke') || styles.stroke.value === 'none';
 
-			if (noFill && noStroke) {
-				if (shapeElements.indexOf(node.nodeName) !== -1) {
-					rmNode(node);
-					return;
-				}
+			if (noFill && noStroke && shapeElements.indexOf(node.nodeName) !== -1) {
+				rmNode(node);
+				return;
 			}
 
 			switch (node.nodeName) {
-
 				// 路径必须有 d 属性
 				case 'path':
-					if (!attrObj.d) {
-						rmNode(node);
-					}
-					break;
-
-				// 矩形的宽高必须均大于 0
-				case 'rect':
-					if (isNaN(parseFloat(attrObj.width)) || isNaN(parseFloat(attrObj.height)) || parseFloat(attrObj.width) <= 0 || parseFloat(attrObj.height) <= 0) {
-						rmNode(node);
-					}
-					break;
-
-				// 圆和椭圆的半径必须大于 0
-				case 'circle':
-					if (isNaN(parseFloat(attrObj.r)) || parseFloat(attrObj.r) <= 0) {
-						rmNode(node);
-					}
-					break;
-				case 'ellipse':
-					if (isNaN(parseFloat(attrObj.rx)) || isNaN(parseFloat(attrObj.ry)) || parseFloat(attrObj.rx) <= 0 || parseFloat(attrObj.ry) <= 0) {
-						rmNode(node);
-					}
-					break;
-
-				// 线段长度不能为 0
-				case 'line':
-					const xyObj = {
-						x1: '0',
-						y1: '0',
-						x2: '0',
-						y2: '0',
-					};
-					Object.assign(xyObj, attrObj);
-					if (xyObj.x1 === xyObj.x2 && xyObj.y1 === xyObj.y2) {
+					if (!checkRequired(node, 'd')) {
 						rmNode(node);
 					}
 					break;
 
 				// polyline 和 polygon 必须有 points 属性
 				case 'polyline':
-					if (!attrObj.points) {
+				case 'polygon':
+					if (!checkRequired(node, 'points')) {
 						rmNode(node);
 					}
 					break;
-				case 'polygon':
-					if (!attrObj.points) {
+
+				// 矩形的宽高必须均大于 0
+				case 'rect':
+					if (!checkNumberAttr(node, 'width') || !checkNumberAttr(node, 'height')) {
 						rmNode(node);
 					}
+					break;
+
+				// 圆和椭圆的半径必须大于 0
+				case 'circle':
+					if (!checkNumberAttr(node, 'r')) {
+						rmNode(node);
+					}
+					break;
+				case 'ellipse':
+					if (!checkNumberAttr(node, 'rx') || !checkNumberAttr(node, 'ry')) {
+						rmNode(node);
+					}
+					break;
+
+				// 线段长度不能为 0
+				case 'line':
+					checkLine(node);
 					break;
 
 				default:
 					break;
 			}
+
 		}, dom);
 	}
 	resolve();

@@ -207,7 +207,7 @@ const parse = (str: string, status: IStatus): { node: Node; str: string } => {
 	}
 };
 
-export async function Parser(str: string): Promise<Node> {
+export const Parser = async (str: string): Promise<Node> => {
 
 	return new Promise((resolve, reject) => {
 		const doc = new Node({
@@ -322,6 +322,6 @@ export async function Parser(str: string): Promise<Node> {
 
 		resolve(doc);
 	});
-}
+};
 
 export { REG_XML_DECL, REG_CDATA_SECT, REG_OTHER_SECT, REG_DOCTYPE, REG_OTHER_DECL, REG_COMMENTS, REG_START_TAG, REG_END_TAG, REG_ATTR };

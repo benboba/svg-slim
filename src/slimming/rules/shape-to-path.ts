@@ -3,8 +3,10 @@ import { INode } from '../../node/index';
 import { shapeElements } from '../const/definitions';
 import { createTag } from '../xml/create';
 import { traversalNode } from '../xml/traversal-node';
-import { ConfigItem } from '../config/config';
+import { TConfigItem } from '../config/config';
 import { ITagNode } from '../interface/node';
+import { execNumberList } from '../utils/exec-numberlist';
+import { shortenNumberList } from '../utils/shorten-number-list';
 
 const rectToPath = (node: ITagNode) => {
 	const shapeAttr = {
@@ -33,7 +35,7 @@ const rectToPath = (node: ITagNode) => {
 	// 此处考虑到宽和高的字节数差异，应该取较小的那种
 	const hvh = `M${shapeAttr.x},${shapeAttr.y}h${shapeAttr.width}v${shapeAttr.height}h${-shapeAttr.width}z`;
 	const vhv = `M${shapeAttr.x},${shapeAttr.y}v${shapeAttr.height}h${shapeAttr.width}v${-shapeAttr.height}z`;
-	node.setAttribute('d', vhv.length < hvh.length ? vhv : hvh);
+	node.setAttribute('d', shortenNumberList(vhv.length < hvh.length ? vhv : hvh));
 };
 
 const lineToPath = (node: ITagNode) => {
@@ -54,29 +56,25 @@ const lineToPath = (node: ITagNode) => {
 	}
 
 	node.nodeName = 'path';
-	node.setAttribute('d', `M${shapeAttr.x1},${shapeAttr.y1}L${shapeAttr.x2},${shapeAttr.y2}`);
+	node.setAttribute('d', shortenNumberList(`M${shapeAttr.x1},${shapeAttr.y1}L${shapeAttr.x2},${shapeAttr.y2}`));
 };
 
 const polyToPath = (node: INode, addZ = false) => {
-	const shapeAttr = {
-		points: node.getAttribute('points'),
-	};
-
-	if (shapeAttr.points) {
-		node.removeAttribute('points');
-		node.nodeName = 'path';
-		const points = shapeAttr.points.split(/[\s,]+/);
+	if (node.hasAttribute('points')) {
+		const points = execNumberList(node.getAttribute('points') as string);
 		if (points.length % 2 === 1) {
 			points.pop();
 		}
+		node.removeAttribute('points');
+		node.nodeName = 'path';
 
 		let d = '';
 		if (points.length === 0) {
 			d = 'M0,0';
 		} else if (points.length === 2) {
-			d = `M${points[0]},${points[1]}`;
+			d = shortenNumberList(`M${points[0]},${points[1]}`);
 		} else {
-			d = `M${points[0]},${points[1]}L${points.slice(2).join(',')}`;
+			d = shortenNumberList(`M${points[0]},${points[1]}L${points.slice(2).join(',')}`);
 		}
 
 		if (addZ) {
@@ -87,7 +85,7 @@ const polyToPath = (node: INode, addZ = false) => {
 	}
 };
 
-export const shapeToPath = async (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const shapeToPath = async (rule: TConfigItem[], dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		traversalNode(node => shapeElements.indexOf(node.nodeName) !== -1, (node: ITagNode) => {
 			const cloneNode = node.cloneNode();

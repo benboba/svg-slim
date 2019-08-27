@@ -1,13 +1,11 @@
 import { propEq } from 'ramda';
-import { INode, IAttr } from '../../node/index';
-import { transformAttributes, cantCollapseAttributes } from '../const/definitions';
-import { execStyle } from '../style/exec';
-import { stringifyStyle } from '../style/stringify';
+import { IAttr, INode } from '../../node/index';
+import { TConfigItem } from '../config/config';
+import { cantCollapseAttributes, transformAttributes } from '../const/definitions';
+import { ITagNode } from '../interface/node';
 import { isTag } from '../xml/is-tag';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
-import { ConfigItem } from '../config/config';
-import { ITagNode } from '../interface/node';
 
 interface IAttrObj {
 	[propName: string]: IAttr;
@@ -24,11 +22,6 @@ const collapseAttributes = (node1: ITagNode, node2: ITagNode) => {
 		if (attrObj.hasOwnProperty(attr.fullname)) {
 			if (transformAttributes.indexOf(attr.fullname) !== -1) {
 				attrObj[attr.fullname].value = `${attr.value} ${attrObj[attr.fullname].value}`;
-			} else if (attr.fullname === 'style') {
-				const style1 = execStyle(attrObj[attr.fullname].value);
-				const style2 = execStyle(attr.value);
-				// 此处只进行属性合并，不做排重，排重在 shorten-style-attr 里做
-				attrObj[attr.fullname].value = stringifyStyle(style2.concat(style1));
 			}
 		} else {
 			node1.setAttribute(attr.name, attr.value, attr.namespace);
@@ -58,7 +51,7 @@ const doCollapse = (dom: INode) => {
 	}, dom);
 };
 
-export const collapseG = async (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const collapseG = async (rule: TConfigItem[], dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		doCollapse(dom);
 	}

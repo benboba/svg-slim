@@ -5,7 +5,7 @@ import { traversalNode } from '../xml/traversal-node';
 import { isTag } from '../xml/is-tag';
 
 // 验证 className
-function checkClass(node: INode, selector: ISelector): boolean {
+const checkClass = (node: INode, selector: ISelector): boolean => {
 	const className = node.getAttribute('class');
 	let classNames: string[] = [];
 	if (className) {
@@ -17,10 +17,10 @@ function checkClass(node: INode, selector: ISelector): boolean {
 		}
 	}
 	return true;
-}
+};
 
 // 验证 ID
-function checkID(node: INode, selector: ISelector): boolean {
+const checkID = (node: INode, selector: ISelector): boolean => {
 	let id = node.getAttribute('id');
 	if (id) {
 		id = id.trim();
@@ -31,10 +31,10 @@ function checkID(node: INode, selector: ISelector): boolean {
 		}
 	}
 	return true;
-}
+};
 
 // 验证属性
-function checkAttr(node: INode, selector: ISelector): boolean {
+const checkAttr = (node: INode, selector: ISelector): boolean => {
 	for (let ai = selector.attr.length; ai--;) {
 		const attrSelector = selector.attr[ai];
 		let attr = node.getAttribute(attrSelector.key);
@@ -85,12 +85,12 @@ function checkAttr(node: INode, selector: ISelector): boolean {
 		}
 	}
 	return true;
-}
+};
 
 // 验证伪类和伪元素
 // 根据 SVG 标准只验证 CSS 2.1 规范的伪类和伪元素
 // https://www.w3.org/TR/SVG2/styling.html#RequiredCSSFeatures
-function checkPseudo(node: INode, selector: ISelector): boolean {
+const checkPseudo = (node: INode, selector: ISelector): boolean => {
 	for (let pi = selector.pseudo.length; pi--;) {
 		const pseudoSelector = selector.pseudo[pi];
 		if (validPseudoClass.indexOf(pseudoSelector.func) === -1 && validPseudoElement.indexOf(pseudoSelector.func) === -1) {
@@ -115,10 +115,10 @@ function checkPseudo(node: INode, selector: ISelector): boolean {
 		}
 	}
 	return true;
-}
+};
 
 // 验证 selector 和 node 是否匹配
-export const matchSelector = (node: INode | undefined, selector: ISelector | undefined): boolean => {
+export const matchSelector = (node?: INode, selector?: ISelector): boolean => {
 	if (!selector || !node) {
 		return false;
 	}

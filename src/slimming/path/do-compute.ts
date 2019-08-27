@@ -1,6 +1,6 @@
 import { minus } from '../math/minus';
 import { plus } from '../math/plus';
-import { APOS_X, computeA } from './compute-a';
+import { computeA } from './compute-a';
 import { computeC } from './compute-c';
 import { computeH } from './compute-h';
 import { computeL } from './compute-l';
@@ -11,11 +11,11 @@ import { computeT } from './compute-t';
 import { computeV } from './compute-v';
 import { computeZ } from './compute-z';
 import { IPathItem, IPathResultItem } from './exec';
+import { APOS_X, APOS_LEN } from '../const';
 
 const cArgLen = 6;
 const sArgLen = 4;
 const qArgLen = 4;
-const aArgLen = 7;
 
 export const doCompute = (pathArr: IPathItem[]): IPathResultItem[] => {
 	const pathResult: IPathResultItem[] = [];
@@ -33,10 +33,6 @@ export const doCompute = (pathArr: IPathItem[]): IPathResultItem[] => {
 			case 'm':
 				const lastm = pathItem.val.length - pathItem.val.length % 2 - 2;
 				pos = computeM([plus(pathItem.val[lastm], pos[0]), plus(pathItem.val[lastm + 1], pos[1])], pathItem.val, pathResult, pos);
-				break;
-			case 'Z':
-			case 'z':
-				pos = computeZ(pathResult, pos);
 				break;
 			// 水平直线 - 绝对
 			case 'H':
@@ -132,19 +128,20 @@ export const doCompute = (pathArr: IPathItem[]): IPathResultItem[] => {
 				break;
 			// 圆弧 - 绝对
 			case 'A':
-				for (let i = 0, l = pathItem.val.length; i < l; i += aArgLen) {
-					const AArgs = pathItem.val.slice(i, i + aArgLen);
+				for (let i = 0, l = pathItem.val.length; i < l; i += APOS_LEN) {
+					const AArgs = pathItem.val.slice(i, i + APOS_LEN);
 					pos = computeA(AArgs, AArgs.map((s, index) => index < APOS_X ? s : minus(s, pos[1 - (index % 2)])), pathResult, pos);
 				}
 				break;
 			// 圆弧 - 相对
 			case 'a':
-				for (let i = 0, l = pathItem.val.length; i < l; i += aArgLen) {
-					const aArgs = pathItem.val.slice(i, i + aArgLen);
+				for (let i = 0, l = pathItem.val.length; i < l; i += APOS_LEN) {
+					const aArgs = pathItem.val.slice(i, i + APOS_LEN);
 					pos = computeA(aArgs.map((s, index) => index < APOS_X ? s : plus(s, pos[1 - (index % 2)])), aArgs, pathResult, pos);
 				}
 				break;
 			default:
+				pos = computeZ(pathResult, pos);
 				break;
 		}
 	});

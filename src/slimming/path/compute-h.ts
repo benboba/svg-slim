@@ -1,13 +1,11 @@
-import { lt } from 'ramda';
 import { minus } from '../math/minus';
 import { plus } from '../math/plus';
 import { numberLength } from '../utils/number-length';
 import { IPathResultItem } from './exec';
 
 export const computeH = (absolute: number, relative: number, pathResult: IPathResultItem[], pos: number[]): number[] => {
-	const rLen = pathResult.length;
 	// 如果前一个函数也是水平移动，判断是否可以合并
-	if (rLen > 0 && pathResult[rLen - 1].type.toLowerCase() === 'h') {
+	if (pathResult[pathResult.length - 1].type.toLowerCase() === 'h') {
 		const lastItem: IPathResultItem = pathResult.pop() as IPathResultItem;
 		// 判断的依据是：相对值的积为正数（即同向移动）
 		if (lastItem.type === 'h') {
@@ -24,7 +22,23 @@ export const computeH = (absolute: number, relative: number, pathResult: IPathRe
 	}
 	// 如果确实发生了相对移动
 	if (relative !== 0) {
-		if (lt(numberLength(relative), numberLength(absolute))) {
+		const relLen = numberLength(relative);
+		const absLen = numberLength(absolute);
+		if (relLen === absLen) { // 如果相等则参照前一个指令
+			if (pathResult[pathResult.length - 1].type === 'h') {
+				pathResult.push({
+					type: 'h',
+					from: pos.slice(),
+					val: [relative]
+				});
+			} else {
+				pathResult.push({
+					type: 'H',
+					from: pos.slice(),
+					val: [absolute]
+				});
+			}
+		} else if (relLen < absLen) {
 			pathResult.push({
 				type: 'h',
 				from: pos.slice(),

@@ -69,4 +69,4 @@ export declare class Node implements INode {
     removeAttribute(name: string, namespace?: string): void;
 }
 
-export declare function Parser(str: string): Promise<Node>;
+export declare function parse(str: string): Promise<Node>;
