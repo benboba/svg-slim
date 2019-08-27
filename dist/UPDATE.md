@@ -1,6 +1,6 @@
 # 更新日志
 
-## 2019.08.26 v1.4.0
+## 2019.08.27 v1.4.0
 
 ### 综合
 
@@ -15,6 +15,7 @@
 
 ### svg-slimming
 
+* 修正了 svg-slimming.d.ts ，与 xml-parser.d.ts 做对应
 * 修正了 config 合并时，没有验证数组类型，导致传入对象或函数可能意外报错的问题
 * 现在所有依赖 css 模块进行解析的地方都加了 try ... catch，以应对非法字符串导致 css 模块报错影响优化结果的问题
 * 不再使用 toFixed 处理数值，改用 Math.round(Math.abs)，以解决 1.15.toFixed(1) = 1.1 的问题
@@ -22,7 +23,7 @@
 * 改进了 16 进制颜色的解析，添加了 1% ~ 100% 的对照表，修复了 #00000080 无法正确解析为 rgba(0,0,0,0.5) 的 bug
 * 修复了连续解析 rgb|hsl|rgba|hsla 颜色时，正则表达式没有重置的 bug
 * 修正了颜色解析逻辑和 W3C 规则不一致的问题，现在 rgb 和 hsl 会处理 alpha 值，rgba 和 hsla 会正确处理不存在 alpha 值的情况，hsl 会处理 hue 的值带单位的情况
-* 移除了 shorten-color 限制 alpha 值位数的参数，现在对于所有的颜色 alpha 值，统一采用小数点后第 3 位来处理，和 chrome 浏览器 (v76.0.3809.87) 保持一致
+* 调整了 shorten-color 限制 alpha 值位数的参数，现在对于所有的颜色 alpha 值，最多保留小数点后第 3 位，和 chrome 浏览器 (v76.0.3809.87) 保持一致
 * 修正了属性选择器的正则表达式的一个错误
 * combine-script 现在会将合并后的 script 标签移到 svg 元素尾部，并且移除尾分号
 * 修复了 skewX 和 skewY 函数合并时直接将角度相加的错误运算方式，改为进行真实的矩阵乘法运算
@@ -34,12 +35,16 @@
 * 现在 path 中同方向的 l 指令会正确合并，并修复了反方向 h 和 v 指令会被合并的错误
 * 修复了 rm-attribute 规则中保留 aria 和保留 eventHandler 两个选项无效的问题
 * rm-attribute 现在会验证所有样式类属性的值是否匹配 css 全局关键字 initial、inherit、unset
+* rm-attribute 现在会分析样式继承链，虽然当前样式的值是默认值，但如果父元素上存在同名样式，则不会对当前样式进行移除
+* rm-attribute 在判断一个属性的值是否是默认值时，除了全字匹配，还会尝试解析数字或颜色类型进行深度对比
 * 修复了 rm-hidden 规则没有深度解析样式，可能导致错误删除或未删除的问题
+* rm-hidden 规则现在不会直接移除无填充无描边的图形元素，还会判断自身或祖先元素是否存在 id，只有不存在 id 的才会被移除
 * rm-irregular-nesting 现在父元素命中了忽略规则后，将不再处理子元素
 * 修复了部分 numberlist 属性没有按照 numberlist 解析，导致一些解析错误的问题
-* rm-viewbox 规则现在会验证 viewBox 属性解析后长度是否为 4，且 width 和 height 不能为负
+* rm-viewbox 规则现在会验证 viewBox 属性解析后长度是否为 4，且 width 和 height 不能为负，此外会正确验证单位，只有单位为 px 的属性才有可能触发 rm-viewbox
 * shorten-style-tag 规则现在会移除 comment 和空的 keyframes、 mediaquery、font-face 等 css 节点
 * 修复了解析 CSS 选择器时遇到属性、class、id、伪类选择器组合时会错误地只解析到组合最后一个 case 的问题
+* 修复了根据选择器获取元素中，兄弟选择器会丢失部分匹配项的问题
 
 ## 2019.03.29 v1.3.4
 

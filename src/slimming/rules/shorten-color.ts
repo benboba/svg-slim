@@ -159,7 +159,7 @@ const shortenMap = {
 
 const shortenReg = new RegExp(`(?:${Object.keys(shortenMap).join('|')})(?=[^0-9a-f]|$)`, 'gi');
 
-const formatColor = (rgba: boolean, str: string): string => {
+const formatColor = (rgba: boolean, str: string, digit: number): string => {
 	const color = exec(str);
 	let s = color.origin;
 
@@ -169,7 +169,7 @@ const formatColor = (rgba: boolean, str: string): string => {
 			if (rgba) {
 				s = `#${operateHex(color.r)}${operateHex(color.g)}${operateHex(color.b)}${has(`${color.a * Hundred}`, alphaMap) ? operateHex(alphaMap[`${color.a * Hundred}` as keyof typeof alphaMap]) : operateHex(Math.round(color.a * FF))}`;
 			} else {
-				s = `rgb(${color.r},${color.g},${color.a},${`${toFixed(OPACITY_DIGIT, color.a)}`.replace(/^0\./, '.')})`;
+				s = `rgb(${color.r},${color.g},${color.a},${`${toFixed(digit, color.a)}`.replace(/^0\./, '.')})`;
 			}
 		} else {
 			s = `#${operateHex(color.r)}${operateHex(color.g)}${operateHex(color.b)}`;
@@ -188,15 +188,16 @@ const formatColor = (rgba: boolean, str: string): string => {
 
 export const shortenColor = async (rule: TConfigItem[], dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
+		const digit = Math.min(OPACITY_DIGIT, rule[2] as number);
 		traversalNode<ITagNode>(isTag, node => {
 			node.attributes.forEach(attr => {
 				if (regularAttr[attr.fullname].maybeColor) {
-					attr.value = formatColor(rule[1] as boolean, attr.value);
+					attr.value = formatColor(rule[1] as boolean, attr.value, digit);
 				} else if (attr.fullname === 'style') {
 					const style = execStyle(attr.value);
 					style.forEach(s => {
 						if (regularAttr[s.fullname].maybeColor) {
-							s.value = formatColor(rule[1] as boolean, s.value);
+							s.value = formatColor(rule[1] as boolean, s.value, digit);
 						}
 					});
 					attr.value = stringifyStyle(style);
@@ -209,7 +210,7 @@ export const shortenColor = async (rule: TConfigItem[], dom: INode): Promise<nul
 					const parsedCss = cssParse(node.childNodes[0].textContent as string, { silent: true });
 					traversalObj(both(has('property'), has('value')), (cssRule: Declaration) => {
 						if (regularAttr[cssRule.property as string].maybeColor) { // 可以模糊处理的数字
-							cssRule.value = formatColor(rule[1] as boolean, cssRule.value as string);
+							cssRule.value = formatColor(rule[1] as boolean, cssRule.value as string, digit);
 						}
 					}, (parsedCss.stylesheet as StyleRules).rules);
 					node.childNodes[0].textContent = shortenTag(cssStringify(parsedCss, { compress: true }));

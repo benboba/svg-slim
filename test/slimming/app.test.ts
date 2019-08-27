@@ -24,10 +24,11 @@ describe('svg-slimming 入口', () => {
 		const dom = await slimming(xml, {
 			'rm-unnecessary': [true, ['title', 123]],
 			'no-this-key': true,
-			'shorten-decimal-digits': [true, 'haha'],
+			'shorten-decimal-digits': [true, 'haha', 10],
 			'rm-irregular-tag': [true, null],
 			'shorten-class': false,
 			'shorten-id': null,
+			'shorten-color': [true, false, -1],
 		});
 		dom.should.equal('<svg width="100" height="100"><text> 1 abc 2 </text><script>console.log(1);console.log(2)</script></svg>');
 	});

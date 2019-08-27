@@ -15,13 +15,11 @@ const traversal = <T extends INode>(condition: (n: INode) => boolean, cb: (n: T)
 			if (condition(childNode)) {
 				cb(childNode as T);
 				if (childNode === node.childNodes[i]) {
-					if (childNode.childNodes && childNode.childNodes.length) {
-						traversal(condition, cb, childNode, breakImmediate);
-					}
+					traversal(condition, cb, childNode, breakImmediate);
 					i++;
 				}
 			} else {
-				if (!breakImmediate && childNode.childNodes && childNode.childNodes.length) {
+				if (!breakImmediate) {
 					traversal(condition, cb, childNode, breakImmediate);
 				}
 				i++;

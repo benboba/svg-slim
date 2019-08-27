@@ -22,13 +22,19 @@ describe('rules/rm-attribute', () => {
             version=""
         >
         <a x="1"/>
-        <circle stroke="none" cx="1" cy="0"/>
+        <circle stroke="none" cx="1" cy="0.0"/>
         <animate to="1"/>
         <animate to="1" attributeName="title"/>
+        <g fill="#000">
+            <rect fill="black"/>
+            <g fill="none">
+                <rect fill="rgb(0,0,0)"/>
+            </g>
+        </g>
         </svg>`;
 		const dom = await parse(xml) as ITagNode;
 		await rmAttribute([true, true, false, false], dom);
-		createXML(dom).should.equal('<svg> <a/> <circle cx="1"/> <animate/> <animate/> </svg>');
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><a/><circle cx="1"/><animate/><animate/><g><rect/><g fill="none"><rect fill="rgb(0,0,0)"/></g></g></svg>');
 	});
 
 	it('移除属性 - 反转规则', async () => {
