@@ -7,7 +7,7 @@
 
 import { INode } from '../../node/index';
 
-function traversal<T extends INode>(condition: (n: INode) => boolean, cb: (n: T) => void, node: INode): void {
+const traversal = <T extends INode>(condition: (n: INode) => boolean, cb: (n: T) => void, node: INode, breakImmediate: boolean): void => {
 	// 此处不能用 forEach ，for 循环可以避免当前节点被移除导致下一个节点不会被遍历到的问题
 	if (node.childNodes) {
 		for (let i = 0; i < node.childNodes.length;) {
@@ -16,20 +16,20 @@ function traversal<T extends INode>(condition: (n: INode) => boolean, cb: (n: T)
 				cb(childNode as T);
 				if (childNode === node.childNodes[i]) {
 					if (childNode.childNodes && childNode.childNodes.length) {
-						traversal(condition, cb, childNode);
+						traversal(condition, cb, childNode, breakImmediate);
 					}
 					i++;
 				}
 			} else {
-				if (childNode.childNodes && childNode.childNodes.length) {
-					traversal(condition, cb, childNode);
+				if (!breakImmediate && childNode.childNodes && childNode.childNodes.length) {
+					traversal(condition, cb, childNode, breakImmediate);
 				}
 				i++;
 			}
 		}
 	}
-}
+};
 
-export function traversalNode<T extends INode>(condition: (n: INode) => boolean, cb: (n: T) => void, dom: INode): void {
-	traversal(condition, cb, dom);
-}
+export const traversalNode = <T extends INode>(condition: (n: INode) => boolean, cb: (n: T) => void, dom: INode, breakImmediate = false): void => {
+	traversal(condition, cb, dom, breakImmediate);
+};

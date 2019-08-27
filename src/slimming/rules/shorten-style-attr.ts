@@ -1,6 +1,6 @@
 import { has, pipe, propEq } from 'ramda';
 import { INode, IAttr } from '../../node/index';
-import { ConfigItem } from '../config/config';
+import { TConfigItem } from '../config/config';
 import { IRegularAttr, regularAttr } from '../const/regular-attr';
 import { IAttrObj } from '../interface/attr-obj';
 import { IUnique } from '../interface/unique';
@@ -17,7 +17,7 @@ import { ITagNode } from '../interface/node';
 const styleThreshold = 4;
 const style2value = pipe(stringifyStyle, shortenStyle);
 
-export const shortenStyleAttr = async (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const shortenStyleAttr = async (rule: TConfigItem[], dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		let hasStyleTag = false;
 

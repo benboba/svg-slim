@@ -28,6 +28,7 @@ const check = (threshold: number, startI: number, endI: number, paths: number[])
 };
 
 export const douglasPeucker = (threshold: number, pathArr: number[]) => {
-	check(threshold, 0, pathArr.length - 2, pathArr);
-	return pathArr;
+	const pathCopy = pathArr.slice();
+	check(threshold, 0, pathCopy.length - 2, pathCopy);
+	return pathCopy;
 };

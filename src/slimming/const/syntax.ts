@@ -15,7 +15,7 @@ try {
 const uModifier = supportUnicode ? 'u' : '';
 
 // definition
-const commaWsp = '(?:\\s*,\\s*|\\s*)';
+export const commaWsp = '(?:\\s*,\\s*|\\s*)';
 const semi = '\\s*;\\s*';
 const paren = '\\s*\\(\\s*';
 const rParen = '\\s*\\)';
@@ -42,7 +42,7 @@ export const cssNameSpaceSeparatedFullMatch = new RegExp(`^${cssName}(?:\\s+${cs
 // https://www.w3.org/TR/css-syntax-3/#percentage-token-diagram
 export const numberPattern = '[+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?';
 const zero = '[+-]?(?:0+\\.)?0+(?:[eE][+-]?\\d+)?';
-const numberSequence = `${numberPattern}(?:${commaWsp}${numberPattern})*`;
+export const numberSequence = `${numberPattern}(?:${commaWsp}${numberPattern})*`;
 const numberPair = `${numberPattern}${commaWsp}${numberPattern}`;
 const numberPairSequence = `${numberPair}(?:${commaWsp}${numberPair})*`;
 const numberPairDouble = `${numberPair}${commaWsp}${numberPair}`;
@@ -92,10 +92,10 @@ export const timeListFullMatch = new RegExp(`^${timePattern}(\\s*;\\s*${timePatt
 // https://drafts.csswg.org/css-transforms/#svg-comma
 const translate = `translate${paren}${numberPattern}(?:(?:${commaWsp})?${numberPattern})?${rParen}`;
 const scale = `scale${paren}${numberPattern}(?:(?:${commaWsp})?${numberPattern})?${rParen}`;
-const rotate = `rotate${paren}${numberPattern}(?:(?:(?:${commaWsp})?${numberPattern}){2})?${rParen}`;
+const rotate = `rotate${paren}${numberPattern}${rParen}`;
 const skewX = `skewX${paren}${numberPattern}${rParen}`;
 const skewY = `skewY${paren}${numberPattern}${rParen}`;
-const matrix = `matrix${paren}${numberPattern}(?:(?:(?:${commaWsp})?${numberPattern}){5})?${rParen}`;
+const matrix = `matrix${paren}${numberPattern}(?:(?:${commaWsp})?${numberPattern}){5}${rParen}`;
 export const transformListFullMatch = new RegExp(`^(?:\\s*(?:${translate}|${scale}|${rotate}|${skewX}|${skewY}|${matrix})\\s*)*$`);
 
 // uri token
@@ -127,7 +127,7 @@ const pathASequence = `${pathA}(?:${commaWsp}${pathA})*`;
 const pathATo = `[aA]\\s*(?:${pathASequence}|(?:${pathASequence})?${pathZ})`;
 const pathPatternStrict = `(?:${pathMToStrict}|${pathZ}|${pathLToStrict}|${pathHVToStrict}|${pathCToStrict}|${pathSQToStrict}|${pathTToStrict}|${pathATo})`;
 const pathPattern = `(?:${pathMTo}|${pathZ}|${pathTo})`;
-export const pathFullMatchStrict = new RegExp(`^${pathMTo}(?:${commaWsp}${pathPatternStrict})*$`);
+export const pathFullMatchStrict = new RegExp(`^${pathMToStrict}(?:${commaWsp}${pathPatternStrict})*$`);
 export const pathFullMatch = new RegExp(`^${pathMTo}(?:${commaWsp}${pathPattern})*$`);
 
 export const preservAspectRatioFullMatch = /^(?:none|xMinYMin|xMidYMin|xMaxYMin|xMinYMid|xMidYMid|xMaxYMid|xMinYMax|xMidYMax|xMaxYMax)(?:\s+(?:meet|slice))?$/;

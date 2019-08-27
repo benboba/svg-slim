@@ -3,22 +3,18 @@ import { transformAttributes } from '../const/definitions';
 import { combineMatrix } from '../matrix/combine';
 import { isTag } from '../xml/is-tag';
 import { traversalNode } from '../xml/traversal-node';
-import { ConfigItem } from '../config/config';
+import { TConfigItem, DEFAULT_SIZE_DIGIT, DEFAULT_ACCURATE_DIGIT, DEFAULT_MATRIX_DIGIT } from '../config/config';
 import { execMatrix, IMatrixFunc } from '../matrix/exec';
 import { stringify } from '../matrix/stringify';
 import { merge } from '../matrix/merge';
 import { ITagNode } from '../interface/node';
 
-const DEFAULT_DIGIT1 = 3;
-const DEFAULT_DIGIT2 = 1;
-const DEFAULT_DIGIT3 = 2;
-
-export const combineTransform = async (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const combineTransform = async (rule: TConfigItem[], dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		// digit1 = 矩阵前 4 位的精度，digit2 = 矩阵后 2 位的精度
-		const digit1: number = rule.length > 1 ? rule[1] as number : DEFAULT_DIGIT1;
-		const digit2: number = rule.length > 2 ? rule[2] as number : DEFAULT_DIGIT2;
-		const digit3: number = rule.length > 3 ? rule[3] as number : DEFAULT_DIGIT3;
+		const digit1: number = rule.length > 1 ? rule[1] as number : DEFAULT_MATRIX_DIGIT;
+		const digit2: number = rule.length > 2 ? rule[2] as number : DEFAULT_SIZE_DIGIT;
+		const digit3: number = rule.length > 3 ? rule[3] as number : DEFAULT_ACCURATE_DIGIT;
 		traversalNode<ITagNode>(isTag, node => {
 			const attributes = node.attributes;
 			for (let i = attributes.length; i--;) {

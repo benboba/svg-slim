@@ -1,9 +1,11 @@
-import { ConfigItem } from './config';
+import { TConfigItem } from './config';
 
-export function toArray(v: boolean | ConfigItem): ConfigItem {
+export const toArray = <T = TConfigItem>(v: unknown): T[] | TConfigItem[] => {
 	if (typeof v === 'boolean') {
 		return [v];
-	} else {
+	} else if (Array.isArray(v) && typeof v[0] === 'boolean') {
 		return v;
+	} else {
+		return [];
 	}
-}
+};

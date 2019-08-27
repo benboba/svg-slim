@@ -1,5 +1,5 @@
 import { INode } from '../../node';
-import { ConfigItem } from '../config/config';
+import { TConfigItem } from '../config/config';
 
 // default rules
 import { combineScript } from '../default-rules/combine-script';
@@ -35,7 +35,7 @@ import { shortenID } from './shorten-id';
 import { shortenStyleAttr } from './shorten-style-attr';
 import { shortenStyleTag } from './shorten-style-tag';
 
-export type RuleItem = [1, (dom: INode) => Promise<null>] | [0, (rule: ConfigItem, dom: INode) => Promise<null>, string];
+export type RuleItem = [1, (dom: INode) => Promise<null>] | [0, (rule: TConfigItem[], dom: INode) => Promise<null>, string];
 // [isDefaultRule: boolean, ruleHandler: Function, configKey?: string]
 
 export const rules: RuleItem[] = [

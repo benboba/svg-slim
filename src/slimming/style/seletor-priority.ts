@@ -1,6 +1,6 @@
 import { ISelector, ISeletorPriority } from './define';
 
-export function getSelectorPriority(seletors: ISelector[]): ISeletorPriority {
+export const getSelectorPriority = (seletors: ISelector[]): ISeletorPriority => {
 	const priority: ISeletorPriority = {
 		id: 0,
 		class: 0,
@@ -12,9 +12,9 @@ export function getSelectorPriority(seletors: ISelector[]): ISeletorPriority {
 		priority.tag += seletor.type ? 1 : 0;
 	});
 	return priority;
-}
+};
 
-export function overrideAble(priority1: ISeletorPriority, priority2: ISeletorPriority): boolean {
+export const overrideAble = (priority1: ISeletorPriority, priority2: ISeletorPriority): boolean => {
 	if (priority1.id !== priority2.id) {
 		return priority1.id > priority2.id;
 	} else if (priority1.class !== priority2.class) {
@@ -23,4 +23,4 @@ export function overrideAble(priority1: ISeletorPriority, priority2: ISeletorPri
 		return priority1.tag > priority2.tag;
 	}
 	return true;
-}
+};

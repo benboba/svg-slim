@@ -48,11 +48,23 @@ export const combineScript = async (dom: INode): Promise<null> => new Promise((r
 	if (firstScript) {
 		const childNodes = firstScript.childNodes;
 		if (childNodes.length === 0 || !childNodes[0].textContent || !childNodes[0].textContent.replace(/\s/g, '')) {
-			// 如果内容为空，则移除style节点
+			// 如果内容为空，则移除 script 节点
 			rmNode(firstScript);
-		} else if (childNodes[0].textContent.indexOf('<') === -1) {
-			// 如果没有危险代码，则由 CDATA 转为普通文本类型
-			childNodes[0].nodeType = NodeType.Text;
+		} else {
+			const textContent = childNodes[0].textContent;
+			if (textContent.indexOf('<') === -1) {
+				// 如果没有危险代码，则由 CDATA 转为普通文本类型
+				childNodes[0].nodeType = NodeType.Text;
+			}
+			if (textContent.slice(-1) === ';') {
+				// 移除尾分号
+				childNodes[0].textContent = childNodes[0].textContent.slice(0, -1);
+			}
+
+			// 把 script 标签插入到最后
+			traversalNode<ITagNode>(propEq('nodeName', 'svg'), node => {
+				node.appendChild(firstScript as ITagNode);
+			}, dom);
 		}
 	}
 

@@ -21,7 +21,7 @@ const Reference = `(?:&${Name};|&#[0-9]+;|&#x[0-9a-fA-F]+;)`;
 const AttrVal = `"(?:[^<&"]|${Reference})*"|'(?:[^<&']|${Reference})*'`;
 
 // tslint:disable-next-line
-const DeclContent = `(?:[^<>]+|[^<>]*'[^']*'[^<>]*|[^<>]*"[^"]*"[^<>]*|[^<>]*<[^<>]*>[^<>]*)+?`;
+const DeclContent = `(?:[^<>'"]+|[^<>']*'[^']*'[^<>']*|[^<>"]*"[^"]*"[^<>"]*|[^<>'"]*<[^<>]*>[^<>'"]*)+?`;
 
 export const REG_XML_DECL = new RegExp(`^<\\?xml(${VersionInfo}(?:${EncodingDecl})?(?:${SDDecl})?\\s*)\\?>`);
 export const REG_CDATA_SECT = /^<!\[CDATA\[([\d\D]*?)\]\]>/;

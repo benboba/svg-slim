@@ -1,42 +1,47 @@
-import { IUnknownObj } from '../interface/unknown-obj';
-
 /*
  * 深度遍历所有的 Object 属性
  * @param { function } 条件
  * @param { function } 回调
- * @param { obj } 目标对象
- * @param { visited } 避免对象调用自身造成死循环
+ * @param { object } 目标对象
+ * @param { object[] } 避免对象调用自身造成死循环
+ * @param { boolean } 是否深度优先，是的话会先遍历子元素
  */
 
-const traversal = (condition: (o: Object) => boolean, cb: (o: Object, p: Object[]) => void, obj: Object, path: Object[], visited: Object[]) => {
+const traversal = <T>(condition: (o: T | T[]) => boolean, cb: (o: T, p: (T | T[])[]) => void, obj: T | T[], path: (T | T[])[], visited: (T | T[])[], deep: boolean) => {
 	if (visited.indexOf(obj) !== -1) {
 		return;
 	}
 	visited.push(obj);
-	if (condition(obj)) {
-		cb(obj, path);
-		return;
+	if (!deep) {
+		if (condition(obj)) {
+			cb(obj as T, path);
+			return;
+		}
 	}
 	path.push(obj);
 	if (Array.isArray(obj)) {
-		for (let i = 0; i < (obj as Object[]).length;) {
-			const item: Object = (obj as Object[])[i];
-			traversal(condition, cb, item, path, visited);
-			if (item === (obj as Object[])[i]) {
+		for (let i = 0; i < obj.length;) {
+			const item = obj[i];
+			traversal(condition, cb, item, path, visited, deep);
+			if (item === obj[i]) {
 				i++;
 			}
 		}
 	} else {
-		Object.keys(obj).forEach(key => {
-			// tslint:disable-next-line
-			if (typeof (obj as IUnknownObj)[key] === 'object') {
-				traversal(condition, cb, (obj as IUnknownObj)[key] as Object, path, visited);
+		for (const key in obj) {
+			if (typeof obj[key] as unknown === 'object') {
+				traversal(condition, cb, obj[key] as unknown as T | T[], path, visited, deep);
 			}
-		});
+		}
 	}
 	path.pop();
+	if (deep) {
+		if (condition(obj)) {
+			cb(obj as T, path);
+		}
+	}
 };
 
-export const traversalObj = (condition: (o: Object) => boolean, cb: (o: Object, p: Object[]) => void, obj: Object) => {
-	traversal(condition, cb, obj, [], []);
+export const traversalObj = <T>(condition: (o: T | T[]) => boolean, cb: (o: T, p: (T | T[])[]) => void, obj: T | T[], deep = false) => {
+	traversal<T>(condition, cb, obj, [], [], deep);
 };

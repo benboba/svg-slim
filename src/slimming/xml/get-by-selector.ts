@@ -11,17 +11,19 @@ export const getBySelector = (dom: INode, selectors: ISelector[]): ITagNode[] =>
 	const result: ITagNode[] = [];
 	traversalNode<ITagNode>((node: INode) => isTag(node) && matchSelector(node, selectors[len - 1]), node => {
 		let i = len - 2;
-		let currentNode: INode | undefined = node;
+		let currentNode: INode = node;
 		while (i >= 0) {
-			if (!currentNode) break;
 			switch (selectors[i].combinator) {
 				// 子选择器
 				case selectorUnitCombinator['>']:
-					if (!matchSelector(currentNode.parentNode, selectors[i])) {
-						return;
+					if (currentNode.parentNode) {
+						if (!matchSelector(currentNode.parentNode, selectors[i])) {
+							return;
+						}
+						currentNode = currentNode.parentNode;
+						break;
 					}
-					currentNode = node.parentNode;
-					break;
+					return;
 				// 相邻兄弟选择器
 				case selectorUnitCombinator['+']:
 					if (currentNode.parentNode) {
@@ -43,7 +45,7 @@ export const getBySelector = (dom: INode, selectors: ISelector[]): ITagNode[] =>
 							return;
 						}
 						let _brother: INode | undefined;
-						for (let bi = _index - 1; bi--;) {
+						for (let bi = _index; bi--;) {
 							_brother = _brothers[bi];
 							if (matchSelector(_brother, selectors[i])) {
 								currentNode = _brother;
@@ -59,7 +61,7 @@ export const getBySelector = (dom: INode, selectors: ISelector[]): ITagNode[] =>
 				// 后代选择器
 				default:
 					let parent = currentNode.parentNode;
-					while (parent && parent.nodeName !== '#document') {
+					while (parent) {
 						if (matchSelector(parent, selectors[i])) {
 							currentNode = parent;
 							break;

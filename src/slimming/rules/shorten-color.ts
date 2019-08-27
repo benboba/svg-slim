@@ -2,9 +2,9 @@ import { Declaration, parse as cssParse, stringify as cssStringify, StyleRules }
 import { both, has, pipe, toLower } from 'ramda';
 import { INode } from '../../node';
 import { exec } from '../color/exec';
-import { ConfigItem } from '../config/config';
+import { TConfigItem } from '../config/config';
+import { FF, Hundred, OPACITY_DIGIT } from '../const';
 import { regularAttr } from '../const/regular-attr';
-import { numberPattern } from '../const/syntax';
 import { ITagNode } from '../interface/node';
 import { toFixed } from '../math/tofixed';
 import { execStyle } from '../style/exec';
@@ -14,9 +14,114 @@ import { fillIn } from '../utils/fillin';
 import { toHex } from '../utils/tohex';
 import { traversalObj } from '../utils/traversal-obj';
 import { isTag } from '../xml/is-tag';
+import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
 
 const operateHex = pipe(toHex, toLower, fillIn(2));
+
+const alphaMap = {
+	'100': 255,
+	'99': 252,
+	'98': 250,
+	'97': 247,
+	'96': 245,
+	'95': 242,
+	'94': 240,
+	'93': 237,
+	'92': 235,
+	'91': 232,
+	'90': 230,
+	'89': 227,
+	'88': 224,
+	'87': 222,
+	'86': 219,
+	'85': 217,
+	'84': 214,
+	'83': 212,
+	'82': 209,
+	'81': 207,
+	'80': 204,
+	'79': 201,
+	'78': 199,
+	'77': 196,
+	'76': 194,
+	'75': 191,
+	'74': 189,
+	'73': 186,
+	'72': 184,
+	'71': 181,
+	'70': 179,
+	'69': 176,
+	'68': 173,
+	'67': 171,
+	'66': 168,
+	'65': 166,
+	'64': 163,
+	'63': 161,
+	'62': 158,
+	'61': 156,
+	'60': 153,
+	'59': 150,
+	'58': 148,
+	'57': 145,
+	'56': 143,
+	'55': 140,
+	'54': 138,
+	'53': 135,
+	'52': 133,
+	'51': 130,
+	'50': 128,
+	'49': 125,
+	'48': 122,
+	'47': 120,
+	'46': 117,
+	'45': 115,
+	'44': 112,
+	'43': 110,
+	'42': 107,
+	'41': 105,
+	'40': 102,
+	'39': 99,
+	'38': 97,
+	'37': 94,
+	'36': 92,
+	'35': 89,
+	'34': 87,
+	'33': 84,
+	'32': 82,
+	'31': 79,
+	'30': 77,
+	'29': 74,
+	'28': 71,
+	'27': 69,
+	'26': 66,
+	'25': 64,
+	'24': 61,
+	'23': 59,
+	'22': 56,
+	'21': 54,
+	'20': 51,
+	'19': 48,
+	'18': 46,
+	'17': 43,
+	'16': 41,
+	'15': 38,
+	'14': 36,
+	'13': 33,
+	'12': 31,
+	'11': 28,
+	'10': 26,
+	'9': 23,
+	'8': 20,
+	'7': 18,
+	'6': 15,
+	'5': 13,
+	'4': 10,
+	'3': 8,
+	'2': 5,
+	'1': 3,
+	'0': 0,
+};
 
 const shortenMap = {
 	'#f0ffff': 'azure',
@@ -53,9 +158,8 @@ const shortenMap = {
 };
 
 const shortenReg = new RegExp(`(?:${Object.keys(shortenMap).join('|')})(?=[^0-9a-f]|$)`, 'gi');
-const FF = 255;
 
-const formatColor = (rgba: boolean, digit: number, str: string): string => {
+const formatColor = (rgba: boolean, str: string): string => {
 	const color = exec(str);
 	let s = color.origin;
 
@@ -63,35 +167,36 @@ const formatColor = (rgba: boolean, digit: number, str: string): string => {
 		if (color.a < 1) {
 			// tslint:disable:prefer-conditional-expression
 			if (rgba) {
-				s = `#${operateHex(color.r)}${operateHex(color.g)}${operateHex(color.b)}${operateHex(color.a * FF)}`;
+				s = `#${operateHex(color.r)}${operateHex(color.g)}${operateHex(color.b)}${has(`${color.a * Hundred}`, alphaMap) ? operateHex(alphaMap[`${color.a * Hundred}` as keyof typeof alphaMap]) : operateHex(Math.round(color.a * FF))}`;
 			} else {
-				s = `rgba(${color.r},${color.g},${color.a},${`${toFixed(digit, color.a)}`.replace(/^0\./, '.')})`;
+				s = `rgb(${color.r},${color.g},${color.a},${`${toFixed(OPACITY_DIGIT, color.a)}`.replace(/^0\./, '.')})`;
 			}
 		} else {
 			s = `#${operateHex(color.r)}${operateHex(color.g)}${operateHex(color.b)}`;
 		}
-	}
 
-	s = s.replace(/#([0-9a-f])\1([0-9a-f])\2([0-9a-f])\3(?=[^0-9a-f]|$)/gi, '#$1$2$3');
-	s = s.replace(shortenReg, $0 => `${shortenMap[$0 as keyof typeof shortenMap]}`);
-	if (rgba) {
-		s = s.replace(/#([0-9a-f])\1([0-9a-f])\2([0-9a-f])\3([0-9a-f])\4(?=[^0-9a-f]|$)/gi, '#$1$2$3$4');
-		s = s.replace(/transparent/gi, '#0000');
+		s = s.replace(/#([0-9a-f])\1([0-9a-f])\2([0-9a-f])\3(?=[^0-9a-f]|$)/gi, '#$1$2$3');
+		s = s.replace(shortenReg, $0 => `${shortenMap[$0 as keyof typeof shortenMap]}`);
+		if (rgba) {
+			s = s.replace(/#([0-9a-f])\1([0-9a-f])\2([0-9a-f])\3([0-9a-f])\4(?=[^0-9a-f]|$)/gi, '#$1$2$3$4');
+		}
+	} else if (rgba) {
+		s = s.replace(/^transparent$/i, '#0000');
 	}
 	return s;
 };
 
-export const shortenColor = async (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const shortenColor = async (rule: TConfigItem[], dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		traversalNode<ITagNode>(isTag, node => {
 			node.attributes.forEach(attr => {
 				if (regularAttr[attr.fullname].maybeColor) {
-					attr.value = formatColor(rule[1] as boolean, rule[2] as number, attr.value);
+					attr.value = formatColor(rule[1] as boolean, attr.value);
 				} else if (attr.fullname === 'style') {
 					const style = execStyle(attr.value);
 					style.forEach(s => {
 						if (regularAttr[s.fullname].maybeColor) {
-							s.value = formatColor(rule[1] as boolean, rule[2] as number, s.value);
+							s.value = formatColor(rule[1] as boolean, s.value);
 						}
 					});
 					attr.value = stringifyStyle(style);
@@ -99,15 +204,18 @@ export const shortenColor = async (rule: ConfigItem, dom: INode): Promise<null> 
 			});
 
 			if (node.nodeName === 'style') {
-
-				// 缩短 style 标签内的数值
-				const parsedCss = cssParse(node.childNodes[0].textContent as string, { silent: true });
-				traversalObj(both(has('property'), has('value')), (cssRule: Declaration) => {
-					if (regularAttr[cssRule.property as string].maybeColor) { // 可以模糊处理的数字
-						cssRule.value = formatColor(rule[1] as boolean, rule[2] as number, cssRule.value as string);
-					}
-				}, (parsedCss.stylesheet as StyleRules).rules);
-				node.childNodes[0].textContent = shortenTag(cssStringify(parsedCss, { compress: true }));
+				try {
+					// 缩短 style 标签内的数值
+					const parsedCss = cssParse(node.childNodes[0].textContent as string, { silent: true });
+					traversalObj(both(has('property'), has('value')), (cssRule: Declaration) => {
+						if (regularAttr[cssRule.property as string].maybeColor) { // 可以模糊处理的数字
+							cssRule.value = formatColor(rule[1] as boolean, cssRule.value as string);
+						}
+					}, (parsedCss.stylesheet as StyleRules).rules);
+					node.childNodes[0].textContent = shortenTag(cssStringify(parsedCss, { compress: true }));
+				} catch (e) {
+					rmNode(node);
+				}
 
 			}
 		}, dom);

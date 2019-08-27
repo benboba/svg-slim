@@ -3,9 +3,9 @@ import { regularTag } from '../const/regular-tag';
 import { isTag } from '../xml/is-tag';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
-import { ConfigItem } from '../config/config';
+import { TConfigItem } from '../config/config';
 
-export const rmIrregularTag = async (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const rmIrregularTag = async (rule: TConfigItem[], dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		traversalNode(isTag, node => {
 			// 在配置的忽略列表中

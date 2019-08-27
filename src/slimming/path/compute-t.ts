@@ -1,4 +1,3 @@
-import { lt } from 'ramda';
 import { plus } from '../math/plus';
 import { numberLength } from '../utils/number-length';
 import { IPathResultItem } from './exec';
@@ -22,7 +21,23 @@ export const computeT = (absolute: number[], relative: number[], pathResult: IPa
 		default:
 			break;
 	}
-	if (lt(numberLength(relative), numberLength(absolute))) {
+	const relLen = numberLength(relative);
+	const absLen = numberLength(absolute);
+	if (relLen === absLen) { // 如果相等则参照前一个指令
+		if (pathResult[pathResult.length - 1].type === 't') {
+			pathResult.push({
+				type: 't',
+				from,
+				val: relative.slice()
+			});
+		} else {
+			pathResult.push({
+				type: 'T',
+				from,
+				val: absolute.slice()
+			});
+		}
+	} else if (relLen < absLen) {
 		pathResult.push({
 			type: 't',
 			from,

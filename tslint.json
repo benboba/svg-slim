@@ -22,9 +22,7 @@
 
         // 需要类成员的显式可见性声明 public/private/protected
 		// 不需要声明 public，因为默认如此
-		// getter/setter 必须为 public
-		// constructor 必须为 public
-		"member-access": [true, "no-public", "check-accessor", "check-constructor"],
+		"member-access": [true, "no-public"],
 
         // 类成员排序规则
 		// @off 不关心
@@ -49,7 +47,7 @@
 
         // 禁止魔法数字
         // 允许直接使用 -1 到 10 的数字
-        "no-magic-numbers": [true, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        "no-magic-numbers": [true, -1, -0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
 
         // 禁止内部命名空间和模块
         "no-namespace": true,
@@ -172,7 +170,7 @@
         "no-for-in-array": true,
 
         // 禁止在项目的 package.json 中导入未列为依赖项的模块
-        "no-implicit-dependencies": true,
+        "no-implicit-dependencies": [true, "dev"],
 
         // 禁止在调用函数和构造函数时使用空对象类型（{}）推断
         "no-inferred-empty-object-type": true,
@@ -248,9 +246,6 @@
         // @off 建议使用 tsconfig 的 noUnusedParameters 和 noUnusedLocals
         "no-unused-variable": false,
 
-        // 禁止在声明之前使用
-        "no-use-before-declare": true,
-
         // 禁止使用 var 定义变量，请使用 let 或 const 代替
         "no-var-keyword": true,
 
@@ -286,9 +281,6 @@
 
         // 禁止 == 和 !=，必须使用 === 和 !==
         "triple-equals": true,
-
-        // typeof 的结果必须和正确的字符串比对
-        "typeof-compare": true,
 
         // 禁止空的构造函数
         "unnecessary-constructor": true,
@@ -602,5 +594,9 @@
         // 左大括号之前必须加空格
 		"whitespace": [true, "check-branch", "check-decl", "check-operator", "check-module", "check-separator", "check-rest-spread", "check-type", "check-typecast", "check-preblock"]
 
-	}
+    },
+    
+    "linterOptions": {
+        "exclude": ["test/**/*"]
+    }
 }

@@ -1,71 +1,115 @@
-import { AtRule, Declaration, KeyFrame, parse as cssParse, Rule, stringify as cssStringify, StyleRules } from 'css';
+import { Declaration, KeyFrame, KeyFrames, Media, Node, parse as cssParse, Rule, stringify as cssStringify, StyleRules, Stylesheet } from 'css';
 import { has, propEq } from 'ramda';
-import { ConfigItem } from '../config/config';
+import { INode } from '../../node';
+import { TConfigItem } from '../config/config';
 import { regularAttr } from '../const/regular-attr';
+import { ITagNode } from '../interface/node';
 import { IUnique } from '../interface/unique';
+import { checkApply } from '../style/check-apply';
+import { execSelector } from '../style/exec-selector';
 import { shortenTag } from '../style/shorten-tag';
 import { mixWhiteSpace } from '../utils/mix-white-space';
 import { traversalObj } from '../utils/traversal-obj';
 import { legalValue } from '../validate/legal-value';
 import { getBySelector } from '../xml/get-by-selector';
-import { traversalNode } from '../xml/traversal-node';
-import { execSelector } from '../style/exec-selector';
-import { ITagNode } from '../interface/node';
-import { INode } from '../../node';
-import { checkApply } from '../style/check-apply';
 import { rmNode } from '../xml/rm-node';
+import { traversalNode } from '../xml/traversal-node';
 
 interface ICSSUnique {
 	[propName: string]: Rule;
 }
 
-export const shortenStyleTag = async (rule: ConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+const rmCSSNode = (cssNode: Node, parents: (Node | Node[])[]) => {
+	const plen = parents.length;
+	const plist = parents[plen - 1] as Rule[];
+	plist.splice(plist.indexOf(cssNode), 1);
+};
+
+export const shortenStyleTag = async (rule: TConfigItem[], dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		traversalNode<ITagNode>(propEq('nodeName', 'style'), node => {
 			const cssContent = node.childNodes[0];
-			const parsedCss = cssParse(cssContent.textContent as string);
-			const cssRules = (parsedCss.stylesheet as StyleRules).rules;
+			let parsedCss: Stylesheet;
+			let cssRules: StyleRules;
+			try {
+				parsedCss = cssParse(cssContent.textContent as string);
+				cssRules = parsedCss.stylesheet as StyleRules;
+			} catch (e) {
+				rmNode(node);
+				return;
+			}
 
 			// 遍历 style 解析对象，取得包含 css 定义的值
-			traversalObj(has('declarations'), (cssRule: Rule, parents: AtRule[]) => {
-				const declared: IUnique = {};
-				const declarations = cssRule.declarations as Declaration[];
-				for (let i = declarations.length; i--;) {
-					const ruleItem = declarations[i];
-					const property = ruleItem.property as string;
-					/*
-					 * 1、排重
-					 * 2、验证属性有效性
-					 * 3、验证值合法性
-					 */
-					if (!declared[property] && regularAttr[property].couldBeStyle && legalValue(regularAttr[property], {
-						fullname: property,
-						name: property,
-						value: ruleItem.value as string
-					})) {
-						declared[property] = true;
-					} else {
-						declarations.splice(i, 1);
-					}
+			traversalObj<Node>(has('type'), (cssNode, parents) => {
+				switch (cssNode.type) {
+					case 'rule':
+					case 'keyframe':
+					case 'font-face':
+					case 'page':
+						const cssRule = cssNode as Rule | KeyFrame;
+						if (!cssRule.declarations) {
+							rmCSSNode(cssRule, parents);
+							return;
+						}
+						const declared: IUnique = {};
+						for (let i = cssRule.declarations.length; i--;) {
+							const ruleItem = cssRule.declarations[i] as Declaration;
+							// 排重
+							if (!declared[ruleItem.property as string]) {
+								declared[ruleItem.property as string] = true;
+							} else {
+								cssRule.declarations.splice(i, 1);
+							}
+						}
+						if (!cssRule.declarations.length) {
+							rmCSSNode(cssRule, parents);
+						}
+						break;
+					case 'declaration':
+						const declaration = cssNode as Declaration;
+						// 1、验证属性有效性  2、验证值合法性
+						if (!declaration.property || !declaration.value) {
+							rmCSSNode(cssNode, parents);
+						} else {
+							if (!regularAttr[declaration.property].couldBeStyle || !legalValue(regularAttr[declaration.property], {
+								fullname: declaration.property,
+								name: declaration.property,
+								value: declaration.value
+							})) {
+								rmCSSNode(cssNode, parents);
+							}
+						}
+						break;
+					case 'keyframes':
+						const keyframes = cssNode as KeyFrames;
+						if (!keyframes.keyframes || !keyframes.keyframes.length) {
+							rmCSSNode(cssNode, parents);
+						}
+						break;
+					case 'media':
+					case 'host':
+					case 'supports':
+					case 'document':
+						const ruleParent = cssNode as Media;
+						if (!ruleParent.rules || !ruleParent.rules.length) {
+							rmCSSNode(cssNode, parents);
+						}
+						break;
+					case 'comment':
+						rmCSSNode(cssNode, parents);
+						break;
+					default:
+						break;
 				}
-				if (!declarations.length) {
-					const plen = parents.length;
-					const plist = parents[plen - 1] as Rule[];
-					plist.splice(plist.indexOf(cssRule), 1);
-					if (cssRule.type === 'keyframe' && !plist.length) {
-						const rules = parents[plen - 3] as KeyFrame[];
-						rules.splice(rules.indexOf(parents[plen - 2]), 1);
-					}
-				}
-			}, cssRules);
+			}, cssRules.rules, true);
 
 			// 深度优化
 			if (rule[1]) {
 				const selectorUnique: ICSSUnique = {};
 				const declareUnique: ICSSUnique = {};
-				for (let i = 0, l = cssRules.length; i < l; i++) {
-					const styleRule = cssRules[i] as Rule;
-					// 只针对规则类
+				for (let i = 0, l = cssRules.rules.length; i < l; i++) {
+					const styleRule = cssRules.rules[i] as Rule;
+					// TODO 目前只针对顶层的规则类，其实还可以进一步优化
 					if (styleRule.type === 'rule') {
 						const theSelectors = styleRule.selectors as string[];
 						const declarations = styleRule.declarations as Declaration[];
@@ -104,7 +148,7 @@ export const shortenStyleTag = async (rule: ConfigItem, dom: INode): Promise<nul
 
 						// 如果选择器列表经过筛选后为空，则移除该条规则
 						if (!theSelectors.length) {
-							cssRules.splice(i, 1);
+							cssRules.rules.splice(i, 1);
 							i--;
 							l--;
 							continue;
@@ -126,7 +170,7 @@ export const shortenStyleTag = async (rule: ConfigItem, dom: INode): Promise<nul
 								}
 							}
 							selectorUnique[selectorKey].declarations = uDeclarations;
-							cssRules.splice(i, 1);
+							cssRules.rules.splice(i, 1);
 							i--;
 							l--;
 							continue;
@@ -148,7 +192,7 @@ export const shortenStyleTag = async (rule: ConfigItem, dom: INode): Promise<nul
 								}
 							}
 							declareUnique[declareKey].selectors = selectors;
-							cssRules.splice(i, 1);
+							cssRules.rules.splice(i, 1);
 							i--;
 							l--;
 							continue;

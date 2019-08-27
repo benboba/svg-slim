@@ -1,4 +1,4 @@
-import { Declaration, parse as cssParse, Rule, Stylesheet } from 'css';
+import { Declaration, parse as cssParse, Rule, Stylesheet, StyleRules } from 'css';
 import { propEq } from 'ramda';
 import { IAttr } from '../../node';
 import { regularAttr } from '../const/regular-attr';
@@ -11,6 +11,7 @@ import { getById } from './get-by-id';
 import { getBySelector } from './get-by-selector';
 import { isTag } from './is-tag';
 import { traversalNode } from './traversal-node';
+import { rmNode } from './rm-node';
 
 interface IStyleItem {
 	styles: IAttr[];
@@ -18,7 +19,7 @@ interface IStyleItem {
 	nodes: ITagNode[];
 }
 
-function check(dom: ITagNode, styleItems: IStyleItem[]) {
+const check = (dom: ITagNode, styleItems: IStyleItem[]) => {
 	traversalNode<ITagNode>(isTag, node => {
 		let nodeStyle: IStyleObj = {};
 		if (node.styles) {
@@ -78,12 +79,10 @@ function check(dom: ITagNode, styleItems: IStyleItem[]) {
 			// 可能从父元素继承的样式
 			Object.keys(parentNode.styles).forEach(key => {
 				if (!nodeStyle.hasOwnProperty(key)) {
-					if (parentNode.styles && parentNode.styles.hasOwnProperty(key)) {
-						nodeStyle[key] = {
-							value: parentNode.styles[key].value,
-							from: 'inherit'
-						};
-					}
+					nodeStyle[key] = {
+						value: (parentNode.styles as IStyleObj)[key].value,
+						from: 'inherit'
+					};
 				}
 			});
 		}
@@ -106,10 +105,10 @@ function check(dom: ITagNode, styleItems: IStyleItem[]) {
 		}
 
 	}, dom);
-}
+};
 
 // 解析样式树，为每个节点增加 styles 属性，标记当前节点生效的样式信息
-export function execStyleTree(dom: ITagNode) {
+export const execStyleTree = (dom: ITagNode) => {
 	// 首先清理掉曾经被解析过的样式树
 	traversalNode<ITagNode>(isTag, node => {
 		if (node.styles) {
@@ -122,11 +121,13 @@ export function execStyleTree(dom: ITagNode) {
 
 	// 首先对 style 标签做处理，解析出所有起作用的 css 定义，并记录它们的选择器权重和影响到的节点
 	traversalNode<ITagNode>(propEq('nodeName', 'style'), node => {
+		if (!node.childNodes.length) {
+			return;
+		}
 		const cssContent = node.childNodes[0];
-		parsedCss = cssParse(cssContent.textContent as string);
-
-		if (parsedCss.stylesheet) {
-			parsedCss.stylesheet.rules.forEach((styleRule: Rule) => {
+		try {
+			parsedCss = cssParse(cssContent.textContent as string);
+			(parsedCss.stylesheet as StyleRules).rules.forEach((styleRule: Rule) => {
 				// 只针对规则类
 				if (styleRule.type === 'rule' && styleRule.declarations && styleRule.selectors) {
 					const styles: IAttr[] = [];
@@ -154,8 +155,10 @@ export function execStyleTree(dom: ITagNode) {
 					}
 				}
 			});
+		} catch (e) {
+			rmNode(node);
 		}
 	}, dom);
 
 	check(dom, styleItems);
-}
+};

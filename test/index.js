@@ -17,7 +17,7 @@ tester(
         <notext>    </notext>
         </text   >
     </svg>`,
-	'<?xml version="1.0" encoding="UTF-8"?><svg><style>#id{fill:red}.class{fill:blue}</style><script>console.log(1);console.log(2)</script><text> 1 abc 2 <notext/></text></svg>'
+	'<?xml version="1.0" encoding="UTF-8"?><svg><style>#id{fill:red}.class{fill:blue}</style><text> 1 abc 2 <notext/></text><script>console.log(1);console.log(2)</script></svg>'
 );
 
 tester(
@@ -104,7 +104,7 @@ tester(
     <path d="M0 0 Q0 100 100 100 Q 200 100 200 0 Z m0 0zZzZM100 100 m 30 30" />
     <path d="M 0 0 C 50 0 50 100 100 100 150 100 150 50 150 0Z" />
     </svg>`,
-	'<svg><path d="M0,0V299"/><path d="M5e5.1L0,0H100V100H0z"/><path d="M80,80A45,45,0,1,0,125,35A45,45,0,0,0,80,80z"/><path d="M0,0q0,100,100,100T200,0z"/><path d="M0,0C50,0,50,100,100,100S150,50,150,0z"/></svg>', {
+	'<svg><path d="M0,0V299"/><path d="M5e5.1L0,0H100V100H0z"/><path d="M80,80a45,45,0,1,0,45-45,45,45,0,0,0-45,45z"/><path d="M0,0Q0,100,100,100T200,0z"/><path d="M0,0C50,0,50,100,100,100S150,50,150,0z"/></svg>', {
 		'compute-path': [true, true, 1]
 	}
 );
@@ -130,7 +130,7 @@ tester(
 		<path d="M0,9,0" />
 		<feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.1 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
     </svg>`,
-	'<svg><path d="M0,9,0"/><feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0" type="matrix" in="shadowBlurOuter1"/></svg>', {
+	'<svg><path d="M0,9,0"/><feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0" in="shadowBlurOuter1"/></svg>', {
 		'rm-attribute': [true, true, false, false]
 	}
 );
