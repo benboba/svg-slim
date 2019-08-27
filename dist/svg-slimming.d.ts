@@ -2,7 +2,7 @@ export {
     NodeType,
     IAttr,
     INode,
-    Parser
+    parse,
 } from './xml-parser';
 import { INode } from './xml-parser';
 

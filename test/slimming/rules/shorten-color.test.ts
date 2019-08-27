@@ -16,7 +16,7 @@ describe('rules/shorten-color', () => {
 		createXML(dom).should.equal('<svg> <rect fill="#f00"/> </svg>');
 	});
 
-	it('转换形状为路径', async () => {
+	it('缩短颜色', async () => {
         const xml = `<svg>
         <style>
         .a {
@@ -27,7 +27,7 @@ describe('rules/shorten-color', () => {
         <rect style="fill:#ff0000" stroke="rebeccapurple" color="hsla(0,100%,100%,0)" />
         </svg>`;
 		const dom = await parse(xml) as ITagNode;
-		await shortenColor([true], dom);
+		await shortenColor([true, false, 4], dom);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><style>.a{fill:currentColor;x:100}</style><rect style="fill:red" stroke="#639" color="rgb(255,255,0,0)"/></svg>');
 	});
 
@@ -37,7 +37,7 @@ describe('rules/shorten-color', () => {
         <rect width="100" style="fill:#ff000000;height:100" stroke="rgba(101,234,113,0.322)" color="transparent" />
         </svg>`;
 		const dom = await parse(xml) as ITagNode;
-		await shortenColor([true, true], dom);
+		await shortenColor([true, true, 3], dom);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><rect width="100" style="fill:#f000;height:100" stroke="#65ea7152" color="#0000"/></svg>');
 	});
 });

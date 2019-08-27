@@ -46,6 +46,18 @@ const checkLine = (node: ITagNode) => {
 	}
 };
 
+// 没有填充和描边的形状，不一定可以被移除，要再判断一下自身或父元素是否有 id
+const noId = (node: INode): boolean => {
+	let n: INode | undefined = node;
+	while (n) {
+		if (n.hasAttribute('id')) {
+			return false;
+		}
+		n = n.parentNode;
+	}
+	return true;
+};
+
 export const rmHidden = async (rule: TConfigItem[], dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		execStyleTree(dom as ITagNode);
@@ -68,7 +80,7 @@ export const rmHidden = async (rule: TConfigItem[], dom: INode): Promise<null> =
 			const noFill = styles.hasOwnProperty('fill') && styles.fill.value === 'none';
 			const noStroke = !styles.hasOwnProperty('stroke') || styles.stroke.value === 'none';
 
-			if (noFill && noStroke && shapeElements.indexOf(node.nodeName) !== -1) {
+			if (noFill && noStroke && shapeElements.indexOf(node.nodeName) !== -1 && noId(node)) {
 				rmNode(node);
 				return;
 			}

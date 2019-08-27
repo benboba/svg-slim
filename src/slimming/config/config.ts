@@ -1,3 +1,5 @@
+import { OPACITY_DIGIT } from '../const';
+
 export const DEFAULT_SIZE_DIGIT = 1;
 export const DEFAULT_ACCURATE_DIGIT = 2;
 export const DEFAULT_MATRIX_DIGIT = 3;
@@ -67,7 +69,7 @@ export const config: IConfig = {
 	'shorten-class': [true],
 	// 缩短颜色
 	// 是否缩短 rgba 格式的颜色到 16 进制
-	'shorten-color': [true, false],
+	'shorten-color': [true, false, OPACITY_DIGIT],
 	// 缩短小数点后位数
 	// 尺寸相关属性的位数
 	// 其它类型属性的位数

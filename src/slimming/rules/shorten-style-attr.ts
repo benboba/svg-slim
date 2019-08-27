@@ -1,8 +1,9 @@
 import { has, pipe, propEq } from 'ramda';
-import { INode, IAttr } from '../../node/index';
+import { INode } from '../../node/index';
 import { TConfigItem } from '../config/config';
-import { IRegularAttr, regularAttr } from '../const/regular-attr';
+import { regularAttr } from '../const/regular-attr';
 import { IAttrObj } from '../interface/attr-obj';
+import { ITagNode } from '../interface/node';
 import { IUnique } from '../interface/unique';
 import { checkApply } from '../style/check-apply';
 import { execStyle } from '../style/exec';
@@ -11,7 +12,6 @@ import { stringifyStyle } from '../style/stringify';
 import { legalValue } from '../validate/legal-value';
 import { isTag } from '../xml/is-tag';
 import { traversalNode } from '../xml/traversal-node';
-import { ITagNode } from '../interface/node';
 
 // 属性转 style 的临界值
 const styleThreshold = 4;

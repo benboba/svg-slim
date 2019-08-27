@@ -15,7 +15,11 @@ export const mergeConfig = (userConfig: unknown) => {
 					if (Array.isArray(conf1[k]) && Array.isArray(conf)) {
 						conf1[k] = (conf as unknown[]).filter(v => typeof v === 'string') as string[];
 					} else if (typeof conf1[k] === typeof conf) {
-						conf1[k] = conf as TConfigItem;
+						if (typeof conf === 'number') { // tslint:disable-line prefer-conditional-expression
+							conf1[k] = conf >= 0 ? conf : conf1[k];
+						} else {
+							conf1[k] = conf as TConfigItem;
+						}
 					}
 				});
 				finalConfig[key] = conf1;
