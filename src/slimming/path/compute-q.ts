@@ -37,26 +37,26 @@ export const computeQ = (absolute: number[], relative: number[], pathResult: IPa
 				pathResult.push({
 					type: 'q',
 					from: pos.slice(),
-					val: relative.slice()
+					val: relative.slice(),
 				});
 			} else {
 				pathResult.push({
 					type: 'Q',
 					from: pos.slice(),
-					val: absolute.slice()
+					val: absolute.slice(),
 				});
 			}
 		} else if (relLen < absLen) {
 			pathResult.push({
 				type: 'q',
 				from: pos.slice(),
-				val: relative.slice()
+				val: relative.slice(),
 			});
 		} else {
 			pathResult.push({
 				type: 'Q',
 				from: pos.slice(),
-				val: absolute.slice()
+				val: absolute.slice(),
 			});
 		}
 		return [absolute[QPOS_X], absolute[QPOS_Y]];

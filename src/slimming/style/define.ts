@@ -2,7 +2,7 @@
 export enum selectorUnitCombinator {
 	'>' = 1,
 	'+',
-	'~'
+	'~',
 }
 
 // 属性选择器等号修饰符
@@ -11,7 +11,7 @@ export enum attrModifier {
 	'$',
 	'~',
 	'|',
-	'*'
+	'*',
 }
 
 // 属性选择器接口定义

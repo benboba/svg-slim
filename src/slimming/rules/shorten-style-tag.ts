@@ -19,7 +19,7 @@ interface ICSSUnique {
 	[propName: string]: Rule;
 }
 
-const rmCSSNode = (cssNode: Node, parents: (Node | Node[])[]) => {
+const rmCSSNode = (cssNode: Node, parents: Array<Node | Node[]>) => {
 	const plen = parents.length;
 	const plist = parents[plen - 1] as Rule[];
 	plist.splice(plist.indexOf(cssNode), 1);
@@ -74,7 +74,7 @@ export const shortenStyleTag = async (rule: TConfigItem[], dom: INode): Promise<
 							if (!regularAttr[declaration.property].couldBeStyle || !legalValue(regularAttr[declaration.property], {
 								fullname: declaration.property,
 								name: declaration.property,
-								value: declaration.value
+								value: declaration.value,
 							})) {
 								rmCSSNode(cssNode, parents);
 							}

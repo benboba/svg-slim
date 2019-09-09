@@ -18,13 +18,13 @@ export const computeM = (absolute: number[], relative: number[], pathResult: IPa
 			pathResult.push({
 				type: 'm',
 				from: pos.slice(),
-				val: relative.slice()
+				val: relative.slice(),
 			});
 		} else {
 			pathResult.push({
 				type: 'M',
 				from: pos.slice(),
-				val: absolute.slice()
+				val: absolute.slice(),
 			});
 		}
 		return absolute.slice();

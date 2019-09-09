@@ -139,7 +139,7 @@ export const exec = (color: string): IRGBColor => {
 		b: 0,
 		a: 1,
 		origin: _color,
-		valid: true
+		valid: true,
 	};
 
 	// 16 位色直接解析

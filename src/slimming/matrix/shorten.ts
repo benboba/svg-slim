@@ -8,7 +8,7 @@ import { matrixEPos } from '../const';
 export const shorten = (m: IMatrixFunc, digit1: number = DEFAULT_MATRIX_DIGIT, digit2: number = DEFAULT_SIZE_DIGIT, digit3: number = DEFAULT_ACCURATE_DIGIT): IMatrixFunc => {
 	const res: IMatrixFunc = {
 		type: m.type,
-		val: []
+		val: [],
 	};
 
 	switch (m.type) {

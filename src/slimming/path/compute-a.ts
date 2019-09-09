@@ -92,26 +92,26 @@ export const computeA = (absolute: number[], relative: number[], pathResult: IPa
 				pathResult.push({
 					type: 'a',
 					from: pos.concat(center),
-					val: relative.slice()
+					val: relative.slice(),
 				});
 			} else {
 				pathResult.push({
 					type: 'A',
 					from: pos.concat(center),
-					val: absolute.slice()
+					val: absolute.slice(),
 				});
 			}
 		} else if (relLen < absLen) {
 			pathResult.push({
 				type: 'a',
 				from: pos.concat(center),
-				val: relative.slice()
+				val: relative.slice(),
 			});
 		} else {
 			pathResult.push({
 				type: 'A',
 				from: pos.concat(center),
-				val: absolute.slice()
+				val: absolute.slice(),
 			});
 		}
 	}

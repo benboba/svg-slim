@@ -38,7 +38,7 @@ const check = (dom: ITagNode, styleItems: IStyleItem[]) => {
 				styles.forEach(style => {
 					nodeStyle[style.name] = {
 						value: style.value,
-						from: 'inline'
+						from: 'inline',
 					};
 				});
 			} else if (attr.fullname === 'xlink:href') {
@@ -51,7 +51,7 @@ const check = (dom: ITagNode, styleItems: IStyleItem[]) => {
 				if (!styleDefine || styleDefine.from === 'inherit') {
 					nodeStyle[attr.fullname] = {
 						value: attr.value,
-						from: 'attr'
+						from: 'attr',
 					};
 				}
 			}
@@ -67,7 +67,7 @@ const check = (dom: ITagNode, styleItems: IStyleItem[]) => {
 						nodeStyle[style.name] = {
 							value: style.value,
 							from: 'styletag',
-							selectorPriority: styleItem.selectorPriority
+							selectorPriority: styleItem.selectorPriority,
 						};
 					}
 				});
@@ -81,7 +81,7 @@ const check = (dom: ITagNode, styleItems: IStyleItem[]) => {
 				if (!nodeStyle.hasOwnProperty(key)) {
 					nodeStyle[key] = {
 						value: (parentNode.styles as IStyleObj)[key].value,
-						from: 'inherit'
+						from: 'inherit',
 					};
 				}
 			});
@@ -98,7 +98,7 @@ const check = (dom: ITagNode, styleItems: IStyleItem[]) => {
 				if (!styleObj.hasOwnProperty(key)) {
 					styleObj[key] = {
 						value: nodeStyle[key].value,
-						from: 'inherit'
+						from: 'inherit',
 					};
 				}
 			});
@@ -136,7 +136,7 @@ export const execStyleTree = (dom: ITagNode) => {
 							styles.push({
 								name: ruleItem.property,
 								fullname: ruleItem.property,
-								value: ruleItem.value
+								value: ruleItem.value,
 							});
 						}
 					});
@@ -149,7 +149,7 @@ export const execStyleTree = (dom: ITagNode) => {
 							styleItems.push({
 								styles,
 								selectorPriority,
-								nodes
+								nodes,
 							});
 						}
 					}

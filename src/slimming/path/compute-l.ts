@@ -48,26 +48,26 @@ export const computeL = (absolute: number[], relative: number[], pathResult: IPa
 			pathResult.push({
 				type: 'l',
 				from: pos.slice(),
-				val: relative.slice()
+				val: relative.slice(),
 			});
 		} else {
 			pathResult.push({
 				type: 'L',
 				from: pos.slice(),
-				val: absolute.slice()
+				val: absolute.slice(),
 			});
 		}
 	} else if (relLen < absLen) {
 		pathResult.push({
 			type: 'l',
 			from: pos.slice(),
-			val: relative.slice()
+			val: relative.slice(),
 		});
 	} else {
 		pathResult.push({
 			type: 'L',
 			from: pos.slice(),
-			val: absolute.slice()
+			val: absolute.slice(),
 		});
 	}
 	return absolute.slice();

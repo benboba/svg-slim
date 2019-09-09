@@ -126,7 +126,7 @@ const getKey = (node: ITagNode): string => {
 		attr: '',
 		inline: '',
 		styletag: '',
-		inherit: ''
+		inherit: '',
 	};
 	const styles = node.styles as IStyleObj;
 	Object.keys(styles).forEach(key => {
@@ -170,14 +170,14 @@ export const combinePath = async (rule: TConfigItem[], dom: INode): Promise<null
 								pathChildren[key] = {
 									attr: d,
 									index: tagIndex,
-									node: childNode
+									node: childNode,
 								};
 							}
 						} else {
 							pathChildren[key] = {
 								attr: d,
 								index: tagIndex,
-								node: childNode
+								node: childNode,
 							};
 						}
 					}

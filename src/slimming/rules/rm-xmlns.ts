@@ -37,7 +37,7 @@ export const rmXMLNS = async (rule: TConfigItem[], dom: INode): Promise<null> =>
 					if (attr.namespace === 'xmlns') {
 						xmlnsObj[attr.name] = {
 							target: node,
-							count: 0
+							count: 0,
 						};
 					} else if (attr.namespace) {
 						if (xmlnsObj.hasOwnProperty(attr.namespace)) {

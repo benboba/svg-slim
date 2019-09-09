@@ -45,22 +45,22 @@ export enum inVal {
 	BackgroundImage,
 	BackgroundAlpha,
 	FillPaint,
-	StrokePaint
+	StrokePaint,
 }
 
 export enum lengthAdjustVal {
 	spacing,
-	spacingAndGlyphs
+	spacingAndGlyphs,
 }
 
 export enum markerUnitVal {
 	strokeWidth,
-	userSpaceOnUse
+	userSpaceOnUse,
 }
 
 export enum methodVal {
 	align,
-	stretch
+	stretch,
 }
 
 export enum blendModeVal {
@@ -79,7 +79,7 @@ export enum blendModeVal {
 	hue,
 	saturation,
 	color,
-	luminosity
+	luminosity,
 }
 
 export enum operaterVal {
@@ -89,83 +89,83 @@ export enum operaterVal {
 	atop,
 	xor,
 	lighter,
-	arithmetic
+	arithmetic,
 }
 
 export enum operaterVal1 {
 	erode,
-	dilate
+	dilate,
 }
 
 export enum orientVal {
 	auto,
-	'auto-start-reverse'
+	'auto-start-reverse',
 }
 
 export enum playbackorderVal {
 	forwardonly,
-	all
+	all,
 }
 
 export enum booleanVal {
 	false,
-	true
+	true,
 }
 
 export enum alignXVal {
 	left,
 	center,
-	right
+	right,
 }
 
 export enum alignYVal {
 	top,
 	center,
-	bottom
+	bottom,
 }
 
 export enum restartVal {
 	always,
 	whenNotActive,
-	never
+	never,
 }
 
 export enum rotateVal {
 	auto,
-	'auto-reverse'
+	'auto-reverse',
 }
 
 export enum sideVal {
 	left,
-	right
+	right,
 }
 
 export enum spacingVal {
 	auto,
-	exact
+	exact,
 }
 
 export enum spreadMethodVal {
 	pad,
 	reflect,
-	repeat
+	repeat,
 }
 
 export enum stitchVal {
 	stitch,
-	noStitch
+	noStitch,
 }
 
 export enum targetVal {
 	_self,
 	_parent,
 	_top,
-	_blank
+	_blank,
 }
 
 export enum timelinebeginVal {
 	loadend,
-	loadbegin
+	loadbegin,
 }
 
 export enum animateTransformType {
@@ -173,14 +173,14 @@ export enum animateTransformType {
 	scale,
 	rotate,
 	skewX,
-	skewY
+	skewY,
 }
 
 export enum feColorMatrixType {
 	matrix,
 	saturate,
 	hueRotate,
-	luminanceToAlpha
+	luminanceToAlpha,
 }
 
 export enum feFuncType {
@@ -188,29 +188,29 @@ export enum feFuncType {
 	table,
 	discrete,
 	linear,
-	gamma
+	gamma,
 }
 
 export enum feTurbulenceType {
 	fractalNoise,
-	turbulence
+	turbulence,
 }
 
 export enum channelVal {
 	R,
 	G,
 	B,
-	A
+	A,
 }
 
 export enum xmlSpaceVal {
 	default,
-	preserve
+	preserve,
 }
 
 export enum zoomAndPanVal {
 	disable,
-	magnify
+	magnify,
 }
 
 export enum alignmentBaseline {
@@ -225,12 +225,12 @@ export enum alignmentBaseline {
 	ideographic,
 	alphabetic,
 	hanging,
-	mathematical
+	mathematical,
 }
 
 export enum baselineShift {
 	sub,
-	super
+	super,
 }
 
 export enum clipBox {
@@ -240,28 +240,175 @@ export enum clipBox {
 	'margin-box',
 	'fill-box',
 	'stroke-box',
-	'view-box'
+	'view-box',
 }
 
 export enum nonzeroEvenodd {
 	nonzero,
-	evenodd
+	evenodd,
 }
 
 // css 值的全局关键字
 export enum CSSWideKeywords {
 	inherit,
 	initial,
-	unset
+	unset,
 }
 
 export enum colorKeywords {
 	currentColor,
-	transparent
+	transparent,
 }
 
 export enum x11Colors {
-	aliceblue, antiquewhite, aqua, aquamarine, azure, beige, bisque, black, blanchedalmond, blue, blueviolet, brown, burlywood, cadetblue, chartreuse, chocolate, coral, cornflowerblue, cornsilk, crimson, cyan, darkblue, darkcyan, darkgoldenrod, darkgray, darkgreen, darkgrey, darkkhaki, darkmagenta, darkolivegreen, darkorange, darkorchid, darkred, darksalmon, darkseagreen, darkslateblue, darkslategray, darkslategrey, darkturquoise, darkviolet, deeppink, deepskyblue, dimgray, dimgrey, dodgerblue, firebrick, floralwhite, forestgreen, fuchsia, gainsboro, ghostwhite, gold, goldenrod, gray, green, greenyellow, grey, honeydew, hotpink, indianred, indigo, ivory, khaki, lavender, lavenderblush, lawngreen, lemonchiffon, lightblue, lightcoral, lightcyan, lightgoldenrodyellow, lightgray, lightgreen, lightgrey, lightpink, lightsalmon, lightseagreen, lightskyblue, lightslategray, lightslategrey, lightsteelblue, lightyellow, lime, limegreen, linen, magenta, maroon, mediumaquamarine, mediumblue, mediumorchid, mediumpurple, mediumseagreen, mediumslateblue, mediumspringgreen, mediumturquoise, mediumvioletred, midnightblue, mintcream, mistyrose, moccasin, navajowhite, navy, oldlace, olive, olivedrab, orange, orangered, orchid, palegoldenrod, palegreen, paleturquoise, palevioletred, papayawhip, peachpuff, peru, pink, plum, powderblue, purple, rebeccapurple, red, rosybrown, royalblue, saddlebrown, salmon, sandybrown, seagreen, seashell, sienna, silver, skyblue, slateblue, slategray, slategrey, snow, springgreen, steelblue, tan, teal, thistle, tomato, turquoise, violet, wheat, white, whitesmoke, yellow, yellowgreen
+	aliceblue,
+	antiquewhite,
+	aqua,
+	aquamarine,
+	azure,
+	beige,
+	bisque,
+	black,
+	blanchedalmond,
+	blue,
+	blueviolet,
+	brown,
+	burlywood,
+	cadetblue,
+	chartreuse,
+	chocolate,
+	coral,
+	cornflowerblue,
+	cornsilk,
+	crimson,
+	cyan,
+	darkblue,
+	darkcyan,
+	darkgoldenrod,
+	darkgray,
+	darkgreen,
+	darkgrey,
+	darkkhaki,
+	darkmagenta,
+	darkolivegreen,
+	darkorange,
+	darkorchid,
+	darkred,
+	darksalmon,
+	darkseagreen,
+	darkslateblue,
+	darkslategray,
+	darkslategrey,
+	darkturquoise,
+	darkviolet,
+	deeppink,
+	deepskyblue,
+	dimgray,
+	dimgrey,
+	dodgerblue,
+	firebrick,
+	floralwhite,
+	forestgreen,
+	fuchsia,
+	gainsboro,
+	ghostwhite,
+	gold,
+	goldenrod,
+	gray,
+	green,
+	greenyellow,
+	grey,
+	honeydew,
+	hotpink,
+	indianred,
+	indigo,
+	ivory,
+	khaki,
+	lavender,
+	lavenderblush,
+	lawngreen,
+	lemonchiffon,
+	lightblue,
+	lightcoral,
+	lightcyan,
+	lightgoldenrodyellow,
+	lightgray,
+	lightgreen,
+	lightgrey,
+	lightpink,
+	lightsalmon,
+	lightseagreen,
+	lightskyblue,
+	lightslategray,
+	lightslategrey,
+	lightsteelblue,
+	lightyellow,
+	lime,
+	limegreen,
+	linen,
+	magenta,
+	maroon,
+	mediumaquamarine,
+	mediumblue,
+	mediumorchid,
+	mediumpurple,
+	mediumseagreen,
+	mediumslateblue,
+	mediumspringgreen,
+	mediumturquoise,
+	mediumvioletred,
+	midnightblue,
+	mintcream,
+	mistyrose,
+	moccasin,
+	navajowhite,
+	navy,
+	oldlace,
+	olive,
+	olivedrab,
+	orange,
+	orangered,
+	orchid,
+	palegoldenrod,
+	palegreen,
+	paleturquoise,
+	palevioletred,
+	papayawhip,
+	peachpuff,
+	peru,
+	pink,
+	plum,
+	powderblue,
+	purple,
+	rebeccapurple,
+	red,
+	rosybrown,
+	royalblue,
+	saddlebrown,
+	salmon,
+	sandybrown,
+	seagreen,
+	seashell,
+	sienna,
+	silver,
+	skyblue,
+	slateblue,
+	slategray,
+	slategrey,
+	snow,
+	springgreen,
+	steelblue,
+	tan,
+	teal,
+	thistle,
+	tomato,
+	turquoise,
+	violet,
+	wheat,
+	white,
+	whitesmoke,
+	yellow,
+	yellowgreen,
 }
 
 export enum systemColor {
@@ -292,24 +439,24 @@ export enum systemColor {
 	ThreeDShadow,
 	Window,
 	WindowFrame,
-	WindowText
+	WindowText,
 }
 
 export enum colorInterpolation {
 	auto,
 	sRGB,
-	linearRGB
+	linearRGB,
 }
 
 export enum colorRendering {
 	auto,
 	optimizeSpeed,
-	optimizeQuality
+	optimizeQuality,
 }
 
 export enum direction {
 	ltr,
-	rtl
+	rtl,
 }
 
 export enum display {
@@ -329,7 +476,7 @@ export enum display {
 	'table-column',
 	'table-cell',
 	'table-caption',
-	none
+	none,
 }
 
 export enum dominantBaseline {
@@ -344,14 +491,14 @@ export enum dominantBaseline {
 	central,
 	middle,
 	'text-after-edge',
-	'text-before-edge'
+	'text-before-edge',
 }
 
 export enum paintKeywords {
 	none,
 	child,
 	'context-fill',
-	'context-stroke'
+	'context-stroke',
 }
 
 export enum absoluteSize {
@@ -361,12 +508,12 @@ export enum absoluteSize {
 	medium,
 	large,
 	'x-large',
-	'xx-large'
+	'xx-large',
 }
 
 export enum relativeSize {
 	larger,
-	smaller
+	smaller,
 }
 
 export enum fontStretch {
@@ -378,13 +525,13 @@ export enum fontStretch {
 	'semi-expanded',
 	expanded,
 	'extra-expanded',
-	'ultra-expanded'
+	'ultra-expanded',
 }
 
 export enum fontStyle {
 	normal,
 	italic,
-	oblique
+	oblique,
 }
 
 export enum fontVariant {
@@ -397,21 +544,21 @@ export enum fontVariant {
 	'historical-ligatures',
 	'no-historical-ligatures',
 	contextual,
-	'no-contextual'
+	'no-contextual',
 }
 
 export enum overflow {
 	visible,
 	hidden,
 	scroll,
-	auto
+	auto,
 }
 
 export enum paintOrder {
 	normal,
 	fill,
 	stroke,
-	markers
+	markers,
 }
 
 export enum pointerEvents {
@@ -424,20 +571,20 @@ export enum pointerEvents {
 	fill,
 	stroke,
 	all,
-	none
+	none,
 }
 
 export enum shapeRendering {
 	auto,
 	optimizeSpeed,
 	crispEdges,
-	geometricPrecision
+	geometricPrecision,
 }
 
 export enum linecap {
 	butt,
 	round,
-	square
+	square,
 }
 
 export enum linejoin {
@@ -445,13 +592,13 @@ export enum linejoin {
 	'miter-clip',
 	round,
 	bevel,
-	arcs
+	arcs,
 }
 
 export enum textAnchor {
 	start,
 	middle,
-	end
+	end,
 }
 
 export enum textDecoration {
@@ -459,12 +606,12 @@ export enum textDecoration {
 	underline,
 	overline,
 	'line-through',
-	blink
+	blink,
 }
 
 export enum textOverflow {
 	clip,
-	ellipsis
+	ellipsis,
 }
 
 export enum unicodeBidi {
@@ -473,14 +620,14 @@ export enum unicodeBidi {
 	isolate,
 	'bidi-override',
 	'isolate-override',
-	plaintext
+	plaintext,
 }
 
 export enum visibility {
 	visible,
 	hidden,
 	collapse,
-	inherit
+	inherit,
 }
 
 export enum whitespace {
@@ -488,7 +635,7 @@ export enum whitespace {
 	pre,
 	nowrap,
 	'pre-wrap',
-	'pre-line'
+	'pre-line',
 }
 
 export enum writingMode {
@@ -500,5 +647,5 @@ export enum writingMode {
 	'rl',
 	'rl-tb',
 	'tb',
-	'tb-rl'
+	'tb-rl',
 }

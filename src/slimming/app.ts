@@ -9,7 +9,7 @@ import { mergeConfig } from './config/merge';
 interface ISvgSlimming {
 	(data: string, userConfig?: unknown): Promise<string>;
 	xmlParser?(s: string): Promise<INode>;
-	NodeType?: Object;
+	NodeType?: {};
 }
 
 const exportFunc: ISvgSlimming = async (data: string, userConfig: unknown = null): Promise<string> => new Promise((resolve, reject) => {

@@ -14,26 +14,26 @@ export const computeS = (absolute: number[], relative: number[], pathResult: IPa
 			pathResult.push({
 				type: 's',
 				from: pos.slice(),
-				val: relative.slice()
+				val: relative.slice(),
 			});
 		} else {
 			pathResult.push({
 				type: 'S',
 				from: pos.slice(),
-				val: absolute.slice()
+				val: absolute.slice(),
 			});
 		}
 	} else if (relLen < absLen) {
 		pathResult.push({
 			type: 's',
 			from: pos.slice(),
-			val: relative.slice()
+			val: relative.slice(),
 		});
 	} else {
 		pathResult.push({
 			type: 'S',
 			from: pos.slice(),
-			val: absolute.slice()
+			val: absolute.slice(),
 		});
 	}
 	return [absolute[SPOS_X], absolute[SPOS_Y]];
