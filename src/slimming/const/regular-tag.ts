@@ -56,7 +56,7 @@ const _regularTag: IRegularTagDefine = {
 	'clipPath': {
 		containTextNode: false,
 		legalChildElements: { childElements: ['text', 'use'].concat(baseChildren, animationElements, shapeElements) },
-		ownAttributes: ['externalResourcesRequired', 'transform', 'clipPathUnits'].concat(conditionAndCore)
+		ownAttributes: ['externalResourcesRequired', 'transform', 'clipPathUnits'].concat(conditionAndCore),
 	},
 	'defs': {
 		containTextNode: false,
@@ -377,5 +377,5 @@ export interface IRegularTag {
 export const regularTag = new Proxy(_regularTag, {
 	get(obj, prop: string): IRegularTag {
 		return prop in obj ? obj[prop] : undefTag;
-	}
+	},
 });

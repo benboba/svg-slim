@@ -7,7 +7,7 @@ import { collapseQuot } from './utils';
 import { mixWhiteSpace } from '../slimming/utils/mix-white-space';
 import { IUnique } from '../slimming/interface/unique';
 
-const configs: ([number, string, RegExp, number] | [number, RegExp, number])[] = [
+const configs: Array<[number, string, RegExp, number] | [number, RegExp, number]> = [
 	[1, 'xml-decl', REG_XML_DECL, NodeType.XMLDecl],
 	[1, 'cdata', REG_CDATA_SECT, NodeType.CDATA],
 	[2, REG_OTHER_SECT, NodeType.OtherSect],
@@ -39,9 +39,9 @@ const Process1 = (conf: [number, string, RegExp, number], str: string): { node: 
 			node: new Node({
 				nodeType: conf[3],
 				nodeName: `#${conf[1]}`,
-				textContent: execResult[1]
+				textContent: execResult[1],
 			}),
-			str: str.slice(execResult[0].length)
+			str: str.slice(execResult[0].length),
 		};
 	}
 	return null;
@@ -57,9 +57,9 @@ const Process2 = (conf: [number, RegExp, number], str: string): { node: Node; st
 			node: new Node({
 				nodeType: conf[2],
 				nodeName: `#${execResult[1].toLowerCase()}`,
-				textContent: execResult[2]
+				textContent: execResult[2],
 			}),
-			str: str.slice(execResult[0].length)
+			str: str.slice(execResult[0].length),
 		};
 	}
 	return null;
@@ -82,9 +82,9 @@ const ProcessTag = (str: string, status: IStatus): { node: Node; str: string } |
 				nodeType: NodeType.Tag,
 				nodeName: execResult[1],
 				namespace: '',
-				selfClose: execResult[3] === '/'
+				selfClose: execResult[3] === '/',
 			}),
-			str: str.slice(execResult[0].length)
+			str: str.slice(execResult[0].length),
 		};
 
 		// 标签的 namespace
@@ -144,7 +144,7 @@ const ProcessEndTag = (str: string, status: IStatus): { node: Node; str: string 
 				nodeName: execResult[1],
 				namespace: '',
 			}),
-			str: str.slice(execResult[0].length)
+			str: str.slice(execResult[0].length),
 		};
 		if (execResult[1].indexOf(':') !== -1) {
 			const tagName = execResult[1].split(':');
@@ -200,7 +200,7 @@ const parse = (str: string, status: IStatus): { node: Node; str: string } => {
 				nodeName: '#text',
 				textContent: mixWhiteSpace(str.slice(0, startCharPos)),
 			}),
-			str: startCharPos === -1 ? '' : str.slice(startCharPos)
+			str: startCharPos === -1 ? '' : str.slice(startCharPos),
 		};
 
 
@@ -212,13 +212,13 @@ export const Parser = async (str: string): Promise<Node> => {
 	return new Promise((resolve, reject) => {
 		const doc = new Node({
 			nodeType: NodeType.Document,
-			nodeName: '#document'
+			nodeName: '#document',
 		});
 		const stack: Node[] = [];
 		const status: IStatus = {
 			line: 1,
 			pos: 0,
-			lastpos: 0
+			lastpos: 0,
 		};
 
 		let current: { node: Node; str: string };

@@ -20,7 +20,7 @@ export const computeZ = (pathResult: IPathResultItem[], pos: number[]): number[]
 		pathResult.push({
 			type: 'z',
 			from: pos.slice(),
-			val: []
+			val: [],
 		});
 		return zpos;
 	}

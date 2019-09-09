@@ -21,14 +21,14 @@ export const simplify = (matrix: IMatrixFunc, digit1: number, digit2: number, di
 	if (/^1,0,0,1/.test(mVal)) {
 		return {
 			type: 'translate',
-			val: fixed2(matrix.val[fPos]) === 0 ? [fixed2(matrix.val[ePos])] : [fixed2(matrix.val[ePos]), fixed2(matrix.val[fPos])]
+			val: fixed2(matrix.val[fPos]) === 0 ? [fixed2(matrix.val[ePos])] : [fixed2(matrix.val[ePos]), fixed2(matrix.val[fPos])],
 		};
 	}
 
 	if (/^[^,]+,0,0,[^,]+,0,0/.test(mVal)) {
 		return {
 			type: 'scale',
-			val: fixed1(matrix.val[aPos]) === fixed1(matrix.val[dPos]) ? [fixed1(matrix.val[aPos])] : [fixed1(matrix.val[aPos]), fixed1(matrix.val[dPos])]
+			val: fixed1(matrix.val[aPos]) === fixed1(matrix.val[dPos]) ? [fixed1(matrix.val[aPos])] : [fixed1(matrix.val[aPos]), fixed1(matrix.val[dPos])],
 		};
 	}
 
@@ -39,7 +39,7 @@ export const simplify = (matrix: IMatrixFunc, digit1: number, digit2: number, di
 		}
 		return {
 			type: 'skewX',
-			val: [fixed3(corner)]
+			val: [fixed3(corner)],
 		};
 	}
 
@@ -50,11 +50,21 @@ export const simplify = (matrix: IMatrixFunc, digit1: number, digit2: number, di
 		}
 		return {
 			type: 'skewY',
-			val: [fixed3(corner)]
+			val: [fixed3(corner)],
 		};
 	}
 
-	if (matrix.val[ePos] === 0 && matrix.val[fPos] === 0 && fixed1(matrix.val[aPos]) === fixed1(matrix.val[dPos]) && fixed1(matrix.val[bPos]) === -fixed1(matrix.val[cPos]) && fixed1(Math.pow(matrix.val[aPos], 2) + Math.pow(matrix.val[bPos], 2)) === 1) {
+	if (
+		matrix.val[ePos] === 0
+		&&
+		matrix.val[fPos] === 0
+		&&
+		fixed1(matrix.val[aPos]) === fixed1(matrix.val[dPos])
+		&&
+		fixed1(matrix.val[bPos]) === -fixed1(matrix.val[cPos])
+		&&
+		fixed1(Math.pow(matrix.val[aPos], 2) + Math.pow(matrix.val[bPos], 2)) === 1
+	) {
 		let arc: number;
 		if (matrix.val[aPos] >= 0) {
 			arc = Math.asin(matrix.val[bPos]);
@@ -72,7 +82,7 @@ export const simplify = (matrix: IMatrixFunc, digit1: number, digit2: number, di
 		}
 		return {
 			type: 'rotate',
-			val: [fixed3(corner)]
+			val: [fixed3(corner)],
 		};
 	}
 	return matrix;

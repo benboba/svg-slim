@@ -38,26 +38,26 @@ export const computeC = (absolute: number[], relative: number[], pathResult: IPa
 				pathResult.push({
 					type: 'c',
 					from: pos.slice(),
-					val: relative.slice()
+					val: relative.slice(),
 				});
 			} else {
 				pathResult.push({
 					type: 'C',
 					from: pos.slice(),
-					val: absolute.slice()
+					val: absolute.slice(),
 				});
 			}
 		} else if (relLen < absLen) {
 			pathResult.push({
 				type: 'c',
 				from: pos.slice(),
-				val: relative.slice()
+				val: relative.slice(),
 			});
 		} else {
 			pathResult.push({
 				type: 'C',
 				from: pos.slice(),
-				val: absolute.slice()
+				val: absolute.slice(),
 			});
 		}
 		return [absolute[CPOS_X], absolute[CPOS_Y]];

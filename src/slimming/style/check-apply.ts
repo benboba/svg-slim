@@ -100,5 +100,5 @@ export const checkApply = (
 	styleDefine: IRegularAttr,
 	node: INode,
 	dom: INode,
-	fromStyleTag = false // 标记是否为检测 style 标签的样式
+	fromStyleTag = false, // 标记是否为检测 style 标签的样式
 ): boolean => check(styleDefine, node, dom, [], fromStyleTag);

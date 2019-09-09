@@ -8,17 +8,26 @@
         // *** TypeScript-specific ***
         // ***************************
 
-        // 通过将自然相关的项目组合在一起来提高可读性和组织性
-		// @off 不强制
-		"adjacent-overload-signatures": false,
+        // 同一个函数的重载定义必须写在一起
+		"adjacent-overload-signatures": true,
 
         // 无视注释中的 @ts-ignore
 		// @off 有时候是必须的
         "ban-ts-ignore": false,
 
         // 禁止某些特定类型
-		// @off 不作限制
-		"ban-types": false,
+        "ban-types": [true,
+            // 基本类型必须用小写
+            ["String", "Use string instead"],
+            ["Boolean", "Use boolean instead"],
+            ["Number", "Use number instead"],
+            // 禁止显式使用 any
+            ["any", "Don't use any"],
+            // 禁止使用 Object
+            ["Object", "Use {} instead"],
+            // 禁止使用 Function
+            ["Function"]
+        ],
 
         // 需要类成员的显式可见性声明 public/private/protected
 		// 不需要声明 public，因为默认如此
@@ -28,7 +37,7 @@
 		// @off 不关心
 		"member-ordering": false,
 
-        // 禁止显示声明变量为 any 类型
+        // 禁止显示声明 any 类型（ts 本身只禁止了隐式 any）
 		"no-any": true,
 
         // 禁止定义空的接口
@@ -36,20 +45,24 @@
 
         // 避免影响静态验证的 import
 		"no-import-side-effect": {
-			"severity": "warning"
+            "options": {"ignore-module": "(\\.html|\\.css)$"},
+            "severity": "warning"
 		},
 
         // 对于初始化为数字，字符串或布尔值的变量或参数，禁止显式类型声明
 		"no-inferrable-types": true,
 
-        // 禁止内部模块，使用 namespace 代替
+        // 禁止使用 module 管理内部代码，推荐使用 namespace 代替（实际上 namespace 也不再推荐）
         "no-internal-module": true,
 
-        // 禁止魔法数字
+        // 禁止魔法数字（在表达式运算中直接使用数值字面量）
         // 允许直接使用 -1 到 10 的数字
-        "no-magic-numbers": [true, -1, -0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        "no-magic-numbers": [true, {
+            "allowed-numbers": [-1, 0, -0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            "ignore-jsx": true
+        }],
 
-        // 禁止内部命名空间和模块
+        // 禁止使用命名空间 namespace 和模块 module 关键字
         "no-namespace": true,
 
         // 禁止使用 ! 进行空类型（null | undefined）断言
@@ -81,7 +94,7 @@
         // 所有返回 Promise 的方法必须标记为 async
         "promise-function-async": true,
 
-        // 需要进行类型定义
+        // 在 ts 无法推断类型的时候，需要进行类型定义
         "typedef": true,
 
         // 禁止无意义的重载（如修改可选参数即可实现的重载）
@@ -121,6 +134,9 @@
 
         // 禁用 arguments.callee
         "no-arg": true,
+
+        // 标记了 async 的函数内部必须包含 await
+        "no-async-without-await": true,
 
         // 禁止位运算
         // @off 不必禁止
@@ -169,7 +185,8 @@
         // 禁止使用for-in循环迭代数组
         "no-for-in-array": true,
 
-        // 禁止在项目的 package.json 中导入未列为依赖项的模块
+        // 禁止在项目的 package.json 中导入未列为 dependencies 依赖项的模块
+        // 允许引入 devDependencies 的项目
         "no-implicit-dependencies": [true, "dev"],
 
         // 禁止在调用函数和构造函数时使用空对象类型（{}）推断
@@ -182,12 +199,15 @@
         // @off 与 mixin 等用法有冲突
         "no-invalid-this": false,
 
-        // 禁止为接口定义构造函数
+        // 禁止为接口定义构造函数，或为类定义名为“new”的成员
         "no-misused-new": true,
 
         // 禁止使用 null 关键字
         // @off 很难避免
         "no-null-keyword": false,
+
+        // 禁止一个混合类型同时具有 null 和 undefined 两种空值
+        "no-null-undefined-union": true,
 
         // 禁止在类型断言中使用 object 字面量
         // 例如：const x = { ... } as T，应该使用 const x: T = { ... };
@@ -246,6 +266,10 @@
         // @off 建议使用 tsconfig 的 noUnusedParameters 和 noUnusedLocals
         "no-unused-variable": false,
 
+        // 禁止在声明之前使用
+        // @off TypeScript 2.9 版本之后已无需此规则
+        // "no-use-before-declare": true,
+
         // 禁止使用 var 定义变量，请使用 let 或 const 代替
         "no-var-keyword": true,
 
@@ -255,14 +279,17 @@
         // 使用三元表达式来代替 if-else 对同一变量赋值
         "prefer-conditional-expression": true,
 
-        // 在适当的地方强制使用 es2018 对象扩展运算符，来取代 Object.assign
+        // 在适当的地方强制使用 es2018 对象扩展运算符（如：{...shadowClone} = someObj），来取代 Object.assign(shadowClone, someObj)
         "prefer-object-spread": true,
 
         // parseInt 必须指定进制参数
         "radix": true,
 
-        // + 运算符两侧必须都是数值或字符串
+        // + 运算符两侧必须都是 number, string, bigint
         "restrict-plus-operands": true,
+
+        // 禁止在具有静态修饰符 static 的方法中使用 this
+        "static-this": true,
 
         // 在需要用到布尔值表达式的地方，不允许使用其它类型
         // 允许含有 null 的类型
@@ -270,7 +297,16 @@
         // 允许单独判断字符串类型
         // 允许单独判断数值类型
         // 允许只存在一种假值的混合类型
-        "strict-boolean-expressions": [true, "allow-null-union", "allow-undefined-union", "allow-string", "allow-number", "allow-mix"],
+        // 忽略 &&、|| 最右侧的语句
+        "strict-boolean-expressions": [true, "allow-null-union", "allow-undefined-union", "allow-string", "allow-number", "allow-mix", "ignore-rhs"],
+
+        // 比较运算符两侧必须是基本类型 number,string,boolean,null,undefined,symbol,bigint……
+        // 允许相等运算符比较任意类型
+        // 允许比较运算符比较字符串的字母顺序
+        "strict-comparisons": [true, {
+            "allow-object-equal-comparison": true,
+            "allow-string-order-comparison": true
+        }],
 
         // 禁止始终为 true 或 false 的条件判断
         // 需要 tsconfig.json 打开 strictNullChecks
@@ -281,6 +317,10 @@
 
         // 禁止 == 和 !=，必须使用 === 和 !==
         "triple-equals": true,
+
+        // typeof 的结果必须和正确的字符串比对
+        // @off TypeScript 2.2 版本之后已无需此规则
+        // "typeof-compare": true,
 
         // 禁止空的构造函数
         "unnecessary-constructor": true,
@@ -303,8 +343,8 @@
         // 禁止使用已弃用的 api
         "deprecation": true,
 
-        // 一个文件不允许声明超过 5 个的类
-        "max-classes-per-file": [true, 5],
+        // 一个文件不允许声明超过 1 个的类
+        "max-classes-per-file": [true, 1],
 
         // 单个文件最大行数限制不超过 800 行
         "max-file-line-count": [true, 800],
@@ -349,8 +389,8 @@
         // *************
 
         // 数组类型的定义强制使用中括号或数组泛型
-        // @off 不限制
-        "array-type": false,
+        // 在简单类型的数组时必须使用 T[]，例如：number[]
+        "array-type": [true, "array-simple"],
 
         // 箭头函数内只有一个 return 语句时，强制省略大括号和 return
         "arrow-return-shorthand": true,
@@ -406,13 +446,12 @@
         "newline-per-chained-call": false,
 
         // 类型断言强制使用 as 语法取代尖括号语法
-        // @off 不限制
-        "no-angle-bracket-type-assertion": false,
+        "no-angle-bracket-type-assertion": true,
 
         // 禁止与布尔值进行比较，如：x === true
         "no-boolean-literal-compare": true,
 
-        // 禁止为构造函数的参数使用 public/private/protected 修饰符
+        // 禁止为构造函数的参数使用 readonly/public/private/protected 修饰符
         // 这样会使代码难以理解或导致意外的类成员定义，应该首先在类定义中声明属性，再在构造函数中进行赋值
         "no-parameter-properties": true,
 
@@ -443,9 +482,9 @@
         // if/else/catch 等关键字必须和大括号写在同一行
         "one-line": [true, "check-catch", "check-finally", "check-else", "check-open-brace", "check-whitespace"],
 
-        // 强制合并一组连续的变量声明
-        // @off 不宜合并
-        "one-variable-per-declaration": false,
+        // 每一条 var、let、const 只允许声明一个变量
+        // 循环体第一个条件中允许声明多个变量
+        "one-variable-per-declaration": [true, "ignore-for-loop"],
 
         // 对 import 语句按首字母排序
         // @off 没必要
@@ -458,8 +497,9 @@
         // 在 interface 和 type 中应使用 foo(): void 来取代 foo() => void
         "prefer-method-signature": true,
 
-        // 条件少于 3 个时，应使用 if 来取代 switch
-        "prefer-switch": true,
+        // 条件少于 3 个时，应使用 if 来取代 switch，反之则应该使用 switch
+        // @off 以可读性优先
+        "prefer-switch": false,
 
         // 字符串拼接应优先使用模板字符串
         // 忽略只有一个加号的情况
@@ -492,6 +532,10 @@
 
         // 禁止无效的 bind，如：对箭头函数使用 bind
         "unnecessary-bind": true,
+
+        // 当 if 语句中包含 break|continue|return|throw 时，禁止使用不必要的 else 语句
+        // @off if ... else 有时候比 if ... return 可读性更好
+        "unnecessary-else": false,
 
         // 变量名的格式限制
         // 只允许 首字母小写驼峰式 或 全大写+下划线
@@ -530,9 +574,12 @@
         // @off 不作限制
         "linebreak-style": false,
 
-        // 单行最大字节数
-        // @off 不作限制
-        "max-line-length": false,
+        // 单行最大字节数不允许超过 200
+        // 忽略 import、export、注释、正则、含接口实现的 class 定义、字符串等情况
+        "max-line-length": [true, {
+            "limit": 200,
+            "ignore-pattern": "^import |^export |^module.exports|/[^/]*/|class [a-zA-Z0-9]+ implements|`|'[^']+'|\"[^\"]+\""
+        }],
 
         // return 语句前强制增加空白行
         // @off 没必要
@@ -562,8 +609,12 @@
         "semicolon": [true, "always"],
 
         // 数组和对象字面量、解构、函数类型、命名导入和导出中是否使用尾逗号
-        // @off 不限制
-        "trailing-comma": false,
+        // 单行书写禁止尾逗号
+        // 多行书写必须使用尾逗号
+        "trailing-comma": [true, {
+            "singleline": "never",
+            "multiline": "always"
+        }],
 
         // 类型定义的冒号前后是否需要空格
         // 冒号前禁止空格
@@ -594,9 +645,5 @@
         // 左大括号之前必须加空格
 		"whitespace": [true, "check-branch", "check-decl", "check-operator", "check-module", "check-separator", "check-rest-spread", "check-type", "check-typecast", "check-preblock"]
 
-    },
-    
-    "linterOptions": {
-        "exclude": ["test/**/*"]
-    }
+	}
 }

@@ -29,6 +29,6 @@ export const combineMatrix = (operate: IMatrixFunc[], digit1: number = DEFAULT_M
 	}
 	return shorten({
 		type: 'matrix',
-		val: [matrix.a, matrix.b, matrix.c, matrix.d, matrix.e, matrix.f]
+		val: [matrix.a, matrix.b, matrix.c, matrix.d, matrix.e, matrix.f],
 	}, digit1, digit2, digit3);
 };

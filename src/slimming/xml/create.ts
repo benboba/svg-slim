@@ -60,7 +60,7 @@ export const createTag = (node: ITagNode): string => {
 	return xml;
 };
 
-export const createXML = (dom: ITagNode | undefined | null): string => {
+export const createXML = (dom?: ITagNode | null): string => {
 	if (!dom) {
 		return '';
 	}

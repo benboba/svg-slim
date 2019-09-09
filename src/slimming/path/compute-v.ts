@@ -29,26 +29,26 @@ export const computeV = (absolute: number, relative: number, pathResult: IPathRe
 				pathResult.push({
 					type: 'v',
 					from: pos.slice(),
-					val: [relative]
+					val: [relative],
 				});
 			} else {
 				pathResult.push({
 					type: 'V',
 					from: pos.slice(),
-					val: [absolute]
+					val: [absolute],
 				});
 			}
 		} else if (relLen < absLen) {
 			pathResult.push({
 				type: 'v',
 				from: pos.slice(),
-				val: [relative]
+				val: [relative],
 			});
 		} else {
 			pathResult.push({
 				type: 'V',
 				from: pos.slice(),
-				val: [absolute]
+				val: [absolute],
 			});
 		}
 		return [pos[0], absolute];

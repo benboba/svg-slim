@@ -7,7 +7,7 @@
  * @param { boolean } 是否深度优先，是的话会先遍历子元素
  */
 
-const traversal = <T>(condition: (o: T | T[]) => boolean, cb: (o: T, p: (T | T[])[]) => void, obj: T | T[], path: (T | T[])[], visited: (T | T[])[], deep: boolean) => {
+const traversal = <T>(condition: (o: T | T[]) => boolean, cb: (o: T, p: Array<T | T[]>) => void, obj: T | T[], path: Array<T | T[]>, visited: Array<T | T[]>, deep: boolean) => {
 	if (visited.indexOf(obj) !== -1) {
 		return;
 	}
@@ -29,7 +29,7 @@ const traversal = <T>(condition: (o: T | T[]) => boolean, cb: (o: T, p: (T | T[]
 		}
 	} else {
 		for (const key in obj) {
-			if (typeof obj[key] as unknown === 'object') {
+			if (typeof obj[key] === 'object') { // tslint:disable-line strict-type-predicates
 				traversal(condition, cb, obj[key] as unknown as T | T[], path, visited, deep);
 			}
 		}
@@ -42,6 +42,6 @@ const traversal = <T>(condition: (o: T | T[]) => boolean, cb: (o: T, p: (T | T[]
 	}
 };
 
-export const traversalObj = <T>(condition: (o: T | T[]) => boolean, cb: (o: T, p: (T | T[])[]) => void, obj: T | T[], deep = false) => {
+export const traversalObj = <T>(condition: (o: T | T[]) => boolean, cb: (o: T, p: Array<T | T[]>) => void, obj: T | T[], deep = false) => {
 	traversal<T>(condition, cb, obj, [], [], deep);
 };

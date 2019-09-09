@@ -30,7 +30,7 @@ export const execSelector = (selector: string): ISelector[] => {
 						if (eqIndex === -1) {
 							// 没有等号的情况
 							selectorUnit.attr.push({
-								key: attrStr
+								key: attrStr,
 							});
 						} else {
 							// 取出等号修饰符
@@ -39,12 +39,12 @@ export const execSelector = (selector: string): ISelector[] => {
 								selectorUnit.attr.push({
 									key: attrStr.slice(0, eqIndex - 1),
 									modifier: attrModifier[attrStr[eqIndex - 1] as keyof typeof attrModifier] as number,
-									value: attrStr.slice(eqIndex + 1)
+									value: attrStr.slice(eqIndex + 1),
 								});
 							} else {
 								selectorUnit.attr.push({
 									key: attrStr.slice(0, eqIndex),
-									value: attrStr.slice(eqIndex + 1)
+									value: attrStr.slice(eqIndex + 1),
 								});
 							}
 						}
@@ -57,13 +57,13 @@ export const execSelector = (selector: string): ISelector[] => {
 							// 不是函数型伪类
 							selectorUnit.pseudo.push({
 								func: pseudoStr,
-								isClass
+								isClass,
 							});
 						} else {
 							selectorUnit.pseudo.push({
 								func: pseudoStr.slice(0, parenIndex),
 								value: pseudoStr.slice(parenIndex + 1, -1),
-								isClass
+								isClass,
 							});
 						}
 						break;

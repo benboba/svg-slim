@@ -4,7 +4,7 @@ export const getSelectorPriority = (seletors: ISelector[]): ISeletorPriority => 
 	const priority: ISeletorPriority = {
 		id: 0,
 		class: 0,
-		tag: 0
+		tag: 0,
 	};
 	seletors.forEach(seletor => {
 		priority.id += seletor.id.length;

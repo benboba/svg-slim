@@ -6,7 +6,7 @@ import { DEFAULT_ACCURATE_DIGIT, DEFAULT_MATRIX_DIGIT, DEFAULT_SIZE_DIGIT } from
 export const merge = (func1: IMatrixFunc, func2: IMatrixFunc, digit1: number = DEFAULT_MATRIX_DIGIT, digit2: number = DEFAULT_SIZE_DIGIT, digit3: number = DEFAULT_ACCURATE_DIGIT): IMatrixFunc => {
 	let resFunc: IMatrixFunc = {
 		type: func1.type,
-		val: []
+		val: [],
 	};
 	switch (func1.type) {
 		case 'translate':

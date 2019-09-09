@@ -12,14 +12,14 @@ export class Vector {
 	x: number;
 	y: number;
 
-	// 获取向量长度
-	get modulo(): number {
-		return Vector.Rounding(Math.sqrt(this.x * this.x + this.y * this.y));
-	}
-
 	// 获取未修正的向量长度
 	private get _modulo(): number {
 		return Math.sqrt(this.x * this.x + this.y * this.y);
+	}
+
+	// 获取向量长度
+	get modulo(): number {
+		return Vector.Rounding(Math.sqrt(this.x * this.x + this.y * this.y));
 	}
 
 	set modulo(m: number) {

@@ -24,7 +24,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: accumulateVal
+			enum: accumulateVal,
 		}],
 		initValue: 'none',
 		applyTo: [],
@@ -40,7 +40,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: additiveVal
+			enum: additiveVal,
 		}],
 		initValue: 'replace',
 		applyTo: [],
@@ -56,7 +56,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}],
 		initValue: '1',
 		applyTo: [],
@@ -71,7 +71,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeSizeNumber: false,
 		maybeAccurateNumber: false,
 		legalValues: [{
-			type: 'attr'
+			type: 'attr',
 		}],
 		initValue: '',
 		applyTo: [],
@@ -87,7 +87,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}],
 		initValue: '0',
 		applyTo: [],
@@ -103,7 +103,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberOptionalFullMatch
+			reg: numberOptionalFullMatch,
 		}],
 		initValue: '0',
 		applyTo: [],
@@ -119,7 +119,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: timeListFullMatch
+			reg: timeListFullMatch,
 		}],
 		initValue: '0s',
 		applyTo: [],
@@ -135,7 +135,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}],
 		initValue: '0',
 		applyTo: [],
@@ -164,7 +164,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: calcModelVal
+			enum: calcModelVal,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -180,7 +180,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: cssNameSpaceSeparatedFullMatch
+			reg: cssNameSpaceSeparatedFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -196,7 +196,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: unitVal
+			enum: unitVal,
 		}],
 		initValue: 'userSpaceOnUse',
 		applyTo: [],
@@ -212,7 +212,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: crossoriginVal
+			enum: crossoriginVal,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -228,17 +228,17 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: lengthFullMatch
+			reg: lengthFullMatch,
 		}, {
 			type: 'reg',
-			reg: percentageFullMatch
+			reg: percentageFullMatch,
 		}],
 		initValue: [{
 			val: '50%',
-			tag: ['radialGradient']
+			tag: ['radialGradient'],
 		}, {
 			val: '0',
-			tag: ['circle', 'ellipse']
+			tag: ['circle', 'ellipse'],
 		}],
 		applyTo: [],
 	},
@@ -253,17 +253,17 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: lengthFullMatch
+			reg: lengthFullMatch,
 		}, {
 			type: 'reg',
-			reg: percentageFullMatch
+			reg: percentageFullMatch,
 		}],
 		initValue: [{
 			val: '50%',
-			tag: ['radialGradient']
+			tag: ['radialGradient'],
 		}, {
 			val: '0',
-			tag: ['circle', 'ellipse']
+			tag: ['circle', 'ellipse'],
 		}],
 		applyTo: [],
 	},
@@ -278,7 +278,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: pathFullMatch // TODO：这里用的是宽泛规则，严格正则是 pathFullMatchStrict ，但是浏览器存在纠错机制，使用严格正则可能导致意外的过滤
+			reg: pathFullMatch, // TODO：这里用的是宽泛规则，严格正则是 pathFullMatchStrict ，但是浏览器存在纠错机制，使用严格正则可能导致意外的过滤
 		}],
 		initValue: '',
 		applyTo: [],
@@ -294,7 +294,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}],
 		initValue: '1',
 		applyTo: [],
@@ -310,7 +310,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -339,10 +339,10 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: clockFullMatch
+			reg: clockFullMatch,
 		}, {
 			type: 'enum',
-			enum: durVal
+			enum: durVal,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -359,25 +359,25 @@ const _regularAttr: IRegularAttrDefine = {
 		legalValues: [{
 			type: 'reg',
 			reg: numberFullMatch,
-			tag: ['feOffset', 'filter']
+			tag: ['feOffset', 'filter'],
 		}, {
 			type: 'reg',
 			reg: lengthFullMatch,
-			tag: ['tspan', 'text']
+			tag: ['tspan', 'text'],
 		}, {
 			type: 'reg',
 			reg: percentageFullMatch,
-			tag: ['tspan', 'text']
+			tag: ['tspan', 'text'],
 		}],
 		initValue: [{
 			val: '2',
-			tag: ['feOffset']
+			tag: ['feOffset'],
 		}, {
 			val: '0',
-			tag: ['filter']
+			tag: ['filter'],
 		}, {
 			val: '',
-			tag: ['tspan', 'text']
+			tag: ['tspan', 'text'],
 		}],
 		applyTo: [],
 	},
@@ -393,25 +393,25 @@ const _regularAttr: IRegularAttrDefine = {
 		legalValues: [{
 			type: 'reg',
 			reg: numberFullMatch,
-			tag: ['feOffset', 'filter']
+			tag: ['feOffset', 'filter'],
 		}, {
 			type: 'reg',
 			reg: lengthFullMatch,
-			tag: ['tspan', 'text']
+			tag: ['tspan', 'text'],
 		}, {
 			type: 'reg',
 			reg: percentageFullMatch,
-			tag: ['tspan', 'text']
+			tag: ['tspan', 'text'],
 		}],
 		initValue: [{
 			val: '2',
-			tag: ['feOffset']
+			tag: ['feOffset'],
 		}, {
 			val: '0',
-			tag: ['filter']
+			tag: ['filter'],
 		}, {
 			val: '',
-			tag: ['tspan', 'text']
+			tag: ['tspan', 'text'],
 		}],
 		applyTo: [],
 	},
@@ -426,14 +426,14 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: edgeModeVal
+			enum: edgeModeVal,
 		}],
 		initValue: [{
 			val: 'duplicate',
-			tag: ['feConvolveMatrix']
+			tag: ['feConvolveMatrix'],
 		}, {
 			val: 'none',
-			tag: ['feGaussianBlur']
+			tag: ['feGaussianBlur'],
 		}],
 		applyTo: [],
 	},
@@ -448,7 +448,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}],
 		initValue: '0',
 		applyTo: [],
@@ -464,7 +464,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: timeListFullMatch
+			reg: timeListFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -480,7 +480,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}],
 		initValue: '1',
 		applyTo: [],
@@ -496,7 +496,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: unitVal
+			enum: unitVal,
 		}],
 		initValue: 'objectBoundingBox',
 		applyTo: [],
@@ -512,10 +512,10 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: lengthFullMatch
+			reg: lengthFullMatch,
 		}, {
 			type: 'reg',
-			reg: percentageFullMatch
+			reg: percentageFullMatch,
 		}],
 		initValue: '0%',
 		applyTo: [],
@@ -544,10 +544,10 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: lengthFullMatch
+			reg: lengthFullMatch,
 		}, {
 			type: 'reg',
-			reg: percentageFullMatch
+			reg: percentageFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -563,10 +563,10 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: lengthFullMatch
+			reg: lengthFullMatch,
 		}, {
 			type: 'reg',
-			reg: percentageFullMatch
+			reg: percentageFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -582,7 +582,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: transformListFullMatch
+			reg: transformListFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -598,7 +598,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: unitVal
+			enum: unitVal,
 		}],
 		initValue: 'objectBoundingBox',
 		applyTo: [],
@@ -614,23 +614,23 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: lengthFullMatch
+			reg: lengthFullMatch,
 		}, {
 			type: 'reg',
-			reg: percentageFullMatch
+			reg: percentageFullMatch,
 		}],
 		initValue: [{
 			val: '100%',
-			tag: ['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDropShadow', 'feFlood', 'feGaussianBlur', 'feImage', 'feMerge', 'feMorphology', 'feOffset', 'feSpecularLighting', 'feTile', 'feTurbulence']
+			tag: ['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDropShadow', 'feFlood', 'feGaussianBlur', 'feImage', 'feMerge', 'feMorphology', 'feOffset', 'feSpecularLighting', 'feTile', 'feTurbulence'],
 		}, {
 			val: '120%',
-			tag: ['filter', 'mask']
+			tag: ['filter', 'mask'],
 		}, {
 			val: '0',
-			tag: ['pattern']
+			tag: ['pattern'],
 		}, {
 			val: 'auto',
-			tag: ['svg', 'image', 'rect', 'foreignObject']
+			tag: ['svg', 'image', 'rect', 'foreignObject'],
 		}],
 		applyTo: [],
 	},
@@ -645,7 +645,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: URIFullMatch
+			reg: URIFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -661,7 +661,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: langFullMatch
+			reg: langFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -677,7 +677,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: nameFullMatch
+			reg: nameFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -693,10 +693,10 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: inVal
+			enum: inVal,
 		}, {
 			type: 'reg',
-			reg: indentFullMatch
+			reg: indentFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -712,10 +712,10 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: inVal
+			enum: inVal,
 		}, {
 			type: 'reg',
-			reg: indentFullMatch
+			reg: indentFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -731,7 +731,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}],
 		initValue: '0',
 		applyTo: [],
@@ -747,7 +747,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}],
 		initValue: '0',
 		applyTo: [],
@@ -763,7 +763,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}],
 		initValue: '0',
 		applyTo: [],
@@ -779,7 +779,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}],
 		initValue: '0',
 		applyTo: [],
@@ -795,7 +795,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}],
 		initValue: '0',
 		applyTo: [],
@@ -811,7 +811,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberListFullMatch
+			reg: numberListFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -827,7 +827,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberOptionalFullMatch
+			reg: numberOptionalFullMatch,
 		}],
 		initValue: '2 2',
 		applyTo: [],
@@ -843,7 +843,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberSemiSepatatedFullMatch
+			reg: numberSemiSepatatedFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -859,7 +859,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: controlPointsFullMatch
+			reg: controlPointsFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -875,7 +875,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberSemiSepatatedFullMatch
+			reg: numberSemiSepatatedFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -891,7 +891,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: langFullMatch
+			reg: langFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -907,7 +907,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: lengthAdjustVal
+			enum: lengthAdjustVal,
 		}],
 		initValue: 'spacing',
 		applyTo: [],
@@ -923,7 +923,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -939,10 +939,10 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: lengthFullMatch
+			reg: lengthFullMatch,
 		}, {
 			type: 'reg',
-			reg: percentageFullMatch
+			reg: percentageFullMatch,
 		}],
 		initValue: '3',
 		applyTo: [],
@@ -958,7 +958,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: markerUnitVal
+			enum: markerUnitVal,
 		}],
 		initValue: 'strokeWidth',
 		applyTo: [],
@@ -974,10 +974,10 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: lengthFullMatch
+			reg: lengthFullMatch,
 		}, {
 			type: 'reg',
-			reg: percentageFullMatch
+			reg: percentageFullMatch,
 		}],
 		initValue: '3',
 		applyTo: [],
@@ -993,7 +993,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: unitVal
+			enum: unitVal,
 		}],
 		initValue: 'userSpaceOnUse',
 		applyTo: [],
@@ -1009,7 +1009,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: unitVal
+			enum: unitVal,
 		}],
 		initValue: 'objectBoundingBox',
 		applyTo: [],
@@ -1025,10 +1025,10 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: clockFullMatch
+			reg: clockFullMatch,
 		}, {
 			type: 'string',
-			string: 'media'
+			string: 'media',
 		}],
 		initValue: '',
 		applyTo: [],
@@ -1057,7 +1057,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: methodVal
+			enum: methodVal,
 		}],
 		initValue: 'align',
 		applyTo: [],
@@ -1073,10 +1073,10 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: clockFullMatch
+			reg: clockFullMatch,
 		}, {
 			type: 'string',
-			string: 'media'
+			string: 'media',
 		}],
 		initValue: '0',
 		applyTo: [],
@@ -1092,7 +1092,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: blendModeVal
+			enum: blendModeVal,
 		}],
 		initValue: 'normal',
 		applyTo: [],
@@ -1108,7 +1108,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: integerFullMatch
+			reg: integerFullMatch,
 		}],
 		initValue: '1',
 		applyTo: [],
@@ -1124,11 +1124,11 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}, {
 			type: 'reg',
 			reg: percentageFullMatch,
-			tag: ['stop']
+			tag: ['stop'],
 		}],
 		initValue: '0',
 		applyTo: [],
@@ -1145,18 +1145,18 @@ const _regularAttr: IRegularAttrDefine = {
 		legalValues: [{
 			type: 'enum',
 			enum: operaterVal,
-			tag: ['feComposite']
+			tag: ['feComposite'],
 		}, {
 			type: 'enum',
 			enum: operaterVal1,
-			tag: ['feMorphology']
+			tag: ['feMorphology'],
 		}],
 		initValue: [{
 			val: 'over',
-			tag: ['feComposite']
+			tag: ['feComposite'],
 		}, {
 			val: 'erode',
-			tag: ['feMorphology']
+			tag: ['feMorphology'],
 		}],
 		applyTo: [],
 	},
@@ -1171,7 +1171,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: numberOptionalFullMatch
+			reg: numberOptionalFullMatch,
 		}],
 		initValue: '3',
 		applyTo: [],
@@ -1187,13 +1187,13 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}, {
 			type: 'reg',
-			reg: angelFullMatch
+			reg: angelFullMatch,
 		}, {
 			type: 'enum',
-			enum: orientVal
+			enum: orientVal,
 		}],
 		initValue: '0',
 		applyTo: [],
@@ -1209,7 +1209,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'string',
-			string: 'default'
+			string: 'default',
 		}],
 		initValue: 'default',
 		applyTo: [],
@@ -1225,7 +1225,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: pathFullMatch
+			reg: pathFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -1241,7 +1241,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -1257,7 +1257,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: unitVal
+			enum: unitVal,
 		}],
 		initValue: 'userSpaceOnUse',
 		applyTo: [],
@@ -1273,7 +1273,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: transformListFullMatch
+			reg: transformListFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -1289,7 +1289,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: unitVal
+			enum: unitVal,
 		}],
 		initValue: 'objectBoundingBox',
 		applyTo: [],
@@ -1305,7 +1305,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: playbackorderVal
+			enum: playbackorderVal,
 		}],
 		initValue: 'all',
 		applyTo: [],
@@ -1321,7 +1321,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: numberListFullMatch
+			reg: numberListFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -1337,7 +1337,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}],
 		initValue: '0',
 		applyTo: [],
@@ -1353,7 +1353,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}],
 		initValue: '0',
 		applyTo: [],
@@ -1369,7 +1369,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}],
 		initValue: '0',
 		applyTo: [],
@@ -1385,7 +1385,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: booleanVal
+			enum: booleanVal,
 		}],
 		initValue: 'false',
 		applyTo: [],
@@ -1401,7 +1401,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: preservAspectRatioFullMatch
+			reg: preservAspectRatioFullMatch,
 		}],
 		initValue: 'xMidYMid meet',
 		applyTo: [],
@@ -1417,7 +1417,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: unitVal
+			enum: unitVal,
 		}],
 		initValue: 'userSpaceOnUse.',
 		applyTo: [],
@@ -1433,17 +1433,17 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: lengthFullMatch
+			reg: lengthFullMatch,
 		}, {
 			type: 'reg',
-			reg: percentageFullMatch
+			reg: percentageFullMatch,
 		}],
 		initValue: [{
 			val: '50%',
-			tag: ['radialGradient']
+			tag: ['radialGradient'],
 		}, {
 			val: '0',
-			tag: ['circle']
+			tag: ['circle'],
 		}],
 		applyTo: [],
 	},
@@ -1458,7 +1458,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: numberOptionalFullMatch
+			reg: numberOptionalFullMatch,
 		}],
 		initValue: '0',
 		applyTo: [],
@@ -1474,17 +1474,17 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: lengthFullMatch
+			reg: lengthFullMatch,
 		}, {
 			type: 'reg',
-			reg: percentageFullMatch
+			reg: percentageFullMatch,
 		}, {
 			type: 'enum',
-			enum: alignXVal
+			enum: alignXVal,
 		}],
 		initValue: [{
 			val: '0',
-			tag: ['marker']
+			tag: ['marker'],
 		}],
 		applyTo: [],
 	},
@@ -1499,17 +1499,17 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: lengthFullMatch
+			reg: lengthFullMatch,
 		}, {
 			type: 'reg',
-			reg: percentageFullMatch
+			reg: percentageFullMatch,
 		}, {
 			type: 'enum',
-			enum: alignYVal
+			enum: alignYVal,
 		}],
 		initValue: [{
 			val: '0',
-			tag: ['marker']
+			tag: ['marker'],
 		}],
 		applyTo: [],
 	},
@@ -1537,10 +1537,10 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}, {
 			type: 'string',
-			string: 'indefinite'
+			string: 'indefinite',
 		}],
 		initValue: '',
 		applyTo: [],
@@ -1556,10 +1556,10 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: clockFullMatch
+			reg: clockFullMatch,
 		}, {
 			type: 'string',
-			string: 'indefinite'
+			string: 'indefinite',
 		}],
 		initValue: '',
 		applyTo: [],
@@ -1588,7 +1588,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: restartVal
+			enum: restartVal,
 		}],
 		initValue: 'always',
 		applyTo: [],
@@ -1604,7 +1604,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: cssNameFullMatch
+			reg: cssNameFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -1620,11 +1620,11 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}, {
 			type: 'enum',
 			enum: rotateVal,
-			tag: ['animateMotion']
+			tag: ['animateMotion'],
 		}],
 		initValue: '0',
 		applyTo: [],
@@ -1640,13 +1640,13 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: lengthFullMatch
+			reg: lengthFullMatch,
 		}, {
 			type: 'reg',
-			reg: percentageFullMatch
+			reg: percentageFullMatch,
 		}, {
 			type: 'string',
-			string: 'auto'
+			string: 'auto',
 		}],
 		initValue: 'auto',
 		applyTo: [],
@@ -1662,13 +1662,13 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: lengthFullMatch
+			reg: lengthFullMatch,
 		}, {
 			type: 'reg',
-			reg: percentageFullMatch
+			reg: percentageFullMatch,
 		}, {
 			type: 'string',
-			string: 'auto'
+			string: 'auto',
 		}],
 		initValue: 'auto',
 		applyTo: [],
@@ -1684,7 +1684,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}],
 		initValue: '0',
 		applyTo: [],
@@ -1700,7 +1700,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}],
 		initValue: '0',
 		applyTo: [],
@@ -1716,7 +1716,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'enum',
-			enum: sideVal
+			enum: sideVal,
 		}],
 		initValue: 'left',
 		applyTo: [],
@@ -1732,7 +1732,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}],
 		initValue: '1',
 		applyTo: [],
@@ -1748,7 +1748,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: spacingVal
+			enum: spacingVal,
 		}],
 		initValue: 'exact',
 		applyTo: [],
@@ -1764,7 +1764,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}],
 		initValue: '1',
 		applyTo: [],
@@ -1780,7 +1780,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}],
 		initValue: '1',
 		applyTo: [],
@@ -1796,7 +1796,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: spreadMethodVal
+			enum: spreadMethodVal,
 		}],
 		initValue: 'pad',
 		applyTo: [],
@@ -1812,10 +1812,10 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: lengthFullMatch
+			reg: lengthFullMatch,
 		}, {
 			type: 'reg',
-			reg: percentageFullMatch
+			reg: percentageFullMatch,
 		}],
 		initValue: '0',
 		applyTo: [],
@@ -1831,14 +1831,14 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberOptionalFullMatch
+			reg: numberOptionalFullMatch,
 		}],
 		initValue: [{
 			val: '2',
-			tag: ['feDropShadow']
+			tag: ['feDropShadow'],
 		}, {
 			val: '0',
-			tag: ['feGaussianBlur']
+			tag: ['feGaussianBlur'],
 		}],
 		applyTo: [],
 	},
@@ -1853,7 +1853,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: stitchVal
+			enum: stitchVal,
 		}],
 		initValue: 'noStitch',
 		applyTo: [],
@@ -1882,7 +1882,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}],
 		initValue: '1',
 		applyTo: [],
@@ -1911,7 +1911,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: integerFullMatch
+			reg: integerFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -1927,7 +1927,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: numberListFullMatch
+			reg: numberListFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -1943,10 +1943,10 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: nameFullMatch
+			reg: nameFullMatch,
 		}, {
 			type: 'enum',
-			enum: targetVal
+			enum: targetVal,
 		}],
 		initValue: '_self',
 		applyTo: [],
@@ -1962,7 +1962,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: integerFullMatch
+			reg: integerFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -1978,7 +1978,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: integerFullMatch
+			reg: integerFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -1994,10 +1994,10 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: lengthFullMatch
+			reg: lengthFullMatch,
 		}, {
 			type: 'reg',
-			reg: percentageFullMatch
+			reg: percentageFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -2013,7 +2013,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: timelinebeginVal
+			enum: timelinebeginVal,
 		}],
 		initValue: 'loadend',
 		applyTo: [],
@@ -2055,7 +2055,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false, // 在 combine-transform 中单独处理
 		legalValues: [{
 			type: 'reg',
-			reg: transformListFullMatch
+			reg: transformListFullMatch,
 		}],
 		initValue: '',
 		applyTo: ['svg', 'g', 'symbol', 'marker', 'a', 'switch', 'use', 'foreignObject', 'unknown'].concat(graphicsElements),
@@ -2072,32 +2072,32 @@ const _regularAttr: IRegularAttrDefine = {
 		legalValues: [{
 			type: 'enum',
 			enum: animateTransformType,
-			tag: ['animateTransform']
+			tag: ['animateTransform'],
 		}, {
 			type: 'enum',
 			enum: feColorMatrixType,
-			tag: ['feColorMatrix']
+			tag: ['feColorMatrix'],
 		}, {
 			type: 'enum',
 			enum: feFuncType,
-			tag: ['feFuncA', 'feFuncB', 'feFuncG', 'feFuncR']
+			tag: ['feFuncA', 'feFuncB', 'feFuncG', 'feFuncR'],
 		}, {
 			type: 'enum',
 			enum: feTurbulenceType,
-			tag: ['feTurbulence']
+			tag: ['feTurbulence'],
 		}],
 		initValue: [{
 			val: 'translate',
-			tag: ['animateTransform']
+			tag: ['animateTransform'],
 		}, {
 			val: 'matrix',
-			tag: ['feColorMatrix']
+			tag: ['feColorMatrix'],
 		}, {
 			val: 'identity',
-			tag: ['feFuncA', 'feFuncB', 'feFuncG', 'feFuncR']
+			tag: ['feFuncA', 'feFuncB', 'feFuncG', 'feFuncR'],
 		}, {
 			val: 'turbulence',
-			tag: ['feTurbulence']
+			tag: ['feTurbulence'],
 		}],
 		applyTo: [],
 	},
@@ -2113,7 +2113,7 @@ const _regularAttr: IRegularAttrDefine = {
 		legalValues: [{
 			type: 'reg',
 			reg: numberListFullMatch,
-			tag: ['feColorMatrix']
+			tag: ['feColorMatrix'],
 		}],
 		initValue: '',
 		applyTo: [],
@@ -2129,7 +2129,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: viewBoxFullMatch
+			reg: viewBoxFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -2145,23 +2145,23 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: lengthFullMatch
+			reg: lengthFullMatch,
 		}, {
 			type: 'reg',
-			reg: percentageFullMatch
+			reg: percentageFullMatch,
 		}],
 		initValue: [{
 			val: '100%',
-			tag: ['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDropShadow', 'feFlood', 'feGaussianBlur', 'feImage', 'feMerge', 'feMorphology', 'feOffset', 'feSpecularLighting', 'feTile', 'feTurbulence']
+			tag: ['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDropShadow', 'feFlood', 'feGaussianBlur', 'feImage', 'feMerge', 'feMorphology', 'feOffset', 'feSpecularLighting', 'feTile', 'feTurbulence'],
 		}, {
 			val: '120%',
-			tag: ['filter', 'mask']
+			tag: ['filter', 'mask'],
 		}, {
 			val: '0',
-			tag: ['pattern']
+			tag: ['pattern'],
 		}, {
 			val: 'auto',
-			tag: ['svg', 'image', 'rect', 'foreignObject']
+			tag: ['svg', 'image', 'rect', 'foreignObject'],
 		}],
 		applyTo: [],
 	},
@@ -2177,28 +2177,28 @@ const _regularAttr: IRegularAttrDefine = {
 		legalValues: [{
 			type: 'reg',
 			reg: lengthFullMatch,
-			tag: ['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDropShadow', 'feFlood', 'feGaussianBlur', 'feImage', 'feMerge', 'feMorphology', 'feOffset', 'feSpecularLighting', 'feTile', 'feTurbulence', 'filter', 'mask', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text', 'tspan']
+			tag: ['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDropShadow', 'feFlood', 'feGaussianBlur', 'feImage', 'feMerge', 'feMorphology', 'feOffset', 'feSpecularLighting', 'feTile', 'feTurbulence', 'filter', 'mask', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text', 'tspan'],
 		}, {
 			type: 'reg',
 			reg: percentageFullMatch,
-			tag: ['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDropShadow', 'feFlood', 'feGaussianBlur', 'feImage', 'feMerge', 'feMorphology', 'feOffset', 'feSpecularLighting', 'feTile', 'feTurbulence', 'filter', 'mask', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text', 'tspan']
+			tag: ['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDropShadow', 'feFlood', 'feGaussianBlur', 'feImage', 'feMerge', 'feMorphology', 'feOffset', 'feSpecularLighting', 'feTile', 'feTurbulence', 'filter', 'mask', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text', 'tspan'],
 		}, {
 			type: 'reg',
 			reg: numberFullMatch,
-			tag: ['fePointLight', 'feSpotLight']
+			tag: ['fePointLight', 'feSpotLight'],
 		}],
 		initValue: [{
 			val: '0%',
-			tag: ['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDropShadow', 'feFlood', 'feGaussianBlur', 'feImage', 'feMerge', 'feMorphology', 'feOffset', 'feSpecularLighting', 'feTile', 'feTurbulence']
+			tag: ['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDropShadow', 'feFlood', 'feGaussianBlur', 'feImage', 'feMerge', 'feMorphology', 'feOffset', 'feSpecularLighting', 'feTile', 'feTurbulence'],
 		}, {
 			val: '0',
-			tag: ['fePointLight', 'feSpotLight', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text']
+			tag: ['fePointLight', 'feSpotLight', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text'],
 		}, {
 			val: '-10%',
-			tag: ['filter', 'mask']
+			tag: ['filter', 'mask'],
 		}, {
 			val: '',
-			tag: ['tspan']
+			tag: ['tspan'],
 		}],
 		applyTo: [],
 	},
@@ -2213,17 +2213,17 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: lengthFullMatch
+			reg: lengthFullMatch,
 		}, {
 			type: 'reg',
-			reg: percentageFullMatch
+			reg: percentageFullMatch,
 		}],
 		initValue: [{
 			val: '0',
-			tag: ['line']
+			tag: ['line'],
 		}, {
 			val: '0%',
-			tag: ['linearGradient']
+			tag: ['linearGradient'],
 		}],
 		applyTo: [],
 	},
@@ -2238,17 +2238,17 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: lengthFullMatch
+			reg: lengthFullMatch,
 		}, {
 			type: 'reg',
-			reg: percentageFullMatch
+			reg: percentageFullMatch,
 		}],
 		initValue: [{
 			val: '0',
-			tag: ['line']
+			tag: ['line'],
 		}, {
 			val: '100%',
-			tag: ['linearGradient']
+			tag: ['linearGradient'],
 		}],
 		applyTo: [],
 	},
@@ -2263,7 +2263,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: channelVal
+			enum: channelVal,
 		}],
 		initValue: 'A',
 		applyTo: [],
@@ -2279,7 +2279,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: URIFullMatch
+			reg: URIFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -2309,7 +2309,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: xmlSpaceVal
+			enum: xmlSpaceVal,
 		}],
 		initValue: 'default',
 		applyTo: [],
@@ -2325,7 +2325,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: URIFullMatch
+			reg: URIFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -2341,7 +2341,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: URIFullMatch
+			reg: URIFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -2357,7 +2357,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: URIFullMatch
+			reg: URIFullMatch,
 		}],
 		initValue: '',
 		applyTo: [],
@@ -2374,28 +2374,28 @@ const _regularAttr: IRegularAttrDefine = {
 		legalValues: [{
 			type: 'reg',
 			reg: lengthFullMatch,
-			tag: ['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDropShadow', 'feFlood', 'feGaussianBlur', 'feImage', 'feMerge', 'feMorphology', 'feOffset', 'feSpecularLighting', 'feTile', 'feTurbulence', 'filter', 'mask', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text', 'tspan']
+			tag: ['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDropShadow', 'feFlood', 'feGaussianBlur', 'feImage', 'feMerge', 'feMorphology', 'feOffset', 'feSpecularLighting', 'feTile', 'feTurbulence', 'filter', 'mask', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text', 'tspan'],
 		}, {
 			type: 'reg',
 			reg: percentageFullMatch,
-			tag: ['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDropShadow', 'feFlood', 'feGaussianBlur', 'feImage', 'feMerge', 'feMorphology', 'feOffset', 'feSpecularLighting', 'feTile', 'feTurbulence', 'filter', 'mask', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text', 'tspan']
+			tag: ['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDropShadow', 'feFlood', 'feGaussianBlur', 'feImage', 'feMerge', 'feMorphology', 'feOffset', 'feSpecularLighting', 'feTile', 'feTurbulence', 'filter', 'mask', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text', 'tspan'],
 		}, {
 			type: 'reg',
 			reg: numberFullMatch,
-			tag: ['fePointLight', 'feSpotLight']
+			tag: ['fePointLight', 'feSpotLight'],
 		}],
 		initValue: [{
 			val: '0%',
-			tag: ['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDropShadow', 'feFlood', 'feGaussianBlur', 'feImage', 'feMerge', 'feMorphology', 'feOffset', 'feSpecularLighting', 'feTile', 'feTurbulence']
+			tag: ['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDropShadow', 'feFlood', 'feGaussianBlur', 'feImage', 'feMerge', 'feMorphology', 'feOffset', 'feSpecularLighting', 'feTile', 'feTurbulence'],
 		}, {
 			val: '0',
-			tag: ['fePointLight', 'feSpotLight', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text']
+			tag: ['fePointLight', 'feSpotLight', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text'],
 		}, {
 			val: '-10%',
-			tag: ['filter', 'mask']
+			tag: ['filter', 'mask'],
 		}, {
 			val: '',
-			tag: ['tspan']
+			tag: ['tspan'],
 		}],
 		applyTo: [],
 	},
@@ -2410,17 +2410,17 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: lengthFullMatch
+			reg: lengthFullMatch,
 		}, {
 			type: 'reg',
-			reg: percentageFullMatch
+			reg: percentageFullMatch,
 		}],
 		initValue: [{
 			val: '0',
-			tag: ['line']
+			tag: ['line'],
 		}, {
 			val: '0%',
-			tag: ['linearGradient']
+			tag: ['linearGradient'],
 		}],
 		applyTo: [],
 	},
@@ -2435,17 +2435,17 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: lengthFullMatch
+			reg: lengthFullMatch,
 		}, {
 			type: 'reg',
-			reg: percentageFullMatch
+			reg: percentageFullMatch,
 		}],
 		initValue: [{
 			val: '0',
-			tag: ['line']
+			tag: ['line'],
 		}, {
 			val: '0%',
-			tag: ['linearGradient']
+			tag: ['linearGradient'],
 		}],
 		applyTo: [],
 	},
@@ -2460,7 +2460,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: channelVal
+			enum: channelVal,
 		}],
 		initValue: 'A',
 		applyTo: [],
@@ -2476,7 +2476,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}],
 		initValue: '0',
 		applyTo: [],
@@ -2492,7 +2492,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: zoomAndPanVal
+			enum: zoomAndPanVal,
 		}],
 		initValue: 'disable',
 		applyTo: [],
@@ -2511,7 +2511,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: alignmentBaseline
+			enum: alignmentBaseline,
 		}],
 		initValue: 'baseline',
 		applyTo: ['tspan', 'textPath'],
@@ -2527,13 +2527,13 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: baselineShift
+			enum: baselineShift,
 		}, {
 			type: 'reg',
-			reg: lengthFullMatch
+			reg: lengthFullMatch,
 		}, {
 			type: 'reg',
-			reg: percentageFullMatch
+			reg: percentageFullMatch,
 		}],
 		initValue: '0',
 		applyTo: ['tspan', 'textPath'],
@@ -2549,10 +2549,10 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'string',
-			string: 'auto'
+			string: 'auto',
 		}, {
 			type: 'reg',
-			reg: rectFullMatch
+			reg: rectFullMatch,
 		}],
 		initValue: 'auto',
 		applyTo: viewport,
@@ -2569,20 +2569,20 @@ const _regularAttr: IRegularAttrDefine = {
 		legalValues: [
 			{
 				type: 'string',
-				string: 'none'
+				string: 'none',
 			},
 			{
 				type: 'enum',
-				enum: clipBox
+				enum: clipBox,
 			},
 			{
 				type: 'reg',
-				reg: funcIRIFullMatch
+				reg: funcIRIFullMatch,
 			},
 			{
 				type: 'reg',
-				reg: basicShapeFullMatch
-			}
+				reg: basicShapeFullMatch,
+			},
 		],
 		initValue: 'none',
 		applyTo: useContainerGraphics,
@@ -2598,7 +2598,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: nonzeroEvenodd
+			enum: nonzeroEvenodd,
 		}],
 		initValue: 'nonzero',
 		applyTo: ['use'].concat(graphicsElements),
@@ -2614,16 +2614,16 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: colorKeywords
+			enum: colorKeywords,
 		}, {
 			type: 'enum',
-			enum: systemColor
+			enum: systemColor,
 		}, {
 			type: 'enum',
-			enum: x11Colors
+			enum: x11Colors,
 		}, {
 			type: 'reg',
-			reg: colorFullMatch
+			reg: colorFullMatch,
 		}],
 		initValue: '',
 		applyTo: ['feFlood', 'feDiffuseLighting', 'feSpecularLighting', 'stop'].concat(shapeAndText),
@@ -2639,7 +2639,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: colorInterpolation
+			enum: colorInterpolation,
 		}],
 		initValue: 'sRGB',
 		applyTo: colorApply,
@@ -2655,7 +2655,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: colorInterpolation
+			enum: colorInterpolation,
 		}],
 		initValue: 'auto',
 		applyTo: colorApply,
@@ -2671,7 +2671,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: colorRendering
+			enum: colorRendering,
 		}],
 		initValue: 'auto',
 		applyTo: colorApply,
@@ -2687,7 +2687,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: cursorFullMatch
+			reg: cursorFullMatch,
 		}],
 		initValue: 'auto',
 		applyTo: useContainerGraphics,
@@ -2703,7 +2703,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: direction
+			enum: direction,
 		}],
 		initValue: 'ltr',
 		applyTo: textContentElements,
@@ -2719,7 +2719,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: display
+			enum: display,
 		}],
 		initValue: 'inline',
 		applyTo: ['svg', 'g', 'switch', 'a', 'foreignObject', 'use'].concat(graphicsElements),
@@ -2735,7 +2735,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: dominantBaseline
+			enum: dominantBaseline,
 		}],
 		initValue: 'auto',
 		applyTo: textContentElements,
@@ -2751,25 +2751,25 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: colorKeywords
+			enum: colorKeywords,
 		}, {
 			type: 'enum',
-			enum: systemColor
+			enum: systemColor,
 		}, {
 			type: 'enum',
-			enum: x11Colors
+			enum: x11Colors,
 		}, {
 			type: 'reg',
-			reg: colorFullMatch
+			reg: colorFullMatch,
 		}, {
 			type: 'enum',
-			enum: paintKeywords
+			enum: paintKeywords,
 		}, {
 			type: 'reg',
-			reg: funcIRIFullMatch
+			reg: funcIRIFullMatch,
 		}, {
 			type: 'reg',
-			reg: childFuncFullMatch
+			reg: childFuncFullMatch,
 		}],
 		initValue: 'black',
 		applyTo: shapeAndText,
@@ -2785,10 +2785,10 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: percentageFullMatch
+			reg: percentageFullMatch,
 		}, {
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}],
 		initValue: '1',
 		applyTo: shapeAndText,
@@ -2804,7 +2804,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: nonzeroEvenodd
+			enum: nonzeroEvenodd,
 		}],
 		initValue: 'nonzero',
 		applyTo: shapeAndText,
@@ -2820,10 +2820,10 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'string',
-			string: 'none'
+			string: 'none',
 		}, {
 			type: 'reg',
-			reg: filterListFullMatch
+			reg: filterListFullMatch,
 		}],
 		initValue: 'none',
 		applyTo: useContainerGraphics,
@@ -2839,16 +2839,16 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: colorKeywords
+			enum: colorKeywords,
 		}, {
 			type: 'enum',
-			enum: systemColor
+			enum: systemColor,
 		}, {
 			type: 'enum',
-			enum: x11Colors
+			enum: x11Colors,
 		}, {
 			type: 'reg',
-			reg: colorFullMatch
+			reg: colorFullMatch,
 		}],
 		initValue: 'black',
 		applyTo: ['feFlood'],
@@ -2864,10 +2864,10 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}, {
 			type: 'reg',
-			reg: percentageFullMatch
+			reg: percentageFullMatch,
 		}],
 		initValue: '1',
 		applyTo: ['feFlood'],
@@ -2909,16 +2909,16 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: lengthFullMatch
+			reg: lengthFullMatch,
 		}, {
 			type: 'reg',
-			reg: percentageFullMatch
+			reg: percentageFullMatch,
 		}, {
 			type: 'enum',
-			enum: absoluteSize
+			enum: absoluteSize,
 		}, {
 			type: 'enum',
-			enum: relativeSize
+			enum: relativeSize,
 		}],
 		initValue: 'medium',
 		applyTo: textContentElements,
@@ -2934,10 +2934,10 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'string',
-			string: 'none'
+			string: 'none',
 		}, {
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}],
 		initValue: 'none',
 		applyTo: textContentElements,
@@ -2953,7 +2953,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: fontStretch
+			enum: fontStretch,
 		}],
 		initValue: 'normal',
 		applyTo: textContentElements,
@@ -2969,7 +2969,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: fontStyle
+			enum: fontStyle,
 		}],
 		initValue: 'normal',
 		applyTo: textContentElements,
@@ -2985,7 +2985,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: fontVariant
+			enum: fontVariant,
 		}],
 		initValue: 'normal',
 		applyTo: textContentElements,
@@ -3001,7 +3001,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: fontWeightFullMatch
+			reg: fontWeightFullMatch,
 		}],
 		initValue: 'normal',
 		applyTo: textContentElements,
@@ -3017,7 +3017,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: textOrientationFullMatch
+			reg: textOrientationFullMatch,
 		}],
 		initValue: 'auto',
 		applyTo: textContentElements,
@@ -3033,7 +3033,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: colorRendering
+			enum: colorRendering,
 		}],
 		initValue: 'auto',
 		applyTo: ['image'],
@@ -3049,10 +3049,10 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'string',
-			string: 'normal'
+			string: 'normal',
 		}, {
 			type: 'reg',
-			reg: lengthFullMatch
+			reg: lengthFullMatch,
 		}],
 		initValue: 'normal',
 		applyTo: textContentElements,
@@ -3068,16 +3068,16 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: colorKeywords
+			enum: colorKeywords,
 		}, {
 			type: 'enum',
-			enum: systemColor
+			enum: systemColor,
 		}, {
 			type: 'enum',
-			enum: x11Colors
+			enum: x11Colors,
 		}, {
 			type: 'reg',
-			reg: colorFullMatch
+			reg: colorFullMatch,
 		}],
 		initValue: 'white',
 		applyTo: ['feDiffuseLighting', 'feSpecularLighting'],
@@ -3093,16 +3093,16 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'string',
-			string: 'normal'
+			string: 'normal',
 		}, {
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}, {
 			type: 'reg',
-			reg: percentageFullMatch
+			reg: percentageFullMatch,
 		}, {
 			type: 'reg',
-			reg: lengthFullMatch
+			reg: lengthFullMatch,
 		}],
 		initValue: 'normal',
 		applyTo: ['text'],
@@ -3131,10 +3131,10 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'string',
-			string: 'none'
+			string: 'none',
 		}, {
 			type: 'reg',
-			reg: funcIRIFullMatch
+			reg: funcIRIFullMatch,
 		}],
 		initValue: 'none',
 		applyTo: shapeElements,
@@ -3150,10 +3150,10 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'string',
-			string: 'none'
+			string: 'none',
 		}, {
 			type: 'reg',
-			reg: funcIRIFullMatch
+			reg: funcIRIFullMatch,
 		}],
 		initValue: 'none',
 		applyTo: shapeElements,
@@ -3169,10 +3169,10 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'string',
-			string: 'none'
+			string: 'none',
 		}, {
 			type: 'reg',
-			reg: funcIRIFullMatch
+			reg: funcIRIFullMatch,
 		}],
 		initValue: 'none',
 		applyTo: shapeElements,
@@ -3201,10 +3201,10 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}, {
 			type: 'reg',
-			reg: percentageFullMatch
+			reg: percentageFullMatch,
 		}],
 		initValue: '1',
 		applyTo: ['svg', 'g', 'symbol', 'marker', 'a', 'switch', 'use', 'unknown'].concat(graphicsElements),
@@ -3220,7 +3220,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: overflow
+			enum: overflow,
 		}],
 		initValue: 'visible',
 		applyTo: viewport,
@@ -3236,7 +3236,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: paintOrder
+			enum: paintOrder,
 		}],
 		initValue: 'normal',
 		applyTo: shapeAndText,
@@ -3252,7 +3252,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: pointerEvents
+			enum: pointerEvents,
 		}],
 		initValue: 'visiblePainted',
 		applyTo: useContainerGraphics,
@@ -3268,7 +3268,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: shapeRendering
+			enum: shapeRendering,
 		}],
 		initValue: 'auto',
 		applyTo: shapeElements,
@@ -3284,19 +3284,19 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: colorKeywords
+			enum: colorKeywords,
 		}, {
 			type: 'enum',
-			enum: systemColor
+			enum: systemColor,
 		}, {
 			type: 'enum',
-			enum: x11Colors
+			enum: x11Colors,
 		}, {
 			type: 'reg',
-			reg: colorFullMatch
+			reg: colorFullMatch,
 		}, {
 			type: 'reg',
-			reg: iccColorFullMatch
+			reg: iccColorFullMatch,
 		}],
 		initValue: 'black',
 		applyTo: ['stop'],
@@ -3312,10 +3312,10 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}, {
 			type: 'reg',
-			reg: percentageFullMatch
+			reg: percentageFullMatch,
 		}],
 		initValue: '1',
 		applyTo: ['stop'],
@@ -3331,25 +3331,25 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: colorKeywords
+			enum: colorKeywords,
 		}, {
 			type: 'enum',
-			enum: systemColor
+			enum: systemColor,
 		}, {
 			type: 'enum',
-			enum: x11Colors
+			enum: x11Colors,
 		}, {
 			type: 'reg',
-			reg: colorFullMatch
+			reg: colorFullMatch,
 		}, {
 			type: 'enum',
-			enum: paintKeywords
+			enum: paintKeywords,
 		}, {
 			type: 'reg',
-			reg: funcIRIFullMatch
+			reg: funcIRIFullMatch,
 		}, {
 			type: 'reg',
-			reg: childFuncFullMatch
+			reg: childFuncFullMatch,
 		}],
 		initValue: 'none',
 		applyTo: shapeAndText,
@@ -3365,10 +3365,10 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'string',
-			string: 'none'
+			string: 'none',
 		}, {
 			type: 'reg',
-			reg: dasharrayFullMatch
+			reg: dasharrayFullMatch,
 		}],
 		initValue: 'none',
 		applyTo: shapeAndText,
@@ -3384,10 +3384,10 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: lengthFullMatch
+			reg: lengthFullMatch,
 		}, {
 			type: 'reg',
-			reg: percentageFullMatch
+			reg: percentageFullMatch,
 		}],
 		initValue: '0',
 		applyTo: shapeAndText,
@@ -3403,7 +3403,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: linecap
+			enum: linecap,
 		}],
 		initValue: 'butt',
 		applyTo: shapeAndText,
@@ -3419,7 +3419,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: linejoin
+			enum: linejoin,
 		}],
 		initValue: 'miter',
 		applyTo: shapeAndText,
@@ -3435,7 +3435,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}],
 		initValue: '4',
 		applyTo: shapeAndText,
@@ -3451,10 +3451,10 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: true,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}, {
 			type: 'reg',
-			reg: percentageFullMatch
+			reg: percentageFullMatch,
 		}],
 		initValue: '1',
 		applyTo: shapeAndText,
@@ -3470,10 +3470,10 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: numberFullMatch
+			reg: numberFullMatch,
 		}, {
 			type: 'reg',
-			reg: percentageFullMatch
+			reg: percentageFullMatch,
 		}],
 		initValue: '1',
 		applyTo: shapeAndText,
@@ -3489,7 +3489,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: textAnchor
+			enum: textAnchor,
 		}],
 		initValue: 'start',
 		applyTo: textContentElements,
@@ -3505,7 +3505,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: textDecoration
+			enum: textDecoration,
 		}],
 		initValue: 'none',
 		applyTo: textContentElements,
@@ -3521,7 +3521,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: textOverflow
+			enum: textOverflow,
 		}],
 		initValue: 'auto',
 		applyTo: textContentElements,
@@ -3537,7 +3537,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: shapeRendering
+			enum: shapeRendering,
 		}],
 		initValue: 'auto',
 		applyTo: ['text'],
@@ -3553,7 +3553,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: unicodeBidi
+			enum: unicodeBidi,
 		}],
 		initValue: 'normal',
 		applyTo: textContentElements,
@@ -3569,10 +3569,10 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'string',
-			string: 'none'
+			string: 'none',
 		}, {
 			type: 'reg',
-			reg: vectorEffectFullMatch
+			reg: vectorEffectFullMatch,
 		}],
 		initValue: 'none',
 		applyTo: ['use'].concat(graphicsElements),
@@ -3588,7 +3588,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: visibility
+			enum: visibility,
 		}],
 		initValue: 'inherit',
 		applyTo: ['use', 'a'].concat(graphicsElements),
@@ -3604,7 +3604,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: whitespace
+			enum: whitespace,
 		}],
 		initValue: 'normal',
 		applyTo: textContentElements,
@@ -3620,13 +3620,13 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'string',
-			string: 'normal'
+			string: 'normal',
 		}, {
 			type: 'reg',
-			reg: lengthFullMatch
+			reg: lengthFullMatch,
 		}, {
 			type: 'reg',
-			reg: percentageFullMatch
+			reg: percentageFullMatch,
 		}],
 		initValue: 'normal',
 		applyTo: textContentElements,
@@ -3642,11 +3642,11 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: writingMode
+			enum: writingMode,
 		}],
 		initValue: 'lr-tb',
 		applyTo: ['text'],
-	}
+	},
 };
 
 const undefAttr: IRegularAttr = {
@@ -3667,7 +3667,7 @@ const undefAttr: IRegularAttr = {
 export interface ILegalValueItem {
 	type: 'enum' | 'reg' | 'attr' | 'string';
 	reg?: RegExp;
-	enum?: Object;
+	enum?: {};
 	tag?: string[];
 	string?: string;
 }
@@ -3683,15 +3683,15 @@ export interface IRegularAttr {
 	maybeSizeNumber: boolean;
 	maybeAccurateNumber: boolean;
 	legalValues: ILegalValueItem[];
-	initValue: string | {
+	initValue: string | Array<{
 		val: string;
 		tag: string[];
-	}[];
+	}>;
 	applyTo: string[];
 }
 
 export const regularAttr = new Proxy(_regularAttr, {
 	get(obj, prop: string): IRegularAttr {
 		return prop in obj ? obj[prop] : undefAttr;
-	}
+	},
 });

@@ -28,26 +28,26 @@ export const computeT = (absolute: number[], relative: number[], pathResult: IPa
 			pathResult.push({
 				type: 't',
 				from,
-				val: relative.slice()
+				val: relative.slice(),
 			});
 		} else {
 			pathResult.push({
 				type: 'T',
 				from,
-				val: absolute.slice()
+				val: absolute.slice(),
 			});
 		}
 	} else if (relLen < absLen) {
 		pathResult.push({
 			type: 't',
 			from,
-			val: relative.slice()
+			val: relative.slice(),
 		});
 	} else {
 		pathResult.push({
 			type: 'T',
 			from,
-			val: absolute.slice()
+			val: absolute.slice(),
 		});
 	}
 	return absolute.slice();

@@ -46,7 +46,7 @@ export class Node implements INode {
 			nodeName: this.nodeName,
 			nodeType: this.nodeType,
 			namespace: this.namespace,
-			textContent: this.textContent
+			textContent: this.textContent,
 		});
 
 		if (this._attributes) {
@@ -162,7 +162,7 @@ export class Node implements INode {
 			const newAttr: IAttr = {
 				name,
 				value,
-				fullname: name
+				fullname: name,
 			};
 			if (namespace) {
 				newAttr.fullname = `${namespace}:${name}`;
