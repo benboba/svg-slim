@@ -116,9 +116,11 @@ const canbeCombine = (node1: ITagNode, node2: ITagNode, attr: IAttr, combineFill
 	const noFillOpacity: boolean = execColor(styles.hasOwnProperty('fill') ? styles.fill.value : '').a === 1 && (!styles.hasOwnProperty('fill-opacity') || execOpacity(styles['fill-opacity'].value) === 1);
 	// fill 为空
 	const noFill: boolean = styles.hasOwnProperty('fill') && styles.fill.value === 'none' && (combineOpacity || (noOpacity && noStrokeOpacity));
+	// 填充规则不能是 evenodd 必须是 nonzero
+	const noEvenOdd: boolean = !styles.hasOwnProperty('fill-rule') || styles['fill-rule'].value !== 'evenodd';
 	// stroke 为空
 	const noStroke: boolean = (!styles.hasOwnProperty('stroke') || styles.stroke.value === 'none') && (combineOpacity || (noOpacity && noFillOpacity));
-	return noFill || (combineFill && noStroke)/* || noJoin(attr.value, node2.getAttribute('d'))*/;
+	return noFill || (combineFill && noStroke && noEvenOdd)/* || noJoin(attr.value, node2.getAttribute('d'))*/;
 };
 
 const getKey = (node: ITagNode): string => {
