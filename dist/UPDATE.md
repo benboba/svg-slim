@@ -1,5 +1,20 @@
 # 更新日志
 
+## 2019.09.18 v1.4.1
+
+### 综合
+
+* 升级 tslint 到 5.19.0 并更新部分规则
+
+### svg-slimming
+
+* **调整了默认规则的数值精度配置，现在默认数值尺寸类数值将保留小数点后 2 位（涉及规则：combine-transform、compute-path、shorten-decimal-digits）**
+* 现在 combine-path 规则会限制 fill-rule 属性不能为 evenodd，避免因未执行路径交叉判断便合并，导致意外的镂空问题
+* 修复了 compute-path 规则在只有 M 指令时会报错的一个 bug
+* 现在 compute-path 规则在无法解析 d 属性或只有 M 指令时会直接移除 path 节点
+* 修正了解析 style 标签的时机，现在不会在一次优化中多次重复的进行 style 标签解析和字符串化
+* 将 matchSelector 工具函数柯里化，以保证更加函数式的调用
+
 ## 2019.08.27 v1.4.0
 
 ### 综合

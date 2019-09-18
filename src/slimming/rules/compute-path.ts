@@ -8,6 +8,7 @@ import { execPath, IPathResultItem } from '../path/exec';
 import { traversalNode } from '../xml/traversal-node';
 import { ITagNode } from '../interface/node';
 import { stringifyPath } from '../path/stringify';
+import { rmNode } from '../xml/rm-node';
 
 const DPItemNormalize = (pathItem: IPathResultItem): IPathResultItem => {
 	switch (pathItem.type) {
@@ -79,7 +80,6 @@ export const computePath = async (rule: TConfigItem[], dom: INode): Promise<null
 	if (rule[0]) {
 		traversalNode<ITagNode>(propEq('nodeName', 'path'), node => {
 			const attrD = node.getAttribute('d');
-
 			if (attrD) {
 				let pathResult = doCompute(execPath(attrD));
 
@@ -89,13 +89,18 @@ export const computePath = async (rule: TConfigItem[], dom: INode): Promise<null
 				}
 
 				// 移除掉末尾无意义的 m 指令
-				let len = pathResult.length;
-				while (pathResult[len - 1].type.toLowerCase() === 'm') {
-					len--;
-					pathResult.length = len;
+				while (pathResult.length && pathResult[pathResult.length - 1].type.toLowerCase() === 'm') {
+					pathResult.pop();
+				}
+
+				if (!pathResult.length) {
+					rmNode(node);
+					return;
 				}
 
 				node.setAttribute('d', stringifyPath(pathResult, rule[PATH_CONFIG_DIGIT_1] as number, rule[PATH_CONFIG_DIGIT_2] as number));
+			} else {
+				rmNode(node);
 			}
 
 		}, dom);

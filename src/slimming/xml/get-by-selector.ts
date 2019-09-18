@@ -1,23 +1,25 @@
+import { both } from 'ramda';
 import { INode } from '../../node/index';
+import { ITagNode } from '../interface/node';
+import { ISelector, selectorUnitCombinator } from '../style/define';
 import { matchSelector } from '../style/match-selector';
 import { isTag } from './is-tag';
 import { traversalNode } from './traversal-node';
-import { ISelector, selectorUnitCombinator } from '../style/define';
-import { ITagNode } from '../interface/node';
 
 // 类似 querySelectorAll 的规则，找到所有符合条件的元素
 export const getBySelector = (dom: INode, selectors: ISelector[]): ITagNode[] => {
 	const len = selectors.length;
 	const result: ITagNode[] = [];
-	traversalNode<ITagNode>((node: INode) => isTag(node) && matchSelector(node, selectors[len - 1]), node => {
+	traversalNode<ITagNode>(both(isTag, matchSelector(selectors[len - 1])), node => {
 		let i = len - 2;
 		let currentNode: INode = node;
 		while (i >= 0) {
+			const matchI = matchSelector(selectors[i]);
 			switch (selectors[i].combinator) {
 				// 子选择器
 				case selectorUnitCombinator['>']:
 					if (currentNode.parentNode) {
-						if (!matchSelector(currentNode.parentNode, selectors[i])) {
+						if (!matchI(currentNode.parentNode)) {
 							return;
 						}
 						currentNode = currentNode.parentNode;
@@ -29,7 +31,7 @@ export const getBySelector = (dom: INode, selectors: ISelector[]): ITagNode[] =>
 					if (currentNode.parentNode) {
 						const brothers = (currentNode.parentNode as ITagNode).childNodes;
 						const index = brothers.indexOf(currentNode);
-						if (index <= 0 || !matchSelector(brothers[index - 1], selectors[i])) {
+						if (index <= 0 || !matchI(brothers[index - 1])) {
 							return;
 						}
 						currentNode = brothers[index - 1];
@@ -47,7 +49,7 @@ export const getBySelector = (dom: INode, selectors: ISelector[]): ITagNode[] =>
 						let _brother: INode | undefined;
 						for (let bi = _index; bi--;) {
 							_brother = _brothers[bi];
-							if (matchSelector(_brother, selectors[i])) {
+							if (matchI(_brother)) {
 								currentNode = _brother;
 								break;
 							}
@@ -62,7 +64,7 @@ export const getBySelector = (dom: INode, selectors: ISelector[]): ITagNode[] =>
 				default:
 					let parent = currentNode.parentNode;
 					while (parent) {
-						if (matchSelector(parent, selectors[i])) {
+						if (matchI(parent)) {
 							currentNode = parent;
 							break;
 						}

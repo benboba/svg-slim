@@ -1,14 +1,13 @@
-import { parse as cssParse, stringify as cssStringify, Stylesheet, StyleRules } from 'css';
+import { Rule, StyleRules } from 'css';
+import { has } from 'ramda';
 import { INode } from '../../node/index';
 import { createShortenID } from '../algorithm/create-shorten-id';
 import { TConfigItem } from '../config/config';
 import { regularAttr } from '../const/regular-attr';
 import { funcIRIToID, IRIFullMatch } from '../const/syntax';
-import { IExtendRule } from '../interface/extend-rule';
-import { ITagNode } from '../interface/node';
-import { shortenTag } from '../style/shorten-tag';
+import { IDomNode, ITagNode } from '../interface/node';
+import { traversalObj } from '../utils/traversal-obj';
 import { isTag } from '../xml/is-tag';
-import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
 
 const idSelectorReg = /#([^,\*#>+~:{\s\[\.]+)/gi;
@@ -18,15 +17,10 @@ interface IIDCache {
 	[propName: string]: [string, INode, string | null];
 }
 
-export const shortenID = async (rule: TConfigItem[], dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const shortenID = async (rule: TConfigItem[], dom: IDomNode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
-		const IDList: IIDCache = {};
 		let si = 0;
-		let cssNode: INode;
-		let cssContent: INode;
-		let parsedCss: Stylesheet;
-		let cssRules: StyleRules;
-
+		const IDList: IIDCache = {};
 		const shorten = (node: INode, attrname: string | null, key: string) => {
 			if (IDList.hasOwnProperty(key)) {
 				return IDList[key][0];
@@ -36,42 +30,36 @@ export const shortenID = async (rule: TConfigItem[], dom: INode): Promise<null> 
 			return sid;
 		};
 
-		// 首先取出所有被引用的 ID ，并缩短
-		traversalNode<ITagNode>(isTag, node => {
-			if (node.nodeName === 'style') {
-				cssNode = node;
-				cssContent = node.childNodes[0];
-				try {
-					parsedCss = cssParse(cssContent.textContent as string, { silent: true });
-					cssRules = parsedCss.stylesheet as StyleRules;
-					cssRules.rules.forEach((item: IExtendRule) => {
-						if (item.type === 'rule' && item.selectors) {
-							const selectors = item.selectors;
-							selectors.forEach((selector, selectorIndex) => {
-								selectors[selectorIndex] = selector.replace(idSelectorReg, (m, p: string) => `#${shorten(node, null, p)}`);
-							});
-						}
-					});
-					cssContent.textContent = shortenTag(cssStringify(parsedCss, { compress: true }));
-				} catch (e) {
-					rmNode(cssNode);
-				}
+		let cssRules: StyleRules;
 
-			} else {
-				node.attributes.forEach(attr => {
-					if (regularAttr[attr.fullname].maybeFuncIRI) {
-						const firi = funcIRIToID.exec(attr.value);
-						if (firi) {
-							attr.value = `url(#${shorten(node, attr.fullname, firi[2])})`;
-						}
-					} else if (regularAttr[attr.fullname].maybeIRI) {
-						const iri = IRIFullMatch.exec(attr.value);
-						if (iri) {
-							attr.value = `#${shorten(node, attr.fullname, iri[1])}`;
-						}
+		// 取出 ID 选择器，并缩短
+		if (dom.stylesheet) {
+			cssRules = dom.stylesheet.stylesheet as StyleRules;
+			traversalObj(has('selectors'), (ruleItem: Rule) => {
+				const selectors = ruleItem.selectors;
+				if (selectors) {
+					selectors.forEach((selector: string, selectorIndex) => {
+						selectors[selectorIndex] = selector.replace(idSelectorReg, (m, p: string) => `#${shorten(dom.styletag as ITagNode, null, p)}`);
+					});
+				}
+			}, cssRules.rules);
+		}
+
+		// 取出所有被属性引用的 ID ，并缩短
+		traversalNode<ITagNode>(isTag, node => {
+			node.attributes.forEach(attr => {
+				if (regularAttr[attr.fullname].maybeFuncIRI) {
+					const firi = funcIRIToID.exec(attr.value);
+					if (firi) {
+						attr.value = `url(#${shorten(node, attr.fullname, firi[2])})`;
 					}
-				});
-			}
+				} else if (regularAttr[attr.fullname].maybeIRI) {
+					const iri = IRIFullMatch.exec(attr.value);
+					if (iri) {
+						attr.value = `#${shorten(node, attr.fullname, iri[1])}`;
+					}
+				}
+			});
 		}, dom);
 
 		// 查找 dom 树，找到被引用的 ID ，替换为缩短后的值
@@ -95,24 +83,20 @@ export const shortenID = async (rule: TConfigItem[], dom: INode): Promise<null> 
 				item[1].removeAttribute(item[2]);
 			} else {
 				const reg = new RegExp(`#${item[0]}(?=[,\\*#>+~:{\\s\\[\\.]|$)`);
-				for (let ri = cssRules.rules.length; ri--;) {
-					const cssRule: IExtendRule = cssRules.rules[ri];
-					if (cssRule.selectors) {
-						for (let i = cssRule.selectors.length; i--;) {
-							if (reg.test(cssRule.selectors[i])) {
-								cssRule.selectors.splice(i, 1);
+				traversalObj(has('selectors'), (ruleItem: Rule, path) => {
+					const selectors = ruleItem.selectors;
+					if (selectors) {
+						for (let i = selectors.length; i--;) {
+							if (reg.test(selectors[i])) {
+								selectors.splice(i, 1);
 							}
 						}
-						if (!cssRule.selectors.length) {
-							cssRules.rules.splice(ri, 1);
+						if (!selectors.length) {
+							const parent = path[path.length - 1] as Rule[];
+							parent.splice(parent.indexOf(ruleItem), 1);
 						}
 					}
-				}
-				if (cssRules.rules.length) {
-					cssContent.textContent = shortenTag(cssStringify(parsedCss, { compress: true }));
-				} else {
-					rmNode(cssNode);
-				}
+				}, cssRules.rules);
 			}
 		});
 	}

@@ -1,6 +1,6 @@
 import { OPACITY_DIGIT } from '../const';
 
-export const DEFAULT_SIZE_DIGIT = 1;
+export const DEFAULT_SIZE_DIGIT = 2;
 export const DEFAULT_ACCURATE_DIGIT = 2;
 export const DEFAULT_MATRIX_DIGIT = 3;
 
