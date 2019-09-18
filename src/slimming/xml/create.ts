@@ -1,6 +1,9 @@
+import { stringify as cssStringify } from 'css';
 import { INode, NodeType } from '../../node/index';
+import { IDomNode, ITagNode } from '../interface/node';
+import { shortenTag } from '../style/shorten-tag';
 import { mixWhiteSpace } from '../utils/mix-white-space';
-import { ITagNode } from '../interface/node';
+import { rmNode } from './rm-node';
 
 export const createNode = (node: INode): string => {
 	let xml = '';
@@ -60,12 +63,20 @@ export const createTag = (node: ITagNode): string => {
 	return xml;
 };
 
-export const createXML = (dom?: ITagNode | null): string => {
+export const createXML = (dom?: IDomNode | null): string => {
 	if (!dom) {
 		return '';
 	}
 
 	let result = '';
+	if (dom.stylesheet) {
+		const cssText = shortenTag(cssStringify(dom.stylesheet, { compress: true }));
+		if (cssText) {
+			(dom.styletag as ITagNode).childNodes[0].textContent = cssText;
+		} else {
+			rmNode(dom.styletag as ITagNode);
+		}
+	}
 	dom.childNodes.forEach(node => {
 		result += createNode(node);
 	});

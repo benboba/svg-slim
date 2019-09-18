@@ -1,4 +1,5 @@
-import { INode, IAttr } from '../../node/';
+import { Stylesheet } from 'css';
+import { IAttr, INode } from '../../node/';
 import { ISeletorPriority } from '../style/define';
 
 export interface IStyleObj {
@@ -14,6 +15,11 @@ export interface ITagNode extends INode {
 	readonly attributes: IAttr[];
 	cloneNode(): ITagNode;
 	styles?: IStyleObj;
+}
+
+export interface IDomNode extends ITagNode {
+	stylesheet?: Stylesheet;
+	styletag?: ITagNode;
 }
 
 export interface ITextNode extends INode {

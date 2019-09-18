@@ -13,19 +13,16 @@ interface ISvgSlimming {
 }
 
 const exportFunc: ISvgSlimming = async (data: string, userConfig: unknown = null): Promise<string> => new Promise((resolve, reject) => {
-	parse(data).then((dom: INode) => {
+	parse(data).then(async (dom: INode) => {
 		const finalConfig = mergeConfig(userConfig);
-		(async () => { // tslint:disable-line no-floating-promises
-			for (const item of rules) {
-				if (item[0]) {
-					await (item[1] as (n: INode) => Promise<null>)(dom as ITagNode);
-				} else {
-					await (item[1] as (c: TConfigItem[], n: INode) => Promise<null>)(finalConfig[item[2]], dom as ITagNode);
-				}
+		for (const item of rules) {
+			if (item[0]) {
+				await (item[1] as (n: INode) => Promise<null>)(dom as ITagNode);
+			} else {
+				await (item[1] as (c: TConfigItem[], n: INode) => Promise<null>)(finalConfig[item[2]], dom as ITagNode);
 			}
-			resolve(createXML(dom as ITagNode));
-		})();
-
+		}
+		resolve(createXML(dom as ITagNode));
 	}, reject);
 });
 

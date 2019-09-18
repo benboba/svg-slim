@@ -1,20 +1,17 @@
-import { Declaration, parse as cssParse, stringify as cssStringify, StyleRules } from 'css';
+import { Declaration, StyleRules } from 'css';
 import { both, has, pipe, toLower } from 'ramda';
-import { INode } from '../../node';
 import { exec } from '../color/exec';
 import { TConfigItem } from '../config/config';
 import { FF, Hundred, OPACITY_DIGIT } from '../const';
 import { regularAttr } from '../const/regular-attr';
-import { ITagNode } from '../interface/node';
+import { IDomNode, ITagNode } from '../interface/node';
 import { toFixed } from '../math/tofixed';
 import { execStyle } from '../style/exec';
-import { shortenTag } from '../style/shorten-tag';
 import { stringifyStyle } from '../style/stringify';
 import { fillIn } from '../utils/fillin';
 import { toHex } from '../utils/tohex';
 import { traversalObj } from '../utils/traversal-obj';
 import { isTag } from '../xml/is-tag';
-import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
 
 const operateHex = pipe(toHex, toLower, fillIn(2));
@@ -186,7 +183,7 @@ const formatColor = (rgba: boolean, str: string, digit: number): string => {
 	return s;
 };
 
-export const shortenColor = async (rule: TConfigItem[], dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const shortenColor = async (rule: TConfigItem[], dom: IDomNode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		const digit = Math.min(OPACITY_DIGIT, rule[2] as number);
 		traversalNode<ITagNode>(isTag, node => {
@@ -203,23 +200,17 @@ export const shortenColor = async (rule: TConfigItem[], dom: INode): Promise<nul
 					attr.value = stringifyStyle(style);
 				}
 			});
-
-			if (node.nodeName === 'style') {
-				try {
-					// 缩短 style 标签内的数值
-					const parsedCss = cssParse(node.childNodes[0].textContent as string, { silent: true });
-					traversalObj(both(has('property'), has('value')), (cssRule: Declaration) => {
-						if (regularAttr[cssRule.property as string].maybeColor) { // 可以模糊处理的数字
-							cssRule.value = formatColor(rule[1] as boolean, cssRule.value as string, digit);
-						}
-					}, (parsedCss.stylesheet as StyleRules).rules);
-					node.childNodes[0].textContent = shortenTag(cssStringify(parsedCss, { compress: true }));
-				} catch (e) {
-					rmNode(node);
-				}
-
-			}
 		}, dom);
+
+		if (dom.stylesheet) {
+			// 缩短 style 标签内的颜色
+			const parsedCss = dom.stylesheet.stylesheet as StyleRules;
+			traversalObj(both(has('property'), has('value')), (cssRule: Declaration) => {
+				if (regularAttr[cssRule.property as string].maybeColor) { // 可能为颜色的属性
+					cssRule.value = formatColor(rule[1] as boolean, cssRule.value as string, digit);
+				}
+			}, parsedCss.rules);
+		}
 	}
 	resolve();
 });

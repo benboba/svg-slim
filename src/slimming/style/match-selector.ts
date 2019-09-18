@@ -1,8 +1,9 @@
+import { curry } from 'ramda';
 import { INode } from '../../node';
-import { ISelector, attrModifier } from './define';
 import { validPseudoClass, validPseudoElement } from '../const/definitions';
-import { traversalNode } from '../xml/traversal-node';
 import { isTag } from '../xml/is-tag';
+import { traversalNode } from '../xml/traversal-node';
+import { attrModifier, ISelector } from './define';
 
 // 验证 className
 const checkClass = (node: INode, selector: ISelector): boolean => {
@@ -118,7 +119,7 @@ const checkPseudo = (node: INode, selector: ISelector): boolean => {
 };
 
 // 验证 selector 和 node 是否匹配
-export const matchSelector = (node?: INode, selector?: ISelector): boolean => {
+export const matchSelector = (selector?: ISelector) => (node?: INode): boolean => {
 	if (!selector || !node) {
 		return false;
 	}

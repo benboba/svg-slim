@@ -2,7 +2,7 @@ import { Declaration, parse as cssParse, Rule, Stylesheet, StyleRules } from 'cs
 import { propEq } from 'ramda';
 import { IAttr } from '../../node';
 import { regularAttr } from '../const/regular-attr';
-import { IStyleObj, ITagNode } from '../interface/node';
+import { IStyleObj, ITagNode, IDomNode } from '../interface/node';
 import { ISeletorPriority } from '../style/define';
 import { execStyle } from '../style/exec';
 import { execSelector } from '../style/exec-selector';
@@ -19,7 +19,7 @@ interface IStyleItem {
 	nodes: ITagNode[];
 }
 
-const check = (dom: ITagNode, styleItems: IStyleItem[]) => {
+const check = (dom: IDomNode, styleItems: IStyleItem[]) => {
 	traversalNode<ITagNode>(isTag, node => {
 		let nodeStyle: IStyleObj = {};
 		if (node.styles) {
@@ -108,7 +108,7 @@ const check = (dom: ITagNode, styleItems: IStyleItem[]) => {
 };
 
 // 解析样式树，为每个节点增加 styles 属性，标记当前节点生效的样式信息
-export const execStyleTree = (dom: ITagNode) => {
+export const execStyleTree = (dom: IDomNode) => {
 	// 首先清理掉曾经被解析过的样式树
 	traversalNode<ITagNode>(isTag, node => {
 		if (node.styles) {
@@ -116,49 +116,39 @@ export const execStyleTree = (dom: ITagNode) => {
 		}
 	}, dom);
 
-	let parsedCss: Stylesheet;
 	const styleItems: IStyleItem[] = [];
 
-	// 首先对 style 标签做处理，解析出所有起作用的 css 定义，并记录它们的选择器权重和影响到的节点
-	traversalNode<ITagNode>(propEq('nodeName', 'style'), node => {
-		if (!node.childNodes.length) {
-			return;
-		}
-		const cssContent = node.childNodes[0];
-		try {
-			parsedCss = cssParse(cssContent.textContent as string);
-			(parsedCss.stylesheet as StyleRules).rules.forEach((styleRule: Rule) => {
-				// 只针对规则类
-				if (styleRule.type === 'rule' && styleRule.declarations && styleRule.selectors) {
-					const styles: IAttr[] = [];
-					styleRule.declarations.forEach((ruleItem: Declaration) => {
-						if (ruleItem.property && ruleItem.value) {
-							styles.push({
-								name: ruleItem.property,
-								fullname: ruleItem.property,
-								value: ruleItem.value,
-							});
-						}
-					});
+	// 记录 stylesheet 选择器权重和影响到的节点
+	if (dom.stylesheet) {
+		(dom.stylesheet.stylesheet as StyleRules).rules.forEach((styleRule: Rule) => {
+			// 只针对规则类
+			if (styleRule.type === 'rule' && styleRule.declarations && styleRule.selectors) {
+				const styles: IAttr[] = [];
+				styleRule.declarations.forEach((ruleItem: Declaration) => {
+					if (ruleItem.property && ruleItem.value) {
+						styles.push({
+							name: ruleItem.property,
+							fullname: ruleItem.property,
+							value: ruleItem.value,
+						});
+					}
+				});
 
-					for (let si = styleRule.selectors.length; si--;) {
-						const selector = execSelector(styleRule.selectors[si]);
-						const selectorPriority = getSelectorPriority(selector);
-						const nodes = getBySelector(dom, selector);
-						if (nodes.length) {
-							styleItems.push({
-								styles,
-								selectorPriority,
-								nodes,
-							});
-						}
+				for (let si = styleRule.selectors.length; si--;) {
+					const selector = execSelector(styleRule.selectors[si]);
+					const selectorPriority = getSelectorPriority(selector);
+					const nodes = getBySelector(dom, selector);
+					if (nodes.length) {
+						styleItems.push({
+							styles,
+							selectorPriority,
+							nodes,
+						});
 					}
 				}
-			});
-		} catch (e) {
-			rmNode(node);
-		}
-	}, dom);
+			}
+		});
+	}
 
 	check(dom, styleItems);
 };
