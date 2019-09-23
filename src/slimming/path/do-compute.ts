@@ -25,14 +25,19 @@ export const doCompute = (pathArr: IPathItem[]): IPathResultItem[] => {
 		switch (pathItem.type) {
 			// 平移 - 绝对
 			case 'M':
-				// 移动命令只有最后一组有意义
-				const lastM = pathItem.val.length - pathItem.val.length % 2 - 2;
-				pos = computeM(pathItem.val, [minus(pathItem.val[lastM], pos[0]), minus(pathItem.val[lastM + 1], pos[1])], pathResult, pos);
+				// 当移动指令超过 2 个时，后续指令按平移处理 - fixed@v1.4.2
+				for (let i = 0, l = pathItem.val.length; i < l; i += 2) {
+					const handler = (i === 0) ? computeM : computeL;
+					pos = handler([pathItem.val[i], pathItem.val[i + 1]], [minus(pathItem.val[i], pos[0]), minus(pathItem.val[i + 1], pos[1])], pathResult, pos);
+				}
 				break;
 			// 平移 - 相对
 			case 'm':
-				const lastm = pathItem.val.length - pathItem.val.length % 2 - 2;
-				pos = computeM([plus(pathItem.val[lastm], pos[0]), plus(pathItem.val[lastm + 1], pos[1])], pathItem.val, pathResult, pos);
+				// 当移动指令超过 2 个时，后续指令按平移处理 - fixed@v1.4.2
+				for (let i = 0, l = pathItem.val.length; i < l; i += 2) {
+					const handler = (i === 0) ? computeM : computeL;
+					pos = handler([plus(pathItem.val[i], pos[0]), plus(pathItem.val[i + 1], pos[1])], [pathItem.val[i], pathItem.val[i + 1]], pathResult, pos);
+				}
 				break;
 			// 水平直线 - 绝对
 			case 'H':
