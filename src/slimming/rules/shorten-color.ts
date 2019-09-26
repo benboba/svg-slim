@@ -166,7 +166,7 @@ const formatColor = (rgba: boolean, str: string, digit: number): string => {
 			if (rgba) {
 				s = `#${operateHex(color.r)}${operateHex(color.g)}${operateHex(color.b)}${has(`${color.a * Hundred}`, alphaMap) ? operateHex(alphaMap[`${color.a * Hundred}` as keyof typeof alphaMap]) : operateHex(Math.round(color.a * FF))}`;
 			} else {
-				s = `rgb(${color.r},${color.g},${color.a},${`${toFixed(digit, color.a)}`.replace(/^0\./, '.')})`;
+				s = `rgb(${color.r},${color.g},${color.b},${`${toFixed(digit, color.a)}`.replace(/^0\./, '.')})`;
 			}
 		} else {
 			s = `#${operateHex(color.r)}${operateHex(color.g)}${operateHex(color.b)}`;

@@ -21,7 +21,9 @@ describe('rules/shorten-color', () => {
 		const xml = `<svg>
 		<style>
 		.a {
+			color: rgb(0,0,0,.5);
 			fill: currentColor;
+			stroke: rgba(0,0,0,0.5);
 			x: 100;
 		}
 		</style>
@@ -30,7 +32,7 @@ describe('rules/shorten-color', () => {
 		const dom = await parse(xml) as ITagNode;
 		await combineStyle(dom);
 		await shortenColor([true, false, 4], dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><style>.a{fill:currentColor;x:100}</style><rect style="fill:red" stroke="#639" color="rgb(255,255,0,0)"/></svg>');
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><style>.a{color:rgb(0,0,0,.5);fill:currentColor;stroke:rgb(0,0,0,.5);x:100}</style><rect style="fill:red" stroke="#639" color="rgb(255,255,255,0)"/></svg>');
 	});
 
 	it('rgba 及 style 无法解析', async () => {

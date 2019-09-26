@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2019.09.26 v1.4.3
+
+### svg-slimming
+
+* 修复了 shorten-color 优化 rgba 颜色，当 alpha 值小于 1 时结果不正确的 bug
+* 修复了 rm-attribute 会意外移除 rgb(r,g,b,a)、rgba(r,g,b)、hsl(h,s,l,a)、hsla(h,s,l) 格式颜色属性的问题
+
 ## 2019.09.23 v1.4.2
 
 ### svg-slimming
