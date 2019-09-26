@@ -149,12 +149,10 @@ export const rectFullMatch = new RegExp(`rect${paren}${numberPattern}(?:(?:${com
 export const basicShapeFullMatch = /^(?:inset|circle|ellipse|polygon)\([^\(\)]+\)$/;
 
 // color
-const rgb = `rgb${paren}(?:${numberPattern}${commaWsp}${numberPattern}${commaWsp}${numberPattern}|${numberPattern}%${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%)${rParen}`;
-const rgba = `rgba${paren}(?:${numberPattern}${commaWsp}${numberPattern}${commaWsp}${numberPattern}${commaWsp}${numberPattern}%?|${numberPattern}%${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%?)${rParen}`;
-const hsl = `hsl${paren}${numberPattern}${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%${rParen}`;
-const hsla = `hsla${paren}${numberPattern}${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%?${rParen}`;
+const rgb = `rgba?${paren}(?:${numberPattern}${commaWsp}${numberPattern}${commaWsp}${numberPattern}${commaWsp}${numberPattern}%?|${numberPattern}%${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%?)${rParen}`;
+const hsl = `hsla?${paren}${numberPattern}${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%?${rParen}`;
 const hexColor = '#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})';
-export const colorFullMatch = new RegExp(`^(?:${rgb}|${rgba}|${hsl}|${hsla}|${hexColor})$`);
+export const colorFullMatch = new RegExp(`^(?:${rgb}|${hsl}|${hexColor})$`);
 export const iccColorFullMatch = new RegExp(`^icc-color${paren}${Name}(?:${commaWsp}${numberPattern})+${rParen}$`, uModifier);
 
 export const childFuncFullMatch = /^child\(\d+\)$/;
@@ -162,7 +160,7 @@ export const childFuncFullMatch = /^child\(\d+\)$/;
 // filter
 const blur = `blur${paren}(?:${length})?${rParen}`;
 const filterFuncNumberPercentage = `(?:brightness|contrast|grayscale|invert|opacity|saturate|sepia)${paren}(?:${numberPattern}%?)?${rParen}`;
-const dropShadow = `drop-shadow${paren}(?:(?:${rgb}|${rgba}|${hsl}|${hsla}|${hexColor}|${Object.keys(colorKeywords).join('|')}|${Object.keys(systemColor).join('|')}|${Object.keys(x11Colors).join('|')})?${commaWsp}(?:${length}|${numberPattern}%){2,3})?${rParen}`;
+const dropShadow = `drop-shadow${paren}(?:(?:${rgb}|${hsl}|${hexColor}|${Object.keys(colorKeywords).join('|')}|${Object.keys(systemColor).join('|')}|${Object.keys(x11Colors).join('|')})?${commaWsp}(?:${length}|${numberPattern}%){2,3})?${rParen}`;
 const hueRotate = `hue-rotate${paren}(?:${angel}|${zero})?${rParen}`;
 const filterFunc = `(?:${blur}|${filterFuncNumberPercentage}|${dropShadow}|${hueRotate})`;
 export const filterListFullMatch = new RegExp(`(?:(?:${filterFunc}|${url})${commaWsp})+`);

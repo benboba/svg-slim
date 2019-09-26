@@ -127,10 +127,10 @@ tester(
         onload="console.log(123)"
         version=""
     >
-		<path d="M0,9,0" />
+		<path d="M0,9,0" fill="rgb(0,0,0,.5)" />
 		<feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.1 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
     </svg>`,
-	'<svg><path d="M0,9,0"/><feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0" in="shadowBlurOuter1"/></svg>', {
+	'<svg><path d="M0,9,0" fill="rgb(0,0,0,.5)"/><feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0" in="shadowBlurOuter1"/></svg>', {
 		'rm-attribute': [true, true, false, false]
 	}
 );
@@ -274,6 +274,16 @@ tester(
     </svg>`,
 	'<svg><style>.a{fill:red}</style><rect class="a" width="100" height="100"/><rect class="a" width="100" height="100"/></svg>', {
 		'shorten-class': true
+	}
+);
+
+tester(
+	'shorten-color',
+	`<svg>
+    <rect fill="rgba(0,0,0,0.5)" width="100" height="100" />
+    </svg>`,
+	'<svg><rect fill="rgb(0,0,0,.5)" width="100" height="100"/></svg>', {
+		'shorten-color': [true, false]
 	}
 );
 
