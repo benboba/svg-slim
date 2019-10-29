@@ -21,6 +21,10 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 
 其中 svgcode 为字符串格式的 svg 文本，config 为用户自定义的优化配置
 
+## 使用 svg-slimming-loader
+
+[svg-slimming-loader](https://github.com/benboba/svg-slimming-loader) 是 webpack 的 loader 插件
+
 ## 优化配置
 
 优化配置是一个 JSON 格式的对象，其中 key 为对应的配置项，value 为布尔值或数组，当value为数组的时候，第一项为配置开关，后续项为扩展配置参数
