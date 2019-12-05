@@ -23,7 +23,11 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 
 ## 使用 svg-slimming-loader
 
-[svg-slimming-loader](https://github.com/benboba/svg-slimming-loader) 是 webpack 的 loader 插件
+[svg-slimming-loader](https://github.com/benboba/svg-slimming-loader) 是 webpack 的 loader 插件，支持对 import 的 SVG 文件进行优化
+
+## 使用 postcss-svg-slimming
+
+[postcss-svg-slimming](https://github.com/benboba/postcss-svg-slimming) 是 postcss 的插件，支持优化 CSS 中内联的 SVG
 
 ## 优化配置
 
