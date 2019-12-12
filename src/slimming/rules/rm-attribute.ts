@@ -1,11 +1,7 @@
-import { INode } from '../../node/index';
 import { equals } from 'ramda';
-
-import { TConfigItem } from '../config/config';
 import { animationAttributes, animationElements, ariaAttributes, eventAttributes } from '../const/definitions';
-import { IRegularAttr, regularAttr } from '../const/regular-attr';
-import { IRegularTag, regularTag } from '../const/regular-tag';
-import { ITagNode } from '../interface/node';
+import { regularAttr } from '../const/regular-attr';
+import { regularTag } from '../const/regular-tag';
 import { legalValue } from '../validate/legal-value';
 import { execStyleTree } from '../xml/exec-style-tree';
 import { isTag } from '../xml/is-tag';
@@ -38,9 +34,7 @@ const valueIsEqual = (attrDefine: IRegularAttr, value1: string, value2: string):
 
 const attrIsEqual = (attrDefine: IRegularAttr, value: string, nodeName: string): boolean => {
 	if (typeof attrDefine.initValue === 'string') {
-		if (valueIsEqual(attrDefine, value, attrDefine.initValue)) {
-			return true;
-		}
+		return valueIsEqual(attrDefine, value, attrDefine.initValue);
 	} else {
 		const initValue = attrDefine.initValue;
 		for (let ii = 0, il = initValue.length; ii < il; ii++) {
@@ -56,10 +50,15 @@ export const rmAttribute = async (rule: TConfigItem[], dom: INode): Promise<null
 	if (rule[0]) {
 
 		traversalNode<ITagNode>(isTag, node => {
+			if (rule[1]) {
+				execStyleTree(dom as ITagNode);
+			}
+
 			const tagDefine: IRegularTag = regularTag[node.nodeName];
 			// 先取出来 attributeName 属性
 			const attributeName = node.getAttribute('attributeName');
 			const attributes = node.attributes;
+			const parentStyle = (node.parentNode as ITagNode).styles;
 
 			for (let i = attributes.length; i--;) {
 				const attr = attributes[i];
@@ -100,13 +99,6 @@ export const rmAttribute = async (rule: TConfigItem[], dom: INode): Promise<null
 				}
 
 				if (rule[1]) {
-					// TODO：因为需要频繁解析样式树，此处存在性能问题
-					if (node.parentNode && node.parentNode.parentNode) {
-						execStyleTree(node.parentNode.parentNode as ITagNode);
-					} else {
-						execStyleTree(dom as ITagNode);
-					}
-					const parentStyle = (node.parentNode as ITagNode).styles;
 					// 如果父元素上有同名的样式类属性，则不能移除和默认值相同的属性
 					if (attrDefine.couldBeStyle && parentStyle && parentStyle.hasOwnProperty(attr.fullname)) {
 						continue;

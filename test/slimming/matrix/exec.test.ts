@@ -29,7 +29,7 @@ describe('matrix/exec', () => {
 	it('exec rotate error', () => {
         const m1 = execMatrix('rotate()');
         m1.should.deep.equal([]);
-        const m2 = execMatrix('rotate(3,3,3)');
+        const m2 = execMatrix('rotate(3,3)');
         m2.should.deep.equal([]);
     });
 

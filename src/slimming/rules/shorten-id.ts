@@ -1,11 +1,8 @@
 import { Rule, StyleRules } from 'css';
 import { has } from 'ramda';
-import { INode } from '../../node/index';
 import { createShortenID } from '../algorithm/create-shorten-id';
-import { TConfigItem } from '../config/config';
 import { regularAttr } from '../const/regular-attr';
 import { funcIRIToID, IRIFullMatch } from '../const/syntax';
-import { IDomNode, ITagNode } from '../interface/node';
 import { traversalObj } from '../utils/traversal-obj';
 import { isTag } from '../xml/is-tag';
 import { traversalNode } from '../xml/traversal-node';

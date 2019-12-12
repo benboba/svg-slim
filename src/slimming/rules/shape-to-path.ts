@@ -1,12 +1,10 @@
 import { has } from 'ramda';
-import { INode } from '../../node/index';
 import { shapeElements } from '../const/definitions';
+import { execNumberList } from '../utils/exec-numberlist';
+import { shortenNumber } from '../utils/shorten-number';
+import { shortenNumberList } from '../utils/shorten-number-list';
 import { createTag } from '../xml/create';
 import { traversalNode } from '../xml/traversal-node';
-import { TConfigItem } from '../config/config';
-import { ITagNode } from '../interface/node';
-import { execNumberList } from '../utils/exec-numberlist';
-import { shortenNumberList } from '../utils/shorten-number-list';
 
 const rectToPath = (node: ITagNode) => {
 	const shapeAttr = {
@@ -22,19 +20,22 @@ const rectToPath = (node: ITagNode) => {
 	for (let i = attributes.length; i--;) {
 		const attr = attributes[i];
 		if (has(attr.fullname, shapeAttr)) {
-			shapeAttr[attr.fullname as keyof typeof shapeAttr] = attr.value;
+			shapeAttr[attr.fullname as keyof typeof shapeAttr] = shortenNumber(+attr.value);
 			node.removeAttribute(attr.fullname);
 		}
 	}
-	if ((shapeAttr.rx !== '0' && shapeAttr.rx !== 'auto' && shapeAttr.ry !== '0') || (shapeAttr.ry !== '0' && shapeAttr.ry !== 'auto' && shapeAttr.rx !== '0')) {
+	if (shapeAttr.rx !== '0' && shapeAttr.ry !== '0' && (shapeAttr.rx !== 'auto' || shapeAttr.ry !== 'auto')) {
+		return;
+	}
+	if (shapeAttr.width[0] === '-' || shapeAttr.height[0] === '-') {
 		return;
 	}
 
 	node.nodeName = 'path';
 
 	// 此处考虑到宽和高的字节数差异，应该取较小的那种
-	const hvh = `M${shapeAttr.x},${shapeAttr.y}h${shapeAttr.width}v${shapeAttr.height}h${-shapeAttr.width}z`;
-	const vhv = `M${shapeAttr.x},${shapeAttr.y}v${shapeAttr.height}h${shapeAttr.width}v${-shapeAttr.height}z`;
+	const hvh = `M${shapeAttr.x},${shapeAttr.y}h${shapeAttr.width}v${shapeAttr.height}h-${shapeAttr.width}z`;
+	const vhv = `M${shapeAttr.x},${shapeAttr.y}v${shapeAttr.height}h${shapeAttr.width}v-${shapeAttr.height}z`;
 	node.setAttribute('d', shortenNumberList(vhv.length < hvh.length ? vhv : hvh));
 };
 
@@ -50,7 +51,7 @@ const lineToPath = (node: ITagNode) => {
 	for (let i = attributes.length; i--;) {
 		const attr = attributes[i];
 		if (has(attr.fullname, shapeAttr)) {
-			shapeAttr[attr.fullname as keyof typeof shapeAttr] = attr.value;
+			shapeAttr[attr.fullname as keyof typeof shapeAttr] = shortenNumber(+attr.value);
 			node.removeAttribute(attr.fullname);
 		}
 	}
@@ -61,7 +62,7 @@ const lineToPath = (node: ITagNode) => {
 
 const polyToPath = (node: INode, addZ = false) => {
 	if (node.hasAttribute('points')) {
-		const points = execNumberList(node.getAttribute('points') as string);
+		const points = execNumberList(node.getAttribute('points') as string).map(shortenNumber);
 		if (points.length % 2 === 1) {
 			points.pop();
 		}

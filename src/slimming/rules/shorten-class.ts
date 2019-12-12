@@ -1,12 +1,9 @@
 import { Rule, StyleRules } from 'css';
 import { has } from 'ramda';
 import { createShortenID } from '../algorithm/create-shorten-id';
-import { TConfigItem } from '../config/config';
-import { IDomNode, ITagNode } from '../interface/node';
 import { mixWhiteSpace } from '../utils/mix-white-space';
 import { traversalObj } from '../utils/traversal-obj';
 import { isTag } from '../xml/is-tag';
-import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
 
 const classSelectorReg = /\.([^,\*#>+~:{\s\[\.]+)/gi;

@@ -55,8 +55,8 @@ export const numberSemiSepatatedFullMatch = new RegExp(`^${numberPattern}(?:${se
 export const integerFullMatch = /^[+-]?(?:\d+|(?:\d*\.)?\d+[eE][+-]?\d+)$/;
 
 // https://www.w3.org/TR/css-values-3/#angle-value
-const angel = `${numberPattern}(?:deg|grad|rad|turn)`;
-export const angelFullMatch = new RegExp(`^${angel}$`);
+export const angel = 'deg|grad|rad|turn';
+export const angelFullMatch = new RegExp(`^${numberPattern}(?:${angel})?$`);
 
 const controlPoint = `${numberPattern}${commaWsp}${numberPattern}${commaWsp}${numberPattern}${commaWsp}${numberPattern}`;
 export const controlPointsFullMatch = new RegExp(`^${controlPoint}(?:${semi}${controlPoint})*(?:${semi})?$`);
@@ -92,7 +92,7 @@ export const timeListFullMatch = new RegExp(`^${timePattern}(\\s*;\\s*${timePatt
 // https://drafts.csswg.org/css-transforms/#svg-comma
 const translate = `translate${paren}${numberPattern}(?:(?:${commaWsp})?${numberPattern})?${rParen}`;
 const scale = `scale${paren}${numberPattern}(?:(?:${commaWsp})?${numberPattern})?${rParen}`;
-const rotate = `rotate${paren}${numberPattern}${rParen}`;
+const rotate = `rotate${paren}${numberPattern}(?:(?:${commaWsp})?${numberPattern}(?:${commaWsp})?${numberPattern})?${rParen}`;
 const skewX = `skewX${paren}${numberPattern}${rParen}`;
 const skewY = `skewY${paren}${numberPattern}${rParen}`;
 const matrix = `matrix${paren}${numberPattern}(?:(?:${commaWsp})?${numberPattern}){5}${rParen}`;
@@ -149,8 +149,8 @@ export const rectFullMatch = new RegExp(`rect${paren}${numberPattern}(?:(?:${com
 export const basicShapeFullMatch = /^(?:inset|circle|ellipse|polygon)\([^\(\)]+\)$/;
 
 // color
-const rgb = `rgba?${paren}(?:${numberPattern}${commaWsp}${numberPattern}${commaWsp}${numberPattern}${commaWsp}${numberPattern}%?|${numberPattern}%${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%?)${rParen}`;
-const hsl = `hsla?${paren}${numberPattern}${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%?${rParen}`;
+const rgb = `rgba?${paren}(?:${numberPattern}${commaWsp}${numberPattern}${commaWsp}${numberPattern}(?:${commaWsp}${numberPattern}%?)?|${numberPattern}%${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%(?:${commaWsp}${numberPattern}%?)?)${rParen}`;
+const hsl = `hsla?${paren}${numberPattern}(?:${angel})?${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%(?:${commaWsp}${numberPattern}%?)?${rParen}`;
 const hexColor = '#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})';
 export const colorFullMatch = new RegExp(`^(?:${rgb}|${hsl}|${hexColor})$`);
 export const iccColorFullMatch = new RegExp(`^icc-color${paren}${Name}(?:${commaWsp}${numberPattern})+${rParen}$`, uModifier);
@@ -161,7 +161,7 @@ export const childFuncFullMatch = /^child\(\d+\)$/;
 const blur = `blur${paren}(?:${length})?${rParen}`;
 const filterFuncNumberPercentage = `(?:brightness|contrast|grayscale|invert|opacity|saturate|sepia)${paren}(?:${numberPattern}%?)?${rParen}`;
 const dropShadow = `drop-shadow${paren}(?:(?:${rgb}|${hsl}|${hexColor}|${Object.keys(colorKeywords).join('|')}|${Object.keys(systemColor).join('|')}|${Object.keys(x11Colors).join('|')})?${commaWsp}(?:${length}|${numberPattern}%){2,3})?${rParen}`;
-const hueRotate = `hue-rotate${paren}(?:${angel}|${zero})?${rParen}`;
+const hueRotate = `hue-rotate${paren}(?:${numberPattern}(?:${angel})?|${zero})?${rParen}`;
 const filterFunc = `(?:${blur}|${filterFuncNumberPercentage}|${dropShadow}|${hueRotate})`;
 export const filterListFullMatch = new RegExp(`(?:(?:${filterFunc}|${url})${commaWsp})+`);
 

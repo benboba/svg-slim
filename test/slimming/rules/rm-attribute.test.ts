@@ -3,8 +3,6 @@ const should = chai.should();
 import { rmAttribute } from '../../../src/slimming/rules/rm-attribute';
 import { parse } from '../../../src/xml-parser/app';
 import { createXML } from '../../../src/slimming/xml/create';
-import { ITagNode } from '../../../src/slimming/interface/node';
-
 
 describe('rules/rm-attribute', () => {
 	it('rule false branch', async () => {
@@ -26,15 +24,15 @@ describe('rules/rm-attribute', () => {
 		<animate to="1"/>
 		<animate to="1" attributeName="title"/>
 		<g fill="#000">
-			<rect fill="black"/>
+			<rect fill="black" stroke=""/>
 			<g fill="none">
-				<rect fill="rgb(0,0,0,.5)"/>
+				<rect fill="rgb(0,0,0,.5)" stroke="hsl(0,0%,0%)"/>
 			</g>
 		</g>
 		</svg>`;
 		const dom = await parse(xml) as ITagNode;
 		await rmAttribute([true, true, false, false], dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><a/><circle cx="1"/><animate/><animate/><g><rect/><g fill="none"><rect fill="rgb(0,0,0,.5)"/></g></g></svg>');
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><a/><circle cx="1"/><animate/><animate/><g><rect/><g fill="none"><rect fill="rgb(0,0,0,.5)" stroke="hsl(0,0%,0%)"/></g></g></svg>');
 	});
 
 	it('移除属性 - 反转规则', async () => {

@@ -1,9 +1,7 @@
-import { curry } from 'ramda';
-import { INode } from '../../node';
 import { validPseudoClass, validPseudoElement } from '../const/definitions';
 import { isTag } from '../xml/is-tag';
 import { traversalNode } from '../xml/traversal-node';
-import { attrModifier, ISelector } from './define';
+import { attrModifier } from './define';
 
 // 验证 className
 const checkClass = (node: INode, selector: ISelector): boolean => {

@@ -1,4 +1,3 @@
-import { INode } from '../../node';
 import { traversalNode } from './traversal-node';
 
 export const getById = (idStr: string, dom: INode): INode | undefined => {

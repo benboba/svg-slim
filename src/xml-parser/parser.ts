@@ -5,7 +5,6 @@ import { REG_XML_DECL, REG_CDATA_SECT, REG_OTHER_SECT, REG_DOCTYPE, REG_OTHER_DE
 
 import { collapseQuot } from './utils';
 import { mixWhiteSpace } from '../slimming/utils/mix-white-space';
-import { IUnique } from '../slimming/interface/unique';
 
 const configs: Array<[number, string, RegExp, number] | [number, RegExp, number]> = [
 	[1, 'xml-decl', REG_XML_DECL, NodeType.XMLDecl],

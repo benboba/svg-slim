@@ -1,5 +1,3 @@
-import { ISelector, ISeletorPriority } from './define';
-
 export const getSelectorPriority = (seletors: ISelector[]): ISeletorPriority => {
 	const priority: ISeletorPriority = {
 		id: 0,

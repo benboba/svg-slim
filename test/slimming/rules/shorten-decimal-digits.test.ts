@@ -4,7 +4,6 @@ import { shortenDecimalDigits } from '../../../src/slimming/rules/shorten-decima
 import { combineStyle } from '../../../src/slimming/default-rules/combine-style';
 import { parse } from '../../../src/xml-parser/app';
 import { createXML } from '../../../src/slimming/xml/create';
-import { ITagNode } from '../../../src/slimming/interface/node';
 
 
 describe('rules/shorten-decimal-digits', () => {

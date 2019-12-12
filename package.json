@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack --watch --progress --color --profile --bail --display-modules",
     "build": "cross-env NODE_ENV=production webpack --progress --color --profile --bail --display-modules",
-    "test": "nyc mocha"
+    "test": "cross-env TS_NODE_FILES=true nyc mocha"
   },
   "nyc": {
     "include": [
@@ -60,8 +60,8 @@
     "ts-node": "^8.3.0",
     "tslint": "^5.19.0",
     "tslint-loader": "^3.6.0",
-    "typescript": "^3.2.2",
-    "webpack": "^4.16.5",
+    "typescript": "^3.7.3",
+    "webpack": "^4.41.2",
     "webpack-cli": "^3.1.0"
   }
 }

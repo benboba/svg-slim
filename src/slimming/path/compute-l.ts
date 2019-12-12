@@ -1,7 +1,6 @@
 import { numberLength } from '../utils/number-length';
 import { computeH } from './compute-h';
 import { computeV } from './compute-v';
-import { IPathResultItem } from './exec';
 
 const combineL = (pathResult: IPathResultItem[], relative: number[], pos: number[]) => {
 	const rLen = pathResult.length;

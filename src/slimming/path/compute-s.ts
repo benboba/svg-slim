@@ -1,5 +1,4 @@
 import { numberLength } from '../utils/number-length';
-import { IPathResultItem } from './exec';
 
 export const SPOS_X2 = 0;
 export const SPOS_Y2 = 1;

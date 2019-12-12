@@ -1,6 +1,5 @@
 import { plus } from '../math/plus';
 import { numberLength } from '../utils/number-length';
-import { IPathResultItem } from './exec';
 
 export const computeT = (absolute: number[], relative: number[], pathResult: IPathResultItem[], pos: number[]): number[] => {
 	const from = pos.slice();

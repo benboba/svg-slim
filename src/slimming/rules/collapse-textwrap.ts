@@ -1,9 +1,6 @@
-import { INode } from '../../node/index';
 import { regularTag } from '../const/regular-tag';
 import { isTag } from '../xml/is-tag';
 import { traversalNode } from '../xml/traversal-node';
-import { TConfigItem } from '../config/config';
-import { ITagNode } from '../interface/node';
 
 export const collapseTextwrap = async (rule: TConfigItem[], dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {

@@ -1,7 +1,6 @@
 import { parse as cssParse } from 'css';
 import { propEq } from 'ramda';
-import { INode, NodeType } from '../../node/index';
-import { IDomNode, ITagNode } from '../interface/node';
+import { NodeType } from '../../node/index';
 import { mixWhiteSpace } from '../utils/mix-white-space';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';

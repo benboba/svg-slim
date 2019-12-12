@@ -1,8 +1,6 @@
 import { anyPass, propEq } from 'ramda';
-import { INode } from '../../node/index';
 import { douglasPeucker as DP } from '../algorithm/douglas-peucker';
 import { traversalNode } from '../xml/traversal-node';
-import { TConfigItem } from '../config/config';
 
 export const douglasPeucker = async (rule: TConfigItem[], dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0] && rule[1]) {

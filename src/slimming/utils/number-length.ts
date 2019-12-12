@@ -1,2 +1,3 @@
 import { shortenNumberList } from './shorten-number-list';
-export const numberLength = (num: number|number[]) => shortenNumberList(`${num}`).length;
+import { shortenNumber } from './shorten-number';
+export const numberLength = (num: number[]) => shortenNumberList(num.map(shortenNumber).join(',')).length;

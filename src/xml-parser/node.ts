@@ -1,6 +1,6 @@
-import { NodeType, IAttr, INode } from '../node/index';
+import { NodeType } from '../node/index';
 
-export interface INodeOption {
+interface INodeOption {
 	nodeName: string;
 	nodeType: NodeType;
 	namespace?: string;

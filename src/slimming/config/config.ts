@@ -4,12 +4,6 @@ export const DEFAULT_SIZE_DIGIT = 2;
 export const DEFAULT_ACCURATE_DIGIT = 2;
 export const DEFAULT_MATRIX_DIGIT = 3;
 
-export type TConfigItem = boolean | number | string | string[];
-
-export interface IConfig {
-	[propName: string]: TConfigItem[];
-}
-
 export const config: IConfig = {
 	// 合并 g 标签
 	'collapse-g': [true],
@@ -25,8 +19,8 @@ export const config: IConfig = {
 	// 对角度类数据保留多少位精度
 	'combine-transform': [true, DEFAULT_MATRIX_DIGIT, DEFAULT_SIZE_DIGIT, DEFAULT_ACCURATE_DIGIT],
 	// 计算 path 的 d 属性，使之变得更短
-	// 应用道格拉斯-普克算法抽稀路径节点
-	// 抽稀节点的阈值
+	// 通过抽稀节点和曲线转直线来优化路径
+	// 优化的阈值
 	// 尺寸相关数据的精度
 	// 角度相关数据的精度
 	'compute-path': [true, false, 0, DEFAULT_SIZE_DIGIT, DEFAULT_ACCURATE_DIGIT],

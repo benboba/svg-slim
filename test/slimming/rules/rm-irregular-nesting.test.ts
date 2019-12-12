@@ -3,8 +3,6 @@ const should = chai.should();
 import { rmIrregularNesting } from '../../../src/slimming/rules/rm-irregular-nesting';
 import { parse } from '../../../src/xml-parser/app';
 import { createXML } from '../../../src/slimming/xml/create';
-import { ITagNode } from '../../../src/slimming/interface/node';
-
 
 describe('rules/rm-irregular-nesting', () => {
 	it('rule false branch', async () => {

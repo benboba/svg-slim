@@ -1,6 +1,5 @@
 import { numberLength } from '../utils/number-length';
 import { computeS } from './compute-s';
-import { IPathResultItem } from './exec';
 import { matchControl } from './match-control';
 
 const CPOS_X1 = 0;

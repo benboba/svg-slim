@@ -1,7 +1,5 @@
-import { INode, NodeType } from '../node';
+import { NodeType } from '../node';
 import { parse } from '../xml-parser/app';
-import { TConfigItem } from './config/config';
-import { ITagNode } from './interface/node';
 import { rules } from './rules/index';
 import { createXML } from './xml/create';
 import { mergeConfig } from './config/merge';

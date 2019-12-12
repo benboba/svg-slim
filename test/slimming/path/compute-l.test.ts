@@ -6,7 +6,7 @@ import { stringifyPath } from '../../../src/slimming/path/stringify';
 
 describe('path/compute-l', () => {
 	it('absolute to relative', () => {
-		stringifyPath(doCompute(execPath('m 0 0l0,0 M100, 100 L110,200'))).should.equal('M100,100l10,100');
+		stringifyPath(doCompute(execPath('m 0 0,0,0 M100, 100 ,110,200'))).should.equal('M100,100l10,100');
 	});
 
 	it('relative to absolute', () => {

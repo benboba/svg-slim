@@ -1,10 +1,5 @@
 import { has, pipe, propEq } from 'ramda';
-import { INode } from '../../node/index';
-import { TConfigItem } from '../config/config';
 import { regularAttr } from '../const/regular-attr';
-import { IAttrObj } from '../interface/attr-obj';
-import { ITagNode } from '../interface/node';
-import { IUnique } from '../interface/unique';
 import { checkApply } from '../style/check-apply';
 import { execStyle } from '../style/exec';
 import { shortenStyle } from '../style/shorten';

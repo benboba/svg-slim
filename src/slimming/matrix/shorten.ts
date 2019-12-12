@@ -1,4 +1,3 @@
-import { IMatrixFunc } from './exec';
 import { toFixed } from '../math/tofixed';
 import { simplify } from './simplify';
 import { DEFAULT_SIZE_DIGIT, DEFAULT_MATRIX_DIGIT, DEFAULT_ACCURATE_DIGIT } from '../config/config';
@@ -16,10 +15,10 @@ export const shorten = (m: IMatrixFunc, digit1: number = DEFAULT_MATRIX_DIGIT, d
 			m.val.forEach((v, i) => {
 				res.val[i] = toFixed(digit2, v);
 			});
-			if (res.val[1] === 0 || res.val[1] === -0) {
+			if (res.val[1] === 0) {
 				res.val.length = 1;
 			}
-			if (res.val[0] === 0 || res.val[0] === -0) {
+			if (res.val[0] === 0) {
 				res.val[0] = 0;
 				if (res.val.length === 1) {
 					res.noEffect = true;
@@ -40,17 +39,30 @@ export const shorten = (m: IMatrixFunc, digit1: number = DEFAULT_MATRIX_DIGIT, d
 			break;
 
 		case 'rotate':
+			res.val[0] = toFixed(digit3, m.val[0]);
+			if (res.val[0] === 0) {
+				res.val[0] = 0;
+				res.noEffect = true;
+			}
+			if (m.val.length === 3) {
+				res.val[1] = toFixed(digit2, m.val[1]);
+				res.val[2] = toFixed(digit2, m.val[2]);
+				if (res.val[1] === 0 && res.val[2] === 0) {
+					res.val.length = 1;
+				}
+			}
+			break;
 		case 'skewX':
 		case 'skewY':
 			res.val[0] = toFixed(digit3, m.val[0]);
-			if (res.val[0] === 0 || res.val[0] === -0) {
+			if (res.val[0] === 0) {
 				res.val[0] = 0;
 				res.noEffect = true;
 			}
 			break;
 
 		default:
-			const _res = simplify(m, digit1, digit2, digit3);
+			const _res = simplify(m, digit1, digit2);
 			if (_res.type === 'matrix') {
 				_res.val.forEach((v, i) => {
 					res.val[i] = toFixed((i < matrixEPos) ? digit1 : digit2, v);

@@ -1,5 +1,3 @@
-import { TConfigItem } from './config';
-
 export const toArray = <T = TConfigItem>(v: unknown): T[] | TConfigItem[] => {
 	if (typeof v === 'boolean') {
 		return [v];
