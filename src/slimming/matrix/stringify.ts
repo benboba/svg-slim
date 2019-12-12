@@ -1,4 +1,3 @@
-import { IMatrixFunc } from './exec';
 import { shorten } from './shorten';
 import { stringifyFuncVal } from '../utils/stringify-funcval';
 import { DEFAULT_ACCURATE_DIGIT, DEFAULT_MATRIX_DIGIT, DEFAULT_SIZE_DIGIT } from '../config/config';

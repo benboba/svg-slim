@@ -1,11 +1,9 @@
 import { both, curry } from 'ramda';
-import { INode } from '../../node/index';
 import { regularTag } from '../const/regular-tag';
 import { isTag } from '../xml/is-tag';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
-import { TConfigItem } from '../config/config';
-import { ITagNode } from '../interface/node';
+import { getAncestor } from '../xml/get-ancestor';
 
 // 在配置的忽略列表中
 const notIgnore = curry((tags: string[], node: INode) => tags.indexOf(node.nodeName) === -1);
@@ -19,10 +17,7 @@ export const rmIrregularNesting = async (rule: TConfigItem[], dom: INode): Promi
 
 			// transparent 表示参照最近的非 switch 上级元素的规则
 			if (legalRule.transparent) {
-				let parent = node.parentNode;
-				while (parent && parent.nodeName === 'switch') {
-					parent = parent.parentNode;
-				}
+				const parent = getAncestor(node.parentNode as ITagNode, (n: INode) => n.nodeName !== 'switch');
 				legalRule = regularTag[(parent as INode).nodeName].legalChildElements;
 			}
 

@@ -1,6 +1,3 @@
-import { TConfigItem } from '../config/config';
-import { IDomNode } from '../interface/node';
-
 // default rules
 import { combineScript } from '../default-rules/combine-script';
 import { combineStyle } from '../default-rules/combine-style';
@@ -36,7 +33,7 @@ import { shortenStyleAttr } from './shorten-style-attr';
 import { shortenStyleTag } from './shorten-style-tag';
 
 // [isDefaultRule: boolean, ruleHandler: Function, configKey?: string]
-export type RuleItem = [1, (dom: IDomNode) => Promise<null>] | [0, (rule: TConfigItem[], dom: IDomNode) => Promise<null>, string];
+type RuleItem = [1, (dom: IDomNode) => Promise<null>] | [0, (rule: TConfigItem[], dom: IDomNode) => Promise<null>, string];
 
 export const rules: RuleItem[] = [
 	[1, rmUseless],
@@ -50,12 +47,12 @@ export const rules: RuleItem[] = [
 	[0, rmIrregularNesting, 'rm-irregular-nesting'],
 	[0, rmUnnecessary, 'rm-unnecessary'],
 	[0, rmViewBox, 'rm-viewbox'],
-	[0, shortenID, 'shorten-id'],
+	[0, shortenID, 'shorten-id'], // 必须在 shorten-defs 之前
 	[0, shortenClass, 'shorten-class'],
 	[0, shortenDefs, 'shorten-defs'],
 	[0, rmAttribute, 'rm-attribute'],
 	[0, rmPx, 'rm-px'],
-	[0, combineTransform, 'combine-transform'],
+	[0, combineTransform, 'combine-transform'], // 必须在 compute-path 之前
 	[0, shortenStyleAttr, 'shorten-style-attr'],
 	[0, shortenStyleTag, 'shorten-style-tag'],
 	[0, douglasPeucker, 'douglas-peucker'],

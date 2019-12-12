@@ -9,7 +9,6 @@ import { rmVersion } from '../../../src/slimming/rules/rm-version';
 import { rmXMLDecl } from '../../../src/slimming/rules/rm-xml-decl';
 import { parse } from '../../../src/xml-parser/app';
 import { createXML } from '../../../src/slimming/xml/create';
-import { ITagNode } from '../../../src/slimming/interface/node';
 
 describe('rules/覆盖率补齐', () => {
 	it('rm-comments false branch', async () => {

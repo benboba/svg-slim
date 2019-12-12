@@ -4,7 +4,6 @@ import { shortenColor } from '../../../src/slimming/rules/shorten-color';
 import { combineStyle } from '../../../src/slimming/default-rules/combine-style';
 import { parse } from '../../../src/xml-parser/app';
 import { createXML } from '../../../src/slimming/xml/create';
-import { ITagNode } from '../../../src/slimming/interface/node';
 
 
 describe('rules/shorten-color', () => {
@@ -27,12 +26,13 @@ describe('rules/shorten-color', () => {
 			x: 100;
 		}
 		</style>
+		<text fill="hsl(9,9%,9%,0)">123</text>
 		<rect style="fill:#ff0000" stroke="rebeccapurple" color="hsla(0,100%,100%,0)" />
 		</svg>`;
 		const dom = await parse(xml) as ITagNode;
 		await combineStyle(dom);
 		await shortenColor([true, false, 4], dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><style>.a{color:rgb(0,0,0,.5);fill:currentColor;stroke:rgb(0,0,0,.5);x:100}</style><rect style="fill:red" stroke="#639" color="rgb(255,255,255,0)"/></svg>');
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><style>.a{color:rgb(0,0,0,.5);fill:currentColor;stroke:rgb(0,0,0,.5);x:100}</style><text fill="hsl(9,9%,9%,0)">123</text><rect style="fill:red" stroke="#639" color="rgb(255,255,255,0)"/></svg>');
 	});
 
 	it('rgba 及 style 无法解析', async () => {

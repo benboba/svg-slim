@@ -1,10 +1,8 @@
-import { INode, IAttr } from '../../node/index';
-import { IRegularAttr } from '../const/regular-attr';
 import { getById } from '../xml/get-by-id';
 import { isTag } from '../xml/is-tag';
 import { execStyle } from './exec';
 
-// TODO：只有 xlink:href 吗？其它 IRI 或 funcIRI 属性是否也需要验证？
+// TODO：目前只验证了 href 和 xlink:href，其它 IRI 或 funcIRI 属性是否也需要验证？
 // 遇到引用属性，还需要递归验证被引用对象是否可应用样式
 const getXlink = (styleDefine: IRegularAttr, idStr: string, dom: INode, unique: INode[], fromStyleTag: boolean) => check(styleDefine, getById(idStr, dom), dom, unique, fromStyleTag);
 
@@ -47,6 +45,10 @@ const check = (styleDefine: IRegularAttr, node: INode | undefined, dom: INode, u
 
 	if (node.hasAttribute('xlink:href')) {
 		result = getXlink(styleDefine, node.getAttribute('xlink:href') as string, dom, unique, false);
+	}
+
+	if (node.hasAttribute('href')) {
+		result = getXlink(styleDefine, node.getAttribute('href') as string, dom, unique, false);
 	}
 
 	// 已经命中就不需要再继续了

@@ -1,5 +1,4 @@
 import { decode } from 'he';
-import { IAttr } from '../../node/index';
 
 export const execStyle = (styleStr: string): IAttr[] => {
 	// 此处使用数组，因为不能在解析器中排重，排重的工作要交给优化工具

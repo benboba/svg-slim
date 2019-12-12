@@ -4,7 +4,6 @@ import { createXML } from '../../../src/slimming/xml/create';
 import { getById } from '../../../src/slimming/xml/get-by-id';
 import { rmNode } from '../../../src/slimming/xml/rm-node';
 import { parse } from '../../../src/xml-parser/app';
-import { ITagNode } from '../../../src/slimming/interface/node';
 
 
 describe('xml/create', () => {

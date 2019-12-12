@@ -1,10 +1,8 @@
 import { Declaration, StyleRules } from 'css';
 import { both, has, pipe, toLower } from 'ramda';
 import { exec } from '../color/exec';
-import { TConfigItem } from '../config/config';
 import { FF, Hundred, OPACITY_DIGIT } from '../const';
 import { regularAttr } from '../const/regular-attr';
-import { IDomNode, ITagNode } from '../interface/node';
 import { toFixed } from '../math/tofixed';
 import { execStyle } from '../style/exec';
 import { stringifyStyle } from '../style/stringify';
@@ -13,6 +11,7 @@ import { toHex } from '../utils/tohex';
 import { traversalObj } from '../utils/traversal-obj';
 import { isTag } from '../xml/is-tag';
 import { traversalNode } from '../xml/traversal-node';
+import { shortenPureDecimal } from '../utils/shorten-pure-decimal';
 
 const operateHex = pipe(toHex, toLower, fillIn(2));
 
@@ -166,7 +165,7 @@ const formatColor = (rgba: boolean, str: string, digit: number): string => {
 			if (rgba) {
 				s = `#${operateHex(color.r)}${operateHex(color.g)}${operateHex(color.b)}${has(`${color.a * Hundred}`, alphaMap) ? operateHex(alphaMap[`${color.a * Hundred}` as keyof typeof alphaMap]) : operateHex(Math.round(color.a * FF))}`;
 			} else {
-				s = `rgb(${color.r},${color.g},${color.b},${`${toFixed(digit, color.a)}`.replace(/^0\./, '.')})`;
+				s = `rgb(${color.r},${color.g},${color.b},${shortenPureDecimal(`${toFixed(digit, color.a)}`)})`;
 			}
 		} else {
 			s = `#${operateHex(color.r)}${operateHex(color.g)}${operateHex(color.b)}`;
@@ -179,6 +178,10 @@ const formatColor = (rgba: boolean, str: string, digit: number): string => {
 		}
 	} else if (rgba) {
 		s = s.replace(/^transparent$/i, '#0000');
+	}
+	// 如果处理后结果不理想，还返回原始字符串
+	if (s.length > color.origin.length) {
+		return color.origin;
 	}
 	return s;
 };

@@ -3,7 +3,6 @@ const should = chai.should();
 import { execStyleTree } from '../../../src/slimming/xml/exec-style-tree';
 import { combineStyle } from '../../../src/slimming/default-rules/combine-style';
 import { parse } from '../../../src/xml-parser/app';
-import { ITagNode, IStyleObj } from '../../../src/slimming/interface/node';
 
 
 describe('xml/exec-style-tree', () => {

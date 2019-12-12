@@ -1,7 +1,6 @@
-import { IRegularAttr, regularAttr } from '../const/regular-attr';
+import { regularAttr } from '../const/regular-attr';
 import { useEnum } from './use-enum';
 import { useReg } from './use-reg';
-import { IAttr } from '../../node';
 import { CSSWideKeywords } from '../const/enum';
 
 export const legalValue = (attrDefine: IRegularAttr, attr: IAttr, nodeName = ''): boolean => {

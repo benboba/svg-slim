@@ -2,7 +2,6 @@ import { lt } from 'ramda';
 import { minus } from '../math/minus';
 import { plus } from '../math/plus';
 import { numberLength } from '../utils/number-length';
-import { IPathResultItem } from './exec';
 
 export const computeM = (absolute: number[], relative: number[], pathResult: IPathResultItem[], pos: number[]): number[] => {
 	const rLen = pathResult.length;

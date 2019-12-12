@@ -1,10 +1,7 @@
 // 合并属性和样式完全相同的路径
 import { has } from 'ramda';
-import { IAttr, INode } from '../../node';
 import { exec as execColor } from '../color/exec';
 import { validOpacity } from '../color/valid';
-import { TConfigItem } from '../config/config';
-import { IStyleObj, ITagNode } from '../interface/node';
 // import { doCompute } from '../path/do-compute';
 // import { execPath } from '../path/exec';
 import { execStyleTree } from '../xml/exec-style-tree';

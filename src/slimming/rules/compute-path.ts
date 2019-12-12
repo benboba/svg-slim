@@ -1,12 +1,9 @@
 import { propEq } from 'ramda';
-import { INode } from '../../node/index';
 import { douglasPeucker } from '../algorithm/douglas-peucker';
-import { TConfigItem } from '../config/config';
 import { plus } from '../math/plus';
 import { doCompute } from '../path/do-compute';
-import { execPath, IPathResultItem } from '../path/exec';
+import { execPath } from '../path/exec';
 import { traversalNode } from '../xml/traversal-node';
-import { ITagNode } from '../interface/node';
 import { stringifyPath } from '../path/stringify';
 import { rmNode } from '../xml/rm-node';
 

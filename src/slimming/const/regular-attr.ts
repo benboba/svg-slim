@@ -618,6 +618,9 @@ const _regularAttr: IRegularAttrDefine = {
 		}, {
 			type: 'reg',
 			reg: percentageFullMatch,
+		}, {
+			type: 'string',
+			string: 'auto',
 		}],
 		initValue: [{
 			val: '100%',
@@ -2149,6 +2152,9 @@ const _regularAttr: IRegularAttrDefine = {
 		}, {
 			type: 'reg',
 			reg: percentageFullMatch,
+		}, {
+			type: 'string',
+			string: 'auto',
 		}],
 		initValue: [{
 			val: '100%',
@@ -2186,6 +2192,9 @@ const _regularAttr: IRegularAttrDefine = {
 			type: 'reg',
 			reg: numberFullMatch,
 			tag: ['fePointLight', 'feSpotLight'],
+		}, {
+			type: 'string',
+			string: 'auto',
 		}],
 		initValue: [{
 			val: '0%',
@@ -2217,6 +2226,9 @@ const _regularAttr: IRegularAttrDefine = {
 		}, {
 			type: 'reg',
 			reg: percentageFullMatch,
+		}, {
+			type: 'string',
+			string: 'auto',
 		}],
 		initValue: [{
 			val: '0',
@@ -2242,6 +2254,9 @@ const _regularAttr: IRegularAttrDefine = {
 		}, {
 			type: 'reg',
 			reg: percentageFullMatch,
+		}, {
+			type: 'string',
+			string: 'auto',
 		}],
 		initValue: [{
 			val: '0',
@@ -2383,6 +2398,9 @@ const _regularAttr: IRegularAttrDefine = {
 			type: 'reg',
 			reg: numberFullMatch,
 			tag: ['fePointLight', 'feSpotLight'],
+		}, {
+			type: 'string',
+			string: 'auto',
 		}],
 		initValue: [{
 			val: '0%',
@@ -2414,6 +2432,9 @@ const _regularAttr: IRegularAttrDefine = {
 		}, {
 			type: 'reg',
 			reg: percentageFullMatch,
+		}, {
+			type: 'string',
+			string: 'auto',
 		}],
 		initValue: [{
 			val: '0',
@@ -2439,6 +2460,9 @@ const _regularAttr: IRegularAttrDefine = {
 		}, {
 			type: 'reg',
 			reg: percentageFullMatch,
+		}, {
+			type: 'string',
+			string: 'auto',
 		}],
 		initValue: [{
 			val: '0',
@@ -3663,32 +3687,6 @@ const undefAttr: IRegularAttr = {
 	initValue: '',
 	applyTo: [],
 };
-
-export interface ILegalValueItem {
-	type: 'enum' | 'reg' | 'attr' | 'string';
-	reg?: RegExp;
-	enum?: {};
-	tag?: string[];
-	string?: string;
-}
-
-export interface IRegularAttr {
-	name: string;
-	isUndef?: boolean;
-	couldBeStyle: boolean;
-	animatable: boolean;
-	maybeColor: boolean;
-	maybeIRI: boolean;
-	maybeFuncIRI: boolean;
-	maybeSizeNumber: boolean;
-	maybeAccurateNumber: boolean;
-	legalValues: ILegalValueItem[];
-	initValue: string | Array<{
-		val: string;
-		tag: string[];
-	}>;
-	applyTo: string[];
-}
 
 export const regularAttr = new Proxy(_regularAttr, {
 	get(obj, prop: string): IRegularAttr {

@@ -1,6 +1,5 @@
 import { numberLength } from '../utils/number-length';
 import { computeT } from './compute-t';
-import { IPathResultItem } from './exec';
 import { matchControl } from './match-control';
 
 const QPOS_X1 = 0;

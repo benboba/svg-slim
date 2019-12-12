@@ -1,8 +1,5 @@
 import { propEq } from 'ramda';
-import { IAttr, INode } from '../../node/index';
-import { TConfigItem } from '../config/config';
 import { cantCollapseAttributes, transformAttributes } from '../const/definitions';
-import { ITagNode } from '../interface/node';
 import { isTag } from '../xml/is-tag';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';

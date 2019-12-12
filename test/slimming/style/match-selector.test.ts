@@ -2,8 +2,6 @@ import chai = require('chai');
 const should = chai.should();
 import { matchSelector } from '../../../src/slimming/style/match-selector';
 import { parse } from '../../../src/xml-parser/app';
-import { ITagNode } from '../../../src/slimming/interface/node';
-
 
 describe('style/match-selector', () => {
 	it('参数缺失的情况', () => {
@@ -155,6 +153,17 @@ describe('style/match-selector', () => {
 			id: [],
 			pseudo: []
 		})(dom.childNodes[0]).should.equal(true);
+
+		matchSelector({
+			attr: [{
+				key: 'a',
+				modifier: 4,
+				value: 'b'
+			}],
+			class: [],
+			id: [],
+			pseudo: []
+		})(dom.childNodes[0]).should.equal(false);
 
 		matchSelector()(dom.childNodes[0]).should.equal(false);
 

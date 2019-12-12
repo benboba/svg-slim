@@ -1,9 +1,6 @@
 import { Declaration, KeyFrame, KeyFrames, Media, Node, Rule, StyleRules } from 'css';
 import { has } from 'ramda';
-import { TConfigItem } from '../config/config';
 import { regularAttr } from '../const/regular-attr';
-import { IDomNode } from '../interface/node';
-import { IUnique } from '../interface/unique';
 import { checkApply } from '../style/check-apply';
 import { execSelector } from '../style/exec-selector';
 import { mixWhiteSpace } from '../utils/mix-white-space';

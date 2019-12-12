@@ -3,8 +3,6 @@ const should = chai.should();
 import { rmHidden } from '../../../src/slimming/rules/rm-hidden';
 import { parse } from '../../../src/xml-parser/app';
 import { createXML } from '../../../src/slimming/xml/create';
-import { ITagNode } from '../../../src/slimming/interface/node';
-
 
 describe('rules/rm-hidden', () => {
 	it('rule false branch', async () => {

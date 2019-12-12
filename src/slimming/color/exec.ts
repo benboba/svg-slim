@@ -1,5 +1,5 @@
 import { shortenFunc } from '../utils/shorten-func';
-import { numberPattern } from '../const/syntax';
+import { angel, numberPattern } from '../const/syntax';
 import { keywords } from './keywords';
 import { valid, validOpacity } from './valid';
 import { hsl2rgb } from './hsl2rgb';
@@ -7,17 +7,8 @@ import { has } from 'ramda';
 import { toFixed } from '../math/tofixed';
 import { OPACITY_DIGIT, Hex, Hundred, FF, CIRC, GRAD, RAD } from '../const';
 
-interface IRGBColor {
-	r: number;
-	g: number;
-	b: number;
-	a: number;
-	origin: string;
-	valid: boolean;
-}
-
 const rgbReg = new RegExp(`rgba?\\((${numberPattern})(%?),(${numberPattern})(%?),(${numberPattern})(%?)(?:,(${numberPattern})(%?))?\\)`, 'gi');
-const hslReg = new RegExp(`hsla?\\((${numberPattern})((?:deg|grad|rad|turn)?),(${numberPattern})%,(${numberPattern})%(?:,(${numberPattern})(%?))?\\)`, 'gi');
+const hslReg = new RegExp(`hsla?\\((${numberPattern})((?:${angel})?),(${numberPattern})%,(${numberPattern})%(?:,(${numberPattern})(%?))?\\)`, 'gi');
 const hexReg = /^#([0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i;
 const fixed3 = toFixed(OPACITY_DIGIT);
 
@@ -195,7 +186,7 @@ export const exec = (color: string): IRGBColor => {
 	hslReg.lastIndex = 0;
 	const hslMatch = hslReg.exec(_color);
 	if (hslMatch) {
-		let hue;
+		let hue: number;
 		switch (hslMatch[2].toLowerCase()) {
 			case 'grad':
 				hue = +hslMatch[1] * CIRC / GRAD;

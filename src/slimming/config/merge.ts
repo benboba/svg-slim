@@ -1,4 +1,4 @@
-import { config, IConfig, TConfigItem } from './config';
+import { config } from './config';
 import { toArray } from './to-array';
 
 export const mergeConfig = (userConfig: unknown) => {

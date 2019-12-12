@@ -1,8 +1,5 @@
-import { INode } from '../../node/index';
 import { isTag } from '../xml/is-tag';
 import { rmNode } from '../xml/rm-node';
-import { TConfigItem } from '../config/config';
-import { ITagNode } from '../interface/node';
 
 interface IXmlnsDefineUnit {
 	target: INode;

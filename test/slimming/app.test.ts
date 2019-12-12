@@ -2,7 +2,6 @@ import chai = require('chai');
 const should = chai.should();
 import slimming = require('../../src/slimming/app');
 
-
 describe('svg-slimming 入口', () => {
 	it('传入配置', async () => {
 		const xml = `<?xml           version   =   "1.0"         encoding  =  "UTF-8"      ?>

@@ -1,9 +1,6 @@
-import { INode } from '../../node/index';
-import { TConfigItem } from '../config/config';
 import { numberPattern } from '../const/syntax';
 import { isTag } from '../xml/is-tag';
 import { traversalNode } from '../xml/traversal-node';
-import { ITagNode } from '../interface/node';
 
 const pxReg = new RegExp(`(^|\\(|\\s|,|{|;|:)(${numberPattern})px(?=$|\\)|\\s|,|;|})`, 'gi');
 

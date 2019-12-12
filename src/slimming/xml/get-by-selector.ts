@@ -1,7 +1,5 @@
 import { both } from 'ramda';
-import { INode } from '../../node/index';
-import { ITagNode } from '../interface/node';
-import { ISelector, selectorUnitCombinator } from '../style/define';
+import { selectorUnitCombinator } from '../style/define';
 import { matchSelector } from '../style/match-selector';
 import { isTag } from './is-tag';
 import { traversalNode } from './traversal-node';

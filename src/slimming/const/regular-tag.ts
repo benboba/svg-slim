@@ -367,13 +367,6 @@ const undefTag: IRegularTag = {
 	ownAttributes: [],
 };
 
-export interface IRegularTag {
-	isUndef?: boolean;
-	containTextNode: boolean;
-	legalChildElements: { transparent?: boolean; noself?: boolean; any?: boolean; childElements?: string[] };
-	ownAttributes: string[];
-}
-
 export const regularTag = new Proxy(_regularTag, {
 	get(obj, prop: string): IRegularTag {
 		return prop in obj ? obj[prop] : undefTag;

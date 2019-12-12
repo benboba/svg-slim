@@ -1,17 +1,9 @@
-import { execNumberList } from '../utils/exec-numberlist';
+import { APOS_LARGE, APOS_LEN, APOS_SWEEP } from '../const';
 import { numberSequence } from '../const/syntax';
-import { APOS_LEN, APOS_LARGE, APOS_SWEEP } from '../const';
+import { execNumberList } from '../utils/exec-numberlist';
+import { execArc } from './exec-arc';
 
 const pathReg = new RegExp(`([mzlhvcsqta])\\s*(${numberSequence})?(.*?)(?=[mzlhvcsqta]|$)`, 'gim');
-
-export interface IPathItem {
-	type: string;
-	val: number[];
-}
-
-export interface IPathResultItem extends IPathItem {
-	from: number[];
-}
 
 export const execPath = (str: string): IPathItem[] => {
 	const result: IPathItem[] = [];
@@ -27,7 +19,10 @@ export const execPath = (str: string): IPathItem[] => {
 		if (!temp.length && type !== 'm') {
 			return result;
 		}
-		const val = match[2] ? execNumberList(match[2]) : [];
+		let val: number[] = [];
+		if (match[2]) {
+			val = type === 'a' ? execArc(match[2]) : execNumberList(match[2]);
+		}
 		switch (type) {
 			// 平移的参数必须为偶数
 			case 'm':

@@ -3,7 +3,6 @@ import { APOS_LARGE, APOS_ROTATION, APOS_RX, APOS_RY, APOS_SWEEP, APOS_X, APOS_Y
 import { toFixed } from '../math/tofixed';
 import { Vector } from '../math/vector';
 import { numberLength } from '../utils/number-length';
-import { IPathResultItem } from './exec';
 
 const FROM_CX = 2;
 const FROM_CY = 3;

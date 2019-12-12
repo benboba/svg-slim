@@ -1,4 +1,3 @@
-import { IMatrixFunc } from './exec';
 import { combineMatrix } from './combine';
 import { shorten } from './shorten';
 import { DEFAULT_ACCURATE_DIGIT, DEFAULT_MATRIX_DIGIT, DEFAULT_SIZE_DIGIT } from '../config/config';
@@ -30,7 +29,11 @@ export const merge = (func1: IMatrixFunc, func2: IMatrixFunc, digit1: number = D
 			break;
 
 		case 'rotate':
-			resFunc.val[0] = func1.val[0] + func2.val[0];
+			if (func1.val.length === 1 && func2.val.length === 1) {
+				resFunc.val[0] = func1.val[0] + func2.val[0];
+			} else {
+				resFunc = combineMatrix([func1, func2], digit1, digit2, digit3);
+			}
 			break;
 
 		case 'skewX':

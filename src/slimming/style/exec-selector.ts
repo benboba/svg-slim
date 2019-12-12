@@ -1,5 +1,5 @@
 import { attrChar, classChar, idChar, pseudoChar } from '../const/regs';
-import { attrModifier, ISelector, selectorUnitCombinator } from './define';
+import { attrModifier, selectorUnitCombinator } from './define';
 
 export const execSelector = (selector: string): ISelector[] => {
 	const selectors: ISelector[] = [];

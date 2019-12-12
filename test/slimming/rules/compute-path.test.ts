@@ -3,8 +3,6 @@ const should = chai.should();
 import { computePath } from '../../../src/slimming/rules/compute-path';
 import { parse } from '../../../src/xml-parser/app';
 import { createXML } from '../../../src/slimming/xml/create';
-import { ITagNode } from '../../../src/slimming/interface/node';
-
 
 describe('rules/compute-path', () => {
 	it('rule false branch', async () => {
@@ -26,7 +24,7 @@ describe('rules/compute-path', () => {
 		</svg>`;
 		const dom = await parse(xml) as ITagNode;
 		await computePath([true], dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><path d="M0,0L20,20,0,0V300v-1"/><path d="M5e5.1L0,0H100V100H0z"/><path d="M80,80a45,45,0,1,0,45-45,45,45,0,0,0-45,45z"/><path d="M0,0Q0,100,100,100T200,0z"/><path d="M0,0C50,0,50,100,100,100S150,50,150,0z"/></svg>');
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><path d="M0,0L20,20,0,0V300v-1"/><path d="M5e5.1L0,0H100V100H0z"/><path d="M80,80a45,45,0,1045-45,45,45,0,00-45,45z"/><path d="M0,0Q0,100,100,100T200,0z"/><path d="M0,0C50,0,50,100,100,100S150,50,150,0z"/></svg>');
 	});
 
 	it('道格拉斯普克', async () => {

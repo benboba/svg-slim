@@ -3,8 +3,6 @@ const should = chai.should();
 import { collapseG } from '../../../src/slimming/rules/collapse-g';
 import { parse } from '../../../src/xml-parser/app';
 import { createXML } from '../../../src/slimming/xml/create';
-import { ITagNode } from '../../../src/slimming/interface/node';
-
 
 describe('rules/collapse-g', () => {
 	it('rule false branch', async () => {

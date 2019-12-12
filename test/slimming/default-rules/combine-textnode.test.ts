@@ -3,7 +3,6 @@ const should = chai.should();
 import { combineTextNode } from '../../../src/slimming/default-rules/combine-textnode';
 import { parse } from '../../../src/xml-parser/app';
 import { createXML } from '../../../src/slimming/xml/create';
-import { ITagNode } from '../../../src/slimming/interface/node';
 
 
 describe('default-rules/combine-textnode', () => {
@@ -16,7 +15,7 @@ describe('default-rules/combine-textnode', () => {
 				<notext>    </notext>
 			</text   >
 		</svg>`;
-		const dom = await parse(xml) as ITagNode;
+		const dom = await parse(xml) as IDomNode;
 		await combineTextNode(dom);
 		createXML(dom).should.equal('<svg><text> 1 abc 2 <notext/></text></svg>');
 	});
@@ -32,7 +31,7 @@ describe('default-rules/combine-textnode', () => {
 				<![CDATA[asdfl;ks;adf]]>
 			</g>
 		</svg>`;
-		const dom = await parse(xml) as ITagNode;
+		const dom = await parse(xml) as IDomNode;
 		await combineTextNode(dom);
 		createXML(dom).should.equal('<svg><style>#id{fill:red}</style><script>console.log(1)</script><g><style>.class{fill:blue}</style><script>console.log(2);</script></g></svg>');
 	});

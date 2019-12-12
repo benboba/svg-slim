@@ -1,7 +1,4 @@
 import { equals } from 'ramda';
-import { INode } from '../../node';
-import { TConfigItem } from '../config/config';
-import { ITagNode } from '../interface/node';
 import { execNumberList } from '../utils/exec-numberlist';
 import { traversalNode } from '../xml/traversal-node';
 

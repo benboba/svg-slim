@@ -7,12 +7,6 @@ const matrixFullReg = new RegExp(`^${matrixSingle}(?:${commaWsp}${matrixSingle})
 
 const matrixValLen = 6;
 
-export interface IMatrixFunc {
-	type: string; // 函数类型
-	noEffect?: boolean; // 是否无效
-	val: number[]; // 参数列表
-}
-
 export const execMatrix = (str: string): IMatrixFunc[] => {
 	const result: IMatrixFunc[] = [];
 
@@ -31,6 +25,10 @@ export const execMatrix = (str: string): IMatrixFunc[] => {
 				}
 			} else if (match[1] === 'matrix') {
 				if (val.length !== matrixValLen) {
+					return [];
+				}
+			} else if (match[1] === 'rotate') {
+				if (val.length !== 1 && val.length !== 3) {
 					return [];
 				}
 			} else {

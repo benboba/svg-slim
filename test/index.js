@@ -104,7 +104,7 @@ tester(
     <path d="M0 0 Q0 100 100 100 Q 200 100 200 0 Z m0 0zZzZM100 100 m 30 30" />
     <path d="M 0 0 C 50 0 50 100 100 100 150 100 150 50 150 0Z" />
     </svg>`,
-	'<svg><path d="M0,0L20,20,0,0V299"/><path d="M5e5.1L0,0H100V100H0z"/><path d="M80,80a45,45,0,1,0,45-45,45,45,0,0,0-45,45z"/><path d="M0,0Q0,100,100,100T200,0z"/><path d="M0,0C50,0,50,100,100,100S150,50,150,0z"/></svg>', {
+	'<svg><path d="M0,0L20,20,0,0V299"/><path d="M5e5.1L0,0H100V100H0z"/><path d="M80,80a45,45,0,1045-45,45,45,0,00-45,45z"/><path d="M0,0Q0,100,100,100T200,0z"/><path d="M0,0C50,0,50,100,100,100S150,50,150,0z"/></svg>', {
 		'compute-path': [true, true, 1]
 	}
 );
@@ -255,9 +255,9 @@ tester(
 	'shape-to-path',
 	`<svg>
     <rect fill="red" width="100" height="100"/>
-    <rect fill="red" width="1000" height="100"/>
+    <rect fill="red" width="1001" height="100"/>
     </svg>`,
-	'<svg><path fill="red" d="M0,0h100v100h-100z"/><path fill="red" d="M0,0v100h1000v-100z"/></svg>', {
+	'<svg><path fill="red" d="M0,0h100v100h-100z"/><path fill="red" d="M0,0v100h1001v-100z"/></svg>', {
 		'shape-to-path': true
 	}
 );

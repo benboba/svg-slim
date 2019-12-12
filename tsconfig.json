@@ -12,7 +12,8 @@
 		}
 	},
 	"include": [
-		"src/**/*"
+		"src/**/*",
+		"src/typings/*"
 	],
 	"exclude": [
 		"node_modules"

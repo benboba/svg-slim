@@ -1,9 +1,5 @@
-import { Declaration, parse as cssParse, Rule, Stylesheet, StyleRules } from 'css';
-import { propEq } from 'ramda';
-import { IAttr } from '../../node';
+import { Declaration, Rule, StyleRules } from 'css';
 import { regularAttr } from '../const/regular-attr';
-import { IStyleObj, ITagNode, IDomNode } from '../interface/node';
-import { ISeletorPriority } from '../style/define';
 import { execStyle } from '../style/exec';
 import { execSelector } from '../style/exec-selector';
 import { getSelectorPriority, overrideAble } from '../style/seletor-priority';
@@ -11,7 +7,6 @@ import { getById } from './get-by-id';
 import { getBySelector } from './get-by-selector';
 import { isTag } from './is-tag';
 import { traversalNode } from './traversal-node';
-import { rmNode } from './rm-node';
 
 interface IStyleItem {
 	styles: IAttr[];

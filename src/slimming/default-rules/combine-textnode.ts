@@ -1,9 +1,8 @@
-import { INode, NodeType } from '../../node/index';
+import { NodeType } from '../../node/index';
 import { regularTag } from '../const/regular-tag';
 import { mixWhiteSpace } from '../utils/mix-white-space';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
-import { ITextNode, ITagNode } from '../interface/node';
 
 export const combineTextNode = async (dom: INode): Promise<null> => new Promise((resolve, reject) => {
 

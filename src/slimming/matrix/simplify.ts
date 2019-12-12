@@ -1,4 +1,3 @@
-import { IMatrixFunc } from './exec';
 import { toFixed } from '../math/tofixed';
 import { matrixEPos } from '../const';
 
@@ -12,23 +11,22 @@ const CIRC = 360;
 const HALF_CIRC = 180;
 
 // 把 matrix 函数反转为简单函数
-export const simplify = (matrix: IMatrixFunc, digit1: number, digit2: number, digit3: number): IMatrixFunc => {
+export const simplify = (matrix: IMatrixFunc, digit1: number, digit2: number): IMatrixFunc => {
 	const mVal = matrix.val.map((v, i) => toFixed((i < matrixEPos) ? digit1 : digit2, v)).join(',');
 	const fixed1 = toFixed(digit1);
 	const fixed2 = toFixed(digit2);
-	const fixed3 = toFixed(digit3);
 
 	if (/^1,0,0,1/.test(mVal)) {
 		return {
 			type: 'translate',
-			val: fixed2(matrix.val[fPos]) === 0 ? [fixed2(matrix.val[ePos])] : [fixed2(matrix.val[ePos]), fixed2(matrix.val[fPos])],
+			val: fixed2(matrix.val[fPos]) === 0 ? [matrix.val[ePos]] : [matrix.val[ePos], matrix.val[fPos]],
 		};
 	}
 
 	if (/^[^,]+,0,0,[^,]+,0,0/.test(mVal)) {
 		return {
 			type: 'scale',
-			val: fixed1(matrix.val[aPos]) === fixed1(matrix.val[dPos]) ? [fixed1(matrix.val[aPos])] : [fixed1(matrix.val[aPos]), fixed1(matrix.val[dPos])],
+			val: fixed1(matrix.val[aPos]) === fixed1(matrix.val[dPos]) ? [matrix.val[aPos]] : [matrix.val[aPos], matrix.val[dPos]],
 		};
 	}
 
@@ -39,7 +37,7 @@ export const simplify = (matrix: IMatrixFunc, digit1: number, digit2: number, di
 		}
 		return {
 			type: 'skewX',
-			val: [fixed3(corner)],
+			val: [corner],
 		};
 	}
 
@@ -50,15 +48,11 @@ export const simplify = (matrix: IMatrixFunc, digit1: number, digit2: number, di
 		}
 		return {
 			type: 'skewY',
-			val: [fixed3(corner)],
+			val: [corner],
 		};
 	}
 
 	if (
-		matrix.val[ePos] === 0
-		&&
-		matrix.val[fPos] === 0
-		&&
 		fixed1(matrix.val[aPos]) === fixed1(matrix.val[dPos])
 		&&
 		fixed1(matrix.val[bPos]) === -fixed1(matrix.val[cPos])
@@ -80,9 +74,11 @@ export const simplify = (matrix: IMatrixFunc, digit1: number, digit2: number, di
 		if (corner > CIRC - 10) {
 			corner -= CIRC;
 		}
+		const cx = (matrix.val[ePos] * (1 - matrix.val[dPos]) + matrix.val[cPos] * matrix.val[fPos]) / ((1 - matrix.val[aPos]) * (1 - matrix.val[dPos]) - matrix.val[cPos] * matrix.val[bPos]);
+		const cy = (cx * (1 - matrix.val[aPos]) - matrix.val[ePos]) / matrix.val[cPos];
 		return {
 			type: 'rotate',
-			val: [fixed3(corner)],
+			val: [corner, cx, cy],
 		};
 	}
 	return matrix;

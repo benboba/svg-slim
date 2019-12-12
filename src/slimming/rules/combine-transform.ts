@@ -1,13 +1,11 @@
-import { INode } from '../../node/index';
 import { transformAttributes } from '../const/definitions';
 import { combineMatrix } from '../matrix/combine';
 import { isTag } from '../xml/is-tag';
 import { traversalNode } from '../xml/traversal-node';
-import { TConfigItem, DEFAULT_SIZE_DIGIT, DEFAULT_ACCURATE_DIGIT, DEFAULT_MATRIX_DIGIT } from '../config/config';
-import { execMatrix, IMatrixFunc } from '../matrix/exec';
+import { DEFAULT_SIZE_DIGIT, DEFAULT_ACCURATE_DIGIT, DEFAULT_MATRIX_DIGIT } from '../config/config';
+import { execMatrix } from '../matrix/exec';
 import { stringify } from '../matrix/stringify';
 import { merge } from '../matrix/merge';
-import { ITagNode } from '../interface/node';
 
 export const combineTransform = async (rule: TConfigItem[], dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {

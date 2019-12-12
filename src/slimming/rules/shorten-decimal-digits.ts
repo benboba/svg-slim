@@ -1,21 +1,19 @@
 import { Declaration, StyleRules } from 'css';
 import { both, curry, has } from 'ramda';
-import { TConfigItem } from '../config/config';
 import { animationAttributes } from '../const/definitions';
 import { regularAttr } from '../const/regular-attr';
 import { numberGlobal } from '../const/syntax';
-import { IDomNode, ITagNode } from '../interface/node';
 import { toFixed } from '../math/tofixed';
 import { execStyle } from '../style/exec';
 import { stringifyStyle } from '../style/stringify';
+import { shortenNumber } from '../utils/shorten-number';
 import { shortenNumberList } from '../utils/shorten-number-list';
-import { toScientific } from '../utils/to-scientific';
 import { traversalObj } from '../utils/traversal-obj';
 import { isTag } from '../xml/is-tag';
 import { traversalNode } from '../xml/traversal-node';
 
 // 移除掉正、负号前面的逗号，移除掉0.前面的0，移除掉.1,.1或e1,.1这种case中间的逗号
-const doShorten = curry((digit: number, val: string) => shortenNumberList(val.replace(numberGlobal, s => `${toScientific(toFixed(digit, parseFloat(s)))}`)));
+const doShorten = curry((digit: number, val: string) => shortenNumberList(val.replace(numberGlobal, s => `${shortenNumber(toFixed(digit, parseFloat(s)))}`)));
 
 export const shortenDecimalDigits = async (rule: TConfigItem[], dom: IDomNode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {

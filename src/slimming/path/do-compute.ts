@@ -10,7 +10,6 @@ import { computeS } from './compute-s';
 import { computeT } from './compute-t';
 import { computeV } from './compute-v';
 import { computeZ } from './compute-z';
-import { IPathItem, IPathResultItem } from './exec';
 import { APOS_X, APOS_LEN } from '../const';
 
 const cArgLen = 6;

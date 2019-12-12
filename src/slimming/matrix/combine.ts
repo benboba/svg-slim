@@ -1,4 +1,3 @@
-import { IMatrixFunc } from './exec';
 import { Matrix } from './matrix';
 import { shorten } from './shorten';
 import { DEFAULT_MATRIX_DIGIT, DEFAULT_SIZE_DIGIT, DEFAULT_ACCURATE_DIGIT } from '../config/config';
@@ -11,7 +10,13 @@ export const combineMatrix = (operate: IMatrixFunc[], digit1: number = DEFAULT_M
 				matrix = matrix.translate(item.val[0], item.val[1]);
 				break;
 			case 'rotate':
-				matrix = matrix.rotate(item.val[0]);
+				if (item.val.length === 3) {
+					matrix = matrix.translate(item.val[1], item.val[2]);
+					matrix = matrix.rotate(item.val[0]);
+					matrix = matrix.translate(-item.val[1], -item.val[2]);
+				} else {
+					matrix = matrix.rotate(item.val[0]);
+				}
 				break;
 			case 'scale':
 				matrix = matrix.scale(item.val[0], ...item.val.slice(1));
