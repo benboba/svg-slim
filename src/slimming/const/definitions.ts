@@ -13,6 +13,7 @@ export const graphicsElements = ['audio', 'canvas', 'circle', 'ellipse', 'foreig
 export const containerElements = ['a', 'clipPath', 'defs', 'g', 'marker', 'mask', 'pattern', 'svg', 'switch', 'symbol', 'unknown'];
 export const newViewportsElements = ['svg', 'symbol', 'foreignObject', 'video', 'audio', 'canvas', 'image', 'iframe'];
 export const unnecessaryElements = ['desc', 'discard', 'foreignObject', 'video', 'audio', 'iframe', 'canvas', 'metadata', 'script', 'style', 'title', 'unknown'];
+export const allElements = animationElements.concat(descriptiveElements, gradientElements, filterPrimitiveElements, lightSourceElements, paintServerElements, shapeElements, structuralElements, textContentChildElements, textContentElements, graphicsElements, containerElements, newViewportsElements, unnecessaryElements);
 
 // attributes group
 // https://www.w3.org/TR/SVG2/interact.html#EventAttributes
@@ -23,7 +24,7 @@ export const animationAttributes = ['from', 'to', 'by', 'values'];
 export const transformAttributes = ['gradientTransform', 'patternTransform', 'transform'];
 export const cantCollapseAttributes = ['id', 'class', 'mask', 'style'];
 export const conditionalProcessingAttributes = ['requiredExtensions', 'systemLanguage'];
-export const coreAttributes = ['id', 'tabindex', 'lang', 'xml:space', 'class', 'style', 'transform'/* TODO，此处暂时把 transform 放到这里，因为所有支持 transform 的元素都拥有 coreAttr */];
+export const coreAttributes = ['id', 'tabindex', 'lang', 'xml:space', 'class', 'style', 'transform'];
 export const deprecatedXlinkAttributes = ['xlink:href', 'xlink:title'];
 export const animationAdditionAttributes = ['additive', 'accumulate'];
 export const animationTimingAttributes = ['begin', 'dur', 'end', 'min', 'max', 'restart', 'repeatCount', 'repeatDur', 'fill'];
@@ -31,5 +32,13 @@ export const animationValueAttributes = ['calcMode', 'values', 'keyTimes', 'keyS
 export const rectAttributes = ['x', 'y', 'width', 'height'];
 export const transferFunctionElementAttributes = ['type', 'tableValues', 'slope', 'intercept', 'amplitude', 'exponent', 'offset'];
 
-export const validPseudoClass = ['hover', 'link', 'active', 'visited', 'focus', 'first-child', 'lang'];
+// 只在 css 中生效的属性
+export const onlyInCSS = ['transform', 'transform-box', 'mix-blend-mode', 'animation-name', 'animation-duration', 'animation-delay', 'animation-iteration-count', 'animation-direction', 'animation-timing-function', 'animation-fill-mode', 'animation', 'text-decoration-line', 'text-decoration-style', 'text-decoration-color', 'font-feature-settings', 'font-kerning'];
+
+// 特殊：不建议转 style 的 attribute
+export const onlyInAttr = {
+	'svg': [''],
+};
+
+export const validPseudoClass = ['hover', 'link', 'active', 'visited', 'focus', 'first-child', 'lang', 'not'];
 export const validPseudoElement = ['first-letter', 'first-line'];

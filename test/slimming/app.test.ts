@@ -23,13 +23,22 @@ describe('svg-slimming 入口', () => {
 		const dom = await slimming(xml, {
 			'rm-unnecessary': [true, ['title', 123]],
 			'no-this-key': true,
-			'shorten-decimal-digits': [true, 'haha', 10],
+			'shorten-decimal-digits': [true, 'haha', 1.5],
 			'rm-irregular-tag': [true, null],
 			'shorten-class': false,
 			'shorten-id': null,
 			'shorten-color': [true, false, -1],
+			'collapse-g': [true],
+			'rm-irregular-nesting': [true, {
+				ignore: [1, false, () => 3],
+				keyOrder: [],
+			}],
+			'shorten-style-tag': [true, {
+				haha: null,
+				deepShorten: true,
+			}],
 		});
-		dom.should.equal('<svg width="100" height="100"><text> 1 abc 2 </text><script>console.log(1);console.log(2)</script></svg>');
+		dom.should.equal('<svg width="1e2" height="1e2"><text> 1 abc 2 </text><script>console.log(1);console.log(2)</script></svg>');
 	});
 
 	it('完全默认配置', async () => {

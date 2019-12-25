@@ -1,11 +1,16 @@
 import { propEq } from 'ramda';
 import { douglasPeucker } from '../algorithm/douglas-peucker';
+import { LineTypes } from '../const';
 import { plus } from '../math/plus';
+import { checkSubPath } from '../path/check-sub-paths';
 import { doCompute } from '../path/do-compute';
 import { execPath } from '../path/exec';
-import { traversalNode } from '../xml/traversal-node';
+import { straighten as straightenPath } from '../path/straighten';
 import { stringifyPath } from '../path/stringify';
+import { execStyleTree } from '../xml/exec-style-tree';
+import { getAttr } from '../xml/get-attr';
 import { rmNode } from '../xml/rm-node';
+import { traversalNode } from '../xml/traversal-node';
 
 const DPItemNormalize = (pathItem: IPathResultItem): IPathResultItem => {
 	switch (pathItem.type) {
@@ -38,15 +43,11 @@ const DPItemMerge = (lastItem: IPathResultItem, pathItem: IPathResultItem): void
 	lastItem.val = lastItem.val.concat(DPItemNormalize(pathItem).val);
 };
 
-// 道格拉斯普克只支持直线类型
-const DPAvailTypes = 'LlHhVv';
-
 const DPInit = (threshold: number, pathArr: IPathResultItem[]): IPathResultItem[] => {
 	const pathResult: IPathResultItem[] = [];
 	let len = 0;
-	for (let i = 0, l = pathArr.length; i < l; i++) {
-		const pathItem = pathArr[i];
-		if (DPAvailTypes.indexOf(pathItem.type) !== -1) {
+	for (const pathItem of pathArr) {
+		if (LineTypes.indexOf(pathItem.type) !== -1) {
 			const lastItem = pathResult[len - 1];
 			if (lastItem.type === 'L') {
 				DPItemMerge(lastItem, pathItem);
@@ -70,24 +71,44 @@ const DPInit = (threshold: number, pathArr: IPathResultItem[]): IPathResultItem[
 	return pathResult;
 };
 
-const PATH_CONFIG_DIGIT_1 = 3;
-const PATH_CONFIG_DIGIT_2 = 4;
-
-export const computePath = async (rule: TConfigItem[], dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const computePath = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
+		const {
+			thinning,
+			sizeDigit,
+			angelDigit,
+			straighten,
+		} = rule[1] as {
+			thinning: number;
+			sizeDigit: number;
+			angelDigit: number;
+			straighten: number;
+		};
+		execStyleTree(dom as IDomNode);
 		traversalNode<ITagNode>(propEq('nodeName', 'path'), node => {
 			const attrD = node.getAttribute('d');
 			if (attrD) {
+				// 此处需要先运算一次 doCompute，拿到每条指令的 from 坐标
 				let pathResult = doCompute(execPath(attrD));
 
-				// 如果存在道格拉斯 - 普克规则，则执行道格拉斯普克算法，之后需要再次更新
-				if (rule[1] && rule[2]) {
-					pathResult = doCompute(DPInit(rule[2] as number, pathResult));
-				}
-
-				// 移除掉末尾无意义的 m 指令
-				while (pathResult.length && pathResult[pathResult.length - 1].type.toLowerCase() === 'm') {
-					pathResult.pop();
+				// 是否存在 marker 引用，没有 marker 可以移除所有空移动指令
+				const hasMarker = getAttr(node, 'marker-start', 'none') !== 'none' || getAttr(node, 'marker-mid', 'none') !== 'none' || getAttr(node, 'marker-end', 'none') !== 'none';
+				// 是否存在 stroke，没有 stroke 可以移除面积为 0 的子路径
+				const hasStroke = getAttr(node, 'stroke', 'none') !== 'none' && getAttr(node, 'stroke-width', '1') !== '0';
+				// 是否存在 stroke-linecap，没有 stroke-linecap 可以移除长度为 0 的指令
+				const hasStrokeCap = getAttr(node, 'stroke-linecap', 'butt') !== 'butt';
+				// 如果存在 marker 引用，多余的优化都不能做
+				if (!hasMarker) {
+					// 存在小尺寸曲线转直线的规则
+					if (straighten) {
+						pathResult = pathResult.map(p => straightenPath(straighten, p));
+					}
+					// 存在路径抽稀规则
+					if (thinning) {
+						pathResult = pathResult.map(p => DPInit(thinning, p));
+					}
+					// 最终输出时再执行一次 doCompute
+					pathResult = doCompute(checkSubPath(pathResult, hasStroke, hasStrokeCap, sizeDigit, angelDigit));
 				}
 
 				if (!pathResult.length) {
@@ -95,7 +116,7 @@ export const computePath = async (rule: TConfigItem[], dom: INode): Promise<null
 					return;
 				}
 
-				node.setAttribute('d', stringifyPath(pathResult, rule[PATH_CONFIG_DIGIT_1] as number, rule[PATH_CONFIG_DIGIT_2] as number));
+				node.setAttribute('d', stringifyPath(pathResult, sizeDigit, angelDigit));
 			} else {
 				rmNode(node);
 			}

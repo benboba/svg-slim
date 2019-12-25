@@ -40,13 +40,16 @@
   "dependencies": {
     "css": "^2.2.3",
     "he": "^1.2.0",
-    "ramda": "^0.25.0"
+    "ramda": "^0.25.0",
+    "svg-path-contours": "^2.0.0",
+    "triangulate-contours": "^1.0.2"
   },
   "devDependencies": {
     "@types/chai": "^4.2.0",
     "@types/css": "0.0.31",
     "@types/he": "^1.1.0",
     "@types/mocha": "^5.2.7",
+    "@types/node": "^12.12.18",
     "@types/ramda": "^0.25.36",
     "chai": "^4.1.2",
     "copy-webpack-plugin": "^4.5.2",

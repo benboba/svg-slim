@@ -104,18 +104,8 @@ tester(
     <path d="M0 0 Q0 100 100 100 Q 200 100 200 0 Z m0 0zZzZM100 100 m 30 30" />
     <path d="M 0 0 C 50 0 50 100 100 100 150 100 150 50 150 0Z" />
     </svg>`,
-	'<svg><path d="M0,0L20,20,0,0V299"/><path d="M5e5.1L0,0H100V100H0z"/><path d="M80,80a45,45,0,1045-45,45,45,0,00-45,45z"/><path d="M0,0Q0,100,100,100T200,0z"/><path d="M0,0C50,0,50,100,100,100S150,50,150,0z"/></svg>', {
-		'compute-path': [true, true, 1]
-	}
-);
-
-tester(
-	'douglas-peucker',
-	`<svg>
-    <polyline points="0 0 10 10 20 -10 30 0" />
-    </svg>`,
-	'<svg><polyline points="0,0,30,0"/></svg>', {
-		'douglas-peucker': [true, 30]
+	'<svg><path d="m5e5.1L0,0h1e2v1e2H0z"/><path d="m80,80a45,45,0,0045,45,45,45,0,10-45-45z"/><path d="m0,0q0,1e2,1e2,1e2T2e2,0z"/><path d="m0,0c50,0,50,1e2,1e2,1e2s50-50,50-1e2z"/></svg>', {
+		'compute-path': [true]
 	}
 );
 
@@ -160,12 +150,7 @@ tester(
 	`<svg>
     <g display="none"><text>1</text></g>
     <style></style>
-    <rect width="0" height="100" />
-    <circle cx="10" cy="10" />
-    <ellipse rx="0" ry="1e5" />
-    <line x1="1" y1="10" x2="1" y2="10" />
     <polygon points="100 100 200 200 300 300" fill="none" stroke="none" />
-    <polyline  />
     </svg>`,
 	'<svg/>', {
 		'rm-hidden': true
@@ -252,13 +237,29 @@ tester(
 );
 
 tester(
-	'shape-to-path',
+	'shorten-shape',
 	`<svg>
     <rect fill="red" width="100" height="100"/>
     <rect fill="red" width="1001" height="100"/>
+    <rect width="0" height="100" />
+    <circle cx="10" cy="10" />
+    <ellipse rx="0" ry="1e5" />
+    <line x1="1" y1="10" x2="1" y2="10" />
+    <polyline  />
     </svg>`,
-	'<svg><path fill="red" d="M0,0h100v100h-100z"/><path fill="red" d="M0,0v100h1001v-100z"/></svg>', {
-		'shape-to-path': true
+	'<svg><path fill="red" d="M0,0h1e2v1e2h-1e2z"/><path fill="red" d="M0,0v1e2h1001v-1e2z"/></svg>', {
+		'shorten-shape': true
+	}
+);
+
+tester(
+	'shorten-shape',
+	`<svg>
+	<polyline points="0 0 10 10 15 15 25 25 30 30" />
+	<polygon points="0,0 100,200,300,300,299,299" />
+    </svg>`,
+	'<svg><path d="M0,0,30,30"/><path d="M0,0,1e2,2e2,299,299z"/></svg>', {
+		'shorten-shape': [true, 30]
 	}
 );
 

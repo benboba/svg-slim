@@ -36,9 +36,9 @@ const check = (dom: IDomNode, styleItems: IStyleItem[]) => {
 						from: 'inline',
 					};
 				});
-			} else if (attr.fullname === 'xlink:href') {
+			} else if (attr.name === 'href') {
 				// 获取 xlink 引用
-				xlinkObj = getById(node.getAttribute('xlink:href') as string, dom) as ITagNode;
+				xlinkObj = getById(node.getAttribute(attr.fullname) as string, dom) as ITagNode;
 			} else if (regularAttr[attr.fullname].couldBeStyle) {
 				// 属性优先级最低，但可以覆盖继承
 				const styleDefine = nodeStyle[attr.fullname];

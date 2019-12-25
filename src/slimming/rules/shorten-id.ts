@@ -14,7 +14,7 @@ interface IIDCache {
 	[propName: string]: [string, INode, string | null];
 }
 
-export const shortenID = async (rule: TConfigItem[], dom: IDomNode): Promise<null> => new Promise((resolve, reject) => {
+export const shortenID = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		let si = 0;
 		const IDList: IIDCache = {};

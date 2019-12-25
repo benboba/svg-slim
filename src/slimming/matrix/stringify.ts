@@ -1,6 +1,6 @@
-import { shorten } from './shorten';
+import { DEFAULT_ACCURATE_DIGIT, DEFAULT_MATRIX_DIGIT, DEFAULT_SIZE_DIGIT } from '../const';
 import { stringifyFuncVal } from '../utils/stringify-funcval';
-import { DEFAULT_ACCURATE_DIGIT, DEFAULT_MATRIX_DIGIT, DEFAULT_SIZE_DIGIT } from '../config/config';
+import { shorten } from './shorten';
 
 export const stringify = (m: IMatrixFunc[], digit1: number = DEFAULT_MATRIX_DIGIT, digit2: number = DEFAULT_SIZE_DIGIT, digit3: number = DEFAULT_ACCURATE_DIGIT): string => {
 	let result = '';

@@ -1,6 +1,6 @@
-import { containerElements, gradientElements, graphicsElements, newViewportsElements, shapeElements, textContentElements } from './definitions';
-import { absoluteSize, accumulateVal, additiveVal, alignmentBaseline, alignXVal, alignYVal, animateTransformType, baselineShift, blendModeVal, booleanVal, calcModelVal, channelVal, clipBox, colorInterpolation, colorKeywords, colorRendering, crossoriginVal, direction, display, dominantBaseline, durVal, edgeModeVal, feColorMatrixType, feFuncType, feTurbulenceType, fontStretch, fontStyle, fontVariant, inVal, lengthAdjustVal, linecap, linejoin, markerUnitVal, methodVal, nonzeroEvenodd, operaterVal, operaterVal1, orientVal, overflow, paintKeywords, paintOrder, playbackorderVal, pointerEvents, relativeSize, restartVal, rotateVal, shapeRendering, sideVal, spacingVal, spreadMethodVal, stitchVal, systemColor, targetVal, textAnchor, textDecoration, timelinebeginVal, unitVal, x11Colors, xmlSpaceVal, zoomAndPanVal, textOverflow, unicodeBidi, visibility, whitespace, writingMode } from './enum';
-import { angelFullMatch, basicShapeFullMatch, childFuncFullMatch, clockFullMatch, colorFullMatch, controlPointsFullMatch, cssNameFullMatch, cssNameSpaceSeparatedFullMatch, cursorFullMatch, dasharrayFullMatch, filterListFullMatch, fontWeightFullMatch, funcIRIFullMatch, iccColorFullMatch, indentFullMatch, integerFullMatch, langFullMatch, lengthFullMatch, nameFullMatch, numberFullMatch, numberListFullMatch, numberOptionalFullMatch, numberSemiSepatatedFullMatch, pathFullMatch, percentageFullMatch, preservAspectRatioFullMatch, rectFullMatch, textOrientationFullMatch, timeListFullMatch, transformListFullMatch, URIFullMatch, viewBoxFullMatch, vectorEffectFullMatch } from './syntax';
+import { allElements, containerElements, filterPrimitiveElements, gradientElements, graphicsElements, newViewportsElements, shapeElements, textContentElements } from './definitions';
+import { absoluteSize, accumulateVal, additiveVal, alignmentBaseline, alignXVal, alignYVal, animateTransformType, baselineShift, blendModeVal, booleanVal, calcModelVal, channelVal, clipBox, colorInterpolation, colorKeywords, colorRendering, crossoriginVal, direction, display, dominantBaseline, durVal, edgeModeVal, feColorMatrixType, feFuncType, feTurbulenceType, fontStretch, fontStyle, inVal, isolationMode, lengthAdjustVal, linecap, linejoin, markerUnitVal, methodVal, nonzeroEvenodd, operaterVal, operaterVal1, orientVal, overflow, paintKeywords, paintOrder, playbackorderVal, pointerEvents, relativeSize, restartVal, rotateVal, shapeRendering, sideVal, spacingVal, spreadMethodVal, stitchVal, systemColor, targetVal, textAnchor, textDecorationStyle, textOrientation, textOverflow, timelinebeginVal, unicodeBidi, unitVal, visibility, whitespace, writingMode, x11Colors, xmlSpaceVal, zoomAndPanVal } from './enum';
+import { angelFullMatch, basicShapeFullMatch, childFuncFullMatch, clockFullMatch, colorFullMatch, controlPointsFullMatch, cssNameFullMatch, cssNameSpaceSeparatedFullMatch, cursorFullMatch, dasharrayFullMatch, filterListFullMatch, fontWeightFullMatch, funcIRIFullMatch, iccColorFullMatch, indentFullMatch, integerFullMatch, langFullMatch, lengthFullMatch, nameFullMatch, numberFullMatch, numberListFullMatch, numberOptionalFullMatch, numberSemiSepatatedFullMatch, pathFullMatch, percentageFullMatch, preservAspectRatioFullMatch, rectFullMatch, textDecorationLine, textOrientationFullMatch, timeListFullMatch, transformListFullMatch, transformOriginFullMatch, URIFullMatch, vectorEffectFullMatch, viewBoxFullMatch } from './syntax';
 
 const shapeAndText = shapeElements.concat(textContentElements);
 const viewport = ['pattern', 'marker'].concat(newViewportsElements);
@@ -219,7 +219,7 @@ const _regularAttr: IRegularAttrDefine = {
 	},
 	'cx': {
 		name: 'cx',
-		couldBeStyle: false,
+		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
 		maybeIRI: false,
@@ -240,11 +240,11 @@ const _regularAttr: IRegularAttrDefine = {
 			val: '0',
 			tag: ['circle', 'ellipse'],
 		}],
-		applyTo: [],
+		applyTo: ['radialGradient', 'circle', 'ellipse'],
 	},
 	'cy': {
 		name: 'cy',
-		couldBeStyle: false,
+		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
 		maybeIRI: false,
@@ -265,7 +265,7 @@ const _regularAttr: IRegularAttrDefine = {
 			val: '0',
 			tag: ['circle', 'ellipse'],
 		}],
-		applyTo: [],
+		applyTo: ['radialGradient', 'circle', 'ellipse'],
 	},
 	'd': {
 		name: 'd',
@@ -278,7 +278,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'reg',
-			reg: pathFullMatch, // TODO：这里用的是宽泛规则，严格正则是 pathFullMatchStrict ，但是浏览器存在纠错机制，使用严格正则可能导致意外的过滤
+			reg: pathFullMatch, // 这里用的是宽泛规则，严格正则是 pathFullMatchStrict ，但是浏览器存在纠错机制，使用严格正则会导致意外的过滤，纠错机制已在 compute-path 中
 		}],
 		initValue: '',
 		applyTo: [],
@@ -605,7 +605,7 @@ const _regularAttr: IRegularAttrDefine = {
 	},
 	'height': {
 		name: 'height',
-		couldBeStyle: false,
+		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
 		maybeIRI: false,
@@ -624,7 +624,7 @@ const _regularAttr: IRegularAttrDefine = {
 		}],
 		initValue: [{
 			val: '100%',
-			tag: ['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDropShadow', 'feFlood', 'feGaussianBlur', 'feImage', 'feMerge', 'feMorphology', 'feOffset', 'feSpecularLighting', 'feTile', 'feTurbulence'],
+			tag: filterPrimitiveElements,
 		}, {
 			val: '120%',
 			tag: ['filter', 'mask'],
@@ -635,7 +635,7 @@ const _regularAttr: IRegularAttrDefine = {
 			val: 'auto',
 			tag: ['svg', 'image', 'rect', 'foreignObject'],
 		}],
-		applyTo: [],
+		applyTo: filterPrimitiveElements.concat(['filter', 'mask', 'pattern', 'svg', 'image', 'rect', 'foreignObject']),
 	},
 	'href': {
 		name: 'href',
@@ -737,6 +737,22 @@ const _regularAttr: IRegularAttrDefine = {
 			reg: numberFullMatch,
 		}],
 		initValue: '0',
+		applyTo: [],
+	},
+	'isolation': { // https://www.w3.org/TR/SVG/styling.html#RequiredProperties
+		name: 'isolation',
+		couldBeStyle: false,
+		animatable: false,
+		maybeColor: false,
+		maybeIRI: false,
+		maybeFuncIRI: false,
+		maybeSizeNumber: false,
+		maybeAccurateNumber: false,
+		legalValues: [{
+			type: 'enum',
+			enum: isolationMode,
+		}],
+		initValue: 'auto',
 		applyTo: [],
 	},
 	'k1': {
@@ -1427,7 +1443,7 @@ const _regularAttr: IRegularAttrDefine = {
 	},
 	'r': {
 		name: 'r',
-		couldBeStyle: false,
+		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
 		maybeIRI: false,
@@ -1448,7 +1464,7 @@ const _regularAttr: IRegularAttrDefine = {
 			val: '0',
 			tag: ['circle'],
 		}],
-		applyTo: [],
+		applyTo: ['radialGradient', 'circle'],
 	},
 	'radius': {
 		name: 'radius',
@@ -1634,7 +1650,7 @@ const _regularAttr: IRegularAttrDefine = {
 	},
 	'rx': {
 		name: 'rx',
-		couldBeStyle: false,
+		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
 		maybeIRI: false,
@@ -1652,11 +1668,11 @@ const _regularAttr: IRegularAttrDefine = {
 			string: 'auto',
 		}],
 		initValue: 'auto',
-		applyTo: [],
+		applyTo: ['ellipse', 'rect'],
 	},
 	'ry': {
 		name: 'ry',
-		couldBeStyle: false,
+		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
 		maybeIRI: false,
@@ -1674,7 +1690,7 @@ const _regularAttr: IRegularAttrDefine = {
 			string: 'auto',
 		}],
 		initValue: 'auto',
-		applyTo: [],
+		applyTo: ['ellipse', 'rect'],
 	},
 	'scale': {
 		name: 'scale',
@@ -2049,7 +2065,7 @@ const _regularAttr: IRegularAttrDefine = {
 	},
 	'transform': {
 		name: 'transform',
-		couldBeStyle: false, // TODO 最新规则已经放到了 properties 但此属性使用率较高，且浏览器尚未支持，故此先设置为 false
+		couldBeStyle: false,
 		animatable: true,
 		maybeColor: false,
 		maybeIRI: false,
@@ -2061,7 +2077,23 @@ const _regularAttr: IRegularAttrDefine = {
 			reg: transformListFullMatch,
 		}],
 		initValue: '',
-		applyTo: ['svg', 'g', 'symbol', 'marker', 'a', 'switch', 'use', 'foreignObject', 'unknown'].concat(graphicsElements),
+		applyTo: allElements,
+	},
+	'transform-origin': {
+		name: 'transform-origin',
+		couldBeStyle: true,
+		animatable: true,
+		maybeColor: false,
+		maybeIRI: false,
+		maybeFuncIRI: false,
+		maybeSizeNumber: true,
+		maybeAccurateNumber: false,
+		legalValues: [{
+			type: 'reg',
+			reg: transformOriginFullMatch,
+		}],
+		initValue: '',
+		applyTo: allElements,
 	},
 	'type': {
 		name: 'type',
@@ -2139,7 +2171,7 @@ const _regularAttr: IRegularAttrDefine = {
 	},
 	'width': {
 		name: 'width',
-		couldBeStyle: false,
+		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
 		maybeIRI: false,
@@ -2158,7 +2190,7 @@ const _regularAttr: IRegularAttrDefine = {
 		}],
 		initValue: [{
 			val: '100%',
-			tag: ['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDropShadow', 'feFlood', 'feGaussianBlur', 'feImage', 'feMerge', 'feMorphology', 'feOffset', 'feSpecularLighting', 'feTile', 'feTurbulence'],
+			tag: filterPrimitiveElements,
 		}, {
 			val: '120%',
 			tag: ['filter', 'mask'],
@@ -2169,11 +2201,11 @@ const _regularAttr: IRegularAttrDefine = {
 			val: 'auto',
 			tag: ['svg', 'image', 'rect', 'foreignObject'],
 		}],
-		applyTo: [],
+		applyTo: filterPrimitiveElements.concat(['filter', 'mask', 'pattern', 'svg', 'image', 'rect', 'foreignObject']),
 	},
 	'x': {
 		name: 'x',
-		couldBeStyle: false,
+		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
 		maybeIRI: false,
@@ -2183,11 +2215,11 @@ const _regularAttr: IRegularAttrDefine = {
 		legalValues: [{
 			type: 'reg',
 			reg: lengthFullMatch,
-			tag: ['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDropShadow', 'feFlood', 'feGaussianBlur', 'feImage', 'feMerge', 'feMorphology', 'feOffset', 'feSpecularLighting', 'feTile', 'feTurbulence', 'filter', 'mask', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text', 'tspan'],
+			tag: filterPrimitiveElements.concat(['filter', 'mask', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text', 'tspan']),
 		}, {
 			type: 'reg',
 			reg: percentageFullMatch,
-			tag: ['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDropShadow', 'feFlood', 'feGaussianBlur', 'feImage', 'feMerge', 'feMorphology', 'feOffset', 'feSpecularLighting', 'feTile', 'feTurbulence', 'filter', 'mask', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text', 'tspan'],
+			tag: filterPrimitiveElements.concat(['filter', 'mask', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text', 'tspan']),
 		}, {
 			type: 'reg',
 			reg: numberFullMatch,
@@ -2198,7 +2230,7 @@ const _regularAttr: IRegularAttrDefine = {
 		}],
 		initValue: [{
 			val: '0%',
-			tag: ['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDropShadow', 'feFlood', 'feGaussianBlur', 'feImage', 'feMerge', 'feMorphology', 'feOffset', 'feSpecularLighting', 'feTile', 'feTurbulence'],
+			tag: filterPrimitiveElements,
 		}, {
 			val: '0',
 			tag: ['fePointLight', 'feSpotLight', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text'],
@@ -2209,7 +2241,7 @@ const _regularAttr: IRegularAttrDefine = {
 			val: '',
 			tag: ['tspan'],
 		}],
-		applyTo: [],
+		applyTo: filterPrimitiveElements.concat(['fePointLight', 'feSpotLight', 'filter', 'mask', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text', 'tspan']),
 	},
 	'x1': {
 		name: 'x1',
@@ -2379,7 +2411,7 @@ const _regularAttr: IRegularAttrDefine = {
 	},
 	'y': {
 		name: 'y',
-		couldBeStyle: false,
+		couldBeStyle: true,
 		animatable: true,
 		maybeColor: false,
 		maybeIRI: false,
@@ -2389,11 +2421,11 @@ const _regularAttr: IRegularAttrDefine = {
 		legalValues: [{
 			type: 'reg',
 			reg: lengthFullMatch,
-			tag: ['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDropShadow', 'feFlood', 'feGaussianBlur', 'feImage', 'feMerge', 'feMorphology', 'feOffset', 'feSpecularLighting', 'feTile', 'feTurbulence', 'filter', 'mask', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text', 'tspan'],
+			tag: filterPrimitiveElements.concat(['filter', 'mask', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text', 'tspan']),
 		}, {
 			type: 'reg',
 			reg: percentageFullMatch,
-			tag: ['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDropShadow', 'feFlood', 'feGaussianBlur', 'feImage', 'feMerge', 'feMorphology', 'feOffset', 'feSpecularLighting', 'feTile', 'feTurbulence', 'filter', 'mask', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text', 'tspan'],
+			tag: filterPrimitiveElements.concat(['filter', 'mask', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text', 'tspan']),
 		}, {
 			type: 'reg',
 			reg: numberFullMatch,
@@ -2404,7 +2436,7 @@ const _regularAttr: IRegularAttrDefine = {
 		}],
 		initValue: [{
 			val: '0%',
-			tag: ['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDropShadow', 'feFlood', 'feGaussianBlur', 'feImage', 'feMerge', 'feMorphology', 'feOffset', 'feSpecularLighting', 'feTile', 'feTurbulence'],
+			tag: filterPrimitiveElements,
 		}, {
 			val: '0',
 			tag: ['fePointLight', 'feSpotLight', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text'],
@@ -2415,7 +2447,7 @@ const _regularAttr: IRegularAttrDefine = {
 			val: '',
 			tag: ['tspan'],
 		}],
-		applyTo: [],
+		applyTo: filterPrimitiveElements.concat(['fePointLight', 'feSpotLight', 'filter', 'mask', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text', 'tspan']),
 	},
 	'y1': {
 		name: 'y1',
@@ -2912,7 +2944,7 @@ const _regularAttr: IRegularAttrDefine = {
 	'font-family': {
 		name: 'font-family',
 		couldBeStyle: true,
-		animatable: true,
+		animatable: false,
 		maybeColor: false,
 		maybeIRI: false,
 		maybeFuncIRI: false,
@@ -2985,7 +3017,7 @@ const _regularAttr: IRegularAttrDefine = {
 	'font-style': {
 		name: 'font-style',
 		couldBeStyle: true,
-		animatable: true,
+		animatable: false,
 		maybeColor: false,
 		maybeIRI: false,
 		maybeFuncIRI: false,
@@ -3007,10 +3039,7 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeFuncIRI: false,
 		maybeSizeNumber: false,
 		maybeAccurateNumber: false,
-		legalValues: [{
-			type: 'enum',
-			enum: fontVariant,
-		}],
+		legalValues: [],
 		initValue: 'normal',
 		applyTo: textContentElements,
 	},
@@ -3527,11 +3556,24 @@ const _regularAttr: IRegularAttrDefine = {
 		maybeFuncIRI: false,
 		maybeSizeNumber: false,
 		maybeAccurateNumber: false,
+		legalValues: [],
+		initValue: 'none',
+		applyTo: textContentElements,
+	},
+	'text-orientation': {
+		name: 'text-orientation',
+		couldBeStyle: true,
+		animatable: false,
+		maybeColor: false,
+		maybeIRI: false,
+		maybeFuncIRI: false,
+		maybeSizeNumber: false,
+		maybeAccurateNumber: false,
 		legalValues: [{
 			type: 'enum',
-			enum: textDecoration,
+			enum: textOrientation,
 		}],
-		initValue: 'none',
+		initValue: 'mixed',
 		applyTo: textContentElements,
 	},
 	'text-overflow': {

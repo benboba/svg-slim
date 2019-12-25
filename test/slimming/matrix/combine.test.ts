@@ -26,6 +26,14 @@ describe('matrix/combine', () => {
 		});
 	});
 
+	it('combine 3-value rotate', () => {
+		const mList = execMatrix('rotate(30, 20, 20)    rotate(-20, 20, 20)');
+		combineMatrix(mList).should.deep.equal({
+			type: 'rotate',
+			val: [10, 20, 20],
+		});
+	});
+
 	it('combine skewX', () => {
 		const mList = execMatrix('skewX(   0)skewX(50   )    skewX(-20)');
 		combineMatrix(mList).should.deep.equal({

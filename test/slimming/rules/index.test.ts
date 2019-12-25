@@ -16,7 +16,7 @@ describe('rules/覆盖率补齐', () => {
 		const dom = await parse(xml) as ITagNode;
 		await rmComments([false], dom);
 		createXML(dom).should.equal('<svg><!--hahaha--></svg>');
-    });
+	});
 
 	it('rm-doctype false branch', async () => {
 		const xml = '<!DOCTYPE xml><svg/>';
@@ -35,7 +35,7 @@ describe('rules/覆盖率补齐', () => {
 	it('rm-irregular-tag', async () => {
 		const xml = '<svg><undef/><def/></svg>';
 		const dom = await parse(xml) as ITagNode;
-		await rmIrregularTag([true, ['def']], dom);
+		await rmIrregularTag([true, { ignore: ['def'] }], dom);
 		createXML(dom).should.equal('<svg><def/></svg>');
 	});
 
@@ -43,6 +43,13 @@ describe('rules/覆盖率补齐', () => {
 		const xml = '<svg><title/></svg>';
 		const dom = await parse(xml) as ITagNode;
 		await rmUnnecessary([false], dom);
+		createXML(dom).should.equal('<svg><title/></svg>');
+	});
+
+	it('rm-unnecessary', async () => {
+		const xml = '<svg><title/></svg>';
+		const dom = await parse(xml) as ITagNode;
+		await rmUnnecessary([true, { tags: [] }], dom);
 		createXML(dom).should.equal('<svg><title/></svg>');
 	});
 
@@ -67,10 +74,10 @@ describe('rules/覆盖率补齐', () => {
 		createXML(dom).should.equal('<svg width="1000px" height="800px"/>');
 	});
 
-	it('rm-px branch', async () => {
-		const xml = '<svg width="1000px" version="1.1" style="height:800px"/>';
+	it('rm-px', async () => {
+		const xml = '<svg width="1000px" viewBox="0 0 1000 800" version="1.1" style="height:800px"><rect width="0em" style="height:0pt;fill:red" id="r;1px"/></svg>';
 		const dom = await parse(xml) as ITagNode;
 		await rmPx([true], dom);
-		createXML(dom).should.equal('<svg width="1000" version="1.1" style="height:800"/>');
+		createXML(dom).should.equal('<svg width="1000" viewBox="0 0 1000 800" version="1.1" version="1.1" style="height:800"><rect width="0" style="height:0;fill:red" id="r;1px"/></svg>');
 	});
 });

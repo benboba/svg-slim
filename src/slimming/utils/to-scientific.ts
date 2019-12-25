@@ -7,5 +7,5 @@ export const toScientific = (s: number): string => {
 		e++;
 	}
 	_s = `${_s}e${e}`;
-	return _s.length < sStr.length ? _s : sStr;
+	return _s.length <= sStr.length ? _s : sStr;
 };

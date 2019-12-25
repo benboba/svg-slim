@@ -1,6 +1,6 @@
+import { DEFAULT_ACCURATE_DIGIT, DEFAULT_MATRIX_DIGIT, DEFAULT_SIZE_DIGIT } from '../const';
 import { Matrix } from './matrix';
 import { shorten } from './shorten';
-import { DEFAULT_MATRIX_DIGIT, DEFAULT_SIZE_DIGIT, DEFAULT_ACCURATE_DIGIT } from '../config/config';
 
 export const combineMatrix = (operate: IMatrixFunc[], digit1: number = DEFAULT_MATRIX_DIGIT, digit2: number = DEFAULT_SIZE_DIGIT, digit3: number = DEFAULT_ACCURATE_DIGIT): IMatrixFunc => {
 	let matrix = new Matrix();

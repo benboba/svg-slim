@@ -8,6 +8,7 @@ import { execStyleTree } from '../xml/exec-style-tree';
 import { isTag } from '../xml/is-tag';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
+import { getAttr } from '../xml/get-attr';
 // import { plus } from '../math/plus';
 
 interface IPathChildrenItem {
@@ -107,6 +108,12 @@ const execOpacity = (opacity: string): number => {
 };
 
 const canbeCombine = (node1: ITagNode, node2: ITagNode, attr: IAttr, combineFill: boolean, combineOpacity: boolean): boolean => {
+	// 是否存在 marker 引用，有 marker 引用不能进行合并
+	const hasMarker = getAttr(node1, 'marker-start', 'none') !== 'none' || getAttr(node1, 'marker-mid', 'none') !== 'none' || getAttr(node1, 'marker-end', 'none') !== 'none';
+	if (hasMarker) {
+		return false;
+	}
+
 	const styles = node1.styles as IStyleObj;
 	const noOpacity: boolean = !styles.hasOwnProperty('opacity') || execOpacity(styles.opacity.value) === 1;
 	const noStrokeOpacity: boolean = execColor(styles.hasOwnProperty('stroke') ? styles.stroke.value : '').a === 1 && (!styles.hasOwnProperty('stroke-opacity') || execOpacity(styles['stroke-opacity'].value) === 1);
@@ -135,8 +142,16 @@ const getKey = (node: ITagNode): string => {
 	return `attr:${keyObj.attr}|inline:${keyObj.inline}|styletag:${keyObj.styletag}|inherit:${keyObj.inherit}`;
 };
 
-export const combinePath = async (rule: TConfigItem[], dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const combinePath = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
+		const {
+			disregardFill,
+			disregardOpacity,
+		} = rule[1] as {
+			disregardFill: boolean;
+			disregardOpacity: boolean;
+		};
+
 		execStyleTree(dom as ITagNode);
 
 		traversalNode<ITagNode>(isTag, node => {
@@ -158,8 +173,13 @@ export const combinePath = async (rule: TConfigItem[], dom: INode): Promise<null
 					if (d) {
 						const key = `${k}|${getKey(childNode)}`;
 						if (has(key, pathChildren)) {
-							// 允许路径合并的条件：1、所有属性和样式（包括继承样式）相同；2、相邻；3、没有 fill 或 stroke；4、所有可见透明度 ≥ 1；5、路径没有相交或包含（未实现）
-							if (pathChildren[key].index === tagIndex - 1 && canbeCombine(childNode, pathChildren[key].node, d, rule[1] as boolean, rule[2] as boolean)) {
+							// 允许路径合并的条件：
+							// 1、所有属性和样式（包括继承样式）相同
+							// 2、相邻
+							// 3、没有 fill 或 stroke
+							// 4、所有可见透明度 ≥ 1
+							// TODO 路径没有相交或包含
+							if (pathChildren[key].index === tagIndex - 1 && canbeCombine(childNode, pathChildren[key].node, d, disregardFill, disregardOpacity)) {
 								// 路径拼合时，第一个 m 要转为绝对，否则会有 bug
 								pathChildren[key].attr.value += d.value.replace(/^m/, 'M');
 								rmNode(childNode);

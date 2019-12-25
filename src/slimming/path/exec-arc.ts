@@ -13,7 +13,7 @@ export const execArc = (s: string): number[] => {
 	while (matches) {
 		if (pos % LOOP_LEN === FLAG_POS1 || pos % LOOP_LEN === FLAG_POS2) {
 			if (matches[0][0] === '0' || matches[0][0] === '1') {
-				result.push(parseFloat(matches[0][0]));
+				result.push(+matches[0][0]);
 				matches[0] = matches[0].slice(1);
 				if (matches[0].length) {
 					pos++;
@@ -21,7 +21,7 @@ export const execArc = (s: string): number[] => {
 				}
 			}
 		} else {
-			result.push(parseFloat(matches[0]));
+			result.push(+matches[0]);
 		}
 		pos++;
 		matches = numberGlobal.exec(s);

@@ -46,6 +46,20 @@ describe('matrix/merge', () => {
         });
 	});
 
+	it('merge 3-value rotate', () => {
+		const mList1 = execMatrix('rotate(30, 20, 20)    rotate(-20, 20, 20)');
+		merge(mList1[0], mList1[1]).should.deep.equal({
+			type: 'rotate',
+			val: [10, 20, 20],
+        });
+
+		const mList2 = execMatrix('rotate(30, 20, 20)    rotate(-20)');
+		merge(mList2[0], mList2[1]).should.deep.equal({
+			type: 'rotate',
+			val: [10, 48.18, 68.8],
+		});
+	});
+
 	it('merge skewX', () => {
         const mList = execMatrix('skewX(20)skewX(-20)');
         merge(mList[0], mList[1]).should.deep.equal({

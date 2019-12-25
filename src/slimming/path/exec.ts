@@ -3,16 +3,16 @@ import { numberSequence } from '../const/syntax';
 import { execNumberList } from '../utils/exec-numberlist';
 import { execArc } from './exec-arc';
 
-const pathReg = new RegExp(`([mzlhvcsqta])\\s*(${numberSequence})?(.*?)(?=[mzlhvcsqta]|$)`, 'gim');
+const pathReg = new RegExp(`([mzlhvcsqta])\\s*((?:${numberSequence})?)(.*?)(?=[mzlhvcsqta]|$)`, 'gim');
 
-export const execPath = (str: string): IPathItem[] => {
-	const result: IPathItem[] = [];
+export const execPath = (str: string): IPathItem[][] => {
+	const result: IPathItem[][] = [];
+	let temp: IPathItem[] = [];
 
 	// 重置正则匹配位置
 	pathReg.lastIndex = 0;
 
 	let match = pathReg.exec(str);
-	const temp: IPathItem[] = [];
 	outer: while (match !== null) {
 		// 所有路径必须从 mM 开始
 		const type = match[1].toLowerCase();
@@ -26,11 +26,15 @@ export const execPath = (str: string): IPathItem[] => {
 		switch (type) {
 			// 平移的参数必须为偶数
 			case 'm':
-				if (temp.length) {
-					result.push(...temp);
-					temp.length = 0;
-				}
+				result.push(temp);
+				temp = [];
 				if (val.length % 2 !== 0) {
+					if (val.length > 2) {
+						temp.push({
+							type: match[1],
+							val: val.slice(0, val.length - 1),
+						});
+					}
 					break outer;
 				}
 				break;
@@ -119,6 +123,6 @@ export const execPath = (str: string): IPathItem[] => {
 		}
 		match = pathReg.exec(str);
 	}
-	result.push(...temp);
+	result.push(temp);
 	return result;
 };

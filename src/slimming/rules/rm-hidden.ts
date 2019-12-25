@@ -1,25 +1,14 @@
+import { gt, gte } from 'ramda';
 import { shapeElements } from '../const/definitions';
 import { regularTag } from '../const/regular-tag';
+import { IRIFullMatch } from '../const/syntax';
 import { execStyleTree } from '../xml/exec-style-tree';
+import { getAncestor } from '../xml/get-ancestor';
+import { getAttr } from '../xml/get-attr';
+import { getById } from '../xml/get-by-id';
 import { isTag } from '../xml/is-tag';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
-import { gt, gte } from 'ramda';
-import { IRIFullMatch } from '../const/syntax';
-import { getAncestor } from '../xml/get-ancestor';
-
-// 获取属性（根据 SVG 覆盖规则，css 优先）
-const getAttr = (node: ITagNode, key: string, defaultVal: string): string => {
-	let val = defaultVal;
-	if (node.hasAttribute(key)) {
-		val = node.getAttribute(key) as string;
-	}
-	const styles = node.styles as IStyleObj;
-	if (styles.hasOwnProperty(key)) {
-		val = styles[key].value;
-	}
-	return val;
-};
 
 // 检测数值类属性
 const checkNumberAttr = (node: ITagNode, key: string, allowEmpty: boolean, allowAuto: boolean, allowZero: boolean): boolean => {
@@ -39,38 +28,27 @@ const checkNumberAttr = (node: ITagNode, key: string, allowEmpty: boolean, allow
 	return false;
 };
 
-const checkRequired = (node: ITagNode, key: string): boolean => node.hasAttribute(key) && node.getAttribute(key) !== '';
-
-const checkLine = (node: ITagNode) => {
-	const x1 = getAttr(node, 'x1', '0');
-	const y1 = getAttr(node, 'y1', '0');
-	const x2 = getAttr(node, 'x2', '0');
-	const y2 = getAttr(node, 'y2', '0');
-	if (x1 === x2 && y1 === y2) {
-		rmNode(node);
-	}
-};
-
-const checkUse = (node: ITagNode) => {
+const checkUse = (node: ITagNode, dom: INode) => {
 	if (!node.hasAttribute('href') && !node.hasAttribute('xlink:href')) {
 		rmNode(node);
 	} else {
-		const value = node.getAttribute('href') || node.getAttribute('xlink:href');
-		const iri = IRIFullMatch.exec(value as string);
+		const value = (node.getAttribute('href') || node.getAttribute('xlink:href')) as string;
+		const iri = IRIFullMatch.exec(value);
 		if (iri) {
 			const id = iri[1];
 			// 不允许引用自身或祖先元素
 			if (getAncestor(node, (n: INode) => n.getAttribute('id') === id)) {
 				rmNode(node);
+				return;
 			}
+			// 引用了不存在的元素
+			if (!getById(value, dom)) {
+				rmNode(node);
+			}
+		} else {
+			rmNode(node);
 		}
 	}
-};
-
-const requireMap = {
-	path: ['d'],
-	polygon: ['points'],
-	polyline: ['points'],
 };
 
 interface INumberMapItem {
@@ -85,26 +63,8 @@ interface INumberMap {
 }
 
 const numberMap: INumberMap = {
-	rect: {
-		attrs: ['width', 'height'],
-		allowEmpty: false,
-		allowAuto: false,
-		allowZero: false,
-	},
 	pattern: {
 		attrs: ['width', 'height'],
-		allowEmpty: false,
-		allowAuto: false,
-		allowZero: false,
-	},
-	circle: {
-		attrs: ['r'],
-		allowEmpty: false,
-		allowAuto: false,
-		allowZero: false,
-	},
-	ellipse: {
-		attrs: ['rx', 'ry'],
 		allowEmpty: false,
 		allowAuto: false,
 		allowZero: false,
@@ -225,7 +185,7 @@ const numberMap: INumberMap = {
 	},
 };
 
-export const rmHidden = async (rule: TConfigItem[], dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const rmHidden = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		execStyleTree(dom as ITagNode);
 
@@ -254,16 +214,6 @@ export const rmHidden = async (rule: TConfigItem[], dom: INode): Promise<null> =
 				}
 			}
 
-			if (requireMap.hasOwnProperty(node.nodeName as keyof typeof requireMap)) {
-				const requireItem = requireMap[node.nodeName as keyof typeof requireMap];
-				for (let i = requireItem.length; i--;) {
-					if (!checkRequired(node, requireItem[i])) {
-						rmNode(node);
-						return;
-					}
-				}
-			}
-
 			if (numberMap.hasOwnProperty(node.nodeName as keyof typeof numberMap)) {
 				const nubmerItem = numberMap[node.nodeName as keyof typeof numberMap];
 				for (let i = nubmerItem.attrs.length; i--;) {
@@ -274,10 +224,8 @@ export const rmHidden = async (rule: TConfigItem[], dom: INode): Promise<null> =
 				}
 			}
 
-			if (node.nodeName === 'line') {
-				checkLine(node);
-			} else if (node.nodeName === 'use' || node.nodeName === 'pattern') {
-				checkUse(node);
+			if (node.nodeName === 'use') {
+				checkUse(node, dom);
 			}
 
 		}, dom);

@@ -165,7 +165,11 @@ const formatColor = (rgba: boolean, str: string, digit: number): string => {
 			if (rgba) {
 				s = `#${operateHex(color.r)}${operateHex(color.g)}${operateHex(color.b)}${has(`${color.a * Hundred}`, alphaMap) ? operateHex(alphaMap[`${color.a * Hundred}` as keyof typeof alphaMap]) : operateHex(Math.round(color.a * FF))}`;
 			} else {
-				s = `rgb(${color.r},${color.g},${color.b},${shortenPureDecimal(`${toFixed(digit, color.a)}`)})`;
+				if (color.r === 0 && color.g === 0 && color.b === 0 && color.a === 0) {
+					s = 'transparent';
+				} else {
+					s = `rgb(${color.r},${color.g},${color.b},${shortenPureDecimal(`${toFixed(digit, color.a)}`)})`;
+				}
 			}
 		} else {
 			s = `#${operateHex(color.r)}${operateHex(color.g)}${operateHex(color.b)}`;
@@ -175,9 +179,8 @@ const formatColor = (rgba: boolean, str: string, digit: number): string => {
 		s = s.replace(shortenReg, $0 => `${shortenMap[$0 as keyof typeof shortenMap]}`);
 		if (rgba) {
 			s = s.replace(/#([0-9a-f])\1([0-9a-f])\2([0-9a-f])\3([0-9a-f])\4(?=[^0-9a-f]|$)/gi, '#$1$2$3$4');
+			s = s.replace(/^transparent$/i, '#0000');
 		}
-	} else if (rgba) {
-		s = s.replace(/^transparent$/i, '#0000');
 	}
 	// 如果处理后结果不理想，还返回原始字符串
 	if (s.length > color.origin.length) {
@@ -186,18 +189,19 @@ const formatColor = (rgba: boolean, str: string, digit: number): string => {
 	return s;
 };
 
-export const shortenColor = async (rule: TConfigItem[], dom: IDomNode): Promise<null> => new Promise((resolve, reject) => {
+export const shortenColor = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
-		const digit = Math.min(OPACITY_DIGIT, rule[2] as number);
+		const { rrggbbaa, opacityDigit } = rule[1] as { rrggbbaa: boolean; opacityDigit: number };
+		const digit = Math.min(opacityDigit, OPACITY_DIGIT);
 		traversalNode<ITagNode>(isTag, node => {
 			node.attributes.forEach(attr => {
 				if (regularAttr[attr.fullname].maybeColor) {
-					attr.value = formatColor(rule[1] as boolean, attr.value, digit);
+					attr.value = formatColor(rrggbbaa, attr.value, digit);
 				} else if (attr.fullname === 'style') {
 					const style = execStyle(attr.value);
 					style.forEach(s => {
 						if (regularAttr[s.fullname].maybeColor) {
-							s.value = formatColor(rule[1] as boolean, s.value, digit);
+							s.value = formatColor(rrggbbaa, s.value, digit);
 						}
 					});
 					attr.value = stringifyStyle(style);
@@ -210,7 +214,7 @@ export const shortenColor = async (rule: TConfigItem[], dom: IDomNode): Promise<
 			const parsedCss = dom.stylesheet.stylesheet as StyleRules;
 			traversalObj(both(has('property'), has('value')), (cssRule: Declaration) => {
 				if (regularAttr[cssRule.property as string].maybeColor) { // 可能为颜色的属性
-					cssRule.value = formatColor(rule[1] as boolean, cssRule.value as string, digit);
+					cssRule.value = formatColor(rrggbbaa, cssRule.value as string, digit);
 				}
 			}, parsedCss.rules);
 		}

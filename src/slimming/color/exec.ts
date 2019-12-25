@@ -208,6 +208,11 @@ export const exec = (color: string): IRGBColor => {
 		return result;
 	}
 
+	if (_color === 'transparent') {
+		result.a = 0;
+		return result;
+	}
+
 	result.valid = false;
 	return result;
 };

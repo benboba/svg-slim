@@ -26,13 +26,14 @@ describe('rules/rm-attribute', () => {
 		<g fill="#000">
 			<rect fill="black" stroke=""/>
 			<g fill="none">
-				<rect fill="rgb(0,0,0,.5)" stroke="hsl(0,0%,0%)"/>
+				<rect id="rect" fill="rgb(0,0,0,.5)" stroke="hsl(0,0%,0%)"/>
+				<use href="#b" xlink:href="#rect"/>
 			</g>
 		</g>
 		</svg>`;
 		const dom = await parse(xml) as ITagNode;
-		await rmAttribute([true, true, false, false], dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><a/><circle cx="1"/><animate/><animate/><g><rect/><g fill="none"><rect fill="rgb(0,0,0,.5)" stroke="hsl(0,0%,0%)"/></g></g></svg>');
+		await rmAttribute([true, { rmDefault: true, keepEvent: false, keepAria: false }], dom);
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><a/><circle cx="1"/><animate/><animate/><g><rect/><g fill="none"><rect id="rect" fill="rgb(0,0,0,.5)" stroke="hsl(0,0%,0%)"/><use href="#b"/></g></g></svg>');
 	});
 
 	it('移除属性 - 反转规则', async () => {
@@ -43,7 +44,7 @@ describe('rules/rm-attribute', () => {
 			version=""
 		><text stroke="none"/><circle cx="1" cy="0"/></svg>`;
 		const dom = await parse(xml) as ITagNode;
-		await rmAttribute([true, false, true, true], dom);
+		await rmAttribute([true, { rmDefault: false, keepEvent: true, keepAria: true }], dom);
 		createXML(dom).should.equal('<svg aria-colspan="3" onload="console.log(123)"><text stroke="none"/><circle cx="1" cy="0"/></svg>');
 	});
 });

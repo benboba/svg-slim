@@ -10,7 +10,7 @@ interface IXmlnsDefine {
 	[propName: string]: IXmlnsDefineUnit;
 }
 
-export const rmXMLNS = async (rule: TConfigItem[], dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const rmXMLNS = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		const traversalNode = (node: INode, nsStack: IXmlnsDefine[]) => {
 			if (isTag(node)) {
