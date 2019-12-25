@@ -3,14 +3,12 @@ import { combineScript } from '../default-rules/combine-script';
 import { combineStyle } from '../default-rules/combine-style';
 import { combineTextNode } from '../default-rules/combine-textnode';
 import { rmUseless } from '../default-rules/rm-useless';
-
 // rules
 import { collapseG } from './collapse-g';
 import { collapseTextwrap } from './collapse-textwrap';
 import { combinePath } from './combine-path';
 import { combineTransform } from './combine-transform';
 import { computePath } from './compute-path';
-import { douglasPeucker } from './douglas-peucker';
 import { rmAttribute } from './rm-attribute';
 import { rmComments } from './rm-comments';
 import { rmDocType } from './rm-doctype';
@@ -23,47 +21,46 @@ import { rmVersion } from './rm-version';
 import { rmViewBox } from './rm-viewbox';
 import { rmXMLDecl } from './rm-xml-decl';
 import { rmXMLNS } from './rm-xmlns';
-import { shapeToPath } from './shape-to-path';
 import { shortenClass } from './shorten-class';
 import { shortenColor } from './shorten-color';
 import { shortenDecimalDigits } from './shorten-decimal-digits';
 import { shortenDefs } from './shorten-defs';
 import { shortenID } from './shorten-id';
+import { shortenShape } from './shorten-shape';
 import { shortenStyleAttr } from './shorten-style-attr';
 import { shortenStyleTag } from './shorten-style-tag';
 
 // [isDefaultRule: boolean, ruleHandler: Function, configKey?: string]
-type RuleItem = [1, (dom: IDomNode) => Promise<null>] | [0, (rule: TConfigItem[], dom: IDomNode) => Promise<null>, string];
+type RuleItem = [true, (dom: IDomNode) => Promise<null>] | [false, (rule: TFinalConfigItem, dom: IDomNode) => Promise<null>, string];
 
 export const rules: RuleItem[] = [
-	[1, rmUseless],
-	[1, combineStyle],
-	[1, combineScript],
-	[0, rmXMLDecl, 'rm-xml-decl'],
-	[0, rmVersion, 'rm-version'],
-	[0, rmDocType, 'rm-doctype'],
-	[0, rmComments, 'rm-comments'],
-	[0, rmIrregularTag, 'rm-irregular-tag'],
-	[0, rmIrregularNesting, 'rm-irregular-nesting'],
-	[0, rmUnnecessary, 'rm-unnecessary'],
-	[0, rmViewBox, 'rm-viewbox'],
-	[0, shortenID, 'shorten-id'], // 必须在 shorten-defs 之前
-	[0, shortenClass, 'shorten-class'],
-	[0, shortenDefs, 'shorten-defs'],
-	[0, rmAttribute, 'rm-attribute'],
-	[0, rmPx, 'rm-px'],
-	[0, combineTransform, 'combine-transform'], // 必须在 compute-path 之前
-	[0, shortenStyleAttr, 'shorten-style-attr'],
-	[0, shortenStyleTag, 'shorten-style-tag'],
-	[0, douglasPeucker, 'douglas-peucker'],
-	[0, shapeToPath, 'shape-to-path'],
-	[0, combinePath, 'combine-path'],
-	[0, collapseG, 'collapse-g'],
-	[0, computePath, 'compute-path'],
-	[0, shortenDecimalDigits, 'shorten-decimal-digits'],
-	[0, shortenColor, 'shorten-color'],
-	[0, collapseTextwrap, 'collapse-textwrap'],
-	[1, combineTextNode],
-	[0, rmXMLNS, 'rm-xmlns'],
-	[0, rmHidden, 'rm-hidden'],
+	[true, rmUseless],
+	[true, combineStyle],
+	[true, combineScript],
+	[false, rmXMLDecl, 'rm-xml-decl'],
+	[false, rmVersion, 'rm-version'],
+	[false, rmDocType, 'rm-doctype'],
+	[false, rmComments, 'rm-comments'],
+	[false, rmIrregularTag, 'rm-irregular-tag'],
+	[false, rmIrregularNesting, 'rm-irregular-nesting'],
+	[false, rmUnnecessary, 'rm-unnecessary'],
+	[false, rmViewBox, 'rm-viewbox'],
+	[false, shortenID, 'shorten-id'], // 必须在 shorten-defs 之前
+	[false, shortenClass, 'shorten-class'],
+	[false, shortenDefs, 'shorten-defs'],
+	[false, rmPx, 'rm-px'],
+	[false, rmAttribute, 'rm-attribute'], // 必须在 collpase-g、shorten-shape 和 compute-path 之前
+	[false, shortenStyleAttr, 'shorten-style-attr'], // 必须在 collpase-g、shorten-shape 和 compute-path 之前
+	[false, combineTransform, 'combine-transform'], // 必须在 compute-path 和 collpase-g 之前
+	[false, shortenShape, 'shorten-shape'], // 必须在 rm-hidden 和 compute-path 之前
+	[false, combinePath, 'combine-path'], // 必须在 rm-hidden 和 compute-path 之前
+	[false, computePath, 'compute-path'],
+	[false, collapseG, 'collapse-g'], // 最好在 combine-path、shorten-shape、compute-path 之后
+	[false, shortenDecimalDigits, 'shorten-decimal-digits'],
+	[false, shortenColor, 'shorten-color'],
+	[false, shortenStyleTag, 'shorten-style-tag'], // 最好在 combine-path、shorten-shape、collapse-g 等规则之后
+	[false, collapseTextwrap, 'collapse-textwrap'],
+	[true, combineTextNode],
+	[false, rmXMLNS, 'rm-xmlns'],
+	[false, rmHidden, 'rm-hidden'],
 ];

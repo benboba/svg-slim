@@ -1,5 +1,5 @@
 import { toFixed } from '../math/tofixed';
-import { matrixEPos } from '../const';
+import { matrixEPos, CIRC, HALF_CIRC } from '../const';
 
 const aPos = 0;
 const bPos = 1;
@@ -7,8 +7,6 @@ const cPos = 2;
 const dPos = 3;
 const ePos = 4;
 const fPos = 5;
-const CIRC = 360;
-const HALF_CIRC = 180;
 
 // 把 matrix 函数反转为简单函数
 export const simplify = (matrix: IMatrixFunc, digit1: number, digit2: number): IMatrixFunc => {
@@ -74,8 +72,9 @@ export const simplify = (matrix: IMatrixFunc, digit1: number, digit2: number): I
 		if (corner > CIRC - 10) {
 			corner -= CIRC;
 		}
-		const cx = (matrix.val[ePos] * (1 - matrix.val[dPos]) + matrix.val[cPos] * matrix.val[fPos]) / ((1 - matrix.val[aPos]) * (1 - matrix.val[dPos]) - matrix.val[cPos] * matrix.val[bPos]);
-		const cy = (cx * (1 - matrix.val[aPos]) - matrix.val[ePos]) / matrix.val[cPos];
+		// [1,0,0,1,x,y].[a,b,c,d,0,0].[1,0,0,1,-x,-y] = [a,b,c,d,e,f]，根据该公式反解
+		const cx = (matrix.val[ePos] * (1 - matrix.val[aPos]) - matrix.val[bPos] * matrix.val[fPos]) / (2 - matrix.val[aPos] * 2);
+		const cy = (cx * matrix.val[bPos] + matrix.val[fPos]) / (1 - matrix.val[dPos]);
 		return {
 			type: 'rotate',
 			val: [corner, cx, cy],

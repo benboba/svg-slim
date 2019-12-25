@@ -1,7 +1,6 @@
+import { DEFAULT_ACCURATE_DIGIT, DEFAULT_MATRIX_DIGIT, DEFAULT_SIZE_DIGIT, matrixEPos } from '../const';
 import { toFixed } from '../math/tofixed';
 import { simplify } from './simplify';
-import { DEFAULT_SIZE_DIGIT, DEFAULT_MATRIX_DIGIT, DEFAULT_ACCURATE_DIGIT } from '../config/config';
-import { matrixEPos } from '../const';
 
 // 降低 transform 函数的参数精度，移除冗余参数，并对无效函数打上标记
 export const shorten = (m: IMatrixFunc, digit1: number = DEFAULT_MATRIX_DIGIT, digit2: number = DEFAULT_SIZE_DIGIT, digit3: number = DEFAULT_ACCURATE_DIGIT): IMatrixFunc => {

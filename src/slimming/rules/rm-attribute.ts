@@ -46,11 +46,21 @@ const attrIsEqual = (attrDefine: IRegularAttr, value: string, nodeName: string):
 	return false;
 };
 
-export const rmAttribute = async (rule: TConfigItem[], dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const rmAttribute = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 
+		const {
+			rmDefault,
+			keepEvent,
+			keepAria,
+		} = rule[1] as {
+			rmDefault: boolean;
+			keepEvent: boolean;
+			keepAria: boolean;
+		};
+
 		traversalNode<ITagNode>(isTag, node => {
-			if (rule[1]) {
+			if (rmDefault) {
 				execStyleTree(dom as ITagNode);
 			}
 
@@ -67,9 +77,9 @@ export const rmAttribute = async (rule: TConfigItem[], dom: INode): Promise<null
 				if (attrDefine.isUndef) { // 非标准属性
 					let isUndef = true;
 					if (
-						(rule[2] && eventAttributes.indexOf(attr.fullname) !== -1) // 事件属性是否保留
+						(keepEvent && eventAttributes.indexOf(attr.fullname) !== -1) // 事件属性是否保留
 						||
-						(rule[3] && ariaAttributes.indexOf(attr.fullname) !== -1) // aria 属性是否保留
+						(keepAria && ariaAttributes.indexOf(attr.fullname) !== -1) // aria 属性是否保留
 					) {
 						isUndef = false;
 					}
@@ -98,7 +108,12 @@ export const rmAttribute = async (rule: TConfigItem[], dom: INode): Promise<null
 					}
 				}
 
-				if (rule[1]) {
+				// href 和 xlink:href 不能并存，如果并存，应该移除后者
+				if (node.hasAttribute('href') && node.hasAttribute('xlink:href')) {
+					node.removeAttribute('xlink:href');
+				}
+
+				if (rmDefault) {
 					// 如果父元素上有同名的样式类属性，则不能移除和默认值相同的属性
 					if (attrDefine.couldBeStyle && parentStyle && parentStyle.hasOwnProperty(attr.fullname)) {
 						continue;

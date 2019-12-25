@@ -44,7 +44,7 @@ const checkSub = (node: ITagNode, IDList: IIDCache) => {
 	}
 };
 
-export const shortenDefs = async (rule: TConfigItem[], dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const shortenDefs = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		let firstDefs: ITagNode | undefined;
 
@@ -90,6 +90,7 @@ export const shortenDefs = async (rule: TConfigItem[], dom: INode): Promise<null
 			}, dom);
 
 			checkSub(firstDefs, IDList);
+			// TODO 把 defs 直接应用
 			(Object.values(IDList) as IIDCacheITem[]).forEach(item => {
 				if (!item.tag) {
 					item.iri.forEach(([tag, attrname]) => {

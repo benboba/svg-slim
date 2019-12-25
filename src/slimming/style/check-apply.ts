@@ -43,12 +43,10 @@ const check = (styleDefine: IRegularAttr, node: INode | undefined, dom: INode, u
 
 	let result = false;
 
-	if (node.hasAttribute('xlink:href')) {
-		result = getXlink(styleDefine, node.getAttribute('xlink:href') as string, dom, unique, false);
-	}
-
 	if (node.hasAttribute('href')) {
 		result = getXlink(styleDefine, node.getAttribute('href') as string, dom, unique, false);
+	} else if (node.hasAttribute('xlink:href')) {
+		result = getXlink(styleDefine, node.getAttribute('xlink:href') as string, dom, unique, false);
 	}
 
 	// 已经命中就不需要再继续了
@@ -85,7 +83,12 @@ const check = (styleDefine: IRegularAttr, node: INode | undefined, dom: INode, u
 			return false; // 已经有命中的结果就不必再遍历了
 		} else { // 否则继续遍历子元素
 			// 没有命中，但具有 IRI 引用，则继续
-			if (childNode.hasAttribute('xlink:href')) {
+			if (childNode.hasAttribute('href')) {
+				if (getXlink(styleDefine, childNode.getAttribute('href') as string, dom, unique, fromStyleTag)) {
+					result = true;
+					return false;
+				}
+			} else if (childNode.hasAttribute('xlink:href')) {
 				if (getXlink(styleDefine, childNode.getAttribute('xlink:href') as string, dom, unique, fromStyleTag)) {
 					result = true;
 					return false;

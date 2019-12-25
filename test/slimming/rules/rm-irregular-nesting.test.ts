@@ -13,20 +13,20 @@ describe('rules/rm-irregular-nesting', () => {
 	});
 
 	it('移除不正确的嵌套', async () => {
-        const xml = `<svg>
-        <desc>
-        <circle>
-        <g>
-        <text>123</text>
-        </g>
-        </circle>
-        <a><a><line/></a></a>
-        </desc>
-        <rect><a><g></g></a></rect>
-        <switch><a><line/></a></switch>
-        </svg>`;
+		const xml = `<svg>
+		<desc>
+		<circle>
+		<g>
+		<text>123</text>
+		</g>
+		</circle>
+		<a><a><line/></a></a>
+		</desc>
+		<rect><a><g></g></a></rect>
+		<switch><a><line/></a></switch>
+		</svg>`;
 		const dom = await parse(xml) as ITagNode;
-		await rmIrregularNesting([true, ['rect']], dom);
+		await rmIrregularNesting([true, { ignore: ['rect'] }], dom);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><desc><circle></circle><a/></desc><rect><a><g/></a></rect><switch><a><line/></a></switch></svg>');
 	});
 });

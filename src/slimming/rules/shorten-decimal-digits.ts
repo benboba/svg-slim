@@ -15,10 +15,12 @@ import { traversalNode } from '../xml/traversal-node';
 // 移除掉正、负号前面的逗号，移除掉0.前面的0，移除掉.1,.1或e1,.1这种case中间的逗号
 const doShorten = curry((digit: number, val: string) => shortenNumberList(val.replace(numberGlobal, s => `${shortenNumber(toFixed(digit, parseFloat(s)))}`)));
 
-export const shortenDecimalDigits = async (rule: TConfigItem[], dom: IDomNode): Promise<null> => new Promise((resolve, reject) => {
+export const shortenDecimalDigits = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
-		const fuzzyDigit = doShorten(rule[1] as number);
-		const accurateDigit = doShorten(rule[2] as number);
+		const { sizeDigit, angelDigit } = rule[1] as { sizeDigit: number; angelDigit: number };
+
+		const fuzzyDigit = doShorten(sizeDigit);
+		const accurateDigit = doShorten(angelDigit);
 
 		if (dom.stylesheet) {
 			// 缩短 style 标签内的数值
@@ -32,12 +34,15 @@ export const shortenDecimalDigits = async (rule: TConfigItem[], dom: IDomNode): 
 			}, parsedCss.rules);
 		}
 
+		// TODO 百分比和小数互转
+
 		traversalNode<ITagNode>(isTag, node => {
 			// 先取出来 attributeName 属性
 			const attributeName = node.getAttribute('attributeName');
 
 			// 缩短节点属性的数值
 			node.attributes.forEach(attr => {
+				numberGlobal.lastIndex = 0;
 				if (regularAttr[attr.fullname].maybeSizeNumber) { // 可以模糊处理的数字
 					attr.value = fuzzyDigit(attr.value);
 				} else if (regularAttr[attr.fullname].maybeAccurateNumber) { // 需要较精确的数字
@@ -53,6 +58,7 @@ export const shortenDecimalDigits = async (rule: TConfigItem[], dom: IDomNode): 
 				} else if (attr.fullname === 'style') { // css 样式处理，和属性类似
 					const style = execStyle(attr.value);
 					style.forEach(s => {
+						numberGlobal.lastIndex = 0;
 						if (regularAttr[s.fullname].maybeSizeNumber) {
 							s.value = fuzzyDigit(s.value);
 						} else if (regularAttr[s.fullname].maybeAccurateNumber) {

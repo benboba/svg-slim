@@ -9,7 +9,7 @@ declare global {
 		fullname: string;
 		namespace?: string;
 	}
-	
+
 	interface INode {
 		nodeName: string;
 		nodeType: NodeType;
@@ -34,7 +34,7 @@ declare global {
 		setAttribute(name: string, value: string, namespace?: string): void;
 		removeAttribute(name: string, namespace?: string): void;
 	}
-	
+
 	interface IStyleObj {
 		[propName: string]: {
 			value: string;
@@ -42,7 +42,7 @@ declare global {
 			selectorPriority?: ISeletorPriority;
 		};
 	}
-	
+
 	interface ITagNode extends INode {
 		readonly childNodes: INode[];
 		readonly attributes: IAttr[];
@@ -60,4 +60,15 @@ declare global {
 		readonly attributes: null;
 		textContent: string;
 	}
+
+	interface IPathNode extends ITagNode {
+		nodeName: 'path';
+		readonly attributes: [{
+			name: 'd';
+			value: string;
+			fullname: 'd';
+			namespace: '';
+		}, ...IAttr[]];
+	}
+
 }

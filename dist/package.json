@@ -24,7 +24,9 @@
 	"dependencies": {
 		"css": "^2.2.3",
 		"he": "^1.2.0",
-		"ramda": "^0.25.0"
+		"ramda": "^0.25.0",
+		"svg-path-contours": "^2.0.0",
+		"triangulate-contours": "^1.0.2"
 	},
 	"devDependencies": {},
 	"types": "svg-slimming.d.ts"

@@ -1,16 +1,15 @@
-import { both, curry } from 'ramda';
+import { any, both, equals, not, prop } from 'ramda';
 import { regularTag } from '../const/regular-tag';
+import { getAncestor } from '../xml/get-ancestor';
 import { isTag } from '../xml/is-tag';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
-import { getAncestor } from '../xml/get-ancestor';
 
-// 在配置的忽略列表中
-const notIgnore = curry((tags: string[], node: INode) => tags.indexOf(node.nodeName) === -1);
-
-export const rmIrregularNesting = async (rule: TConfigItem[], dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const rmIrregularNesting = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
-		traversalNode<ITagNode>(both(isTag, notIgnore(rule[1] as string[])), node => {
+		const { ignore } = rule[1] as { ignore: string[] };
+		const notIgnore = (node: ITagNode) => not(any(equals(prop('nodeName', node)), ignore));
+		traversalNode<ITagNode>(both(isTag, notIgnore), node => {
 			let legalRule = regularTag[node.nodeName].legalChildElements;
 			// noself 表示不允许嵌套自身
 			const noself = legalRule.noself;

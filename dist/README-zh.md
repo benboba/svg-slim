@@ -1,6 +1,6 @@
 # 更新日志
 
-[查看更新日志](https://github.com/benboba/svg-slimming/blob/master/UPDATE.md)
+[查看更新日志](https://github.com/benboba/svg-slimming/blob/master/UPDATE-zh.md)
 
 # SVG瘦身工具【svg slimming】
 
@@ -9,15 +9,17 @@
 SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵循 W3C 的 SVG2 规范 (https://www.w3.org/TR/SVG2/) 。
 
 ## 安装
-
+```
 	npm install svg-slimming
+```
 
 ## 使用
-
+```js
 	const svgSlimming = require('svg-slimming');
 	svgSlimming(svgcode[, config]).then(result => {
 		console.log(result);
 	});
+```
 
 其中 svgcode 为字符串格式的 svg 文本，config 为用户自定义的优化配置
 
@@ -39,13 +41,14 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 
 | 优化分类 | 优化项目 | svg-slimming | svgo |
 | ---- | ---- | ---- | ---- |
-| 基本 | svg 解析 | 按 xml 处理，容错性更强 | 按 svg 处理，存在解析失败的情况 |
+| 基本 | svg 解析 | 按 xml 处理，容错性更强 | 按 svg 处理 |
 | 基本 | 非 svg 的 xml 节点处理逻辑 | 移除 | 报错 |
+| 基本 | 超大 svg 处理 | × | √ |
 | 基本 | 压缩冗余空白 | √ | √ |
 | 基本 | 移除注释 | √ | √ |
 | 基本 | 移除 xml declaration 和 doctype | √ | √ |
 | 基本 | 合并文本节点 | √ | √ |
-| 基本 | 移除不必要的 CDATA 节点 | √ | × |
+| 基本 | 支持优化 CDATA 节点 | √ | × |
 | 元素 | 移除不必要的元素 | √ | √ |
 | 元素 | 移除不可见元素 | √ | √ |
 | 元素 | 塌陷不必要的 group 节点 | √ | √ |
@@ -57,24 +60,26 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 | svg 元素 | viewBox vs 尺寸 | 优先使用尺寸 | 优先使用 viewBox |
 | svg 元素 | 移除 version 属性 | √ | √ |
 | svg 元素 | 优化 xmlns | √ | √ |
-| svg 元素 | 可移除 xmlns | × | √ |
+| svg 元素 | 可以移除基础的 xmlns | × | √ |
 | path 元素 | 经过计算优化 path 的 d 属性 | √ | √ |
 | path 元素 | 抛弃空的子路径 | √ | × |
 | path 元素 | 移除连续直线指令的无效途经点 | √ | × |
 | path 元素 | 特定条件下合并 a 指令 | √ | × |
-| path 元素 | 支持道格拉斯-普克算法抽稀路径节点 | √ | × |
-| path 元素 | 小尺寸曲线指令转直线指令 | × | √ |
+| path 元素 | 抽稀路径节点 | √ | × |
+| path 元素 | 小尺寸曲线指令转直线指令 | v1.5.0 | √ |
+| path 元素 | 移除 a 指令 flag 后置空格 | v1.5.0 | √ |
 | path 元素 | 合并 path | √ | √ |
 | shape | shape 转 path | √ | √ |
 | shape | 移除空的 shape（例如半径为 0 的 circle、宽高为 0 的 rect 等） | √ | × |
-| shape | ellipsis 转 circle | × | √ |
-| shape | 支持道格拉斯-普克算法优化 polyline 和 polygon | √ | × |
+| shape | ellipsis 和 circle 互转 | v1.5.0 | √ |
+| shape | 支持抽稀路径节点优化 polyline 和 polygon | √ | × |
 | 属性 | 移除空属性 | √ | √ |
 | 属性 | 移除无效属性和不合法属性 | √ | × |
 | 属性 | 移除和默认值相同的属性 | √ | × |
 | 属性 | 通过分析样式继承链优化属性 | √ | × |
 | 属性 | 缩短 ID | √ | √ |
 | 属性 | 移除 px 单位 | √ | √ |
+| 属性 | 移除不必要的 fill 和 stroke | × | √ |
 | 数字 | 优化数字 | √ | √ |
 | 数字 | 精确优化不同类型的数值 | √ | × |
 | 数字 | 数字转科学计数法 | √ | × |
@@ -88,41 +93,65 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 | css | 优化 style 内容 | √ | √ |
 | css | 缩短 className | √ | × |
 | css | style 转属性 | √ | √ |
-| css | 属性转 style | √ | × |
-| css | 移除 svg 不支持的 css 样式 | √ | × |
+| css | 属性转 style | √（存在 badcase） | × |
+| css | 移除 svg 不支持的 css 样式 | √（存在 badcase） | × |
 | css | 直接把 style 内容应用到元素 | × | √ |
 
 ## 优化配置
 
-优化配置是一个 JSON 格式的对象，其中 key 为对应的配置项，value 为布尔值或数组，当value为数组的时候，第一项为配置开关，后续项为扩展配置参数
+优化配置是一个 JSON 格式的对象，其中 key 为对应的配置项，value 为数组，数组第一项为规则的开关，第二项（如果有）为规则的详细配置
 
 下面是一个优化配置的示例：
+```json
+	{
+		"collapse-g": [false],
+		"combine-transform": [true, {
+			"trigDigit": 3
+			"sizeDigit": 2,
+			"angelDigit": 2
+		}]
+	}
+```
 
+**注意：旧版配置方式虽然也可以生效，但未来可能会移除**
+```json
 	{
 		"collapse-g": false,
-		"combine-transform": [true, 4, 2]
+		"combine-transform": [true, 3, 2, 2]
 	}
-
+```
 ### collapse-g
 
-* 默认开关：开
+* 默认配置：
+```json
+	{
+		"collapse-g": [true]
+	}
+```
 * 说明：
 	* 当 g 元素没有子元素时，移除该元素
 	* 当 g 元素没有属性值时，用子元素替换该元素
 	* 当 g 元素只有一个子元素，且自身没有 id、class、mask 属性时，将 g 元素的属性复制到子元素，并用子元素替换之
 
 例如：
-
+```xml
 	<g></g>
 	<g fill="red"><rect width="100" height="100"/></g>
+```
 
 优化后将变为：
-
+```xml
 	<rect fill="red" width="100" height="100"/>
+```
 
 ### collapse-textwrap
 
-* 默认开关：开
+* 默认配置：
+```json
+	{
+		"collapse-textwrap": [true]
+	}
+```
 * 说明：
 	* 对于所有嵌套的文本容器，当内部文本容器不包含任何有效属性时，移除该元素，并将文本内容提升为父元素的子节点
 
@@ -189,7 +218,7 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 	* 默认值：false
 	* 应用道格拉斯-普克算法抽稀路径节点
 * 配置参数2：
-	* 默认值：0
+	* 默认值：~~0~~ 2(v1.5.0+)
 	* 抽稀节点的阈值
 * 配置参数3：(v1.2.9+)
 	* 默认值：2
@@ -197,9 +226,12 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 * 配置参数4：(v1.2.9+)
 	* 默认值：2
 	* 椭圆弧指令中旋转角度数值的精度
-* 配置参数5：(v1.4.0+)
-	* 默认值：3
-	* 弧线指令中的坐标精度
+* 配置参数5：(v1.5.0+)
+	* 默认值：false
+	* 将小于阈值的曲线指令转为直线指令
+* 配置参数6：(v1.5.0+)
+	* 默认值：2
+	* 曲线转直线的阈值
 
 例如：
 
@@ -208,15 +240,6 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 优化后将变为：
 
 	<path fill="red" d="M0,0H100V100H0z"/>
-
-### douglas-peucker
-
-* 默认开关：关
-* 说明：
-	* 对 polygon 和 polyline 应用道格拉斯-普克算法抽稀路径节点
-* 配置参数1：
-	* 默认值：0
-	* 抽稀节点的阈值
 
 ### rm-attribute
 
@@ -375,11 +398,17 @@ path 元素没有 d 属性或为空（其它如：polyline 和 polygon 元素没
 		<rect fill="red" width="100" height="100"/>
 	</svg>
 
-### shape-to-path
+### shorten-shape(v1.5.0+)
 
 * 默认开关：开
 * 说明：
-	* 如果形状映射到 path 的结果更短，则使用 path
+	* 如果形状映射到 path 的结果更短，则使用 path，如果 ellipse 形状的 rx 和 ry 相同，则转换为 circle
+* 配置参数1
+	* 默认值：false
+	* 是否对 polygon 和 polyline 应用道格拉斯-普克算法抽稀路径节点
+* 配置参数2
+	* 默认值：2
+	* 抽稀节点的阈值
 
 例如：
 
@@ -387,7 +416,7 @@ path 元素没有 d 属性或为空（其它如：polyline 和 polygon 元素没
 
 优化后将变为：
 
-	<path fill="red" d="M0 0H100V100H0z"/>
+	<path fill="red" d="M0,0H100V100H0z"/>
 
 ### shorten-class
 

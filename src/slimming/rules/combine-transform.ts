@@ -2,17 +2,22 @@ import { transformAttributes } from '../const/definitions';
 import { combineMatrix } from '../matrix/combine';
 import { isTag } from '../xml/is-tag';
 import { traversalNode } from '../xml/traversal-node';
-import { DEFAULT_SIZE_DIGIT, DEFAULT_ACCURATE_DIGIT, DEFAULT_MATRIX_DIGIT } from '../config/config';
 import { execMatrix } from '../matrix/exec';
 import { stringify } from '../matrix/stringify';
 import { merge } from '../matrix/merge';
 
-export const combineTransform = async (rule: TConfigItem[], dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const combineTransform = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		// digit1 = 矩阵前 4 位的精度，digit2 = 矩阵后 2 位的精度
-		const digit1: number = rule.length > 1 ? rule[1] as number : DEFAULT_MATRIX_DIGIT;
-		const digit2: number = rule.length > 2 ? rule[2] as number : DEFAULT_SIZE_DIGIT;
-		const digit3: number = rule.length > 3 ? rule[3] as number : DEFAULT_ACCURATE_DIGIT;
+		const {
+			trigDigit,
+			sizeDigit,
+			angelDigit,
+		} = rule[1] as {
+			trigDigit: number;
+			sizeDigit: number;
+			angelDigit: number;
+		};
 		traversalNode<ITagNode>(isTag, node => {
 			const attributes = node.attributes;
 			for (let i = attributes.length; i--;) {
@@ -22,7 +27,7 @@ export const combineTransform = async (rule: TConfigItem[], dom: INode): Promise
 					execMatrix(attr.value.trim()).forEach(mFunc => {
 						const lastFunc = transform[transform.length - 1];
 						if (transform.length && lastFunc.type === mFunc.type) {
-							const mergeFunc = merge(lastFunc, mFunc, digit1, digit2, digit3);
+							const mergeFunc = merge(lastFunc, mFunc, trigDigit, sizeDigit, angelDigit);
 							// 如果合并后为无效变化，则出栈，否则更新合并后的函数
 							if (mergeFunc.noEffect) {
 								transform.pop();
@@ -34,9 +39,10 @@ export const combineTransform = async (rule: TConfigItem[], dom: INode): Promise
 						}
 					});
 					if (transform.length) {
-						const matrix = combineMatrix(transform, digit1, digit2, digit3);
-						const transformStr = stringify(transform, digit1, digit2, digit3);
-						const matrixStr = stringify([matrix], digit1, digit2, digit3);
+						const matrix = combineMatrix(transform, trigDigit, sizeDigit, angelDigit);
+						const transformStr = stringify(transform, trigDigit, sizeDigit, angelDigit);
+						const matrixStr = stringify([matrix], trigDigit, sizeDigit, angelDigit);
+						// TODO：把 transform 应用到元素
 						if (matrix.noEffect) {
 							node.removeAttribute(attr.fullname);
 						} else {

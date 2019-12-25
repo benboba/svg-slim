@@ -26,7 +26,7 @@ describe('rules/shorten-style-tag', () => {
 		</svg>`;
 		const dom = await parse(xml) as ITagNode;
 		await combineStyle(dom);
-		await shortenStyleTag([true, true], dom);
+		await shortenStyleTag([true, { deepShorten: true }], dom);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg></svg>');
 	});
 
@@ -76,7 +76,7 @@ describe('rules/shorten-style-tag', () => {
 		</svg>`;
 		const dom = await parse(xml) as ITagNode;
 		await combineStyle(dom);
-		await shortenStyleTag([true, false], dom);
+		await shortenStyleTag([true, { deepShorten: false }], dom);
 		createXML(dom).replace(/>\s+</g, '><').should.equal(`<svg><style>@charset 'utf-8';@import ('test.css');@keyframes test{100%{fill:blue}}@media test{text::before{fill:green}}#redText{fill:yellow}text[id^=red]{fill:yellow}a::first-letter{fill:blue}</style><a><text id="redText">123</text></a></svg>`);
 	});
 
@@ -109,6 +109,7 @@ describe('rules/shorten-style-tag', () => {
 			fill:red;
 			width: 0;
 			stroke: blue;
+			text-decoration-line: underline;
 		}
 		text::before {
 			fill:green;
@@ -124,8 +125,8 @@ describe('rules/shorten-style-tag', () => {
 		</svg>`;
 		const dom = await parse(xml) as ITagNode;
 		await combineStyle(dom);
-		await shortenStyleTag([true, true], dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal(`<svg><style>#redText,a,text[id^=red]{fill:yellow;fill-rule:evenodd;stroke:blue}@import ('test.css');a::first-letter{fill:red;stroke:blue}</style><a><text id="redText">123</text></a></svg>`);
+		await shortenStyleTag([true, { deepShorten: true }], dom);
+		createXML(dom).replace(/>\s+</g, '><').should.equal(`<svg><style>#redText,a,text[id^=red]{fill:yellow;fill-rule:evenodd;stroke:blue}@import ('test.css');a::first-letter{fill:red;stroke:blue;text-decoration-line:underline}</style><a><text id="redText">123</text></a></svg>`);
 	});
 
 	it('深度继承的情况', async () => {
@@ -149,7 +150,7 @@ describe('rules/shorten-style-tag', () => {
 		</svg>`;
 		const dom = await parse(xml) as ITagNode;
 		await combineStyle(dom);
-		await shortenStyleTag([true, true], dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal(`<svg><style>mask{fill:red}</style><defs><pattern id="TrianglePattern"><path d="M 0 0 L 7 0 L 3.5 7 z"/></pattern><polygon id="path-1" points="46 0 46 52 0 52 0 0 46 0"/></defs><ellipse id="ell" font-family="Arial" fill="url(#TrianglePattern)"/><mask style="stroke: none;fill: blue;" font-family="Arial" id="mask-2"><use xlink:href="#path-1"/></mask><mask style="stroke: none;" font-family="Arial" id="mask-3" xlink:href="#mask-3"/><mask xlink:href="#use"><use id="use"/></mask><mask href="#ell"/></svg>`);
+		await shortenStyleTag([true, { deepShorten: true }], dom);
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><style>mask{fill:red}</style><defs><pattern id="TrianglePattern"><path d="M 0 0 L 7 0 L 3.5 7 z"/></pattern><polygon id="path-1" points="46 0 46 52 0 52 0 0 46 0"/></defs><ellipse id="ell" font-family="Arial" fill="url(#TrianglePattern)"/><mask style="stroke: none;fill: blue;" font-family="Arial" id="mask-2"><use xlink:href="#path-1"/></mask><mask style="stroke: none;" font-family="Arial" id="mask-3" xlink:href="#mask-3"/><mask xlink:href="#use"><use id="use"/></mask><mask href="#ell"/></svg>');
 	});
 });

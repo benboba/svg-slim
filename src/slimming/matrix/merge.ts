@@ -1,6 +1,6 @@
+import { DEFAULT_ACCURATE_DIGIT, DEFAULT_MATRIX_DIGIT, DEFAULT_SIZE_DIGIT } from '../const';
 import { combineMatrix } from './combine';
 import { shorten } from './shorten';
-import { DEFAULT_ACCURATE_DIGIT, DEFAULT_MATRIX_DIGIT, DEFAULT_SIZE_DIGIT } from '../config/config';
 
 export const merge = (func1: IMatrixFunc, func2: IMatrixFunc, digit1: number = DEFAULT_MATRIX_DIGIT, digit2: number = DEFAULT_SIZE_DIGIT, digit3: number = DEFAULT_ACCURATE_DIGIT): IMatrixFunc => {
 	let resFunc: IMatrixFunc = {
@@ -31,6 +31,8 @@ export const merge = (func1: IMatrixFunc, func2: IMatrixFunc, digit1: number = D
 		case 'rotate':
 			if (func1.val.length === 1 && func2.val.length === 1) {
 				resFunc.val[0] = func1.val[0] + func2.val[0];
+			} else if (func1.val[1] === func2.val[1] && func1.val[2] === func2.val[2]) {
+				resFunc.val = [func1.val[0] + func2.val[0], func1.val[1], func1.val[2]];
 			} else {
 				resFunc = combineMatrix([func1, func2], digit1, digit2, digit3);
 			}

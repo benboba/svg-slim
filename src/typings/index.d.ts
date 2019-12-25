@@ -13,10 +13,20 @@ declare interface IUnknownObj {
 	[attr: string]: unknown;
 }
 
-declare type TConfigItem = boolean | number | string | string[];
+declare type TConfigItem = boolean | number | string[];
+
+declare interface IConfigOption {
+	[propName: string]: TConfigItem;
+}
+
+declare type TFinalConfigItem = [boolean, IConfigOption?];
 
 declare interface IConfig {
-	[propName: string]: TConfigItem[];
+	[propName: string]: boolean | TConfigItem[] | TFinalConfigItem;
+}
+
+declare interface IFinalConfig {
+	[propName: string]: TFinalConfigItem;
 }
 
 declare interface IMatrixFunc {
@@ -74,4 +84,17 @@ declare interface IRGBColor {
 	a: number;
 	origin: string;
 	valid: boolean;
+}
+
+declare module 'svg-path-contours' {
+	function contours(arr: [string, ...number[]][]): Array<[number, number][]>;
+	export = contours;
+}
+
+declare module 'triangulate-contours' {
+	function triangulate(arr: Array<[number, number][]>): {
+		positions: [number, number][];
+		cells: [number, number, number][];
+	};
+	export = triangulate;
 }

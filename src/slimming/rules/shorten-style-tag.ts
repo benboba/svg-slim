@@ -7,6 +7,7 @@ import { mixWhiteSpace } from '../utils/mix-white-space';
 import { traversalObj } from '../utils/traversal-obj';
 import { legalValue } from '../validate/legal-value';
 import { getBySelector } from '../xml/get-by-selector';
+import { onlyInCSS } from '../const/definitions';
 
 interface ICSSUnique {
 	[propName: string]: Rule;
@@ -18,8 +19,9 @@ const rmCSSNode = (cssNode: Node, parents: Array<Node | Node[]>) => {
 	plist.splice(plist.indexOf(cssNode), 1);
 };
 
-export const shortenStyleTag = async (rule: TConfigItem[], dom: IDomNode): Promise<null> => new Promise((resolve, reject) => {
+export const shortenStyleTag = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0] && dom.stylesheet) {
+		const { deepShorten } = rule[1] as { deepShorten: boolean };
 		const cssRules: StyleRules = dom.stylesheet.stylesheet as StyleRules;
 
 		// 遍历 style 解析对象，取得包含 css 定义的值
@@ -54,6 +56,9 @@ export const shortenStyleTag = async (rule: TConfigItem[], dom: IDomNode): Promi
 					if (!declaration.property || !declaration.value) {
 						rmCSSNode(cssNode, parents);
 					} else {
+						if (onlyInCSS.indexOf(declaration.property) !== -1) {
+							break;
+						}
 						if (!regularAttr[declaration.property].couldBeStyle || !legalValue(regularAttr[declaration.property], {
 							fullname: declaration.property,
 							name: declaration.property,
@@ -85,9 +90,10 @@ export const shortenStyleTag = async (rule: TConfigItem[], dom: IDomNode): Promi
 					break;
 			}
 		}, cssRules.rules, true);
-
+		// TODO 连锁属性的判断
+		// TODO 直接把 style 应用到元素
 		// 深度优化
-		if (rule[1]) {
+		if (deepShorten) {
 			const selectorUnique: ICSSUnique = {};
 			const declareUnique: ICSSUnique = {};
 			for (let i = 0, l = cssRules.rules.length; i < l; i++) {
@@ -109,7 +115,7 @@ export const shortenStyleTag = async (rule: TConfigItem[], dom: IDomNode): Promi
 								const ruleItem = declarations[mi];
 								const property = ruleItem.property as string;
 								// 判断每一条属性与每一个命中元素的匹配情况
-								if (matchNodes.some(matchNode => checkApply(regularAttr[property], matchNode, dom, true))) {
+								if (onlyInCSS.indexOf(property) !== -1 || matchNodes.some(matchNode => checkApply(regularAttr[property], matchNode, dom, true))) {
 									// 只要有一条匹配存在，就证明该选择器有效
 									anyMatch = true;
 									// 同时标记该属性有效

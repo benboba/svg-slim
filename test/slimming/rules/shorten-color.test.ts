@@ -20,7 +20,7 @@ describe('rules/shorten-color', () => {
 		const xml = `<svg>
 		<style>
 		.a {
-			color: rgb(0,0,0,.5);
+			color: rgb(0,0,0,0);
 			fill: currentColor;
 			stroke: rgba(0,0,0,0.5);
 			x: 100;
@@ -31,8 +31,8 @@ describe('rules/shorten-color', () => {
 		</svg>`;
 		const dom = await parse(xml) as ITagNode;
 		await combineStyle(dom);
-		await shortenColor([true, false, 4], dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><style>.a{color:rgb(0,0,0,.5);fill:currentColor;stroke:rgb(0,0,0,.5);x:100}</style><text fill="hsl(9,9%,9%,0)">123</text><rect style="fill:red" stroke="#639" color="rgb(255,255,255,0)"/></svg>');
+		await shortenColor([true, { rrggbbaa: false, opacityDigit: 4 }], dom);
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><style>.a{color:transparent;fill:currentColor;stroke:rgb(0,0,0,.5);x:100}</style><text fill="hsl(9,9%,9%,0)">123</text><rect style="fill:red" stroke="#639" color="rgb(255,255,255,0)"/></svg>');
 	});
 
 	it('rgba 及 style 无法解析', async () => {
@@ -42,7 +42,7 @@ describe('rules/shorten-color', () => {
 		</svg>`;
 		const dom = await parse(xml) as ITagNode;
 		await combineStyle(dom);
-		await shortenColor([true, true, 3], dom);
+		await shortenColor([true, { rrggbbaa: true, opacityDigit: 3 }], dom);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><rect width="100" style="fill:#f000;height:100" stroke="#65ea7152" color="#0000"/></svg>');
 	});
 });

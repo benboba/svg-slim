@@ -23,7 +23,7 @@ describe('rules/combine-transform', () => {
 		<text transform="matrix(-0.988,0.156,0.156,0.988,-10,-10)">7</text>
 		</svg>`;
 		const dom = await parse(xml) as ITagNode;
-		await combineTransform([true], dom);
+		await combineTransform([true, { trigDigit: 3, sizeDigit: 2, angelDigit: 2 }], dom);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><text>1</text><text transform="scale(4)">2</text><text transform="matrix(0,1.32-1.32,0,13.2.13)">3</text><text transform="scale(2,3)">4</text><text>5</text><text transform="rotate(-8.97)">6</text><text transform="matrix(-.988.156.156.988-10-10)">7</text></svg>');
 	});
 
@@ -31,9 +31,11 @@ describe('rules/combine-transform', () => {
 		const xml = `<svg>
 		<text transform="translate(19.6, 16.6) rotate(-45.000000) translate(-19.6, -16.6)">1</text>
 		<text transform="rotate(-45,19.6,16.6)">2</text>
+		<text transform="translate(15, 38.7) scale(-1, -1) translate(-15, -38.7)">3</text>
+		<text transform="translate(7.500000, 7.500000) rotate(-180.000000) translate(-7.500000, -7.500000)">4</text>
 		</svg>`;
 		const dom = await parse(xml) as ITagNode;
-		await combineTransform([true], dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><text transform="rotate(315,19.6,16.6)">1</text><text transform="rotate(-45,19.6,16.6)">2</text></svg>');
+		await combineTransform([true, { trigDigit: 3, sizeDigit: 2, angelDigit: 2 }], dom);
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><text transform="rotate(315,19.6,16.6)">1</text><text transform="rotate(-45,19.6,16.6)">2</text><text transform="rotate(180,15,38.7)">3</text><text transform="rotate(180,7.5,7.5)">4</text></svg>');
 	});
 });

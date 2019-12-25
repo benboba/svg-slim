@@ -534,19 +534,6 @@ export enum fontStyle {
 	oblique,
 }
 
-export enum fontVariant {
-	normal,
-	none,
-	'common-ligatures',
-	'no-common-ligatures',
-	'discretionary-ligatures',
-	'no-discretionary-ligatures',
-	'historical-ligatures',
-	'no-historical-ligatures',
-	contextual,
-	'no-contextual',
-}
-
 export enum overflow {
 	visible,
 	hidden,
@@ -601,17 +588,23 @@ export enum textAnchor {
 	end,
 }
 
-export enum textDecoration {
-	none,
-	underline,
-	overline,
-	'line-through',
-	blink,
+export enum textDecorationStyle {
+	solid,
+	double,
+	dotted,
+	dashed,
+	wavy,
 }
 
 export enum textOverflow {
 	clip,
 	ellipsis,
+}
+
+export enum textOrientation {
+	mixed,
+	upright,
+	sideways,
 }
 
 export enum unicodeBidi {
@@ -648,4 +641,9 @@ export enum writingMode {
 	'rl-tb',
 	'tb',
 	'tb-rl',
+}
+
+export enum isolationMode {
+	auto,
+	isolate,
 }

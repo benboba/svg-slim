@@ -168,3 +168,7 @@ export const filterListFullMatch = new RegExp(`(?:(?:${filterFunc}|${url})${comm
 export const fontWeightFullMatch = /^normal|bold|bolder|lighter|[1-9]00$/;
 export const textOrientationFullMatch = /^mixed|upright|sideways|auto|0deg|0|90deg|90$/;
 export const vectorEffectFullMatch = new RegExp(`^(?:(?:non-scaling-stroke|non-scaling-size|non-rotation|fixed-position)${commaWsp})+${commaWsp}(?:viewport|screen)?$`);
+
+export const transformOriginFullMatch = new RegExp(`^\\s*(?:left|center|right|top|bottom|${percentageLength})\\s*|\\s*(?:left|center|right|${percentageLength})\\s+(?:top|center|bottom|${percentageLength})\\s+(?:${length})?\\s*|\\s*(?:top|center|bottom)\\s+(?:left|center|right)\\s+(?:${length})?\\s*$`);
+
+export const textDecorationLine = /^none|(?:underline|overline|line-through|blink)(?:\s+(?:underline|overline|line-through|blink))*$/;

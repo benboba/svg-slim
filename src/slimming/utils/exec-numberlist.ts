@@ -8,7 +8,7 @@ export const execNumberList = (s: string): number[] => {
 		numberGlobal.lastIndex = 0;
 		let matches = numberGlobal.exec(s);
 		while (matches) {
-			result.push(parseFloat(matches[0]));
+			result.push(+matches[0]);
 			matches = numberGlobal.exec(s);
 		}
 	}
