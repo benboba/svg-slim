@@ -1,5 +1,46 @@
 # 更新日志
 
+## 2020.01.07 v1.5.0 **breaking change**
+
+### svg-slimming
+
+* 追加英文版的 readme 和 update
+* 追加了依赖 svg-path-contours 和 triangulate-contours
+* [**breaking change**]现在所有的 config 配置项支持 object 形式，详情见 [README](https://github.com/benboba/svg-slimming/blob/master/README-zh.md)
+* 改进了数值优化逻辑，以获得更好的优化效果
+* 修复了 hsl 和 hsla 颜色在 hue 使用单位时会被 rm-attribute 规则意外移除的 bug
+* shorten-color 在运算结果比原始数据更差时（例如 hsl(9,9%,9%,.5) => rgb(25,22,21,.5) ），还使用原始数据
+* shorten-color 现在会验证 hsl 和 rgb 哪种表示法更短，并采取更短的表示方法
+* shorten-color 增加了将 "rgb(0,0,0,0)" 输出为 "transparent" 的逻辑
+* shorten-color 会把 rgba(r,g,b,.01) 转为 rgba(r,g,b,1%)，以获得更好的压缩效果
+* 优化了 shorten-defs 的实现
+* [**breaking change**]合并 shape-to-path 和 douglas-peucker 规则为 shorten-shape 规则，并修复一些 badcase
+* 在 shorten-shape 规则上追加了 ellipse 和 circle 互转的逻辑
+* [**breaking change**]将 rm-hidden 中与 shape 相关的逻辑调整到 shorten-shape 中，并修复一些 badcase
+* 优化了 rm-hidden 的实现，追加了更多可优化的 case
+* 修正了 geometry 类属性没有标记 couldBeStyle 导致属性和 style 互转时存在 badcase 的情况
+* 现在 rm-attribute 会验证 href 和 xlink:href 并存的情况，如果并存，将依照[规则](https://svgwg.org/svg2-draft/linking.html#XLinkRefAttrs)移除 xlink:href 属性
+* rm-px 现在会更准确地移除数值类属性的 px 单位，非数值类属性会忽略（此前存在会把 id="t:1px" 优化为 id="t:1" 的 badcase）
+* rm-px 现在会同时移除 0 值之后的所有单位
+* 修复了 path 中 a 指令 flag 位置后面没有逗号导致解析失败的 bug
+* 现在优化 path 时，会移除 a 指令 flag 位置后面的逗号
+* 重写了 path 解析和字符串化的方法，将数据格式改为以子路径为单位的二维数组
+* 修改了 compute-path 对绝对坐标和相对坐标的取舍，考虑到大多数可优化情形，现在会优先采用相对坐标
+* 现在 compute-path 在最终输出时，会省略 m+l 或 M+L 的 l/L 指令名称，以获得更优的效果
+* compute-path 修正了自动移除长度为 0 的路径片段的规则，改为：在没有 stroke 时，移除面积为 0 的子路径
+* 为 compute-path 追加了 1 个配置项，会将小于指定阈值的曲线指令转为直线指令
+* [**breaking change**] compute-path 抽稀节点开关的配置项不再生效，只要抽稀节点阈值大于 0，就执行抽稀
+* compute-path 增加了在前置指令不是 q/t/c/s 时，也可以把 q/c 指令转为 t/s 指令的判断逻辑，同时优化了简化判断了逻辑
+* 现在 shorten-shape、compute-path 和 combine-path 会考虑是否存在 marker 引用的情况
+* 修复了因为不支持 3 值 rotate 导致 transform 被意外移除的 bug
+* 改进了 matrix 的实现逻辑，增加了对 3 值 rotate 函数的支持
+* 现在在优化数值时，当遇到 100 的整倍数时，会优先使用科学计数法
+* 追加了一些有效的 css3 属性，避免被误移除
+* 优化了 style 属性的解析规则，考虑了含有注释、引号的情况，并会对解析结果进行处理，移除掉部分注释和冗余空白
+* 现在不会把根元素的 width、height 属性转为 style，避免应用在 css 中导致一些样式问题
+* 现在 shorten-defs 不会再跟踪和移除 id 的引用，相应处理只在 shorten-id 规则中进行
+* 针对以上改进，追加测试用例
+
 ## 2019.09.26 v1.4.3
 
 ### svg-slimming
@@ -47,7 +88,7 @@
 * 修正了 config 合并时，没有验证数组类型，导致传入对象或函数可能意外报错的问题
 * 现在所有依赖 css 模块进行解析的地方都加了 try ... catch，以应对非法字符串导致 css 模块报错影响优化结果的问题
 * 不再使用 toFixed 处理数值，改用 Math.round(Math.abs)，以解决 1.15.toFixed(1) = 1.1 的问题
-* 改进了道格拉斯普克算法，现在不会直接修改输入的原始数组，而是会先 clone 一个副本进行计算，最后会返回副本作为计算结果
+* 改进了道格拉斯普克算法，增加了边界情况的判断
 * 改进了 16 进制颜色的解析，添加了 1% ~ 100% 的对照表，修复了 #00000080 无法正确解析为 rgba(0,0,0,0.5) 的 bug
 * 修复了连续解析 rgb|hsl|rgba|hsla 颜色时，正则表达式没有重置的 bug
 * 修正了颜色解析逻辑和 W3C 规则不一致的问题，现在 rgb 和 hsl 会处理 alpha 值，rgba 和 hsla 会正确处理不存在 alpha 值的情况，hsl 会处理 hue 的值带单位的情况

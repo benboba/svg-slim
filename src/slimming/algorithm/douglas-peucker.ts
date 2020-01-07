@@ -7,12 +7,26 @@ const check = (threshold: number, startI: number, endI: number, paths: number[])
 	// 拿到基础向量
 	const baseVector = new Vector(minus(paths[endI], paths[startI]), minus(paths[endI + 1], paths[startI + 1]));
 	for (let i = startI + 2; i < endI; i += 2) {
-		// 拿到垂直分量
-		const vectorPann = new Vector(minus(paths[i], paths[startI]), minus(paths[i + 1], paths[startI + 1]));
-		const distance: number = vectorPann.isZero ? 0 : Vector.plumb(vectorPann, baseVector).modulo;
-		if (distance > max) {
-			max = distance;
-			maxI = i;
+		// 获取每个点基于起始和结束位置的向量
+		const vectorToStart = new Vector(minus(paths[i], paths[startI]), minus(paths[i + 1], paths[startI + 1]));
+		const vectorToEnd = new Vector(minus(paths[i], paths[endI]), minus(paths[i + 1], paths[endI + 1]));
+		let distance = 0;
+		// 与起始或结束点重合的点直接跳过
+		if (!vectorToStart.isZero && !vectorToEnd.isZero) {
+			// 边界情况：投影分量的模大于基础向量，说明途径点在起始点或结束点之外，不能单纯靠垂直分量来抽稀
+			const prjToStart = Vector.projected(vectorToStart, baseVector);
+			const prjToEnd = Vector.projected(vectorToEnd, baseVector);
+			if (prjToStart.modulo > baseVector.modulo) {
+				distance = prjToStart.modulo;
+			} else if (prjToEnd.modulo > baseVector.modulo) {
+				distance = prjToEnd.modulo;
+			} else {
+				distance = Vector.plumb(vectorToStart, baseVector).modulo;
+			}
+			if (distance > max) {
+				max = distance;
+				maxI = i;
+			}
 		}
 	}
 	if (max <= threshold) {

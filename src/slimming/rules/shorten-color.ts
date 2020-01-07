@@ -1,17 +1,17 @@
 import { Declaration, StyleRules } from 'css';
 import { both, has, pipe, toLower } from 'ramda';
 import { exec } from '../color/exec';
+import { rgb2hsl } from '../color/rgb2hsl';
 import { FF, Hundred, OPACITY_DIGIT } from '../const';
 import { regularAttr } from '../const/regular-attr';
-import { toFixed } from '../math/tofixed';
 import { execStyle } from '../style/exec';
 import { stringifyStyle } from '../style/stringify';
 import { fillIn } from '../utils/fillin';
+import { shortenPercent } from '../utils/shorten-percent';
 import { toHex } from '../utils/tohex';
 import { traversalObj } from '../utils/traversal-obj';
 import { isTag } from '../xml/is-tag';
 import { traversalNode } from '../xml/traversal-node';
-import { shortenPureDecimal } from '../utils/shorten-pure-decimal';
 
 const operateHex = pipe(toHex, toLower, fillIn(2));
 
@@ -156,7 +156,7 @@ const shortenMap = {
 const shortenReg = new RegExp(`(?:${Object.keys(shortenMap).join('|')})(?=[^0-9a-f]|$)`, 'gi');
 
 const formatColor = (rgba: boolean, str: string, digit: number): string => {
-	const color = exec(str);
+	const color = exec(str, digit);
 	let s = color.origin;
 
 	if (color.valid) {
@@ -168,7 +168,11 @@ const formatColor = (rgba: boolean, str: string, digit: number): string => {
 				if (color.r === 0 && color.g === 0 && color.b === 0 && color.a === 0) {
 					s = 'transparent';
 				} else {
-					s = `rgb(${color.r},${color.g},${color.b},${shortenPureDecimal(`${toFixed(digit, color.a)}`)})`;
+					const hslColor = rgb2hsl(color);
+					const alpha = shortenPercent(digit, color.a);
+					const rgb = `rgb(${color.r},${color.g},${color.b},${alpha})`;
+					const hsl = `hsl(${hslColor.h},${hslColor.s}%,${hslColor.l}%,${alpha})`;
+					s = hsl.length < rgb.length ? hsl : rgb;
 				}
 			}
 		} else {

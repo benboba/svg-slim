@@ -13,24 +13,24 @@ export const config: IFinalConfig = {
 	}],
 	// 分析并合并 transform 属性
 	'combine-transform': [true, {
-		trigDigit: DEFAULT_MATRIX_DIGIT, // 三角函数的数据精度
-		sizeDigit: DEFAULT_SIZE_DIGIT, // 位移的数据精度
 		angelDigit: DEFAULT_ACCURATE_DIGIT, // 角度的数据精度
-		keyOrder: ['trigDigit', 'sizeDigit', 'angelDigit'],
+		sizeDigit: DEFAULT_SIZE_DIGIT, // 位移的数据精度
+		trifuncDigit: DEFAULT_MATRIX_DIGIT, // 三角函数的数据精度
+		keyOrder: ['trifuncDigit', 'sizeDigit', 'angelDigit'],
 	}],
 	// 计算 path 的 d 属性，使之变得更短
 	'compute-path': [true, {
-		thinning: 0, // 通过抽稀节点来优化路径，为 0 表示不进行抽稀
-		sizeDigit: DEFAULT_SIZE_DIGIT, // 尺寸相关数据的精度
 		angelDigit: DEFAULT_ACCURATE_DIGIT, // 角度相关数据的精度
+		sizeDigit: DEFAULT_SIZE_DIGIT, // 尺寸相关数据的精度
 		straighten: 0, // 小尺寸的曲线转直线，为 0 表示不进行此项优化
-		keyOrder: ['removed thinning switch@v1.5.0', 'thinning', 'sizeDigit', 'angelDigit', 'straighten'],
+		thinning: 0, // 通过抽稀节点来优化路径，为 0 表示不进行抽稀
+		keyOrder: ['removed thinning switch@v1.5.0', 'thinning', 'size', 'angelDigit', 'straighten'],
 	}],
 	// 移除非规范的属性
 	'rm-attribute': [true, {
-		rmDefault: true, // 移除与默认值相同的属性
-		keepEvent: false, // 保留所有的事件监听属性
 		keepAria: false, // 保留所有的 aria 属性和 role 属性 https://www.w3.org/TR/wai-aria-1.1
+		keepEvent: false, // 保留所有的事件监听属性
+		rmDefault: true, // 移除与默认值相同的属性
 		keyOrder: ['rmDefault', 'keepEvent', 'keepAria'],
 	}],
 	// 移除注释
@@ -70,28 +70,28 @@ export const config: IFinalConfig = {
 	'shorten-class': [true],
 	// 缩短颜色
 	'shorten-color': [true, {
-		rrggbbaa: false, // 是否缩短 rgba 格式的颜色到 16 进制
 		opacityDigit: OPACITY_DIGIT, // alpha 值的精度
+		rrggbbaa: false, // 是否缩短 rgba 格式的颜色到 16 进制
 		keyOrder: ['rrggbbaa', 'opacityDigit'],
 	}],
 	// 缩短小数点后位数
 	'shorten-decimal-digits': [true, {
-		sizeDigit: DEFAULT_SIZE_DIGIT, // 尺寸相关属性的精度
 		angelDigit: DEFAULT_ACCURATE_DIGIT, // 其它类型属性的精度
+		sizeDigit: DEFAULT_SIZE_DIGIT, // 尺寸相关属性的精度
 		keyOrder: ['sizeDigit', 'angelDigit'],
 	}],
 	// 合并所有的 defs ，移除无效的 defs 定义
 	'shorten-defs': [true],
 	// 缩短 ID ，并移除不被引用的 ID
 	'shorten-id': [true],
-	// 形状和 path 互转，取最小组合
+	// 缩短 shape 类型的节点
 	'shorten-shape': [true, {
 		thinning: 0, // 对 polygon 和 polyline 抽稀节点，为 0 表示不进行抽稀
 		keyOrder: ['thinning'],
 	}],
 	// 缩短 style 属性
 	'shorten-style-attr': [true, {
-		exchange: true, // 根据情况进行 style 和属性的互转 （[warning] svg 的样式覆盖规则是 style 属性 > style 标签 > 属性，所以这个规则可能导致不正确的覆盖！）
+		exchange: false, // 根据情况进行 style 和属性的互转 （[warning] svg 的样式覆盖规则是 style 属性 > style 标签 > 属性，所以这个规则可能导致不正确的覆盖！）
 		keyOrder: ['exchange'],
 	}],
 	// 缩短 style 标签的内容（合并相同规则、移除无效样式）

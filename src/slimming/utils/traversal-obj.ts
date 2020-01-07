@@ -8,7 +8,7 @@
  */
 
 const traversal = <T>(condition: (o: T | T[]) => boolean, cb: (o: T, p: Array<T | T[]>) => void, obj: T | T[], path: Array<T | T[]>, visited: Array<T | T[]>, deep: boolean) => {
-	if (visited.indexOf(obj) !== -1) {
+	if (visited.includes(obj)) {
 		return;
 	}
 	visited.push(obj);

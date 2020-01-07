@@ -1,6 +1,5 @@
+import { Hundred } from '../const';
 import { toFixed } from '../math/tofixed';
-
-const Hundred = 100;
 
 // 转换百分比格式字符串为数值
 export const validPercent = (max: number, n: number) => Math.round(Math.max(Math.min(Hundred, n), 0) * max / Hundred);

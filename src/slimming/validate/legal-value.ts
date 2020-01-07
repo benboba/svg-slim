@@ -8,7 +8,7 @@ export const legalValue = (attrDefine: IRegularAttr, attr: IAttr, nodeName = '')
 		// 只要有一个规则命中就返回 true
 		for (const legalRule of attrDefine.legalValues) {
 			// 当前验证规则可能只适用于某些 tag，legalTag 表示当前规则适用于所有 tag 或当前验证的 tag 在规则匹配列表中
-			const legalTag = !legalRule.tag || !nodeName || legalRule.tag.indexOf(nodeName) !== -1;
+			const legalTag = !legalRule.tag || !nodeName || legalRule.tag.includes(nodeName);
 			if (legalTag) {
 				switch (legalRule.type) {
 					// 用正则判断

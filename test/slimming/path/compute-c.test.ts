@@ -22,5 +22,6 @@ describe('path/compute-c', () => {
 	it('coverage', () => {
 		stringifyPath(doCompute(execPath('m -100 -100 C1 0 2 2 3 0 C4 1 5 2 6 3Z'))).should.equal('m-1e2-1e2C1,0,2,2,3,0,4,1,5,2,6,3z');
 		stringifyPath(doCompute(execPath('M-9 -9 c1 0 2 2 9 9 c4 1 5 2 6 3Z'))).should.equal('m-9-9c1,0,2,2,9,9,4,1,5,2,6,3z');
+		stringifyPath(doCompute(execPath('m -100 -100 S1 0 2 2S5,5,4,6Z'))).should.equal('m-1e2-1e2S1,0,2,2,5,5,4,6z');
 	});
 });

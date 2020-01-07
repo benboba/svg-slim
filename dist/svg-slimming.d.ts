@@ -6,9 +6,11 @@ export {
 } from './xml-parser';
 import { INode } from './xml-parser';
 
-export declare type ConfigItem = (boolean | string | string[] | number)[];
+export declare type ConfigItem = {
+    [propName: string]: boolean | number | string[];
+};
 export interface IConfig {
-    [propName: string]: boolean | ConfigItem;
+    [propName: string]: [boolean, ConfigItem?];
 }
 export declare const config: IConfig;
 

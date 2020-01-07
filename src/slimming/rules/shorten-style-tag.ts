@@ -56,7 +56,7 @@ export const shortenStyleTag = async (rule: TFinalConfigItem, dom: IDomNode): Pr
 					if (!declaration.property || !declaration.value) {
 						rmCSSNode(cssNode, parents);
 					} else {
-						if (onlyInCSS.indexOf(declaration.property) !== -1) {
+						if (onlyInCSS.includes(declaration.property)) {
 							break;
 						}
 						if (!regularAttr[declaration.property].couldBeStyle || !legalValue(regularAttr[declaration.property], {
@@ -115,7 +115,7 @@ export const shortenStyleTag = async (rule: TFinalConfigItem, dom: IDomNode): Pr
 								const ruleItem = declarations[mi];
 								const property = ruleItem.property as string;
 								// 判断每一条属性与每一个命中元素的匹配情况
-								if (onlyInCSS.indexOf(property) !== -1 || matchNodes.some(matchNode => checkApply(regularAttr[property], matchNode, dom, true))) {
+								if (onlyInCSS.includes(property) || matchNodes.some(matchNode => checkApply(regularAttr[property], matchNode, dom, true))) {
 									// 只要有一条匹配存在，就证明该选择器有效
 									anyMatch = true;
 									// 同时标记该属性有效

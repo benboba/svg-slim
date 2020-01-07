@@ -17,7 +17,7 @@ const collapseAttributes = (node1: ITagNode, node2: ITagNode) => {
 	});
 	attributes2.forEach(attr => {
 		if (attrObj.hasOwnProperty(attr.fullname)) {
-			if (transformAttributes.indexOf(attr.fullname) !== -1) {
+			if (transformAttributes.includes(attr.fullname)) {
 				attrObj[attr.fullname].value = `${attr.value} ${attrObj[attr.fullname].value}`;
 			}
 		} else {
@@ -28,7 +28,7 @@ const collapseAttributes = (node1: ITagNode, node2: ITagNode) => {
 };
 
 // 包含某些特定属性，不允许进行合并
-const cantCollapse = (node: ITagNode) => node.attributes.filter(attr => cantCollapseAttributes.indexOf(attr.fullname) !== -1).length;
+const cantCollapse = (node: ITagNode) => node.attributes.filter(attr => cantCollapseAttributes.includes(attr.fullname)).length;
 
 const doCollapse = (dom: INode) => {
 	traversalNode<ITagNode>(propEq('nodeName', 'g'), node => {

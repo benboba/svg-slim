@@ -47,7 +47,7 @@ export const shortenDecimalDigits = async (rule: TFinalConfigItem, dom: IDomNode
 					attr.value = fuzzyDigit(attr.value);
 				} else if (regularAttr[attr.fullname].maybeAccurateNumber) { // 需要较精确的数字
 					attr.value = accurateDigit(attr.value);
-				} else if (animationAttributes.indexOf(attr.fullname) !== -1) { // 动画处理的属性，需要根据 attributeName 属性判断
+				} else if (animationAttributes.includes(attr.fullname)) { // 动画处理的属性，需要根据 attributeName 属性判断
 					if (attributeName) {
 						if (regularAttr[attributeName].maybeSizeNumber) {
 							attr.value = fuzzyDigit(attr.value);

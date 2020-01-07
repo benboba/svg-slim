@@ -37,7 +37,7 @@ export const onlyInCSS = ['transform', 'transform-box', 'mix-blend-mode', 'anima
 
 // 特殊：不建议转 style 的 attribute
 export const onlyInAttr = {
-	'svg': [''],
+	'svg': ['width', 'height'], // 根元素的尺寸属性转 style 的话，在 css 中应用会导致尺寸问题
 };
 
 export const validPseudoClass = ['hover', 'link', 'active', 'visited', 'focus', 'first-child', 'lang', 'not'];

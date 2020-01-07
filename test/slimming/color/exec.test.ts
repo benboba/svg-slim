@@ -107,6 +107,15 @@ describe('颜色解析', () => {
 	});
 
 	it('rgb & rgba', () => {
+		exec('rrgb(255,0,0)').should.deep.equal({
+			r: 0,
+			g: 0,
+			b: 0,
+			a: 1,
+			origin: 'rrgb(255,0,0)',
+			valid: false,
+		});
+
 		exec('rgb(255,0,0)').should.deep.equal({
 			r: 255,
 			g: 0,
@@ -213,7 +222,7 @@ describe('颜色解析', () => {
 			g: 191,
 			b: 191,
 			a: 0.5,
-			origin: 'hsla(180deg,50%,50%,50%)',
+			origin: 'hsl(180,50%,50%,.5)',
 			valid: true,
 		});
 
@@ -222,7 +231,7 @@ describe('颜色解析', () => {
 			g: 191,
 			b: 64,
 			a: 0.1,
-			origin: 'hsl(1.5rad,50%,50%,0.1)',
+			origin: 'hsl(86,50%,50%,.1)',
 			valid: true,
 		});
 

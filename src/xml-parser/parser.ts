@@ -87,7 +87,7 @@ const ProcessTag = (str: string, status: IStatus): { node: Node; str: string } |
 		};
 
 		// 标签的 namespace
-		if (execResult[1].indexOf(':') !== -1) {
+		if (execResult[1].includes(':')) {
 			const tagName = execResult[1].split(':');
 			if (!tagName[1]) {
 				throw new Error(`错误的开始标签！ 在第 ${status.line} 行第 ${status.pos} 位`);
@@ -115,7 +115,7 @@ const ProcessTag = (str: string, status: IStatus): { node: Node; str: string } |
 			}
 			attrUnique[attrExec[1]] = true;
 
-			if (attrExec[1].indexOf(':') !== -1) {
+			if (attrExec[1].includes(':')) {
 				const attrName = attrExec[1].split(':');
 				if (attrName[1]) {
 					result.node.setAttribute(attrName[1], collapseQuot(attrExec[2]).trim(), attrName[0]);
@@ -145,7 +145,7 @@ const ProcessEndTag = (str: string, status: IStatus): { node: Node; str: string 
 			}),
 			str: str.slice(execResult[0].length),
 		};
-		if (execResult[1].indexOf(':') !== -1) {
+		if (execResult[1].includes(':')) {
 			const tagName = execResult[1].split(':');
 			if (!tagName[1]) {
 				throw new Error(`错误的结束标签！ 在第 ${status.line} 行第 ${status.pos} 位`);

@@ -51,7 +51,7 @@ export const combineScript = async (dom: INode): Promise<null> => new Promise((r
 			rmNode(firstScript);
 		} else {
 			const textContent = childNodes[0].textContent;
-			if (textContent.indexOf('<') === -1) {
+			if (!textContent.includes('<')) {
 				// 如果没有危险代码，则由 CDATA 转为普通文本类型
 				childNodes[0].nodeType = NodeType.Text;
 			}

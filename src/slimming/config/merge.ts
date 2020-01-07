@@ -8,8 +8,9 @@ const mergeUserVal = (v: TConfigItem, _v: unknown): TConfigItem => {
 		}
 	} else if (typeof v === typeof _v) {
 		if (typeof _v === 'number') {
-			// 数值项要忽略 NaN 和负数，并下取整
-			if (_v >= 0) {
+			// 数值项要忽略 NaN、Infinity 和负数，并下取整
+			// 数值精度最多保留 8 位
+			if (_v >= 0 && _v !== Infinity) {
 				return Math.floor(_v);
 			}
 		} else {
