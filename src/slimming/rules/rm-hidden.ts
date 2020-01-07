@@ -205,7 +205,7 @@ export const rmHidden = async (rule: TFinalConfigItem, dom: INode): Promise<null
 			}
 
 			// 没有填充和描边的形状，不一定可以被移除，要再判断一下自身或父元素是否有 id
-			if (shapeElements.indexOf(node.nodeName) !== -1) {
+			if (shapeElements.includes(node.nodeName)) {
 				const noFill = styles.hasOwnProperty('fill') && styles.fill.value === 'none';
 				const noStroke = !styles.hasOwnProperty('stroke') || styles.stroke.value === 'none';
 				if (noFill && noStroke && !getAncestor(node, (n: INode) => n.hasAttribute('id'))) {

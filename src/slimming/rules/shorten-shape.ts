@@ -71,8 +71,11 @@ const formatLine = (node: ITagNode) => {
 
 	const swExec = startWithNumber.exec(strokeWidth);
 
+	// 是否存在 marker 引用
+	const hasMarker = getAttr(node, 'marker-start', 'none') !== 'none' || getAttr(node, 'marker-mid', 'none') !== 'none' || getAttr(node, 'marker-end', 'none') !== 'none';
+
 	// 如果 stroke 或 stroke-width 不合规范，直接移除
-	if (!stroke || stroke === 'none' || !swExec || +swExec[1] <= 0) {
+	if (!hasMarker && (!stroke || stroke === 'none' || !swExec || +swExec[1] <= 0)) {
 		node.nodeName = 'remove';
 		return;
 	}
@@ -92,8 +95,6 @@ const formatLine = (node: ITagNode) => {
 		node.removeAttribute(key);
 	});
 
-	// 是否存在 marker 引用
-	const hasMarker = getAttr(node, 'marker-start', 'none') !== 'none' || getAttr(node, 'marker-mid', 'none') !== 'none' || getAttr(node, 'marker-end', 'none') !== 'none';
 	// 是否存在 stroke
 	const hasStroke = getAttr(node, 'stroke', 'none') !== 'none' && getAttr(node, 'stroke-width', '1') !== '0';
 	// 是否存在 stroke-linecap
@@ -227,7 +228,7 @@ export const shortenShape = async (rule: TFinalConfigItem, dom: INode): Promise<
 			thinning: number;
 		};
 
-		traversalNode(node => shapeElements.indexOf(node.nodeName) !== -1, (node: ITagNode) => {
+		traversalNode(node => shapeElements.includes(node.nodeName), (node: ITagNode) => {
 			const cloneNode = node.cloneNode();
 			cloneNode.styles = node.styles;
 			switch (node.nodeName) {

@@ -38,7 +38,7 @@ const attrIsEqual = (attrDefine: IRegularAttr, value: string, nodeName: string):
 	} else {
 		const initValue = attrDefine.initValue;
 		for (let ii = 0, il = initValue.length; ii < il; ii++) {
-			if (initValue[ii].tag.indexOf(nodeName) !== -1 && valueIsEqual(attrDefine, value, initValue[ii].val)) {
+			if (initValue[ii].tag.includes(nodeName) && valueIsEqual(attrDefine, value, initValue[ii].val)) {
 				return true;
 			}
 		}
@@ -77,9 +77,9 @@ export const rmAttribute = async (rule: TFinalConfigItem, dom: INode): Promise<n
 				if (attrDefine.isUndef) { // 非标准属性
 					let isUndef = true;
 					if (
-						(keepEvent && eventAttributes.indexOf(attr.fullname) !== -1) // 事件属性是否保留
+						(keepEvent && eventAttributes.includes(attr.fullname)) // 事件属性是否保留
 						||
-						(keepAria && ariaAttributes.indexOf(attr.fullname) !== -1) // aria 属性是否保留
+						(keepAria && ariaAttributes.includes(attr.fullname)) // aria 属性是否保留
 					) {
 						isUndef = false;
 					}
@@ -91,7 +91,7 @@ export const rmAttribute = async (rule: TFinalConfigItem, dom: INode): Promise<n
 					if (
 						!value // 空属性
 						||
-						(!attrDefine.couldBeStyle && attr.fullname.indexOf('xmlns') === -1 && tagDefine.ownAttributes.indexOf(attr.fullname) === -1) // 属性和元素不匹配
+						(!attrDefine.couldBeStyle && !attr.fullname.includes('xmlns') && !tagDefine.ownAttributes.includes(attr.fullname)) // 属性和元素不匹配
 						||
 						!legalValue(attrDefine, attr, node.nodeName) // 不合法的值
 					) {
@@ -100,7 +100,7 @@ export const rmAttribute = async (rule: TFinalConfigItem, dom: INode): Promise<n
 					}
 
 					// 不能实现动画的属性被动画属性引用)
-					if (animationAttributes.indexOf(attr.fullname) !== -1 && animationElements.indexOf(node.nodeName) !== -1 && (!attributeName || !regularAttr[attributeName].animatable)) {
+					if (animationAttributes.includes(attr.fullname) && animationElements.includes(node.nodeName) && (!attributeName || !regularAttr[attributeName].animatable)) {
 						node.removeAttribute(attr.fullname);
 						// 同时移除 attributeName 属性
 						node.removeAttribute('attributeName');

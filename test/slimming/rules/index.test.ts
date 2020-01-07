@@ -78,6 +78,6 @@ describe('rules/覆盖率补齐', () => {
 		const xml = '<svg width="1000px" viewBox="0 0 1000 800" version="1.1" style="height:800px"><rect width="0em" style="height:0pt;fill:red" id="r;1px"/></svg>';
 		const dom = await parse(xml) as ITagNode;
 		await rmPx([true], dom);
-		createXML(dom).should.equal('<svg width="1000" viewBox="0 0 1000 800" version="1.1" version="1.1" style="height:800"><rect width="0" style="height:0;fill:red" id="r;1px"/></svg>');
+		createXML(dom).should.equal('<svg width="1000" viewBox="0 0 1000 800" version="1.1" style="height:800"><rect width="0" style="height:0;fill:red" id="r;1px"/></svg>');
 	});
 });

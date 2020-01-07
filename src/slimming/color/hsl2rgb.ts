@@ -1,8 +1,7 @@
-import { FF, CIRC } from '../const';
+import { CIRC, FF, HALF } from '../const';
 import { validNum } from './valid';
 
 const CIRC6 = CIRC / 6;
-const HALF = 0.5;
 
 export const hsl2rgb = (h: number, s: number, l: number): number[] => {
 	let _R: number;

@@ -31,10 +31,11 @@ describe('rules/combine-path', () => {
 		<path fill="red" d="M100.5.5H100Z" style="opacity:100%;fill-opacity:1" /><path fill="red" d="M200.5.5H100Z" style="opacity:100%;fill-opacity:1" />
 		<path d="M100.5.5H100Z" style="opacity:100%;fill-opacity:1" /><path d="M200.5.5H100Z" style="opacity:100%;fill-opacity:1" />
 		<path fill-rule="evenodd" d="M100.5.5H100Z" /><path fill-rule="evenodd" d="M200.5.5H100Z" />
+		<path marker-start="#a" d="M100.5.5H100Z" /><path marker-start="#a" d="M200.5.5H100Z" />
 		</svg>`;
 		const dom = await parse(xml) as ITagNode;
 		await combinePath([true, { disregardFill: true }], dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><path fill="red" d="M100.5.5H100ZM200.5.5H100Z" style="opacity:100%;fill-opacity:1"/><path d="M100.5.5H100ZM200.5.5H100Z" style="opacity:100%;fill-opacity:1"/><path fill-rule="evenodd" d="M100.5.5H100Z"/><path fill-rule="evenodd" d="M200.5.5H100Z"/></svg>');
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><path fill="red" d="M100.5.5H100ZM200.5.5H100Z" style="opacity:100%;fill-opacity:1"/><path d="M100.5.5H100ZM200.5.5H100Z" style="opacity:100%;fill-opacity:1"/><path fill-rule="evenodd" d="M100.5.5H100Z"/><path fill-rule="evenodd" d="M200.5.5H100Z"/><path marker-start="#a" d="M100.5.5H100Z"/><path marker-start="#a" d="M200.5.5H100Z"/></svg>');
 	});
 
 	it('合并半透明', async () => {

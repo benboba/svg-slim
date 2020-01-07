@@ -15,7 +15,7 @@ const style2value = pipe(stringifyStyle, shortenStyle);
 
 // 某些属性可能不宜转为 style 样式，待验证
 const cantTrans = (nodeName: string, attrName: string) => {
-	return onlyInAttr.hasOwnProperty(nodeName) ? onlyInAttr[nodeName as keyof typeof onlyInAttr].indexOf(attrName) !== -1 : false;
+	return onlyInAttr.hasOwnProperty(nodeName) ? onlyInAttr[nodeName as keyof typeof onlyInAttr].includes(attrName) : false;
 };
 
 export const shortenStyleAttr = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
@@ -47,7 +47,7 @@ export const shortenStyleAttr = async (rule: TFinalConfigItem, dom: INode): Prom
 							continue;
 						}
 						// 有效果的 CSS3 属性要保留
-						if (onlyInCSS.indexOf(styleItem.fullname) !== -1) {
+						if (onlyInCSS.includes(styleItem.fullname) || cantTrans(node.nodeName, styleItem.fullname)) {
 							hasOnlyInCSS = true;
 						} else if (
 							!styleDefine.couldBeStyle // 不是合法的样式属性
@@ -97,6 +97,9 @@ export const shortenStyleAttr = async (rule: TFinalConfigItem, dom: INode): Prom
 					// 属性转 style
 					for (let j = node.attributes.length; j--;) {
 						const attr = node.attributes[j];
+						if (cantTrans(node.nodeName, attr.fullname)) {
+							continue;
+						}
 						if (regularAttr[attr.fullname].couldBeStyle || attr.fullname === 'style') {
 							node.removeAttribute(attr.fullname);
 						}

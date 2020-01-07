@@ -25,6 +25,13 @@ describe('rules/shorten-style-attr', () => {
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><style>rect{fill:red}</style><rect style="fill:blue"/></svg>');
 	});
 
+	it('exchange', async () => {
+		const xml = '<svg width="100" fill-rule="evenodd" stroke="blue" stroke-width="2" style="width:50;height:100"><rect fill="none" style="fill:blue"/></svg>';
+		const dom = await parse(xml) as ITagNode;
+		await shortenStyleAttr([true, { exchange: false }], dom);
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg width="100" style="height:100;width:50;stroke-width:2;stroke:blue;fill-rule:evenodd"><rect fill="blue"/></svg>');
+	});
+
 	it('缩短 style 属性', async () => {
 		const xml = `<svg>
 		<g fill="none" transform-origin="bottom" style="fill:blue;transform:translate(100px,100px);   /*test this'''*/  transform   : /*test'*/  /*test'*/ rotate(45deg) /*test'*/  /*test'*/  ;  content:';///'/*test'*/;empty:;">

@@ -4,9 +4,5 @@
 
 export const decimal = (a: string | number): string => {
 	const astr = `${a}`;
-	if (astr.indexOf('.') === -1) {
-		return '';
-	} else {
-		return astr.slice(astr.indexOf('.') + 1);
-	}
+	return astr.includes('.') ? astr.slice(astr.indexOf('.') + 1) : '';
 };

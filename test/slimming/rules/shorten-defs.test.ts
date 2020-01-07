@@ -41,8 +41,6 @@ describe('rules/shorten-defs', () => {
 			<mask id="mask-2" fill="white">
 				<use xlink:href="#path-1" />
 				<use xlink:href="where" />
-				<use xlink:href="#where" />
-				<use xlink:href="#where" />
 			</mask>
 			<defs>
 				<polygon id="path-1" points="46 0 46 52 0 52 0 0 46 0"></polygon>
@@ -50,6 +48,19 @@ describe('rules/shorten-defs', () => {
 		</svg>`;
 		const dom = await parse(xml) as ITagNode;
 		await shortenDefs([true], dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal(`<svg><defs><polygon id="path-1" points="46 0 46 52 0 52 0 0 46 0"/></defs><mask id="mask-2" fill="white"><use xlink:href="#path-1"/><use xlink:href="where"/><use/><use/></mask></svg>`);
+		createXML(dom).replace(/>\s+</g, '><').should.equal(`<svg><defs><polygon id="path-1" points="46 0 46 52 0 52 0 0 46 0"/></defs><mask id="mask-2" fill="white"><use xlink:href="#path-1"/><use xlink:href="where"/></mask></svg>`);
+	});
+
+	it('mask out of defs', async () => {
+		const xml = `<svg>
+			<defs>
+				<circle id="a" cx="40" cy="40" r="40"/>
+			</defs>
+			<mask id="b" fill="#fff"><use xlink:href="#a"/></mask>
+			<path d="m22.86,55.24L53.5,97,96,83,62.86,38.1l-40,17.14z" fill="#19b955" mask="url(#b)"/>
+		</svg>`;
+		const dom = await parse(xml) as ITagNode;
+		await shortenDefs([true], dom);
+		createXML(dom).replace(/>\s+</g, '><').should.equal(`<svg><defs><circle id="a" cx="40" cy="40" r="40"/></defs><mask id="b" fill="#fff"><use xlink:href="#a"/></mask><path d="m22.86,55.24L53.5,97,96,83,62.86,38.1l-40,17.14z" fill="#19b955" mask="url(#b)"/></svg>`);
 	});
 });

@@ -11,7 +11,7 @@ const checkClass = (node: INode, selector: ISelector): boolean => {
 		classNames = className.trim().split(/\s+/);
 	}
 	for (let ci = selector.class.length; ci--;) {
-		if (classNames.indexOf(selector.class[ci]) === -1) {
+		if (!classNames.includes(selector.class[ci])) {
 			return false;
 		}
 	}
@@ -58,7 +58,7 @@ const checkAttr = (node: INode, selector: ISelector): boolean => {
 					break;
 				// 空格分组字符匹配
 				case attrModifier['~']:
-					if (attr.split(/\s+/).indexOf(attrSelector.value) === -1) {
+					if (!attr.split(/\s+/).includes(attrSelector.value)) {
 						return false;
 					}
 					break;
@@ -70,7 +70,7 @@ const checkAttr = (node: INode, selector: ISelector): boolean => {
 					break;
 				// 模糊匹配
 				case attrModifier['*']:
-					if (attr.indexOf(attrSelector.value) === -1) {
+					if (!attr.includes(attrSelector.value)) {
 						return false;
 					}
 					break;
@@ -92,12 +92,12 @@ const checkAttr = (node: INode, selector: ISelector): boolean => {
 const checkPseudo = (node: INode, selector: ISelector): boolean => {
 	for (let pi = selector.pseudo.length; pi--;) {
 		const pseudoSelector = selector.pseudo[pi];
-		if (validPseudoClass.indexOf(pseudoSelector.func) === -1 && validPseudoElement.indexOf(pseudoSelector.func) === -1) {
+		if (!validPseudoClass.includes(pseudoSelector.func) && !validPseudoElement.includes(pseudoSelector.func)) {
 			return false;
 		}
 
 		// 命中伪元素，需要验证作用域链上是否存在文本节点 text
-		if (validPseudoElement.indexOf(pseudoSelector.func) !== -1) {
+		if (validPseudoElement.includes(pseudoSelector.func)) {
 			let hasText = false;
 			if (node.nodeName === 'text') {
 				hasText = true;

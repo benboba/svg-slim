@@ -1,6 +1,6 @@
 # 更新日志
 
-## 2019.12.09 v1.5.0 **breaking change**
+## 2020.01.07 v1.5.0 **breaking change**
 
 ### svg-slimming
 
@@ -10,7 +10,9 @@
 * 改进了数值优化逻辑，以获得更好的优化效果
 * 修复了 hsl 和 hsla 颜色在 hue 使用单位时会被 rm-attribute 规则意外移除的 bug
 * shorten-color 在运算结果比原始数据更差时（例如 hsl(9,9%,9%,.5) => rgb(25,22,21,.5) ），还使用原始数据
+* shorten-color 现在会验证 hsl 和 rgb 哪种表示法更短，并采取更短的表示方法
 * shorten-color 增加了将 "rgb(0,0,0,0)" 输出为 "transparent" 的逻辑
+* shorten-color 会把 rgba(r,g,b,.01) 转为 rgba(r,g,b,1%)，以获得更好的压缩效果
 * 优化了 shorten-defs 的实现
 * [**breaking change**]合并 shape-to-path 和 douglas-peucker 规则为 shorten-shape 规则，并修复一些 badcase
 * 在 shorten-shape 规则上追加了 ellipse 和 circle 互转的逻辑
@@ -35,6 +37,8 @@
 * 现在在优化数值时，当遇到 100 的整倍数时，会优先使用科学计数法
 * 追加了一些有效的 css3 属性，避免被误移除
 * 优化了 style 属性的解析规则，考虑了含有注释、引号的情况，并会对解析结果进行处理，移除掉部分注释和冗余空白
+* 现在不会把根元素的 width、height 属性转为 style，避免应用在 css 中导致一些样式问题
+* 现在 shorten-defs 不会再跟踪和移除 id 的引用，相应处理只在 shorten-id 规则中进行
 * 针对以上改进，追加测试用例
 
 ## 2019.09.26 v1.4.3
@@ -84,7 +88,7 @@
 * 修正了 config 合并时，没有验证数组类型，导致传入对象或函数可能意外报错的问题
 * 现在所有依赖 css 模块进行解析的地方都加了 try ... catch，以应对非法字符串导致 css 模块报错影响优化结果的问题
 * 不再使用 toFixed 处理数值，改用 Math.round(Math.abs)，以解决 1.15.toFixed(1) = 1.1 的问题
-* 改进了道格拉斯普克算法，现在不会直接修改输入的原始数组，而是会先 clone 一个副本进行计算，最后会返回副本作为计算结果
+* 改进了道格拉斯普克算法，增加了边界情况的判断
 * 改进了 16 进制颜色的解析，添加了 1% ~ 100% 的对照表，修复了 #00000080 无法正确解析为 rgba(0,0,0,0.5) 的 bug
 * 修复了连续解析 rgb|hsl|rgba|hsla 颜色时，正则表达式没有重置的 bug
 * 修正了颜色解析逻辑和 W3C 规则不一致的问题，现在 rgb 和 hsl 会处理 alpha 值，rgba 和 hsla 会正确处理不存在 alpha 值的情况，hsl 会处理 hue 的值带单位的情况

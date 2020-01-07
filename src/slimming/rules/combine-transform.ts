@@ -22,7 +22,7 @@ export const combineTransform = async (rule: TFinalConfigItem, dom: INode): Prom
 			const attributes = node.attributes;
 			for (let i = attributes.length; i--;) {
 				const attr = attributes[i];
-				if (transformAttributes.indexOf(attr.name) !== -1) {
+				if (transformAttributes.includes(attr.name)) {
 					const transform: IMatrixFunc[] = [];
 					execMatrix(attr.value.trim()).forEach(mFunc => {
 						const lastFunc = transform[transform.length - 1];

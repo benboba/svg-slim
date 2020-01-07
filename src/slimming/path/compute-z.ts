@@ -7,12 +7,7 @@ export const computeZ = (pathResult: IPathResultItem[], pos: number[]): number[]
 	if (lastItem.type.toLowerCase() === 'z') {
 		return pos;
 	}
-	let zpos = [...pos];
-	if (pathResult[0].type === 'm') {
-		zpos = [plus(pathResult[0].val[0], pathResult[0].from[0]), plus(pathResult[0].val[1], pathResult[0].from[1])];
-	} else if (pathResult[0].type === 'M') {
-		zpos = [pathResult[0].val[0], pathResult[0].val[1]];
-	}
+	const zpos = (pathResult[0].type === 'm') ? [plus(pathResult[0].val[0], pathResult[0].from[0]), plus(pathResult[0].val[1], pathResult[0].from[1])] : [pathResult[0].val[0], pathResult[0].val[1]];
 	pathResult.push({
 		type: 'z',
 		from: pos.slice(),

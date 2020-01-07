@@ -24,7 +24,7 @@ export const createNode = (node: INode): string => {
 			}
 			break;
 		case NodeType.CDATA:
-			if ((textContent as string).indexOf('<') === -1) {
+			if (!(textContent as string).includes('<')) {
 				xml += textContent;
 			} else {
 				xml += `<![CDATA[${textContent}]]>`;

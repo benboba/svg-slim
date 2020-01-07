@@ -47,7 +47,7 @@ export const combineStyle = async (dom: IDomNode): Promise<null> => new Promise(
 		if (childNodes.length === 0 || !childNodes[0].textContent || !childNodes[0].textContent.replace(/\s/g, '')) { // 如果内容为空，则移除style节点
 			rmNode(firstStyle);
 		} else {
-			if (childNodes[0].textContent.indexOf('<') === -1) { // 如果没有危险代码，则由 CDATA 转为普通文本类型
+			if (!childNodes[0].textContent.includes('<')) { // 如果没有危险代码，则由 CDATA 转为普通文本类型
 				childNodes[0].nodeType = NodeType.Text;
 			}
 

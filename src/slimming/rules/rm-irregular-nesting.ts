@@ -32,7 +32,7 @@ export const rmIrregularNesting = async (rule: TFinalConfigItem, dom: INode): Pr
 				} else if (legalRule.any) {
 					// any 表示可以任意嵌套
 					continue;
-				} else if (legalRule.childElements && legalRule.childElements.indexOf(childNode.nodeName) === -1) { // 不在嵌套列表中的情况
+				} else if (legalRule.childElements && !legalRule.childElements.includes(childNode.nodeName)) { // 不在嵌套列表中的情况
 					rmNode(childNode);
 				}
 			}

@@ -6,7 +6,7 @@ export const rmUnnecessary = async (rule: TFinalConfigItem, dom: INode): Promise
 	if (rule[0]) {
 		const { tags } = rule[1] as { tags: string[] };
 		if (tags.length) {
-			traversalNode(node => tags.indexOf(node.nodeName) !== -1 && unnecessaryElements.indexOf(node.nodeName) !== -1, rmNode, dom);
+			traversalNode(node => tags.includes(node.nodeName) && unnecessaryElements.includes(node.nodeName), rmNode, dom);
 		}
 	}
 	resolve();

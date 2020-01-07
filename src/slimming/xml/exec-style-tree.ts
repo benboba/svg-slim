@@ -54,7 +54,7 @@ const check = (dom: IDomNode, styleItems: IStyleItem[]) => {
 
 		// 判断 style 标签内的样式，优先级高于 attr 和 inehrit
 		styleItems.forEach(styleItem => {
-			if (styleItem.nodes.indexOf(node) !== -1) {
+			if (styleItem.nodes.includes(node)) {
 				styleItem.styles.forEach(style => {
 					const styleDefine = nodeStyle[style.name];
 					// tslint:disable-next-line

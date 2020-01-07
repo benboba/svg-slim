@@ -32,10 +32,10 @@ const check = (styleDefine: IRegularAttr, node: INode | undefined, dom: INode, u
 		}
 	}
 
-	if (styleDefine.applyTo.indexOf(node.nodeName) !== -1) return true;
+	if (styleDefine.applyTo.includes(node.nodeName)) return true;
 
 	// 因为递归可能存在循环引用，所以需要排重
-	if (unique.indexOf(node) !== -1) {
+	if (unique.includes(node)) {
 		return false;
 	}
 
@@ -61,7 +61,7 @@ const check = (styleDefine: IRegularAttr, node: INode | undefined, dom: INode, u
 		if (!isTag(childNode)) return false;
 
 		// 因为递归可能存在循环引用，所以需要排重
-		if (unique.indexOf(childNode) !== -1) return false;
+		if (unique.includes(childNode)) return false;
 		unique.push(childNode);
 
 		// 检查属性看是否被覆盖，是就不再继续
@@ -78,7 +78,7 @@ const check = (styleDefine: IRegularAttr, node: INode | undefined, dom: INode, u
 		}
 
 		// 通过前面的验证，并符合样式应用条件，就找到了命中的结果
-		if (styleDefine.applyTo.indexOf(childNode.nodeName) !== -1) {
+		if (styleDefine.applyTo.includes(childNode.nodeName)) {
 			result = true;
 			return false; // 已经有命中的结果就不必再遍历了
 		} else { // 否则继续遍历子元素

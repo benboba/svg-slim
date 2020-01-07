@@ -92,11 +92,7 @@ export const shortenDefs = async (rule: TFinalConfigItem, dom: INode): Promise<n
 			checkSub(firstDefs, IDList);
 			// TODO 把 defs 直接应用
 			(Object.values(IDList) as IIDCacheITem[]).forEach(item => {
-				if (!item.tag) {
-					item.iri.forEach(([tag, attrname]) => {
-						tag.removeAttribute(attrname);
-					});
-				} else {
+				if (item.tag) {
 					// 有可能引用对象存在于 defs 内部，并且已被移除
 					for (let i = item.iri.length; i--;) {
 						const [tag] = item.iri[i];

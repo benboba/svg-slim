@@ -7,6 +7,7 @@ export const HALF_CIRC = 180;
 export const GRAD = 400;
 export const RAD = Math.PI * 2;
 export const matrixEPos = 4;
+export const HALF = 0.5;
 
 export const APOS_RX = 0;
 export const APOS_RY = 1;

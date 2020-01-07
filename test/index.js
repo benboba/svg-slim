@@ -256,10 +256,12 @@ tester(
 	'shorten-shape',
 	`<svg>
 	<polyline points="0 0 10 10 15 15 25 25 30 30" />
-	<polygon points="0,0 100,200,300,300,299,299" />
+	<polygon points="0,0 100,200,300,300,300,299,299,299,299,298,298,298" />
     </svg>`,
-	'<svg><path d="M0,0,30,30"/><path d="M0,0,1e2,2e2,299,299z"/></svg>', {
-		'shorten-shape': [true, 30]
+	'<svg><path d="M0,0,30,30"/><path d="M0,0,1e2,2e2,3e2,3e2,298,298z"/></svg>', {
+		'shorten-shape': [true, {
+			'thinning': 30,
+		}]
 	}
 );
 

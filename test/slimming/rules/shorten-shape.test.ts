@@ -30,18 +30,20 @@ describe('rules/shorten-shape', () => {
 		<rect width="1em" height="1em"/>
 		<line fill="red" x2="100" y2="300"/>
 		<line stroke="red" x2="1em"/>
+		<line stroke="red" stroke-width="0" x2="1em"/>
 		<line stroke="red" x2="100" y2="300"/>
 		<line stroke="red" x2="0" y2="0"/>
 		<polyline />
 		<polygon points=""/>
 		<polyline points="10,10"/>
 		<polygon fill="red" points="0,0,100,100,200-200,300"/>
+		<polygon points="10,10" stroke="red" stroke-linecap="square"/>
 		<path/>
 		<path d="M0,0"/>
 		</svg>`;
 		const dom = await parse(xml) as ITagNode;
 		await shortenShape([true, { thinning: 0 }], dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><path style="fill:red" d="M0,0v.5h1e2v-.5z"/><path d="M0,0h1e3v1e2h-1e3z"/><rect rx="5" width="1" height="1"/><rect ry="5" width="1" height="1"/><rect rx="5" ry="5" width="1" height="1"/><rect rx="-5" ry="5" width="1" height="1"/><rect width="1em" height="1em"/><line stroke="red" x2="1em"/><path stroke="red" d="M0,0,100,300"/><path fill="red" d="M0,0,1e2,1e2,2e2-2e2z"/><path d="M0,0"/></svg>');
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><path style="fill:red" d="M0,0v.5h1e2v-.5z"/><path d="M0,0h1e3v1e2h-1e3z"/><rect rx="5" width="1" height="1"/><rect ry="5" width="1" height="1"/><rect rx="5" ry="5" width="1" height="1"/><rect rx="-5" ry="5" width="1" height="1"/><rect width="1em" height="1em"/><line stroke="red" x2="1em"/><path stroke="red" d="M0,0,100,300"/><path fill="red" d="M0,0,1e2,1e2,2e2-2e2z"/><path stroke="red" stroke-linecap="square" d="M10,10z"/><path d="M0,0"/></svg>');
 	});
 
 	it('转换形状为路径 - circle & ellipse', async () => {
@@ -68,11 +70,11 @@ describe('rules/shorten-shape', () => {
 	it('道格拉斯普克', async () => {
 		const xml = `<svg>
 		<polyline points="0 0 10 10 15 15 25 25 30 30" />
-		<polygon points="0,0 100,200,300,300,299,299" />
+		<polygon points="0,0 100,200,300,300,300,299,299,299,299,298,298,298" />
 		<polyline />
 		</svg>`;
 		const dom = await parse(xml) as ITagNode;
 		await shortenShape([true, { thinning: 30 }], dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><path d="M0,0,30,30"/><path d="M0,0,1e2,2e2,299,299z"/></svg>');
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><path d="M0,0,30,30"/><path d="M0,0,1e2,2e2,3e2,3e2,298,298z"/></svg>');
 	});
 });

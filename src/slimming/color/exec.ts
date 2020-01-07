@@ -1,16 +1,16 @@
-import { shortenFunc } from '../utils/shorten-func';
-import { angel, numberPattern } from '../const/syntax';
-import { keywords } from './keywords';
-import { valid, validOpacity } from './valid';
-import { hsl2rgb } from './hsl2rgb';
 import { has } from 'ramda';
+import { CIRC, FF, GRAD, Hex, Hundred, OPACITY_DIGIT, RAD } from '../const';
+import { angel, numberPattern } from '../const/syntax';
 import { toFixed } from '../math/tofixed';
-import { OPACITY_DIGIT, Hex, Hundred, FF, CIRC, GRAD, RAD } from '../const';
+import { shortenFunc } from '../utils/shorten-func';
+import { hsl2rgb } from './hsl2rgb';
+import { keywords } from './keywords';
+import { valid, validOpacity, validNum } from './valid';
+import { shortenPercent } from '../utils/shorten-percent';
 
-const rgbReg = new RegExp(`rgba?\\((${numberPattern})(%?),(${numberPattern})(%?),(${numberPattern})(%?)(?:,(${numberPattern})(%?))?\\)`, 'gi');
-const hslReg = new RegExp(`hsla?\\((${numberPattern})((?:${angel})?),(${numberPattern})%,(${numberPattern})%(?:,(${numberPattern})(%?))?\\)`, 'gi');
+const rgbReg = new RegExp(`^rgba?\\((${numberPattern})(%?),(${numberPattern})(%?),(${numberPattern})(%?)(?:,(${numberPattern})(%?))?\\)$`, 'gi');
+const hslReg = new RegExp(`^hsla?\\((${numberPattern})((?:${angel})?),(${numberPattern})%,(${numberPattern})%(?:,(${numberPattern})(%?))?\\)$`, 'gi');
 const hexReg = /^#([0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i;
-const fixed3 = toFixed(OPACITY_DIGIT);
 
 const alphaMap = {
 	'255': 100,
@@ -116,12 +116,17 @@ const alphaMap = {
 	'0': 0,
 };
 
-export const exec = (color: string): IRGBColor => {
-	let _color = shortenFunc(color.trim());
+export const exec = (color: string, digit = OPACITY_DIGIT): IRGBColor => {
+	const fixed3 = toFixed(digit);
 
-	// 首先把关键字转为 16 位色
-	if (keywords.hasOwnProperty(color)) {
-		_color = keywords[color as keyof typeof keywords];
+	// 首先对原始字符串进行基本的格式处理和类型转换
+	let _color = color.trim();
+	if (keywords.hasOwnProperty(_color)) {
+		// 关键字转为 16 位色
+		_color = keywords[_color as keyof typeof keywords];
+	} else if (/^(?:rgb|hsl)a?\s*\(/.test(_color)) {
+		// 缩短函数类
+		_color = shortenFunc(_color);
 	}
 
 	const result = {
@@ -175,7 +180,7 @@ export const exec = (color: string): IRGBColor => {
 			result.g = valid(rgbMatch[4], FF, rgbMatch[3]);
 			result.b = valid(rgbMatch[6], FF, rgbMatch[5]);
 			if (rgbMatch[7]) {
-				result.a = validOpacity(OPACITY_DIGIT, rgbMatch[8], rgbMatch[7]);
+				result.a = validOpacity(digit, rgbMatch[8], rgbMatch[7]);
 			}
 		} else {
 			result.valid = false;
@@ -203,7 +208,9 @@ export const exec = (color: string): IRGBColor => {
 		}
 		[result.r, result.g, result.b] = hsl2rgb(hue, +hslMatch[3] / Hundred, +hslMatch[4] / Hundred);
 		if (hslMatch[5]) {
-			result.a = validOpacity(OPACITY_DIGIT, hslMatch[6], hslMatch[5]);
+			result.a = validOpacity(digit, hslMatch[6], hslMatch[5]);
+			// 考虑到转来转去可能和原始字符串不同，保留一份缩短后的 hsl 原始字符串
+			result.origin = `hsl(${validNum(CIRC, hue)},${validNum(Hundred, +hslMatch[3])}%,${validNum(Hundred, +hslMatch[4])}%,${shortenPercent(digit, result.a)})`;
 		}
 		return result;
 	}

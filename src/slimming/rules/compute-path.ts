@@ -47,7 +47,7 @@ const DPInit = (threshold: number, pathArr: IPathResultItem[]): IPathResultItem[
 	const pathResult: IPathResultItem[] = [];
 	let len = 0;
 	for (const pathItem of pathArr) {
-		if (LineTypes.indexOf(pathItem.type) !== -1) {
+		if (LineTypes.includes(pathItem.type)) {
 			const lastItem = pathResult[len - 1];
 			if (lastItem.type === 'L') {
 				DPItemMerge(lastItem, pathItem);
@@ -56,8 +56,8 @@ const DPInit = (threshold: number, pathArr: IPathResultItem[]): IPathResultItem[
 				len++;
 			}
 		} else {
-			if (len > 0 && pathResult[len - 1].type === 'L') {
-				const lastItem = pathResult[len - 1];
+			const lastItem = pathResult[len - 1];
+			if (len > 0 && lastItem.type === 'L') {
 				lastItem.val = douglasPeucker(threshold, lastItem.from.concat(lastItem.val)).slice(2);
 			}
 			pathResult.push(pathItem);
@@ -88,7 +88,7 @@ export const computePath = async (rule: TFinalConfigItem, dom: INode): Promise<n
 		traversalNode<ITagNode>(propEq('nodeName', 'path'), node => {
 			const attrD = node.getAttribute('d');
 			if (attrD) {
-				// 此处需要先运算一次 doCompute，拿到每条指令的 from 坐标
+				// 先运算一次 doCompute，拿到每条指令的 from 坐标
 				let pathResult = doCompute(execPath(attrD));
 
 				// 是否存在 marker 引用，没有 marker 可以移除所有空移动指令
@@ -101,13 +101,15 @@ export const computePath = async (rule: TFinalConfigItem, dom: INode): Promise<n
 				if (!hasMarker) {
 					// 存在小尺寸曲线转直线的规则
 					if (straighten) {
-						pathResult = pathResult.map(p => straightenPath(straighten, p));
+						// doCompute 必须执行
+						pathResult = doCompute(pathResult.map(p => straightenPath(straighten, p)));
 					}
 					// 存在路径抽稀规则
 					if (thinning) {
-						pathResult = pathResult.map(p => DPInit(thinning, p));
+						// doCompute 必须执行
+						pathResult = doCompute(pathResult.map(p => DPInit(thinning, p)));
 					}
-					// 最终输出时再执行一次 doCompute
+					// 进行合并、指令转换等运算
 					pathResult = doCompute(checkSubPath(pathResult, hasStroke, hasStrokeCap, sizeDigit, angelDigit));
 				}
 
