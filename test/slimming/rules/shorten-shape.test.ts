@@ -64,7 +64,7 @@ describe('rules/shorten-shape', () => {
 		</svg>`;
 		const dom = await parse(xml) as ITagNode;
 		await shortenShape([true, { thinning: 0 }], dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><circle r="2"/><ellipse rx="3" ry="5"/><circle r="2" transform="scale(3)"/><circle style="fill:red" r="1e2"/><circle transform="scale(2,3.333)" r="3"/><ellipse rx="3" ry="5" transform="rotate(15,1,1)"/><circle transform="scale(12,2)" r="5"/><ellipse rx="3" ry="5pt" transform="scale(2)"/><ellipse rx="3" ry="5"/></svg>');
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><circle r="2"/><circle r="2" transform="matrix(1.5,0,0,2.5,0,0)"/><circle r="2" transform="scale(3)"/><circle style="fill:red" r="1e2"/><ellipse rx="3" ry="5" transform="scale(2)"/><ellipse rx="3" ry="5" transform="rotate(15,1,1)"/><ellipse rx="30" ry="5" transform="scale(2)"/><ellipse rx="3" ry="5pt" transform="scale(2)"/><ellipse rx="3" ry="5"/></svg>');
 	});
 
 	it('道格拉斯普克', async () => {

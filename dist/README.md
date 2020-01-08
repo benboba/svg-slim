@@ -1,19 +1,19 @@
-# 更新日志
+# Change Log
 
-[查看更新日志](https://github.com/benboba/svg-slimming/blob/master/UPDATE-zh.md)
+[View change log](https://github.com/benboba/svg-slimming/blob/master/UPDATE.md)
 
-# SVG瘦身工具【svg slimming】
+# svg-slimming
 
-## 简介
+## Introduction
 
-SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵循 W3C 的 SVG 规范 (https://www.w3.org/TR/SVG/) 
+svg-slimming is an SVG compression tool that provides rich customization and follows the [W3C SVG specification](https://www.w3.org/TR/SVG/)
 
-## 安装
+## Installation
 ```
 	npm install svg-slimming
 ```
 
-## 使用
+## Use
 ```js
 	const svgSlimming = require('svg-slimming');
 	svgSlimming(svgcode[, config]).then(result => {
@@ -21,88 +21,88 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 	});
 ```
 
-其中 svgcode 为字符串格式的 svg 文本，config 为用户自定义的优化配置
+Where svgcode is svg text in string format and config is user-defined optimized configuration
 
-### 使用 svg-slimming-loader
+### Use svg-slimming-loader
 
-[svg-slimming-loader](https://github.com/benboba/svg-slimming-loader) 是 webpack 的 loader 插件，支持对 import 的 SVG 文件进行优化
+[svg-slimming-loader](https://github.com/benboba/svg-slimming-loader) is a loader plugin for webpack, which supports optimization of imported SVG files
 
-### 使用 postcss-svg-slimming
+### Use postcss-svg-slimming
 
-[postcss-svg-slimming](https://github.com/benboba/postcss-svg-slimming) 是 postcss 的插件，支持优化 CSS 中内联的 SVG
+[postcss-svg-slimming](https://github.com/benboba/postcss-svg-slimming) is a plugin for postcss that supports optimizing inline SVG in CSS
 
-## 为什么选择 svg-slimming？
+## Why choose svg-slimming?
 
-* 丰富而强大的功能，足够个性化的配置参数
-* 追求极致的优化效果
-* 尽可能不破坏原有的 svg 效果
-* 遵循最新的 svg 规范
+* Rich and powerful functions, enough personalized configuration parameters
+* Pursue the ultimate optimization effect
+* Try not to destroy the original svg effect
+* Follow the latest svg specifications
 
 ### vs svgo
 
-| 优化分类 | 优化项目 | svg-slimming | svgo |
+| Optimization classification | Optimization project | svg-slimming | svgo |
 | ---- | ---- | ---- | ---- |
-| 基本 | svg 解析 | 自己写的解析器 xml-parser | sax |
-| 基本 | 非 svg 的 xml 节点处理逻辑 | 移除 | 报错 |
-| 基本 | 超大 svg 处理 | × | √ |
-| 基本 | 压缩冗余空白 | √ | √ |
-| 基本 | 移除注释 | √ | √ |
-| 基本 | 移除 xml declaration 和 doctype | √ | √ |
-| 基本 | 合并文本节点 | √ | √ |
-| 基本 | 支持优化 CDATA 节点 | √ | × |
-| 元素 | 移除不必要的元素 | √ | √ |
-| 元素 | 移除不可见元素 | √ | √ |
-| 元素 | 塌陷不必要的 group 节点 | √ | √ |
-| 元素 | 塌陷不必要的文本容器节点 | √ | × |
-| 元素 | 移除不符合 svg 规范的元素 | √ | √ |
-| 元素 | 优化不规范的元素嵌套 | √ | √ |
-| 元素 | 优化 defs | √ | √ |
-| 元素 | 直接应用 defs 到元素 | × | √ |
-| svg 元素 | viewBox vs 尺寸 | 优先使用尺寸 | 优先使用 viewBox |
-| svg 元素 | 移除 version 属性 | √ | √ |
-| svg 元素 | 优化 xmlns | √ | √ |
-| path 元素 | 经过计算优化 path 的 d 属性 | √ | √ |
-| path 元素 | 抛弃空的子路径 | √ | × |
-| path 元素 | 移除连续直线指令的无效途经点 | √ | × |
-| path 元素 | 特定条件下合并 a 指令 | √ | × |
-| path 元素 | 抽稀路径节点 | √ | × |
-| path 元素 | 小尺寸曲线指令转直线指令 | v1.5.0 | √ |
-| path 元素 | 移除 a 指令 flag 后置空格 | v1.5.0 | √ |
-| path 元素 | 合并 path | √ | √ |
-| shape | shape 转 path | √ | √ |
-| shape | 移除空的 shape（例如半径为 0 的 circle、宽高为 0 的 rect 等） | √ | × |
-| shape | ellipsis 和 circle 互转 | v1.5.0 | √ |
-| shape | 支持抽稀路径节点优化 polyline 和 polygon | √ | × |
-| 属性 | 移除空属性 | √ | √ |
-| 属性 | 移除无效属性和不合法属性 | √ | × |
-| 属性 | 移除和默认值相同的属性 | √ | × |
-| 属性 | 通过分析样式继承链优化属性 | √ | × |
-| 属性 | 缩短 ID | √ | √ |
-| 属性 | 移除 px 单位 | √ | √ |
-| 属性 | 移除不必要的 fill 和 stroke | × | √ |
-| 数字 | 优化数字 | √ | √ |
-| 数字 | 精确优化不同类型的数值 | √ | × |
-| 数字 | 数字转科学计数法 | √ | × |
-| 矩阵 | 合并和缩短 transform | √ | √ |
-| 矩阵 | 直接把 transform 应用到属性 | × | √ |
-| 颜色 | 优化颜色 | √ | √ |
-| 颜色 | 支持 hsl/hsla 格式颜色 | √ | × |
-| 颜色 | 支持 rgba 格式颜色 | √ | × |
-| 颜色 | 支持 #rrggbbaa 格式的 16 进制颜色 | √ | × |
-| css | css 解析 | css | csso |
-| css | 合并 style 元素 | √ | × |
-| css | 优化 style 内容 | √ | √ |
-| css | 缩短 className | √ | × |
-| css | style 转属性 | √ | √ |
-| css | 属性转 style | √（存在 badcase） | × |
-| css | 移除 svg 不支持的 css 样式 | √（存在 badcase） | × |
-| css | 直接把 style 内容应用到元素 | × | √ |
+| Basic | svg parsing | Built-in parser xml-parser | sax |
+| Basic | Non-svg xml node processing logic | Remove | Report error |
+| Basic | Oversized svg processing | × | √ |
+| Basic | Compressing Redundant Blanks | √ | √ |
+| Basic | Remove Comments | √ | √ |
+| Basic | Remove xml declaration and doctype | √ | √ |
+| Basic | Merging Text Nodes | √ | √ |
+| Basic | Support optimization CDATA node | √ | × |
+| Elements | Remove unnecessary elements | √ | √ |
+| Elements | Remove Invisible Elements | √ | √ |
+| Elements | Collapse unnecessary group nodes | √ | √ |
+| Elements | Collapse unnecessary text container nodes | √ | × |
+| Elements | remove elements that do not conform to the svg specification | √ | √ |
+| Elements | Optimize nesting of irregular elements | √ | √ |
+| Elements | optimization defs | √ | √ |
+| Elements | Apply defs directly to the element | × | √ |
+| svg element | viewBox vs size | size preferred | viewbox preferred |
+| svg element | remove version attribute | √ | √ |
+| svg element | optimization xmlns | √ | √ |
+| path element | d attribute of path optimized by calculation | √ | √ |
+| path element | discard empty subpaths | √ | × |
+| path element | remove invalid waypoints for continuous line instructions | √ | × |
+| path element | merge a instruction under certain conditions | √ | × |
+| path element | thinning path node | √ | × |
+| path element | small size curve command to line command | v1.5.0 | √ |
+| path element | remove a directive flag trailing space | v1.5.0 | √ |
+| path element | merge path | √ | √ |
+| shape | shape to path | √ | √ |
+| shape | remove empty shapes (such as circle with radius 0, rect with width and height 0, etc.) | √ | × |
+| shape | ellipsis and circle rotation | v1.5.0 | √ |
+| shape | support thinning path node optimization polyline and polygon | √ | × |
+| Attributes | Remove empty attributes | √ | √ |
+| Attributes | Remove invalid and illegal attributes | √ | × |
+| Attributes | Remove attributes with the same default values | √ | × |
+| Attributes | Optimize attributes by analyzing style inheritance chains | √ | × |
+| Attributes | Shorten ID | √ | √ |
+| Attributes | Remove px units | √ | √ |
+| Attributes | Remove unnecessary fills and strokes | × | √ |
+| Numbers | Optimize Digital | √ | √ |
+| Numbers | Precisely optimize different types of values | √ | × |
+| Numbers | Digital to Scientific Notation | √ | × |
+| Matrix | merge and shorten transform | √ | √ |
+| Matrix | Apply transform directly to attributes | × | √ |
+| Color | Optimize Color | √ | √ |
+| Color | Support hsl / hsla format color | √ | × |
+| Color | Support rgba format color | √ | × |
+| Color | Supports hex color in #rrggbbaa format | √ | × |
+| css | css parsing | css | csso |
+| css | merge style elements | √ | × |
+| css | Optimize style content | √ | √ |
+| css | shorten className | √ | × |
+| css | style to attributes | √ | √ |
+| css | attribute to style | √ (badcase exists) | × |
+| css | remove css styles not supported by svg | √ (badcase exists) | × |
+| css | Apply style content directly to elements | × | √ |
 
-## 优化配置
+## Optimized Configuration
 
-优化配置是一个 JSON 格式的对象，其中 key 为对应的配置项，value 为数组，数组第一项为规则的开关，第二项（如果有）为规则的详细配置
+The optimized configuration is an object in JSON format, where key is the corresponding configuration item, value is the array, the first item in the array is the switch of the rule, and the second item (if any) is the detailed configuration of the rule.
 
-下面是一个优化配置的示例：
+The following is an example of an optimized configuration:
 ```json
 	{
 		"collapse-g": [false],
@@ -114,7 +114,7 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 	}
 ```
 
-**注意：旧版配置方式虽然也可以生效，但未来可能会移除**
+** Note: Although the old configuration method can also take effect, it may be removed in the future **
 ```json
 	{
 		"collapse-g": false,
@@ -124,53 +124,53 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 
 ### collapse-g
 
-* 默认配置：
+* Default configuration:
 ```json
 	{
 		"collapse-g": [true]
 	}
 ```
-* 说明：
-	* 当 g 元素没有子元素时，移除该元素
-	* 当 g 元素没有属性值时，用子元素替换该元素
-	* 当 g 元素只有一个子元素，且自身没有 id、class、mask 属性时，将 g 元素的属性复制到子元素，并用子元素替换之
+* Explanation:
+	* When the g element has no children, remove the element
+	* When the g element has no attribute value, replace the element with a child element
+	* When the g element has only one child element and has no id, class, and mask attributes, copy the attributes of the g element to the child element and replace it with the child element
 
-例如：
+E.g:
 ```xml
 	<g></g>
 	<g fill="red"><rect width="100" height="100"/></g>
 ```
 
-优化后将变为：
+After optimization will become:
 ```xml
 	<rect fill="red" width="100" height="100"/>
 ```
 
 ### collapse-textwrap
 
-* 默认配置：
+* Default configuration:
 ```json
 	{
 		"collapse-textwrap": [true]
 	}
 ```
-* 说明：
-	* 对于所有嵌套的文本容器，当内部文本容器不包含任何有效属性时，移除该元素，并将文本内容提升为父元素的子节点
+* Explanation:
+	* For all nested text containers, when the inner text container does not contain any valid attributes, remove the element and promote the text content to the child nodes of the parent element
 
-例如：
+E.g:
 ```xml
 	<text></text>
 	<text fill="red"><tspan>123</tspan></text>
 ```
 
-优化后将变为：
+After optimization will become:
 ```xml
 	<text fill="red">123</text>
 ```
 
 ### combine-path
 
-* 默认配置：
+* Default configuration:
 ```json
 	{
 		"combine-path": [true, {
@@ -179,38 +179,37 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 		}]
 	}
 ```
-* 说明：
-	* 合并满足以下条件的路径节点：
-		1 所有属性和样式（包括继承样式）相同
-		2 相邻
-		3 没有 fill
-		4 stroke 的透明度不小于 1
-		5 没有 marker-start、marker-mid、marker-end
-* 配置参数：
+* Explanation:
+	* Merge path nodes that meet the following conditions:
+		1. All attributes and styles (including inherited styles) are the same
+		2. adjacent
+		3. no fill
+		4. stroke transparency is not less than 1
+		5. No marker-start, marker-mid, marker-end
+* Configuration parameters:
 	* disregardFill
-		* 默认值：false
-		* 是否允许合并满足以下条件的路径：
-			1 stroke 为空
-			2 fill-rull 不是 evenodd
-			3 fill 的透明度不小于 1
+		* Default: false
+		* Whether to allow paths that meet the following conditions:
+			1. stroke is empty
+			2. fill-rull is not evenodd
+			3. The transparency of fill is not less than 1
 	* disregardOpacity
-		* 默认值：false
-		* 是否允许合并透明度小于 1 的路径
-
-例如：
+		* Default: false
+		* Whether to allow paths with transparency less than 1
+E.g:
 ```xml
 	<path d="M0,0L100,100" fill="none" stroke="red" stroke-width="2"/>
 	<path d="M0,50L100,150" fill="none" stroke="red" stroke-width="2"/>
 ```
 
-优化后将变为
+After optimization will become:
 ```xml
 	<path d="M0,0L100,100M0,50L100,150" fill="none" stroke="red" stroke-width="2"/>
 ```
 
 ### combine-transform
 
-* 默认配置：
+* Default configuration:
 ```json
 	{
 		"combine-transform": [true, {
@@ -220,35 +219,35 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 		}]
 	}
 ```
-* 说明：
-	* 分析并合并 transform 属性
-* 配置参数：
+* Explanation:
+	* Analyze and merge transform attributes
+* Configuration parameters:
 	* angelDigit
-		* 默认值：2
-		* 限制为 0 或正整数
-		* skewX、skewY、rotate 的角度参数精度
+		* Default value: 2
+		* Limited to 0 or positive integer
+		* Angle parameter accuracy of skewX, skewY, rotate
 	* sizeDigit
-		* 默认值：2
-		* 限制为 0 或正整数
-		* matrix 的 e, f 位置参数精度，translate 参数精度，以及 3 值 rotate 后 2 个参数精度
+		* Default value: 2
+		* Limited to 0 or positive integer
+		* matrix e, f position parameter precision, translate parameter precision, and 3 parameter precision after 2 value rotate
 	* trifuncDigit
-		* 默认值：3
-		* 限制为 0 或正整数
-		* matrix 的 a, b, c, d 位置参数精度，scale 参数精度
+		* Default: 3
+		* Limited to 0 or positive integer
+		* matrix a, b, c, d position parameter precision, scale parameter precision
 
-例如：
+E.g:
 ```xml
 	<rect fill="red" width="100" height="100" transform="translate(100,100)scale(2)rotate(180)"/>
 ```
 
-优化后将变为：
+After optimization will become:
 ```xml
 	<rect fill="red" width="100" height="100" transform="matrix(-2,0,0,-2,100,100)"/>
 ```
 
 ### compute-path
 
-* 默认配置：
+* Default configuration:
 ```json
 	{
 		"compute-path": [true, {
@@ -259,41 +258,41 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 		}]
 	}
 ```
-* 说明：
-	* 计算 path 的 d 属性，使之变得更短
-* 配置参数：
+* Explanation:
+	* Calculate the d attribute of path to make it shorter
+* Configuration parameters:
 	* angelDigit
-		* 默认值：2
-		* 限制为 0 或正整数
-		* a/A 指令 x-axis-rotation 的精度
+		* Default value: 2
+		* Limited to 0 or positive integer
+		* Accuracy of a / A instruction x-axis-rotation
 	* sizeDigit
-		* 默认值：2
-		* 限制为 0 或正整数
-		* 坐标类型数值的精度
+		* Default value: 2
+		* Limited to 0 or positive integer
+		* Precision of coordinate type values
 	* straighten
-		* 默认值：0
-		* 限制为 0 或正整数
-		* 将指定阈值内的曲线指令转为更短的直线指令
-		* 为 0 表示不执行转换，不为 0 会视为曲线转直线的阈值
+		* Default value: 0
+		* Limited to 0 or positive integer
+		* Turn the curve command within the specified threshold into a shorter straight command
+		* If it is 0, it means that no conversion will be performed.
 	* thinning
-		* 默认值：0
-		* 限制为 0 或正整数
-		* 抽稀路径节点，以获得更短的结果
-		* 为 0 表示不执行路径抽稀，不为 0 会视为抽稀节点的阈值
+		* Default value: 0
+		* Limited to 0 or positive integer
+		* Thin out path nodes for shorter results
+		* 0 means no path thinning is performed, non-zero will be considered as the threshold of thinning nodes
 
-例如：
+E.g:
 ```xml
 	<path fill="red" d="M0,0L100,0,100,100,0,100z"/>
 ```
 
-优化后将变为：
+After optimization will become:
 ```xml
 	<path fill="red" d="m0,0h100v100H0z"/>
 ```
 
 ### rm-attribute
 
-* 默认配置：
+* Default configuration:
 ```json
 	{
 		"rm-attribute": [true, {
@@ -303,27 +302,27 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 		}]
 	}
 ```
-* 说明：
-	* 移除非规范的属性（不在[SVG规范](https://www.w3.org/TR/SVG/attindex.html)中，且并非xmlns类的属性）
-* 配置参数：
+* Explanation:
+	* Remove non-canonical attributes (not in [SVG spec](https://www.w3.org/TR/SVG/attindex.html) and not attributes of the xmlns class)
+* Configuration parameters:
 	* keepAria
-		* 默认值：false
-		* 保留所有的[aria](https://www.w3.org/TR/wai-aria-1.1/)属性，目前默认移除
+		* Default: false
+		* Keep all [aria](https://www.w3.org/TR/wai-aria-1.1/) attributes, currently removed by default
 	* keepEvent
-		* 默认值：false
-		* 保留所有的[事件监听](https://www.w3.org/TR/SVG/interact.html#TermEventAttribute)属性，目前默认移除
+		* Default: false
+		* Keep all [Event Monitoring](https://www.w3.org/TR/SVG/interact.html#TermEventAttribute) attributes, currently removed by default
 	* rmDefault
-		* 默认值：true
-		* 移除与默认值相同的属性（如果该属性是可继承的，且父元素上具有同名属性，则不可移除）
+		* Default: true
+		* Remove the same attribute as the default (if the attribute is inheritable and the parent element has an attribute with the same name, it cannot be removed)
 
-例如：
+E.g:
 ```xml
 	<g fill="red">
 		<rect fill="black" width="100" height="100" aa="1" bb="2" cc="3" aria-autocomplete="both" onclick="console.log('a');"/>
 	</g>
 ```
 
-优化后将变为：
+After optimization will become:
 ```xml
 	<g fill="red">
 		<rect fill="black" width="100" height="100"/>
@@ -332,65 +331,65 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 
 ### rm-comments
 
-* 默认配置：
+* Default configuration:
 ```json
 	{
 		"rm-comments": [true]
 	}
 ```
-* 说明：
-	* 移除注释
+* Explanation:
+	* Remove comment
 
 ### rm-doctype
 
-* 默认配置：
+* Default configuration:
 ```json
 	{
 		"rm-doctype": [true]
 	}
 ```
-* 说明：
-	* 移除 DOCTYPE 声明
+* Explanation:
+	* Remove DOCTYPE declaration
 
 ### rm-hidden
 
-* 默认配置：
+* Default configuration:
 ```json
 	{
 		"rm-hidden": [true]
 	}
 ```
-* 说明：
-	* 移除 display 属性为 none 的元素
-	* 移除 fill 和 stroke 属性均为 none 的图形类元素
-	* 移除没有子节点的文本容器
-	* 移除其它因某些原因不渲染的图形元素
+* Explanation:
+	* Remove elements with display attribute none
+	* Removed graphic elements with fill and stroke properties of none
+	* Remove text container without children
+	* Remove other graphic elements that are not rendered for some reason
 
-以下内容将被移除：
+The following will be removed:
 
-display 为 none
+display IS none
 ```xml
 	<g style="display:none"></g>
 ```
 
-stroke 和 fill 均为 none
+stroke and fill are none
 ```xml
 	<rect fill="none" stroke="none" width="100" height="100"/>
 ```
 
-circle 元素的 r 属性为 0（其它如：rect 元素的 width 或 height 属性为 0，ellipse 元素的 rx 或 ry 为 0，line 元素的长度为 0 等等）
+use element references a non-existing id
 ```xml
-	<circle cx="100" cy="100" r="0"/>
+	<use href="#undefined"/>
 ```
 
-path 元素没有 d 属性或为空，或不符合规范（其它如：polyline 和 polygon 元素没有 points 属性或为空等）
+Some elements that are not visible because the size attribute is 0, e.g:
 ```xml
-	<path id="123" d="bbb" />
+	<pattern id="pattern-1" width="0" height="0" />
 ```
 
 ### rm-irregular-nesting
 
-* 默认配置：
+* Default configuration:
 ```json
 	{
 		"rm-irregular-nesting": [true, {
@@ -398,26 +397,26 @@ path 元素没有 d 属性或为空，或不符合规范（其它如：polyline 
 		}]
 	}
 ```
-* 说明：
-	* 移除不规范嵌套的标签
-* 配置参数：
+* Explanation:
+	* Remove irregularly nested tags
+* Configuration parameters:
 	* ignore
-		* 默认值：\[]
-		* 限制为字符串列表，如果元素的标签名在列表中，则该元素及子元素均不会验证嵌套规则
+		* Default:\[]
+		* Restricted to a list of strings. If the tag name of an element is in the list, neither the element nor its child elements will validate the nesting rules.
 
-例如：
+E.g:
 ```xml
 	<rect fill="red" width="100px" height="100px"><circle cx="100" cy="100" r="100"/></rect>
 ```
 
-优化后将变为：
+After optimization will become:
 ```xml
 	<rect fill="red" width="100" height="100"/>
 ```
 
 ### rm-irregular-tag
 
-* 默认配置：
+* Default configuration:
 ```json
 	{
 		"rm-irregular-tag": [true, {
@@ -425,37 +424,37 @@ path 元素没有 d 属性或为空，或不符合规范（其它如：polyline 
 		}]
 	}
 ```
-* 说明：
-	* 移除不在[SVG规范](https://www.w3.org/TR/SVG/eltindex.html)内的标签
-* 配置参数：
+* Explanation:
+	* Remove tags that are not in [SVG Specification](https://www.w3.org/TR/SVG/eltindex.html)
+* Configuration parameters:
 	* ignore
-		* 默认值：\[]
-		* 限制为字符串列表，如果元素的标签名在列表中，则该元素虽然不是规范的 SVG 标签，也不会被移除
+		* Default:\[]
+		* Restricted to a list of strings. If the tag name of an element is in the list, the element will not be removed although it is not a standard SVG tag
 
 ### rm-px
 
-* 默认配置：
+* Default configuration:
 ```json
 	{
 		"rm-px": [true]
 	}
 ```
-* 说明：
-	* 移除 px 单位及 0 值的单位
+* Explanation:
+	* Remove px units and 0 units
 
-例如：
+E.g:
 ```xml
 	<rect fill="red" width="100px" height="100px" rx="0pt"/>
 ```
 
-优化后将变为：
+After optimization will become:
 ```xml
 	<rect fill="red" width="100" height="100" rx="0"/>
 ```
 
 ### rm-unnecessary
 
-* 默认配置：
+* Default configuration:
 ```json
 	{
 		"rm-unnecessary": [true, {
@@ -463,78 +462,78 @@ path 元素没有 d 属性或为空，或不符合规范（其它如：polyline 
 		}]
 	}
 ```
-* 说明：
-	* 移除不必要的标签
-	* **虽然默认并不移除 style 标签，但部分规则（如 shape-to-path）可能会导致样式表中的选择器无法命中**
-	* **由于并没有对 javascript 脚本进行分析处理，如果默认不移除 script 标签，不能保证优化后的代码仍然可以正确执行**
-* 配置参数：
+* Explanation:
+	* Remove unnecessary tags
+	* **Although style tags are not removed by default, some rules (such as shape-to-path) may cause selectors in the style sheet to fail to match**
+	* **As there is no analysis and processing of javascript scripts, if the script tag is not removed by default, there is no guarantee that the optimized code can still be executed correctly**
+* Configuration parameters:
 	* tags
-		* 默认值：["desc", "discard", "foreignObject", "video", "audio", "iframe", "canvas", "metadata", "script", "title", "unknown"]
-		* 限制为字符串列表
-		* 配置需要移除的标签名称，只能移除以下列表中的标签：["desc", "discard", "foreignObject", "video", "audio", "iframe", "canvas", "metadata", "script", "style", "title", "unknown"]
+		* Default: ["desc", "discard", "foreignObject", "video", "audio", "iframe", "canvas", "metadata", "script", "title", "unknown"]
+		* Restricted to a list of strings
+		* Configure the tag names to be removed. Only tags in the following list can be removed: ["desc", "discard", "foreignObject", "video", "audio", "iframe", "canvas", "metadata", "script", "style", "title", "unknown"]
 
 ### rm-version
 
-* 默认配置：
+* Default configuration:
 ```json
 	{
 		"rm-version": [true]
 	}
 ```
-* 说明：
-	* 移除 svg 元素的 version 属性
+* Explanation:
+	* Remove version attribute from svg element
 
 ### rm-viewbox
 
-* 默认配置：
+* Default configuration:
 ```json
 	{
 		"rm-viewbox": [true]
 	}
 ```
-* 说明：
-	* 当 x、y、width、height 完全相同时，移除 viewBox 属性
+* Explanation:
+	* When x, y, width, height are exactly the same, remove viewBox property
 
-例如：
+E.g:
 ```xml
 	<svg width="1000" height="600" viewBox="0 0 1000 600">
 ```
 
-优化后将变为：
+After optimization will become:
 ```xml
 	<svg width="1000" height="600">
 ```
 
 ### rm-xml-decl
 
-* 默认配置：
+* Default configuration:
 ```json
 	{
 		"rm-xml-decl": [true]
 	}
 ```
-* 说明：
-	* 移除 xml 声明
+* Explanation:
+	* Remove xml declaration
 
 ### rm-xmlns
 
-* 默认配置：
+* Default configuration:
 ```json
 	{
 		"rm-xmlns": [true]
 	}
 ```
-* 说明：
-	* 移除未被引用的 xmlns 定义，移除包含未定义命名空间的属性
+* Explanation:
+	* Remove unreferenced xmlns definitions, remove attributes containing undefined namespaces
 
-例如：
+E.g:
 ```xml
 	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 		<rect fill="red" width="100" height="100"/>
 	</svg>
 ```
 
-优化后将变为（由于 xlink 这个 namespace 并没有被引用，所以被移除了）：
+After optimization will become(Since the xlink namespace is not referenced, it was removed):
 ```xml
 	<svg xmlns="http://www.w3.org/2000/svg">
 		<rect fill="red" width="100" height="100"/>
@@ -543,23 +542,23 @@ path 元素没有 d 属性或为空，或不符合规范（其它如：polyline 
 
 ### shorten-class
 
-* 默认配置：
+* Default configuration:
 ```json
 	{
 		"shorten-class": [true]
 	}
 ```
-* 说明：
-	* 缩短 className
-	* 移除不被引用的 className
+* Explanation:
+	* Shorten className
+	* Remove unreferenced className
 
-例如：
+E.g:
 ```xml
 	<style>.red_rect {fill: red;}</style>
 	<rect class="red_rect blue_rect" width="100" height="100"/>
 ```
 
-优化后将变为：（.red_rect 被缩短为 .a，.blue_rect 直接被移除）
+After optimization will become (.red_rect is shortened to .a, .blue_rect is removed directly):
 ```xml
 	<style>.a {fill: red;}</style>
 	<rect class="a" width="100" height="100"/>
@@ -567,7 +566,7 @@ path 元素没有 d 属性或为空，或不符合规范（其它如：polyline 
 
 ### shorten-color
 
-* 默认配置：
+* Default configuration:
 ```json
 	{
 		"shorten-color": [true, {
@@ -576,30 +575,30 @@ path 元素没有 d 属性或为空，或不符合规范（其它如：polyline 
 		}]
 	}
 ```
-* 说明：
-	* 尽可能地缩短颜色定义
-* 配置参数
+* Explanation:
+	* Keep color definitions as short as possible
+* Configuration parameters:
 	* opacityDigit
-		* 默认值：3
-		* 限制为 0 或正整数
-		* rgba、hsla 格式的颜色 alpha 值的精度
+		* Default: 3
+		* Limited to 0 or positive integer
+		* Precision of color alpha values in rgba, hsla format
 	* rrggbbaa
-		* 默认值：false
-		* 是否采用 8 位的 16 进制颜色（例如：rgba(255,0,0,0.5) => #ff000080）
+		* Default: false
+		* Whether to use 8-digit hexadecimal color (E.g: rgba(255,0,0,0.5) => #ff000080)
 
-例如：
+E.g:
 ```xml
 	<rect fill="#ff0000" stroke="rgb(255,255,255)" color="rgba(0,0,0,0)" width="100" height="100"/>
 ```
 
-优化后将变为：
+After optimization will become:
 ```xml
 	<rect fill="red" stroke="#fff" color="transparent" width="100" height="100"/>
 ```
 
 ### shorten-decimal-digits
 
-* 默认配置：
+* Default configuration:
 ```json
 	{
 		"shorten-decimal-digits": [true, {
@@ -608,42 +607,42 @@ path 元素没有 d 属性或为空，或不符合规范（其它如：polyline 
 		}]
 	}
 ```
-* 说明：
-	* 缩小不同类型的数值精度
-* 配置参数
+* Explanation:
+	* Narrowing different types of numerical precision
+* Configuration parameters:
 	* angelDigit
-		* 默认值：2
-		* 限制为 0 或正整数
-		* 透明度、角度、弧度等类型数值的精度
+		* Default value: 2
+		* Limited to 0 or positive integer
+		* Accuracy of numerical values such as transparency, angle, and radian
 	* sizeDigit
-		* 默认值：2
-		* 限制为 0 或正整数
-		* 坐标、尺寸类型数值的精度
+		* Default value: 2
+		* Limited to 0 or positive integer
+		* Accuracy of coordinate and size type values
 
-例如：
+E.g:
 ```xml
 	<rect fill="red" width="100.00001" height="100.00001" fill-opacity="0.05999"/>
 ```
 
-优化后将变为：
+After optimization will become:
 ```xml
 	<rect fill="red" width="100" height="100" fill-opacity=".06"/>
 ```
 
 ### shorten-defs
 
-* 默认配置：
+* Default configuration:
 ```json
 	{
 		"shorten-defs": [true]
 	}
 ```
-* 说明：
-	* 合并所有的 defs 标签
-	* 移除无效的 defs 定义
-	* 移除空的 defs 标签
+* Explanation:
+	* Merge all defs tags
+	* Remove invalid defs definitions
+	* Remove empty defs tags
 
-例如：
+E.g:
 ```xml
 	<defs>
 	    <circle id="circle-1" fill="#000" cx="60" cy="60" r="60"></circle>
@@ -656,7 +655,7 @@ path 元素没有 d 属性或为空，或不符合规范（其它如：polyline 
 	</mask>
 ```
 
-优化后将变为：
+After optimization will become:
 ```xml
 	<defs>
 	    <circle id="path-1" fill="#000" cx="60" cy="60" r="60"></circle>
@@ -668,17 +667,17 @@ path 元素没有 d 属性或为空，或不符合规范（其它如：polyline 
 
 ### shorten-id
 
-* 默认配置：
+* Default configuration:
 ```json
 	{
 		"shorten-id": [true]
 	}
 ```
-* 说明：
-	* 缩短 ID
-	* 移除不被引用的 ID
+* Explanation:
+	* Shorten ID
+	* Remove unreferenced IDs
 
-例如：
+E.g:
 ```xml
 	<defs>
 	    <circle id="circle-1" fill="#000" cx="60" cy="60" r="60"></circle>
@@ -689,7 +688,7 @@ path 元素没有 d 属性或为空，或不符合规范（其它如：polyline 
 	<rect id="rect-3" fill="red" width="100" height="100" mask="url(#mask-2)"/>
 ```
 
-优化后将变为：（#rect-3 被移除，另外 2 个 id 被缩短）
+After optimization will become (#rect-3 is removed and the other 2 ids are shortened):
 ```xml
 	<defs>
 	    <circle id="a" fill="#000" cx="60" cy="60" r="60"></circle>
@@ -702,7 +701,7 @@ path 元素没有 d 属性或为空，或不符合规范（其它如：polyline 
 
 ### shorten-shape(v1.5.0+)
 
-* 默认配置：
+* Default configuration:
 ```json
 	{
 		"shorten-shape": [true, {
@@ -710,30 +709,29 @@ path 元素没有 d 属性或为空，或不符合规范（其它如：polyline 
 		}]
 	}
 ```
-* 说明：
-	* 如果形状映射到 path 的结果更短，则使用 path
-	* 如果 ellipse 形状的 rx 和 ry 相同，则转换为 circle
-	* 如果 circle 具有 transform: scale，且 sx 和 sy 不同，则视情况转换为 ellipse
-* 配置参数：
+* Explanation:
+	* If the result of the shape mapping to path is shorter, use path
+	* If the rx and ry of the ellipse shape are the same, convert to circle
+* Configuration parameters:
 	* thinning
-		* 默认值：0
-		* 限制为 0 或正整数
-		* 对 polygon 和 polyline 抽稀节点，以获得更短的结果
-		* 为 0 表示不执行抽稀节点，不为 0 会视为抽稀节点的阈值
+		* Default value: 0
+		* Limited to 0 or positive integer
+		* Thinning polygons and polylines for shorter results
+		* 0 means do not perform thinning nodes, non-zero will be regarded as the threshold of thinning nodes
 
-例如：
+E.g:
 ```xml
 	<rect fill="red" width="100" height="100"/>
 ```
 
-优化后将变为：
+After optimization will become:
 ```xml
 	<path fill="red" d="M0,0H100V100H0z"/>
 ```
 
 ### shorten-style-attr
 
-* 默认配置：
+* Default configuration:
 ```json
 	{
 		"shorten-style-attr": [true, {
@@ -741,22 +739,23 @@ path 元素没有 d 属性或为空，或不符合规范（其它如：polyline 
 		}]
 	}
 ```
-* 说明：
-	* 缩短 style 属性
-	* 深度分析 style 属性继承链，移除无可应用对象的属性
-	* 如果不存在 style 标签，则根据情况进行 style 和属性的互转
-* 配置参数：
+* Explanation:
+	* Shorten style attribute
+	* In-depth analysis of the style attribute inheritance chain, removing attributes without applicable objects
+	* If there is no style tag, the style and attributes are converted according to the situation
+* Configuration parameters:
 	* exchange
-		* 默认值：false
-		* 无视 style 标签是否存在，强制执行 style 和属性的互转
-		* **注意：svg 的样式覆盖规则是 style 属性 > style 标签 > 属性，所以强制转换可能导致不正确的覆盖**
+		* Default: false
+		* Regardless of the existence of the style tag, enforce the mutual conversion of style and attributes
+		* **Note: svg's style override rules are style attributes > style tags > attributes, so coercion may cause incorrect overrides**
 
-例如：
+E.g:
 ```xml
 	<rect fill="red" style="fill:blue;background:red;"/>
 ```
 
-优化后将变为：（fill 属性将被 style 中的同名定义覆盖，所以被移除了，background 不是标准的 svg 样式，所以也被移除了）
+After optimization will become (the fill attribute will be overwritten by the definition of the same name in the style, so it is removed, and the background is not a standard svg style, so it is removed)
+:
 ```xml
 	<rect style="fill:blue;"/>
 ```
@@ -768,7 +767,7 @@ path 元素没有 d 属性或为空，或不符合规范（其它如：polyline 
 
 ### shorten-style-tag
 
-* 默认配置：
+* Default configuration:
 ```json
 	{
 		"shorten-style-tag": [true, {
@@ -776,39 +775,39 @@ path 元素没有 d 属性或为空，或不符合规范（其它如：polyline 
 		}]
 	}
 ```
-* 说明：
-	* 缩短 style 标签的内容
-	* 移除重复的定义
-	* 移除不在[SVG规范](https://www.w3.org/TR/SVG/propidx.html)内的样式
-* 配置参数：
+* Explanation:
+	* Shorten the content of the style tag
+	* Remove duplicate definitions
+	* Remove styles that are not in [SVG Specification](https://www.w3.org/TR/SVG/propidx.html)
+* Configuration parameters:
 	* deepShorten
-		* 默认值：true
-		* 移除无效的选择器
-		* 合并多个相同的选择器
-		* 合并多个相同的规则
+		* Default: true
+		* Remove invalid selector
+		* Merge multiple same selectors
+		* Merge multiple same rules
 
-## 其它优化工作
+## Other optimization work
 
-下面列出的是本工具会主动执行的优化工作
+Listed below are the optimizations that this tool actively performs
 
-* 移除标签间的空白
-* 移除 OtherSect 和 OtherDecl 类型的节点（参见文档下方的 NodeType 说明）
-* 无内容的标签自闭合
-* 合并所有的 style 标签
-* 合并所有的 script 标签
-* 合并相邻的文本类型节点或 CDATA 节点
-* 合并所有冗余的空白字符
-* 从不含文本内容的节点下移除文本子节点
-* 如果 CDATA 节点内不包含“<”，则转为普通文本节点
+* Remove white space between labels
+* Remove nodes of type OtherSect and OtherDecl (see NodeType description below the documentation)
+* Self-closing labels without content
+* Merge all style tags
+* Merge all script tags
+* Merge adjacent text type nodes or CDATA nodes
+* Merge all redundant whitespace characters
+* Remove text child nodes from nodes without text content
+* If "<" is not included in the CDATA node, it will be converted into a normal text node
 
-# XML解析工具【xml parser】
+# xml-parser
 
-## 简介
+## Introduction
 
-在项目里附带了一个 XML 解析工具，安装项目后即可直接使用，无需额外安装。
+An XML parsing tool is included in the project and can be used directly after installing the project without additional installation.
 
-## 使用
-
+## Use
+```js
 	const xmlParser = require('svg-slimming/xml-parser.js');
 	
 	xmlParser.parse(xmlcode).then(result => {
@@ -816,111 +815,114 @@ path 元素没有 d 属性或为空，或不符合规范（其它如：polyline 
 	});
 	
 	console.log(xmlParser.NodeType);
+```
 
-其中 xmlcode 为字符串格式的 xml 文本（不限于svg）
+Where xmlcode is xml text in string format (not limited to svg)
 
-## 节点类型（NodeType）
+## NodeType
 
-节点类型尽可能遵循 DOM 规范的定义 [参考文档](https://developer.mozilla.org/zh-CN/docs/Web/API/Node/nodeType)
+Node types follow the definition of the DOM specification as much as possible [Reference Document](https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType)
 
-具体定义如下：
+The specific definitions are as follows:
 
-* 元素节点 | Tag
-	* value：1
-	* nodeName：\<tagName>
-	* 包含 attributes 属性和 childNodes 属性
+* Element Node | Tag
+	* value: 1
+	* nodeName: \<tagName>
+	* Contains attributes and childNodes
 
 
-* 文本节点 | Text
-	* value：3
-	* nodeName：#text
-	* 包含 textContent 属性
+* Text Node | Text
+	* value: 3
+	* nodeName: #text
+	* Contains the textContent property
 
 
 * CDATA
-	* value：4
-	* nodeName：#cdata
-	* 包含 textContent 属性
+	* value: 4
+	* nodeName: #cdata
+	* Contains the textContent property
 
 
 * OtherSect
-	* value：5
-	* nodeName：#\<sectName>
-	* 包含 textContent 属性
-	* 指除了 CDATA 之外的其它区块，如 <!\[INCLUDE\[...\]\]>
+	* value: 5
+	* nodeName: #\<sectName>
+	* Contains the textContent property
+	* Refers to blocks other than CDATA, such as <!\[INCLUDE \[...\]\]>
 
 
 * OtherDecl
-	* value：6
-	* nodeName：#\<declName>
-	* 包含 textContent 属性
-	* 指除了 DocType 之外的其它声明，如 <!ENTITY ... >
+	* value: 6
+	* nodeName: #\<declName>
+	* Contains the textContent property
+	* Refers to declarations other than DocType, such as <!ENTITY...>
 
 
-* xml声明 | XMLDecl
-	* value：7
-	* nodeName：#xml-decl
-	* 包含 textContent 属性
+* xml declaration | XMLDecl
+	* value: 7
+	* nodeName: #xml-decl
+	* Contains the textContent property
 
 
-* 注释 | Comments
-	* value：8
-	* nodeName：#comments
-	* 包含 textContent 属性
+* Notes | Comments
+	* value: 8
+	* nodeName: #comments
+	* Contains the textContent property
 
 
-* document节点 | Document
-	* value：9
-	* nodeName：#document
-	* 包含 childNodes 属性
-	* 为 xml-parser 解析后输出的根节点对象
+* document node | Document
+	* value: 9
+	* nodeName: #document
+	* Contains childNodes attribute
+	* The root node object output by xml-parser
 
 
 * DocType
-	* value：10
-	* nodeName：#doctype
-	* 包含 textContent 属性
+	* value: 10
+	* nodeName: #doctype
+	* Contains the textContent property
 
 
-## 节点定义（typescript 格式）
-
+## Node definition (typescript format)
+```ts
 	interface INode {
-		nodeName: string; // 节点名称
-		nodeType: NodeType; // 节点类型
-		namespace?: string; // 命名空间（如果有）
-		textContent?: string; // 文本内容（如果有）
+		nodeName: string;
+		nodeType: NodeType;
+		namespace?: string;
+		textContent?: string;
 
-		readonly attributes?: IAttr[]; // 属性列表（如果有）
-		readonly childNodes?: INode[]; // 子节点（如果有）
+		readonly attributes?: IAttr[];
+		readonly childNodes?: INode[];
 
-		parentNode?: INode; // 父节点
+		parentNode?: INode;
 
 		cloneNode(): INode;
 
-		appendChild(childNode: INode): void; // 插入子节点
-		insertBefore(childNode: INode, previousTarget: INode): void; // 在某个指定的子节点之前插入子节点
-		replaceChild(childNode: INode, ...children: INode[]): void; // 替换某个子节点
-		removeChild(childNode: INode): void; // 移除某个子节点
+		appendChild(childNode: INode): void;
+		insertBefore(childNode: INode, previousTarget: INode): void;
+		replaceChild(childNode: INode, ...children: INode[]): void;
+		removeChild(childNode: INode): void;
 
 		hasAttribute(name: string, namespace?: string): boolean;
-		getAttribute(name: string, namespace?: string): string; // 获取某个属性的值
-		setAttribute(name: string, value: string, namespace?: string): void; // 设置某个属性的值
-		removeAttribute(name: string, namespace?: string): void; // 移除某个属性
+		getAttribute(name: string, namespace?: string): string;
+		setAttribute(name: string, value: string, namespace?: string): void;
+		removeAttribute(name: string, namespace?: string): void;
 	}
+```
 
-## 属性定义（typescript 格式）
-
-	interface INode {
-		name: string; // 属性名称（不含命名空间）
-		value: string; // 值
-		fullname: string; // 属性完整名称（含命名空间）
-		namespace?: string; // 属性命名空间
+## Attribute definition (typescript format)
+```ts
+	interface IAttr {
+		name: string; // Attribute name (without namespace)
+		value: string;
+		fullname: string; // Attribute full name (including namespace)
+		namespace?: string;
 	}
+```
 
-## 这个 xml 解析工具有什么优点？
+## What are the advantages of this xml parser?
 
-* 严格遵循 xml 规范，遇到不符合规范的 xml 文本会报错，而不是尝试修复
-* 支持解析 xml 声明、doctype、注释、CDATA等类型的节点
-* 会正确解析 xml 的命名空间
-* 会正确解析元素节点的属性，包括含命名空间的属性
-* 严格反映原始文档的内容顺序和格式，不会做文本节点合并等额外的事
+* Strictly follow the xml specification, it will report an error when it encounters non-compliant xml text, instead of trying to repair
+* Supports parsing xml declaration, doctype, comment, CDATA and other types of nodes
+* XML namespaces will be parsed correctly
+* Attributes of element nodes are correctly parsed, including attributes with namespaces
+* Strictly reflects the content order and format of the original document, and does not do additional things such as text node merge

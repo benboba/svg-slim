@@ -643,7 +643,7 @@ const _regularAttr: IRegularAttrDefine = {
 		animatable: true,
 		maybeColor: false,
 		maybeIRI: true,
-		maybeFuncIRI: true,
+		maybeFuncIRI: false,
 		maybeSizeNumber: false,
 		maybeAccurateNumber: false,
 		legalValues: [{

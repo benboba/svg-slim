@@ -61,12 +61,13 @@ describe('rules/shorten-id', () => {
 	  <ellipse fill="url(#TrianglePattern)" />
 	<mask id="mask-2" fill="white" xlink:href="test">
 		<use xlink:href="#path-1" />
-	</mask>
+		</mask>
+		<use href="#path-1" />
 		</svg>`;
 		const dom = await parse(xml) as ITagNode;
 		await combineStyle(dom);
 		await shortenID([true], dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><defs><pattern id="b"><path d="M 0 0 L 7 0 L 3.5 7 z"/></pattern><polygon id="c" points="46 0 46 52 0 52 0 0 46 0"/></defs><ellipse fill="url(#b)"/><mask fill="white" xlink:href="test"><use xlink:href="#c"/></mask></svg>');
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><defs><pattern id="b"><path d="M 0 0 L 7 0 L 3.5 7 z"/></pattern><polygon id="c" points="46 0 46 52 0 52 0 0 46 0"/></defs><ellipse fill="url(#b)"/><mask fill="white" xlink:href="test"><use xlink:href="#c"/></mask><use href="#c"/></svg>');
 	});
 
 	it('缩短 id 无法解析 style 的情况', async () => {
@@ -85,7 +86,6 @@ describe('rules/shorten-id', () => {
 		<rect fill="url(#test)" width="100" height="100"/>
 		</svg>`;
 		const dom = await parse(xml) as ITagNode;
-		await combineStyle(dom);
 		await shortenID([true], dom);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><rect width="100" height="100"/></svg>');
 	});
