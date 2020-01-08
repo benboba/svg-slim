@@ -7,7 +7,6 @@
 * 追加英文版的 readme 和 update
 * 追加了依赖 svg-path-contours 和 triangulate-contours
 * [**breaking change**]现在所有的 config 配置项支持 object 形式，详情见 [README](https://github.com/benboba/svg-slimming/blob/master/README-zh.md)
-* 改进了数值优化逻辑，以获得更好的优化效果
 * 修复了 hsl 和 hsla 颜色在 hue 使用单位时会被 rm-attribute 规则意外移除的 bug
 * shorten-color 在运算结果比原始数据更差时（例如 hsl(9,9%,9%,.5) => rgb(25,22,21,.5) ），还使用原始数据
 * shorten-color 现在会验证 hsl 和 rgb 哪种表示法更短，并采取更短的表示方法
@@ -303,7 +302,6 @@
 
 ### 综合
 
-* 增加了 svg-slimming.min.js 和 xml-parser.min.js
 * 默认文件指向 svg-slimming.min.js
 * 发布到 github ，添加测试用例
 * 修复了全局正则表达式 exec 后没有重置位置，导致连续多次解析时结果不正确的问题

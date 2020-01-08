@@ -6,7 +6,7 @@
 
 ## 简介
 
-SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵循 W3C 的 SVG 规范 (https://www.w3.org/TR/SVG/) 
+SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵循 W3C 的 [SVG 规范](https://www.w3.org/TR/SVG/) 
 
 ## 安装
 ```
@@ -181,18 +181,18 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 ```
 * 说明：
 	* 合并满足以下条件的路径节点：
-		1 所有属性和样式（包括继承样式）相同
-		2 相邻
-		3 没有 fill
-		4 stroke 的透明度不小于 1
-		5 没有 marker-start、marker-mid、marker-end
+		1. 所有属性和样式（包括继承样式）相同
+		2. 相邻
+		3. 没有 fill
+		4. stroke 的透明度不小于 1
+		5. 没有 marker-start、marker-mid、marker-end
 * 配置参数：
 	* disregardFill
 		* 默认值：false
 		* 是否允许合并满足以下条件的路径：
-			1 stroke 为空
-			2 fill-rull 不是 evenodd
-			3 fill 的透明度不小于 1
+			1. stroke 为空
+			2. fill-rull 不是 evenodd
+			3. fill 的透明度不小于 1
 	* disregardOpacity
 		* 默认值：false
 		* 是否允许合并透明度小于 1 的路径
@@ -378,14 +378,14 @@ stroke 和 fill 均为 none
 	<rect fill="none" stroke="none" width="100" height="100"/>
 ```
 
-circle 元素的 r 属性为 0（其它如：rect 元素的 width 或 height 属性为 0，ellipse 元素的 rx 或 ry 为 0，line 元素的长度为 0 等等）
+use 元素引用了不存在的 id
 ```xml
-	<circle cx="100" cy="100" r="0"/>
+	<use href="#undefined"/>
 ```
 
-path 元素没有 d 属性或为空，或不符合规范（其它如：polyline 和 polygon 元素没有 points 属性或为空等）
+一些因尺寸属性为 0 导致不可见的元素，例如：
 ```xml
-	<path id="123" d="bbb" />
+	<pattern id="pattern-1" width="0" height="0" />
 ```
 
 ### rm-irregular-nesting
@@ -713,7 +713,6 @@ path 元素没有 d 属性或为空，或不符合规范（其它如：polyline 
 * 说明：
 	* 如果形状映射到 path 的结果更短，则使用 path
 	* 如果 ellipse 形状的 rx 和 ry 相同，则转换为 circle
-	* 如果 circle 具有 transform: scale，且 sx 和 sy 不同，则视情况转换为 ellipse
 * 配置参数：
 	* thinning
 		* 默认值：0
@@ -808,7 +807,7 @@ path 元素没有 d 属性或为空，或不符合规范（其它如：polyline 
 在项目里附带了一个 XML 解析工具，安装项目后即可直接使用，无需额外安装。
 
 ## 使用
-
+```js
 	const xmlParser = require('svg-slimming/xml-parser.js');
 	
 	xmlParser.parse(xmlcode).then(result => {
@@ -816,6 +815,7 @@ path 元素没有 d 属性或为空，或不符合规范（其它如：polyline 
 	});
 	
 	console.log(xmlParser.NodeType);
+```
 
 其中 xmlcode 为字符串格式的 xml 文本（不限于svg）
 
@@ -883,7 +883,7 @@ path 元素没有 d 属性或为空，或不符合规范（其它如：polyline 
 
 
 ## 节点定义（typescript 格式）
-
+```ts
 	interface INode {
 		nodeName: string; // 节点名称
 		nodeType: NodeType; // 节点类型
@@ -907,15 +907,17 @@ path 元素没有 d 属性或为空，或不符合规范（其它如：polyline 
 		setAttribute(name: string, value: string, namespace?: string): void; // 设置某个属性的值
 		removeAttribute(name: string, namespace?: string): void; // 移除某个属性
 	}
+```
 
 ## 属性定义（typescript 格式）
-
-	interface INode {
+```ts
+	interface IAttr {
 		name: string; // 属性名称（不含命名空间）
 		value: string; // 值
 		fullname: string; // 属性完整名称（含命名空间）
 		namespace?: string; // 属性命名空间
 	}
+```
 
 ## 这个 xml 解析工具有什么优点？
 

@@ -1,9 +1,6 @@
 import { douglasPeucker as DP } from '../algorithm/douglas-peucker';
 import { shapeElements } from '../const/definitions';
 import { numberGlobal, numberPattern } from '../const/syntax';
-import { combineMatrix } from '../matrix/combine';
-import { execMatrix } from '../matrix/exec';
-import { stringify } from '../matrix/stringify';
 import { execNumberList } from '../utils/exec-numberlist';
 import { shortenNumber } from '../utils/shorten-number';
 import { shortenNumberList } from '../utils/shorten-number-list';
@@ -168,35 +165,7 @@ const formatEllipse = (node: ITagNode, originNode: ITagNode) => {
 
 	if (rx === ry) {
 		ellipseToCircle(node, rx);
-	} else if (node.hasAttribute('transform')) {
-		const unitRx = rx.replace(startWithNumber, '');
-		const unitRy = ry.replace(startWithNumber, '');
-
-		if (unitRx === unitRy) {
-			const oldTrans = node.getAttribute('transform') as string;
-			const ryNum = +ry.slice(0, ry.lastIndexOf(unitRy));
-			const rxNum = +rx.slice(0, rx.lastIndexOf(unitRx));
-			if (rx.length <= ry.length) {
-				ellipseToCircle(node, rx);
-				const transform = `${oldTrans}scale(1,${ryNum / rxNum})`;
-				node.setAttribute('transform', stringify([combineMatrix(execMatrix(transform))]));
-			} else {
-				ellipseToCircle(node, ry);
-				const transform = `${oldTrans}scale(${rxNum / ryNum},1)`;
-				node.setAttribute('transform', stringify([combineMatrix(execMatrix(transform))]));
-			}
-			if (createTag(originNode).length <= createTag(node).length) {
-				node.nodeName = 'ellipse';
-			}
-		}
 	}
-};
-
-const circleToEllipse = (node: ITagNode, r: string, transform: IMatrixFunc) => {
-	node.nodeName = 'ellipse';
-	node.setAttribute('rx', r.replace(numberGlobal, s => shortenNumber(+s * transform.val[0])));
-	node.setAttribute('ry', r.replace(numberGlobal, s => shortenNumber(+s * transform.val[1])));
-	rmAttrs(node, ['r', 'transform']);
 };
 
 const formatCircle = (node: ITagNode, originNode: ITagNode) => {
@@ -204,18 +173,6 @@ const formatCircle = (node: ITagNode, originNode: ITagNode) => {
 	const rExec = startWithNumber.exec(r);
 	if (!rExec || +rExec[1] <= 0) {
 		node.nodeName = 'remove';
-		return;
-	}
-
-	if (node.hasAttribute('transform')) {
-		const transform = combineMatrix(execMatrix(node.getAttribute('transform') as string));
-		// 只有缩放变形的 circle 可以考虑转为 ellipse
-		if (transform.type === 'scale' && transform.val.length === 2) {
-			circleToEllipse(node, r, transform);
-		}
-		if (createTag(originNode).length <= createTag(node).length) {
-			node.nodeName = 'circle';
-		}
 	}
 };
 

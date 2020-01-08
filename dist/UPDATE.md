@@ -1,388 +1,392 @@
-# 更新日志
+# Change Log
 
 ## 2020.01.07 v1.5.0 **breaking change**
 
 ### svg-slimming
 
-* 追加英文版的 readme 和 update
-* 追加了依赖 svg-path-contours 和 triangulate-contours
-* [**breaking change**]现在所有的 config 配置项支持 object 形式，详情见 [README](https://github.com/benboba/svg-slimming/blob/master/README-zh.md)
-* 改进了数值优化逻辑，以获得更好的优化效果
-* 修复了 hsl 和 hsla 颜色在 hue 使用单位时会被 rm-attribute 规则意外移除的 bug
-* shorten-color 在运算结果比原始数据更差时（例如 hsl(9,9%,9%,.5) => rgb(25,22,21,.5) ），还使用原始数据
-* shorten-color 现在会验证 hsl 和 rgb 哪种表示法更短，并采取更短的表示方法
-* shorten-color 增加了将 "rgb(0,0,0,0)" 输出为 "transparent" 的逻辑
-* shorten-color 会把 rgba(r,g,b,.01) 转为 rgba(r,g,b,1%)，以获得更好的压缩效果
-* 优化了 shorten-defs 的实现
-* [**breaking change**]合并 shape-to-path 和 douglas-peucker 规则为 shorten-shape 规则，并修复一些 badcase
-* 在 shorten-shape 规则上追加了 ellipse 和 circle 互转的逻辑
-* [**breaking change**]将 rm-hidden 中与 shape 相关的逻辑调整到 shorten-shape 中，并修复一些 badcase
-* 优化了 rm-hidden 的实现，追加了更多可优化的 case
-* 修正了 geometry 类属性没有标记 couldBeStyle 导致属性和 style 互转时存在 badcase 的情况
-* 现在 rm-attribute 会验证 href 和 xlink:href 并存的情况，如果并存，将依照[规则](https://svgwg.org/svg2-draft/linking.html#XLinkRefAttrs)移除 xlink:href 属性
-* rm-px 现在会更准确地移除数值类属性的 px 单位，非数值类属性会忽略（此前存在会把 id="t:1px" 优化为 id="t:1" 的 badcase）
-* rm-px 现在会同时移除 0 值之后的所有单位
-* 修复了 path 中 a 指令 flag 位置后面没有逗号导致解析失败的 bug
-* 现在优化 path 时，会移除 a 指令 flag 位置后面的逗号
-* 重写了 path 解析和字符串化的方法，将数据格式改为以子路径为单位的二维数组
-* 修改了 compute-path 对绝对坐标和相对坐标的取舍，考虑到大多数可优化情形，现在会优先采用相对坐标
-* 现在 compute-path 在最终输出时，会省略 m+l 或 M+L 的 l/L 指令名称，以获得更优的效果
-* compute-path 修正了自动移除长度为 0 的路径片段的规则，改为：在没有 stroke 时，移除面积为 0 的子路径
-* 为 compute-path 追加了 1 个配置项，会将小于指定阈值的曲线指令转为直线指令
-* [**breaking change**] compute-path 抽稀节点开关的配置项不再生效，只要抽稀节点阈值大于 0，就执行抽稀
-* compute-path 增加了在前置指令不是 q/t/c/s 时，也可以把 q/c 指令转为 t/s 指令的判断逻辑，同时优化了简化判断了逻辑
-* 现在 shorten-shape、compute-path 和 combine-path 会考虑是否存在 marker 引用的情况
-* 修复了因为不支持 3 值 rotate 导致 transform 被意外移除的 bug
-* 改进了 matrix 的实现逻辑，增加了对 3 值 rotate 函数的支持
-* 现在在优化数值时，当遇到 100 的整倍数时，会优先使用科学计数法
-* 追加了一些有效的 css3 属性，避免被误移除
-* 优化了 style 属性的解析规则，考虑了含有注释、引号的情况，并会对解析结果进行处理，移除掉部分注释和冗余空白
-* 现在不会把根元素的 width、height 属性转为 style，避免应用在 css 中导致一些样式问题
-* 现在 shorten-defs 不会再跟踪和移除 id 的引用，相应处理只在 shorten-id 规则中进行
-* 针对以上改进，追加测试用例
+* Added README.md and UPDATE.md in English
+* Added dependencies svg-path-contours and triangulate-contours
+* [**breaking change**]Now all config configuration items support object form, see details [README](https://github.com/benboba/svg-slimming/blob/master/README.md)
+* Fixed hsl and hsla colors being accidentally removed by rm-attribute rules when using units in hue
+* shorten-color uses the original data when the operation result is worse than the original data (for example, hsl(9,9%,9%,.5) => rgb(25,22,21,.5))
+* shorten-color now verifies which representations of hsl and rgb are shorter and takes a shorter representation
+* shorten-color added logic to output "rgb(0,0,0,0)" as "transparent"
+* shorten-color will convert rgba(r,g,b,.01) to rgb(r,g,b,1%) for better compression effect
+* Optimized the implementation of shorten-defs
+* [**breaking change**] Merge shape-to-path and douglas-peucker rules into shorten-shape rules and fix some badcases
+* Added the logic of ellipse and circle to the shorten-shape rule
+* [**breaking change**] Adjust shape-related logic in rm-hidden to shorten-shape and fix some badcases
+* Optimized rm-hidden implementation and added more optimizable cases
+* Fixed a case where the geometry class attribute was not marked couldBeStyle and caused a badcase when the attribute and style were converted
+* Now rm-attribute will verify the coexistence of href and xlink: href. If it exists, it will remove the xlink: href attribute according to [rules](https://svgwg.org/svg2-draft/linking.html#XLinkRefAttrs)
+* rm-px will now more accurately remove px units for numeric attributes, non-numeric attributes will be ignored (previously there was a badcase that would optimize id="t:1px" to id="t:1")
+* rm-px will now remove all units after 0 value
+* Fixed a bug where there was no comma after the a command flag in path
+* The comma after the flag position of a directive is now removed when the path is optimized
+* Rewritten the method of path parsing and stringification, and changed the data format to a two-dimensional array with subpath as the unit
+* Modified compute-path between absolute and relative coordinates. Considering most optimizable cases, relative coordinates are now preferred.
+* Now compute-path will omit m+l or M+L instruction names for better results in the final output
+* compute-path modified the rule of automatically removing path segments of length 0 to: without stroke, remove subpaths with an area of 0
+* Added a configuration item to compute-path, which will convert curve instructions less than the specified threshold to linear instructions
+* [**breaking change**] The configuration item of compute-path thinning node switch no longer takes effect. As long as the thinning node threshold is greater than 0, thinning is performed
+* compute-path adds judgment logic that can also convert q/c instructions to t/s instructions when the preceding instruction is not q/t/c/s, and optimizes the simplified judgment logic
+* Shorten-shape, compute-path, and combine-path now consider the presence of marker references
+* Fixed a bug where transform was accidentally removed because 3 value rotate is not supported
+* Improved the implementation logic of matrix and added support for 3 value rotate function
+* Now when optimizing values, when using multiples of 100, scientific notation is preferred
+* Added some valid css3 attributes to avoid being removed by mistake
+* Optimized the parsing rules of the style attribute, taking into account the case of comments and quotes, and processing the parsing results, removing some comments and redundant blanks
+* The width and height properties of the root element will not be converted to style now, to avoid causing some style problems in css
+* Now shorten-defs will no longer track and remove references to ids, and the corresponding processing is only done in the shorten-id rules
+* For the above improvements, add test cases
 
 ## 2019.09.26 v1.4.3
 
 ### svg-slimming
 
-* 修复了 shorten-color 优化 rgba 颜色，当 alpha 值小于 1 时结果不正确的 bug
-* 修复了 rm-attribute 会意外移除 rgb(r,g,b,a)、rgba(r,g,b)、hsl(h,s,l,a)、hsla(h,s,l) 格式颜色属性的问题
+* Fixed the bug that shorten-color optimizes the rgba color when the alpha value is less than 1
+* Fixed rm-attribute accidentally removing rgb(r,g,b,a), rgba(r,g,b), hsl(h,s,l,a), hsla(h,s,l) formats Problems with color attributes
 
 ## 2019.09.23 v1.4.2
 
 ### svg-slimming
 
-* 修复了 compute-path 对于连续的 M/m 指令只保留最后一组的错误做法，正确做法是将后续的 M/m 指令视为 L/l
+* Fixed compute-path's wrong practice of keeping only the last group for consecutive M/m instructions. The correct way is to treat subsequent M/m instructions as L/l
 
 ## 2019.09.18 v1.4.1
 
-### 综合
+### Comprehensive
 
-* 升级 tslint 到 5.19.0 并更新部分规则
+* Upgrade tslint to 5.19.0 and update some rules
 
 ### svg-slimming
 
-* **调整了默认规则的数值精度配置，现在默认数值尺寸类数值将保留小数点后 2 位（涉及规则：combine-transform、compute-path、shorten-decimal-digits）**
-* 现在 combine-path 规则会限制 fill-rule 属性不能为 evenodd，避免因未执行路径交叉判断便合并，导致意外的镂空问题
-* 修复了 compute-path 规则在只有 M 指令时会报错的一个 bug
-* 现在 compute-path 规则在无法解析 d 属性或只有 M 指令时会直接移除 path 节点
-* 修正了解析 style 标签的时机，现在不会在一次优化中多次重复的进行 style 标签解析和字符串化
-* 将 matchSelector 工具函数柯里化，以保证更加函数式的调用
+* **Adjusted the numerical precision configuration of the default rules. The default numerical size class values will now retain 2 digits after the decimal point (involving rules: combine-transform, compute-path, shorten-decimal-digits)**
+* The combine-path rule now restricts the fill-rule attribute from not being evenodd, avoiding accidental hollowing out due to merging without path crossing judgment
+* Fixed a bug where the compute-path rule would report an error when there were only M instructions
+* The compute-path rule now directly removes the path node when it cannot resolve the d attribute or only the M instruction
+* Corrected the timing of parsing style tags, now style parsing and stringification will not be repeated multiple times in one optimization
+* Curried the matchSelector utility function to ensure a more functional call
 
 ## 2019.08.27 v1.4.0
 
-### 综合
+### Comprehensive
 
-* 引入了 nyc 进行单元测试覆盖率检验
-* 引入 ts-node 对 ts 模块执行单元测试
-* 追加大量单元测试，并有针对性地修复了部分 bug（见下文）
+* Introduced nyc for unit test coverage check
+* Introduced ts-node to perform unit tests on the ts module
+* Added a large number of unit tests and targeted bug fixes (see below)
 
 ### xml-parser
 
-* 修正了 Doctype 正则表达式对引号不匹配的漏检情况
-* 修正了 xml-parser.d.ts 导出成员名称不对的 bug
+* Fixed missing detection of Doctype regular expressions that do not match quotes
+* Fixed the bug that xml-parser.d.ts exported member name is incorrect
 
 ### svg-slimming
 
-* 修正了 svg-slimming.d.ts ，与 xml-parser.d.ts 做对应
-* 修正了 config 合并时，没有验证数组类型，导致传入对象或函数可能意外报错的问题
-* 现在所有依赖 css 模块进行解析的地方都加了 try ... catch，以应对非法字符串导致 css 模块报错影响优化结果的问题
-* 不再使用 toFixed 处理数值，改用 Math.round(Math.abs)，以解决 1.15.toFixed(1) = 1.1 的问题
-* 改进了道格拉斯普克算法，增加了边界情况的判断
-* 改进了 16 进制颜色的解析，添加了 1% ~ 100% 的对照表，修复了 #00000080 无法正确解析为 rgba(0,0,0,0.5) 的 bug
-* 修复了连续解析 rgb|hsl|rgba|hsla 颜色时，正则表达式没有重置的 bug
-* 修正了颜色解析逻辑和 W3C 规则不一致的问题，现在 rgb 和 hsl 会处理 alpha 值，rgba 和 hsla 会正确处理不存在 alpha 值的情况，hsl 会处理 hue 的值带单位的情况
-* 调整了 shorten-color 限制 alpha 值位数的参数，现在对于所有的颜色 alpha 值，最多保留小数点后第 3 位，和 chrome 浏览器 (v76.0.3809.87) 保持一致
-* 修正了属性选择器的正则表达式的一个错误
-* combine-script 现在会将合并后的 script 标签移到 svg 元素尾部，并且移除尾分号
-* 修复了 skewX 和 skewY 函数合并时直接将角度相加的错误运算方式，改为进行真实的矩阵乘法运算
-* 修正了 matrix 的解析规则，现在遇到错误的 matrix 格式会直接跳出，而不会继续解析。现在会全字匹配完整的 matrix 字符串，避免了字符串存在错误依然被正确解析的问题
-* 修正了 matrix 转化为简易函数时没有对简易函数再次优化的问题
-* 修正了 matrix 优化时遇到 -0 没有正确转为 0 的问题
-* 现在会更严格地解析 path，遇到有问题的格式会截断 d 属性，行为和浏览器保持一致
-* 现在 path 中椭圆和有旋转角度的 a 指令会正确合并
-* 现在 path 中同方向的 l 指令会正确合并，并修复了反方向 h 和 v 指令会被合并的错误
-* 修复了 rm-attribute 规则中保留 aria 和保留 eventHandler 两个选项无效的问题
-* rm-attribute 现在会验证所有样式类属性的值是否匹配 css 全局关键字 initial、inherit、unset
-* rm-attribute 现在会分析样式继承链，虽然当前样式的值是默认值，但如果父元素上存在同名样式，则不会对当前样式进行移除
-* rm-attribute 在判断一个属性的值是否是默认值时，除了全字匹配，还会尝试解析数字或颜色类型进行深度对比
-* 修复了 rm-hidden 规则没有深度解析样式，可能导致错误删除或未删除的问题
-* rm-hidden 规则现在不会直接移除无填充无描边的图形元素，还会判断自身或祖先元素是否存在 id，只有不存在 id 的才会被移除
-* rm-irregular-nesting 现在父元素命中了忽略规则后，将不再处理子元素
-* 修复了部分 numberlist 属性没有按照 numberlist 解析，导致一些解析错误的问题
-* rm-viewbox 规则现在会验证 viewBox 属性解析后长度是否为 4，且 width 和 height 不能为负，此外会正确验证单位，只有单位为 px 的属性才有可能触发 rm-viewbox
-* shorten-style-tag 规则现在会移除 comment 和空的 keyframes、 mediaquery、font-face 等 css 节点
-* 修复了解析 CSS 选择器时遇到属性、class、id、伪类选择器组合时会错误地只解析到组合最后一个 case 的问题
-* 修复了根据选择器获取元素中，兄弟选择器会丢失部分匹配项的问题
+* Fixed svg-slimming.d.ts to correspond to xml-parser.d.ts
+* Fixed the problem that when passing config merge, the array type is not verified, which may cause an unexpected error in the passed in object or function
+* Now all places that rely on the css module for parsing have added try ... catch, in order to deal with the problem that the css module reports an error that affects the optimization result due to illegal strings
+* Instead of using toFixed to process values, use Math.round+Math.abs instead to solve the problem of 1.15.toFixed (1) = 1.1
+* Improved Douglas Puke algorithm, increase judgment of boundary conditions
+* Improved hexadecimal color parsing, added 1% to 100% lookup table, and fixed #00000080 cannot be correctly parsed as rgba(0,0,0,0.5)
+* Fixed the bug that the regular expression is not reset when parsing rgb | hsl | rgba | hsla colors continuously
+* Fixed the problem of inconsistent color parsing logic and W3C rules. Now rgb and hsl will handle the alpha value, rgba and hsla will correctly handle the case where there is no alpha value, hsl will handle the case where the value of hue is in units
+* Adjusted the shorten-color parameter that limits the number of alpha values.
+* Fixed a bug in regular expression of attribute selector
+* combine-script will now move the combined script tag to the end of the svg element and remove the trailing semicolon
+* Fixed the wrong calculation method of directly adding angles when the skewX and skewY functions are merged, and changed to the real matrix multiplication operation
+* Corrected the parsing rules of matrix. Now when encountering the wrong matrix format, it will jump out directly without continuing parsing. Will now match the entire matrix string with the whole word, avoiding the problem that the string is still parsed incorrectly
+* Fixed the problem that the simple function is not optimized again when the matrix is ​​converted into a simple function
+* Fixed an issue where -0 was not correctly converted to 0 during matrix optimization
+* Path will now be parsed more strictly, the d attribute will be truncated when encountering a problematic format, and the behavior is consistent with the browser
+* Ellipse and a command with rotation angle in path will now merge correctly
+* L instructions in the same direction in path will now be merged correctly, and the h and v instructions in the opposite direction will be merged
+* Fixed the issue that the reserved aria and reserved eventHandler options in the rm-attribute rule are invalid
+* rm-attribute will now verify that the values ​​of all style class attributes match the css global keywords initial, inherit, unset
+* rm-attribute now analyzes the style inheritance chain. Although the value of the current style is the default value, if a style with the same name exists on the parent element, the current style will not be removed.
+* rm-attribute When judging whether the value of an attribute is the default value, in addition to whole word matching, it will also try to parse the number or color type for deep comparison
+* Fixed the issue that rm-hidden rules do not have deep parsing style, which may cause deletion or non-deletion
+* The rm-hidden rule will not directly remove graphic elements without padding and strokes, and will also determine whether there is an id for itself or an ancestor element. Only those that do not exist will be removed
+* rm-irregular-nesting will now no longer process child elements after the parent element hits the ignore rule
+* Fixed the issue that some numberlist attributes were not parsed according to numberlist, which caused some parse errors
+* The rm-viewbox rule now verifies that the length of the viewBox property after parsing is 4 and the width and height cannot be negative. In addition, it will correctly verify the unit. Only properties with a unit of px may trigger rm-viewbox
+* The shorten-style-tag rule now removes comment and empty keyframes, mediaquery, font-face, and other css nodes
+* Fixed the problem that when parsing CSS selectors, when encountering a combination of attributes, class, id, and pseudo-class selectors, only the last case of the composition would be erroneously parsed
+* Fixed an issue where sibling selectors would lose some matches in getting elements based on selectors
 
 ## 2019.03.29 v1.3.4
 
 ### svg-slimming
 
-* 改进了 rm-attribute 规则中对动画属性引用的判断逻辑，修复了意外删除 feColorMatrix 的 values 属性的 bug
+* Improved the judgment logic of the animation attribute reference in the rm-attribute rule, and fixed the bug of accidentally deleting the value attribute of feColorMatrix
 
 ## 2019.03.14 v1.3.3
 
-### 综合
+### Comprehensive
 
-* 采用了更严格的 tslint 规范，并统一了代码格式
+* Adopted stricter tslint specification and unified code format
 
 ### svg-slimming
 
-* 进一步改进了 shorten-style-tag 的优化结果，现在会验证每一条 css 规则的有效性，去除无效的 css 规则
+* The optimization result of shorten-style-tag has been further improved. Now the validity of each css rule will be verified, and invalid css rules will be removed.
 
-例如：
-
+E.g:
+```xml
 	<svg><style>#redText{fill:yellow;marker-end:none}</style><text id="redText">123</text></svg>
+```
 
-现在会优化为：
-
+Now optimized to:
+```xml
 	<svg><style>#redText{fill:yellow}</style><text id="redText">123</text></svg>
+```
 
 ## 2019.03.13 v1.3.2
 
 ### svg-slimming
 
-* 解决了 style/check-apply 命中穿透情况的一个 badcase
+* Solved a badcase of style / check-apply hit penetration
 
-例如：
-
+E.g:
+```xml
 	<svg><g id="a" fill="red"><rect fill="white"/><g fill="blue"><rect/></g></g></svg>
+```
 
-旧的优化结果为：
-
+The old optimization results were:
+```xml
 	<svg><g id="a" fill="red"><rect fill="white"/><rect fill="blue"/></g></svg>
+```
 
-现在会优化为：
-
+Now optimized to:
+```xml
 	<svg><g id="a"><rect fill="white"/><rect fill="blue"/></g></svg>
+```
 
 ## 2019.03.12 v1.3.1
 
-### 综合
+### Comprehensive
 
-* 升级 lodash 到 4.17.11 以修复潜在的安全漏洞
-* 将更新日志从 README.md 中拆分出来
+* Upgrade lodash to 4.17.11 to fix potential security holes
+* Split update log from README.md
 
 ### svg-slimming
 
-* 在 shorten-style-tag 规则中也添加了 style/check-apply 的依赖
-* 改进了 style/check-apply 模块，现在会验证样式最终的有效可应用元素，当样式继承链上不存在有效的可应用元素时，会移除该样式
-* 修复了 style/check-apply 的一个误判 bug
+* Added style/check-apply dependency to shorten-style-tag rules
+* The style/check-apply module has been improved, and will now validate the final valid applicable elements of the style. When no valid applicable elements exist on the style inheritance chain, the style will be removed
+* Fixed a misjudgment bug of style/check-apply
 
 ## 2019.01.11 v1.3.0
 
 ### svg-slimming
 
-* 升级 tslint，采用了更严格的规范
-* 在 tsconfig 中开启 strict 模式
-* 增加了对 [he](https://www.npmjs.com/package/he) 的依赖，修复解析 style 属性时遇到 HTML entities 导致解析失败的 bug
-* 调整了 id 属性的验证规则，修复了因 id 验证导致不正确移除 id 属性的 bug
-* 在颜色合法性验证中添加了 rebeccapurple 关键字的支持
-* 调整了 collapse-g 规则，如果父元素具有 style 属性，则不可以合并，否则可能导致错误的样式覆盖
-* 调整了 combine-path 规则，现在不会合并 fill 或 stroke 的透明度小于 1 的情况
-* 为 combine-path 增加 2 个配置参数：1、是否合并 stroke 属性为 none 的路径；2、是否无视透明度进行合并
+* Upgraded tslint with more stringent specifications
+* Enable strict mode in tsconfig
+* Added reliance on [he](https://www.npmjs.com/package/he), fixed a bug that caused HTML entities to fail when parsing style attributes
+* Adjusted the id attribute validation rules, fixed a bug that caused the id attribute to be removed incorrectly due to id validation
+* Added support for rebeccapurple keyword in color legitimacy verification
+* Adjusted the collapse-g rule, if the parent element has a style attribute, it cannot be merged, otherwise it may lead to the wrong style overlay
+* The combine-path rule has been adjusted so that cases where fill or stroke have less than 1 transparency
+* Added 2 configuration parameters for combine-path: 1. Whether to merge paths with stroke attribute of none; 2. Whether to merge regardless of transparency
 
 ## 2019.01.03 v1.2.14
 
 ### svg-slimming
 
-* 现在 compute-path 规则会把路径末尾的移动指令(m M)移除
-* 修复了解析 css 伪类伪元素失败的 bug
-* 为 shorten-style-tag 规则增加了伪类和伪元素的验证，按 [SVG 规范](https://www.w3.org/TR/SVG2/styling.html#RequiredCSSFeatures)，只验证 CSS 2.1 规范的伪类和部分伪元素
+* The compute-path rule now removes the move instruction (m M) at the end of the path
+* Fixed a bug that failed to resolve css pseudo-class pseudo-elements
+* Added validation of pseudo-classes and pseudo-elements for the short-style-tag rule. According to [SVG Specification](https://www.w3.org/TR/SVG2/styling.html#RequiredCSSFeatures), only CSS 2.1 specifications are verified Pseudo-classes and partial pseudo-elements
 
 ## 2019.01.02 v1.2.13
 
 ### svg-slimming
 
-* 修复了路径合并可能导致路径渲染移位的 bug
-* 修复了多个连续路径不能正确合并为一个的 bug
+* Fixed a bug where path merge could cause path rendering to shift
+* Fixed a bug where multiple consecutive paths could not be merged into one correctly
 
 ## 2018.12.29 v1.2.10 ~ v1.2.12
 
-### 综合
+### Comprehensive
 
-* 将 .d.ts 声明文件放置到 package.json 中
-* 更新 typescript 版本到 3.2.2
-* tsconfig.json 启用更严格的选项
-* 放弃 uglifyjs-webpack-plugin，改用 terser-webpack-plugin
+* Place the .d.ts declaration file in package.json
+* Update typescript to 3.2.2
+* tsconfig.json enables stricter options
+* Drop uglifyjs-webpack-plugin and use terser-webpack-plugin instead
 
 ### svg-slimming
 
-* 调整了部分规则执行的顺序
-* 修复了 matrix 解析已压缩过的代码时可能丢失参数的 bug
-* 增加了解析 css 样式树的逻辑
-* 路径合并规则调整：1、所有属性相同，包括样式树；2、相邻；3、样式树上的 fill 或 stroke 为 none
+* Adjusted the order of some rules
+* Fixed a bug where matrix may lose parameters when parsing compressed code
+* Added logic to parse css style tree
+* Path merge rule adjustment: 1. All attributes are the same, including the style tree; 2. Adjacent; 3. Fill or stroke on the style tree is none
 
 ## 2018.12.23 v1.2.9
 
-### 综合
+### Comprehensive
 
-* .d.ts 声明文件中，修改 config 参数为可选
+* In the .d.ts declaration file, modifying the config parameter is optional
 
 ### svg-slimming
 
-* 修改了 config 合并的逻辑，由浅拷贝改为逐位对比
-* 将 d 属性的数值位数优化，从 shorten-decimal-digit 规则中去除
-* 为 compute-path 规则增加两个参数，用于优化 d 属性的数值位数
-* 修复了 shorten-class 中不允许重复使用 className 的 bug
-* 修复了属性选择器解析的 bug
-* 修改了路径合并的规则，现在（暂时）只允许没有 fill 没有 class 没有 id 的路径进行合并
-* 修复了路径和矩阵解析时因为属性换行导致优化结果不符合预期的 bug
+* Modified the logic of config merge from shallow copy to bitwise comparison
+* Optimize the number of digits of the d attribute and remove it from the shorten-decimal-digit rule
+* Added two parameters to the compute-path rule to optimize the number of digits in the d attribute
+* Fixed a bug where className was not allowed to be reused in shorten-class
+* Fixed bug with attribute selector parsing
+* Modified the rules of path merging, now (temporarily) only merging paths without fill, class and id are allowed
+* Fixed the bug that the optimization results did not meet the expectations due to attribute line wrapping during path and matrix parsing
 
 ## 2018.12.21 v1.2.8
 
-### 综合
+### Comprehensive
 
-* 添加了 .d.ts 声明文件
+* Added .d.ts declaration file
 
 ## 2018.11.1 v1.2.7
 
 ### svg-slimming
 
-* 修复了对 matrix 执行简单化时，遇到旋转和平移并存的情况只还原了旋转的 bug
-* 修复了对样式继承链深度分析时，没有考虑 node 自身具有 xlink:href 属性的 bug
+* Fixed a bug where rotation and translation coexist when only simplifying rotation when performing matrix simplification
+* Fixed the bug that node has xlink: href attribute when deep analysis of style inheritance chain
 
 ## 2018.10.11 v1.2.6
 
 ### svg-slimming
 
-* 修复了 syntax.ts 中一个正则表达式字符集溢出的 bug
-* 优化 shape-to-path 规则，现在当 rect 转 path 的时候，会从 hvh 和 vhv 中选择较小的一种情况
-* 优化了 combine-transform 的规则，增加了 matrix 反向转为简易函数的逻辑
+* Fixed a bug with regular expression character set overflow in syntax.ts
+* Optimize the shape-to-path rule. Now when rect is converted to path, the smaller one is selected from hvh and vhv.
+* Optimized the combine-transform rule, and added the logic to reverse the matrix into a simple function
 
 ## 2018.09.19 v1.2.5
 
 ### svg-slimming
 
-* 完善了全部属性的合法值验证规则
-* 优化 compute-path 规则，现在所有路径函数都支持更多位的参数，以及不合法参数数量的剔除规则
-* 为除了 path 之外部分 commaWsp 分隔数字的情况添加了 1 -1 转 1-1，0.5 0.5 转 .5.5 的逻辑
-* rm-attribute 规则配置参数1的逻辑改为是否移除与默认值相同的属性
+* Improved valid value validation rules for all attributes
+* Optimize compute-path rules. All path functions now support more bit parameters and elimination rules for the number of illegal parameters.
+* Added logic of 1 -1 to 1-1, 0.5 0.5 to .5.5 for cases where commaWsp separated numbers except path
+* The logic of rm-attribute rule configuration parameter 1 is changed to remove the same attribute as the default value
 
 ## 2018.09.07 v1.2.4
 
 ### svg-slimming
 
-* 添加部分属性的合法值验证规则
-* 修复了在判断动画属性时，没有考虑 values 属性的问题
-* 修复了对枚举类属性合法值验证错误判断的 bug
-* 修复了对 path 元素的 d 属性解析时没有考虑 9+9 或者 .5.5 的情况的bug，同时增加了 0.5 0.5 可以压缩为 .5.5 的逻辑
-* 增加了对数字优化时，整数的尾数含有超过 3 位 0 时转科学计数法的逻辑
-* 为 combine-transform 规则增加了相邻的同类 transform 函数合并的逻辑，以保证获得更好的优化结果
-* 现在 combine-transform 规则支持第四个参数，用于定义角度类数据的精度
-* 现在 combine-transform 规则会对原始字符串进行数值精度优化，以保证获得更好的优化结果
+* Add valid value validation rules for some attributes
+* Fixed the issue that the values property was not considered when judging the animation properties
+* Fixed a bug that caused incorrect judgment of valid values of enumerated class attributes
+* Fixed the bug that did not consider 9 + 9 or .5.5 when parsing the d attribute of the path element, and added the logic that 0.5 0.5 can be compressed to .5.5
+* Added logic for converting the mantissa of an integer to more than 3 digits when the number is optimized
+* Added the logic of combining adjacent transform functions to the combine-transform rule to ensure better optimization results
+* The combine-transform rule now supports a fourth parameter that defines the accuracy of angle-like data
+* The combine-transform rule now performs numerical precision optimization on the original string to ensure better optimization results
 
 ## 2018.08.24 v1.2.3
 
-### 综合
+### Comprehensive
 
-* 修正了 README.md 的一些格式问题
-* 补全 typescript 类型的定义，保证 no-any 和 no-unsafe-any 规则通过
+* Fixed some formatting issues of README.md
+* Complete the definition of typescript to ensure that no-any and no-unsafe-any rules pass
 
 ### xml-parser
 
-* 完善了一些 xml 结构错误，并书写相应的测试用例
-* 错误提示的行号判断，由 \\n 改为 \\n \\r \\r\\n 的任意一种
+* Improved some xml structure errors and wrote corresponding test cases
+* The line number of the error message is changed from \\n to \\n \\r \\r \\n
 
 ### svg-slimming
 
-* 数字正则表达式添加 i 修饰符，避免科学计数法 e 大写的情况
-* transform 类的属性，不再对其应用 shorten-decimal-digits 规则（因其会在 combine-transform 规则中进行优化）
-* 修复了 css 属性选择器正则表达式的一个 bug
-* fillin 工具兼容了输入字符位数大于规定位数的情况
-* rm-xmlns 规则现在支持了节点的命名空间
-* combine-path 规则，添加了只有相邻的 path 节点才能合并的限制
-* 为 svg-slimming 包添加了属性指向 xmlParser 和 NodeType，可以通过以下方式调用
-
+* The number regular expression adds the i modifier to avoid the case of scientific notation e capital
+* Property of the transform class, no longer applying the shorten-decimal-digits rule (because it will be optimized in the combine-transform rule)
+* Fixed a bug with css attribute selector regular expressions
+* The fillin tool is compatible with cases where the number of characters entered is greater than the specified number of characters
+* rm-xmlns rules now support node namespaces
+* The combine-path rule adds the restriction that only adjacent path nodes can be combined
+* Added attributes to svg-slimming package to point to xmlParser and NodeType, which can be called by
+```javascript
 	const svgSlimming = require('svg-slimming');
 	svgSlimming.xmlParser('svg string').then(result => { console.log(result); });
 	console.log(svgSlimming.NodeType);
+```
 
 ## 2018.08.15 v1.2.2
 
-### 综合
+### Comprehensive
 
-* 增加了 svg-slimming.min.js 和 xml-parser.min.js
-* 默认文件指向 svg-slimming.min.js
-* 发布到 github ，添加测试用例
-* 修复了全局正则表达式 exec 后没有重置位置，导致连续多次解析时结果不正确的问题
+* The default file points to svg-slimming.min.js
+* Post to github and add test cases
+* Fixed the problem that the position is not reset after the global regular expression exec, which results in incorrect results during multiple consecutive parsing
 
 ### xml-parser
 
-* 修复了解析 OtherDecl 类型正则表达式的错误
+* Fixed a bug in parsing otherDecl regular expressions
 
 ### svg-slimming
 
-* compute-path 输出结果中数值的分隔符由空格“ ”改为逗号“,”
-* rm-attribute 规则，当移除了不可实现动画的动画属性时，同时移除 attributeName 属性
-* rm-hidden 规则，添加了部分 shape 元素没有指定属性的判断
+* The separator of numerical values in compute-path output changed from a space " " to a comma ","
+* rm-attribute rule, when removing animated attributes that are not achievable, remove the attributeName attribute
+* rm-hidden rule, adding the judgment that some shape elements have no specified attributes
 
 ## 2018.08.10 v1.2.1
 
 ### svg-slimming
 
-* 进一步完善 shorten-style-tag 的深度优化规则
-* 考虑到浏览器兼容性和属性使用频率，暂时将 transform 属性设置为不可转化为 style
-* 为 rm-irregular-tag 和 rm-irregular-nesting 规则添加了配置项，可以配置忽略该规则的标签
+* Further refine the deep-optimization rules of shorten-style-tag
+* Considering browser compatibility and frequency of property usage, temporarily set the transform property to non-convertible to style
+* Added configuration items for rm-irregular-tag and rm-irregular-nesting rules, you can configure tags to ignore this rule
 
 ## 2018.08.09 v1.2.0
 
 ### svg-slimming
 
-* 修复了 shorten-class 的一个正则表达式 bug
-* 实现了 shorten-style-tag 的深度优化规则
-* 完善了标签和属性对应关系和 rm-attribute 规则
-* 同步最新的 W3C 规范 (https://www.w3.org/TR/2018/CR-SVG2-20180807/)
+* Fixed a regular expression bug in shorten-class
+* Implemented deep-style-tag optimization rules
+* Improved label and attribute correspondence and rm-attribute rules
+* Synchronized with the latest [W3C specifications](https://www.w3.org/TR/2018/CR-SVG2-20180807/)
 
 ## 2018.08.06 v1.1.9
 
-### 综合
+### Comprehensive
 
-* 增加了 svg-slimming.min.js 和 xml-parser.min.js
+* Added svg-slimming.min.js and xml-parser.min.js
 
 ### svg-slimming
 
-* 修复了 shorten-color 解析 rgb 格式颜色不正确的 bug
-* 在 readme.md 中为部分规则添加了优化示意
-* 修复了 UglifyJSPlugin 导致 shape-to-path 失效的 bug
-* 调整了部分规则的执行顺序，以获得更好的优化效果
+* Fixed incorrect color of parsing rgb format in shorten-color
+* Added optimization hints for some rules in readme.md
+* Fixed UglifyJSPlugin causing shape-to-path to fail
+* Adjusted the execution order of some rules to get better optimization results
 
 ## 2018.08.03 v1.1.8
 
 ### svg-slimming
 
-* 由于 shape-to-path 规则失效，暂时关闭 UglifyJSPlugin
+* UglifyJSPlugin is temporarily closed due to the invalid shape-to-path rule
 
 ## 2018.08.03 v1.1.7
 
 ### svg-slimming
 
-* 使用 rm-unnecessary 规则，替换原有的 rm-desc、rm-discard、rm-foreign、rm-metadata、rm-title、rm-script、rm-style、rm-unknown 等规则，并添加了可移除 html embed 元素的规则
-* 添加了 css 样式在继承链上是否存在可应用对象的判断，兼容 xlink:href 引用
+* Use rm-unnecessary rules to replace the original rm-desc, rm-discard, rm-foreign, rm-metadata, rm-title, rm-script, rm-style, rm-unknown rules Rule except html embed element
+* Added css style to determine whether there are applicable objects on the inheritance chain, compatible with xlink:href reference
 
 ## 2018.08.02 v1.1.6
 
-### 综合
+### Comprehensive
 
-* 启用 UglifyJSPlugin 压缩代码
-* 把 NodeType 枚举和INode 和 IAttr 接口提升到全局配置，由 svg-slimming 和 xml-parser 两个项目共同依赖
-* 丰富了 INode 接口的功能
-	* attributes 和 childNodes 改为只读
-	* 增加 parentNode 指针，指向当前节点的父节点
-	* 增加 cloneNode 方法，返回当前节点的复制节点，其中 attributes 会深复制， parentNode 和 childNodes 都不会复制
-	* 增加 appendChild | insertBefore | removeChild | replaceChild 方法，用于子节点管理
-	* 增加 hasAttribute | getAttribute | setAttribute | removeAttribute 方法，用于属性管理
+* Enable UglifyJSPlugin compression code
+* The NodeType enumeration and INode and IAttr interfaces are promoted to a global configuration, which is jointly dependent on the two projects svg-slimming and xml-parser
+* Enriched INode interface functions
+	* attributes and childNodes are read-only
+	* Increase the parentNode pointer to point to the parent node of the current node
+	* Added cloneNode method to return the replicated node of the current node, where attributes will be deeply copied, and neither parentNode nor childNodes will be copied
+	* Added appendChild | insertBefore | removeChild | replaceChild method for child node management
+	* Added hasAttribute | getAttribute | setAttribute | removeAttribute methods for attribute management
 
 ### xml-parser
 
-* 解析出错时，会提示错误的行号和位置
-* 节点由接口改为类，并实现 INode 定义的方法
+* When a parsing error occurs, the wrong line number and position will be prompted
+* Node changed from interface to class and implements methods defined by INode
 
 ### svg-slimming
 
-* 调整代码，以适应新的 INode 接口
-* 增加和完善一些 ts 接口，减少 any 类型
-* 为 matrix 混合添加了 skewX 和 skewY 的支持，并添加了遇到不正确的变形函数会终止混合的逻辑
-* 实现了 rm-irregular-nesting 规则
-* 新增 rm-unknown 和 rm-foreign 规则
+* Adapted the code to the new INode interface
+* Add and improve some ts interfaces and reduce any type
+* Added support for skewX and skewY for matrix blending, and added logic to terminate blending if incorrect deformation functions are encountered
+* Implemented rm-irregular-nesting rules
+* Added rm-unknown and rm-foreign rules
