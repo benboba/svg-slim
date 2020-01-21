@@ -15,31 +15,30 @@ interface IIDCache {
 	[propName: string]: IIDCacheITem | undefined;
 }
 
-const checkSub = (node: ITagNode, IDList: IIDCache) => {
+const checkSub = (node: ITagNode, IDList: IIDCache, isDefs = false) => {
 	let hasId = false;
-	for (let i = node.attributes.length; i--;) {
-		const attr = node.attributes[i];
-		if (attr.fullname === 'id') {
-			if (IDList[attr.value]) {
+	if (!isDefs) {
+		const id = node.getAttribute('id');
+		if (id) {
+			if (IDList[id]) {
 				hasId = true;
-				(IDList[attr.value] as IIDCacheITem).tag = node;
-			} else {
-				node.removeAttribute(attr.fullname);
+				(IDList[id] as IIDCacheITem).tag = node;
 			}
-			break;
 		}
 	}
 	if (!hasId) {
 		for (let ci = node.childNodes.length; ci--;) {
 			const childNode = node.childNodes[ci];
 			if (isTag(childNode)) {
-				checkSub(childNode as ITagNode, IDList);
+				checkSub(childNode, IDList);
 			} else {
 				rmNode(childNode);
 			}
 		}
 		if (!node.childNodes.length) {
 			rmNode(node);
+		} else if (!isDefs) {
+			(node.parentNode as INode).replaceChild(node, ...node.childNodes);
 		}
 	}
 };
@@ -51,12 +50,22 @@ export const shortenDefs = async (rule: TFinalConfigItem, dom: INode): Promise<n
 		// 首先合并 defs 标签
 		traversalNode<ITagNode>(propEq('nodeName', 'defs'), node => {
 			if (firstDefs) {
-				node.childNodes.forEach(childNode => {
-					(firstDefs as INode).appendChild(childNode);
-				});
+				for (const childNode of node.childNodes) {
+					// 合并时只把标签类元素挪过去
+					if (isTag(childNode)) {
+						firstDefs.appendChild(childNode);
+					}
+				}
 				rmNode(node);
 			} else {
 				firstDefs = node;
+				for (let ci = node.childNodes.length; ci--;) {
+					const childNode = node.childNodes[ci];
+					// 只保留标签类的子元素
+					if (!isTag(childNode)) {
+						rmNode(childNode);
+					}
+				}
 			}
 		}, dom);
 
@@ -89,7 +98,8 @@ export const shortenDefs = async (rule: TFinalConfigItem, dom: INode): Promise<n
 				});
 			}, dom);
 
-			checkSub(firstDefs, IDList);
+			checkSub(firstDefs, IDList, true);
+
 			// TODO 把 defs 直接应用
 			(Object.values(IDList) as IIDCacheITem[]).forEach(item => {
 				if (item.tag) {

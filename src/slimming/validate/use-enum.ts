@@ -1,1 +1,1 @@
-export const useEnum = (e: {}, val: string): boolean => isNaN(parseInt(val, 10)) && val.trim() in e;
+export const useEnum = (e: string, val: string): boolean => new RegExp(`^${e}$`).test(val);

@@ -4,10 +4,10 @@ import { exec } from '../color/exec';
 import { rgb2hsl } from '../color/rgb2hsl';
 import { FF, Hundred, OPACITY_DIGIT } from '../const';
 import { regularAttr } from '../const/regular-attr';
+import { shortenAlpha } from '../math/shorten-alpha';
 import { execStyle } from '../style/exec';
 import { stringifyStyle } from '../style/stringify';
 import { fillIn } from '../utils/fillin';
-import { shortenPercent } from '../utils/shorten-percent';
 import { toHex } from '../utils/tohex';
 import { traversalObj } from '../utils/traversal-obj';
 import { isTag } from '../xml/is-tag';
@@ -169,7 +169,7 @@ const formatColor = (rgba: boolean, str: string, digit: number): string => {
 					s = 'transparent';
 				} else {
 					const hslColor = rgb2hsl(color);
-					const alpha = shortenPercent(digit, color.a);
+					const alpha = shortenAlpha(digit, color.a);
 					const rgb = `rgb(${color.r},${color.g},${color.b},${alpha})`;
 					const hsl = `hsl(${hslColor.h},${hslColor.s}%,${hslColor.l}%,${alpha})`;
 					s = hsl.length < rgb.length ? hsl : rgb;

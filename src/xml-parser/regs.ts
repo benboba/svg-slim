@@ -23,12 +23,12 @@ const AttrVal = `"(?:[^<&"]|${Reference})*"|'(?:[^<&']|${Reference})*'`;
 // tslint:disable-next-line
 const DeclContent = `(?:[^<>'"]+|[^<>']*'[^']*'[^<>']*|[^<>"]*"[^"]*"[^<>"]*|[^<>'"]*<[^<>]*>[^<>'"]*)+?`;
 
-export const REG_XML_DECL = new RegExp(`^<\\?xml(${VersionInfo}(?:${EncodingDecl})?(?:${SDDecl})?\\s*)\\?>`);
-export const REG_CDATA_SECT = /^<!\[CDATA\[([\d\D]*?)\]\]>/;
-export const REG_OTHER_SECT = /^<!\[\s?([A-Z]+)\s?\[([\d\D]*?)\]\]>/;
-export const REG_DOCTYPE = new RegExp(`^<!DOCTYPE\\s+(${DeclContent})>`);
-export const REG_OTHER_DECL = new RegExp(`^<!([A-Z]+)\\s+(${DeclContent})>`);
-export const REG_COMMENTS = /^<!--([\d\D]*?)-->/;
-export const REG_START_TAG = new RegExp(`^<(${Name})((?:\\s+${Name}${Eq}(?:${AttrVal}))*)\\s*(\\/?)>`, supportUnicode ? 'u' : '');
-export const REG_END_TAG = new RegExp(`^</(${Name})\\s*>`, supportUnicode ? 'u' : '');
-export const REG_ATTR = new RegExp(`(${Name})${Eq}(${AttrVal})`, supportUnicode ? 'gu' : 'g');
+export const REG_XML_DECL = new RegExp(`<\\?xml(${VersionInfo}(?:${EncodingDecl})?(?:${SDDecl})?\\s*)\\?>`, 'g');
+export const REG_CDATA_SECT = /<!\[CDATA\[([\d\D]*?)\]\]>/g;
+export const REG_OTHER_SECT = /<!\[\s?([A-Z]+)\s?\[([\d\D]*?)\]\]>/g;
+export const REG_DOCTYPE = new RegExp(`<!DOCTYPE\\s+(${DeclContent})>`, 'g');
+export const REG_OTHER_DECL = new RegExp(`<!([A-Z]+)\\s+(${DeclContent})>`, 'g');
+export const REG_COMMENTS = /<!--([\d\D]*?)-->/g;
+export const REG_START_TAG = new RegExp(`<(${Name})((?:\\s+${Name}${Eq}(?:${AttrVal}))*)\\s*(\\/?)>`, supportUnicode ? 'gu' : 'g');
+export const REG_END_TAG = new RegExp(`</(${Name})\\s*>`, supportUnicode ? 'gu' : 'g');
+export const REG_ATTR = new RegExp(`(?:^|\\s)(${Name})${Eq}(${AttrVal})`, supportUnicode ? 'gu' : 'g');

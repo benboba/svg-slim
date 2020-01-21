@@ -8,10 +8,9 @@ export const collapseTextwrap = async (rule: TFinalConfigItem, dom: INode): Prom
 			const tagDefine = regularTag[node.nodeName];
 			// 规则执行的前提：文本容器嵌套关系
 			if (tagDefine.containTextNode && node.parentNode && regularTag[node.parentNode.nodeName].containTextNode) {
-				const attributes = node.attributes;
-				for (let i = attributes.length; i--;) {
+				for (let i = node.attributes.length; i--;) {
 					// 只要有一个非空属性，就不执行塌陷
-					if (attributes[i].value.trim()) {
+					if (node.attributes[i].value.trim()) {
 						return;
 					}
 				}

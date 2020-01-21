@@ -1,5 +1,5 @@
 import { CIRC, FF, HALF, Hundred } from '../const';
-import { validNum } from './valid';
+import { validNum } from '../math/valid';
 
 export const rgb2hsl = (rgb: IRGBColor) => {
 	const r = rgb.r / FF;

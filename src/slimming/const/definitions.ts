@@ -1,8 +1,9 @@
 // elements group
 export const animationElements = ['animate', 'animateMotion', 'animateTransform', 'discard', 'set'];
+export const animationAttrElements = ['animate', 'animateTransform', 'set'];
 export const descriptiveElements = ['desc', 'metadata', 'title'];
 export const gradientElements = ['linearGradient', 'radialGradient'];
-export const filterPrimitiveElements = ['feBlend', 'feFlood', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDropShadow', 'feGaussianBlur', 'feImage', 'feMerge', 'feMorphology', 'feOffset', 'feSpecularLighting', 'feTile', 'feTurbulence'];
+export const filterPrimitiveElements = ['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDropShadow', 'feFlood', 'feGaussianBlur', 'feImage', 'feMerge', 'feMorphology', 'feOffset', 'feSpecularLighting', 'feTile', 'feTurbulence'];
 export const lightSourceElements = ['feDistantLight', 'fePointLight', 'feSpotLight'];
 export const paintServerElements = ['solidcolor', 'linearGradient', 'radialGradient', 'meshgradient', 'pattern', 'hatch'];
 export const shapeElements = ['circle', 'ellipse', 'line', 'path', 'polygon', 'polyline', 'rect'];
@@ -12,8 +13,7 @@ export const textContentElements = ['text'].concat(textContentChildElements);
 export const graphicsElements = ['audio', 'canvas', 'circle', 'ellipse', 'foreignObject', 'iframe', 'image', 'line', 'mesh', 'path', 'polygon', 'polyline', 'rect', 'text', 'textPath', 'tspan', 'video'];
 export const containerElements = ['a', 'clipPath', 'defs', 'g', 'marker', 'mask', 'pattern', 'svg', 'switch', 'symbol', 'unknown'];
 export const newViewportsElements = ['svg', 'symbol', 'foreignObject', 'video', 'audio', 'canvas', 'image', 'iframe'];
-export const unnecessaryElements = ['desc', 'discard', 'foreignObject', 'video', 'audio', 'iframe', 'canvas', 'metadata', 'script', 'style', 'title', 'unknown'];
-export const allElements = animationElements.concat(descriptiveElements, gradientElements, filterPrimitiveElements, lightSourceElements, paintServerElements, shapeElements, structuralElements, textContentChildElements, textContentElements, graphicsElements, containerElements, newViewportsElements, unnecessaryElements);
+export const unnecessaryElements = ['desc', 'discard', 'foreignObject', 'video', 'audio', 'iframe', 'canvas', 'metadata', 'script', 'style', 'title', 'unknown', 'image'];
 
 // attributes group
 // https://www.w3.org/TR/SVG2/interact.html#EventAttributes
@@ -31,20 +31,6 @@ export const animationTimingAttributes = ['begin', 'dur', 'end', 'min', 'max', '
 export const animationValueAttributes = ['calcMode', 'values', 'keyTimes', 'keySplines', 'from', 'to', 'by'];
 export const rectAttributes = ['x', 'y', 'width', 'height'];
 export const transferFunctionElementAttributes = ['type', 'tableValues', 'slope', 'intercept', 'amplitude', 'exponent', 'offset'];
-
-// 只在 css 中生效的属性
-export const onlyInCSS = ['transform', 'transform-box', 'mix-blend-mode', 'animation-name', 'animation-duration', 'animation-delay', 'animation-iteration-count', 'animation-direction', 'animation-timing-function', 'animation-fill-mode', 'animation', 'text-decoration-line', 'text-decoration-style', 'text-decoration-color', 'font-feature-settings', 'font-kerning'];
-
-// https://www.w3.org/TR/SVG/text.html#TextLayoutContentArea
-// todo: inline-size shape-inside shape-inside shape-subtract shape-padding shape-margin shape-image-threshold
-// todo: 对于 text 和 tspan 的 x y dx dy rotate 需要支持 numberlist
-
-// 特殊：不建议转 style 的 attribute
-export const onlyInAttr = {
-	'svg': ['width', 'height'], // 根元素的尺寸属性转 style 的话，在 css 中应用会导致尺寸问题
-	'text': ['x', 'y'], // text 和 tspan 的 x 和 y 不能放到 style 中
-	'tspan': ['x', 'y'],
-};
 
 export const validPseudoClass = ['hover', 'link', 'active', 'visited', 'focus', 'first-child', 'lang', 'not'];
 export const validPseudoElement = ['first-letter', 'first-line'];

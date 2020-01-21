@@ -21,8 +21,9 @@ describe('rules/shorten-decimal-digits', () => {
 		<style>
 		@import('test.css');
 		.a {
-			title: '';
-			opacity: 0.0999;
+			fill-rule: evenodd;
+			fill-opacity: inherit;
+			opacity: 0.09;
 			width: 500000
 		}
 		</style>
@@ -30,13 +31,13 @@ describe('rules/shorten-decimal-digits', () => {
 		<animate to="0.5001" attributeName="opacity"/>
 		<animate to="0.55" attributeName="title"/>
 		<animate to="0.55"/>
-		<rect opacity="1.999" style="x:1.15;y:-0;title:a" />
+		<rect opacity="1.999" style="x:1.15;y:-0;title:a" amplitude="2.0001" />
 		<polygon stroke-width="1.999" style="opacity:0.00099999" points="200000 , 0.1   -1.1 0.5" />
 		</svg>`;
 		const dom = await parse(xml) as ITagNode;
 		await combineStyle(dom);
 		await shortenDecimalDigits([true, { sizeDigit: 1, angelDigit: 3 }], dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal(`<svg><style>@import ('test.css');.a{title:'';opacity:.1;width:5e5}</style><animate to="-.6" attributeName="x"/><animate to=".5" attributeName="opacity"/><animate to="0.55" attributeName="title"/><animate to="0.55"/><rect opacity="1.999" style="x:1.2;y:0;title:a"/><polygon stroke-width="2" style="opacity:.001" points="2e5.1-1.1.5"/></svg>`);
+		createXML(dom).replace(/>\s+</g, '><').should.equal(`<svg><style>@import ('test.css');.a{fill-rule:evenodd;fill-opacity:inherit;opacity:9%;width:5e5}</style><animate to="-.6" attributeName="x"/><animate to=".5" attributeName="opacity"/><animate to="0.55" attributeName="title"/><animate to="0.55"/><rect opacity="1" style="x:1.2;y:0;title:a" amplitude="2"/><polygon stroke-width="2" style="opacity:.1%" points="2e5.1-1.1.5"/></svg>`);
 	});
 
 	it('badcase', async () => {

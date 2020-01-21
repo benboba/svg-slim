@@ -1,5 +1,5 @@
 import { gt, gte } from 'ramda';
-import { shapeElements } from '../const/definitions';
+import { shapeElements, animationAttrElements, animationElements, animationAttributes } from '../const/definitions';
 import { regularTag } from '../const/regular-tag';
 import { IRIFullMatch } from '../const/syntax';
 import { execStyleTree } from '../xml/exec-style-tree';
@@ -77,6 +77,12 @@ const numberMap: INumberMap = {
 	},
 	marker: {
 		attrs: ['markerWidth', 'markerHeight'],
+		allowEmpty: true,
+		allowAuto: true,
+		allowZero: false,
+	},
+	image: {
+		attrs: ['width', 'height'],
 		allowEmpty: true,
 		allowAuto: true,
 		allowZero: false,
@@ -195,6 +201,25 @@ export const rmHidden = async (rule: TFinalConfigItem, dom: INode): Promise<null
 			if (!node.childNodes.length && regularTag[node.nodeName].containTextNode) {
 				rmNode(node);
 				return;
+			}
+
+			// 对于 animate、set、animateTransform 元素，attributeName 是必须的属性
+			if (animationAttrElements.includes(node.nodeName)) {
+				if (!node.getAttribute('attributeName')) {
+					rmNode(node);
+					return;
+				}
+				if (node.nodeName === 'set' && !node.getAttribute('to')) {
+					rmNode(node);
+					return;
+				}
+			}
+
+			if (node.nodeName.indexOf('animate') === 0) {
+				if (!animationAttributes.some(key => node.hasAttribute(key))) {
+					rmNode(node);
+					return;
+				}
 			}
 
 			const styles = node.styles as IStyleObj;

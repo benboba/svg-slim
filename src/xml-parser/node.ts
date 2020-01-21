@@ -17,8 +17,8 @@ export class Node implements INode {
 		this.textContent = option.textContent;
 
 		if (this.nodeType === NodeType.Tag || this.nodeType === NodeType.Document) {
-			this._attributes = [];
-			this._childNodes = [];
+			this.attributes = [];
+			this.childNodes = [];
 		}
 	}
 
@@ -28,15 +28,8 @@ export class Node implements INode {
 	selfClose?: boolean;
 	textContent?: string;
 
-	private _attributes?: IAttr[];
-	get attributes(): ReadonlyArray<IAttr> | null {
-		return this._attributes ? Object.freeze(this._attributes.slice()) : null;
-	}
-
-	private readonly _childNodes?: INode[];
-	get childNodes(): ReadonlyArray<INode> | null {
-		return this._childNodes ? Object.freeze(this._childNodes.slice()) : null;
-	}
+	attributes?: IAttr[];
+	childNodes?: INode[];
 
 	parentNode?: INode;
 
@@ -49,9 +42,9 @@ export class Node implements INode {
 			textContent: this.textContent,
 		});
 
-		if (this._attributes) {
+		if (this.attributes) {
 			// 属性需要深拷贝
-			cloneNode._attributes = this._attributes.map(attr => {
+			cloneNode.attributes = this.attributes.map(attr => {
 				return {
 					name: attr.name,
 					value: attr.value,
@@ -66,62 +59,60 @@ export class Node implements INode {
 
 	// 追加子节点
 	appendChild(childNode: INode): void {
-		if (this._childNodes) {
+		if (this.childNodes) {
 			// 如果子节点原本有父节点，则先从原本的父节点中移除
-			if (childNode.parentNode && childNode.parentNode !== this) {
-				const pindex = (childNode.parentNode.childNodes as INode[]).indexOf(childNode);
-				if (pindex !== -1) {
-					childNode.parentNode.removeChild(childNode);
-				}
+			if (childNode.parentNode) {
+				childNode.parentNode.removeChild(childNode);
 			}
-
-			// 如果已在自己的子节点列表中，则先移除再追加到末尾
-			const index = this._childNodes.indexOf(childNode);
-			if (index !== -1) {
-				this._childNodes.splice(index, 1);
-			}
-
-			this._childNodes.push(childNode);
+			this.childNodes.push(childNode);
 			childNode.parentNode = this;
 		}
 	}
 
 	// 插入到子节点之前
 	insertBefore(childNode: INode, previousTarget: INode): void {
-		if (this._childNodes) {
-			// 首先判断目标节点是否在自己的子节点列表中
-			const pindex = this._childNodes.indexOf(previousTarget);
-			if (pindex !== -1) {
-				// 首先判断子节点是否在自己的子节点列表中，如果在，则先移除
-				const index = this._childNodes.indexOf(childNode);
-				if (index !== -1) {
-					this._childNodes.splice(index, 1);
-				}
-				delete childNode.parentNode;
+		if (this.childNodes) {
+			// 如果子节点原本有父节点，则先从原本的父节点中移除
+			if (childNode.parentNode) {
+				childNode.parentNode.removeChild(childNode);
 			}
+			// 判断目标节点是否在自己的子节点列表中，如果不在，直接插入
+			const pindex = this.childNodes.indexOf(previousTarget);
+			if (pindex !== -1) {
+				this.childNodes.splice(pindex, 0, childNode);
+			} else {
+				this.childNodes.push(childNode);
+			}
+			childNode.parentNode = this;
 		}
 	}
 
 	// 替换子节点
 	replaceChild(childNode: INode, ...children: INode[]): void {
-		if (this._childNodes) {
-			const index = this._childNodes.indexOf(childNode);
+		if (this.childNodes) {
+			const index = this.childNodes.indexOf(childNode);
 			if (index !== -1) {
-				this._childNodes.splice(index, 1, ...children);
-				delete childNode.parentNode;
 				children.forEach(child => {
+					// 先把要插入的子节点从原有父节点移除
+					if (child.parentNode) {
+						child.parentNode.removeChild(child);
+					}
+					// 指定父节点到自身
 					child.parentNode = this;
 				});
+				this.childNodes.splice(index, 1, ...children);
+				// 清理被替换掉的子节点的钩子
+				delete childNode.parentNode;
 			}
 		}
 	}
 
 	// 移除子节点
 	removeChild(childNode: INode): void {
-		if (this._childNodes) {
-			const index = this._childNodes.indexOf(childNode);
+		if (this.childNodes) {
+			const index = this.childNodes.indexOf(childNode);
 			if (index !== -1) {
-				this._childNodes.splice(index, 1);
+				this.childNodes.splice(index, 1);
 				delete childNode.parentNode;
 			}
 		}
@@ -129,8 +120,8 @@ export class Node implements INode {
 
 	// 是否存在属性
 	hasAttribute(name: string, namespace?: string): boolean {
-		if (this._attributes) {
-			for (const attr of this._attributes) {
+		if (this.attributes) {
+			for (const attr of this.attributes) {
 				if ((!namespace && attr.fullname === name) || (attr.name === name && attr.namespace === namespace)) {
 					return true;
 				}
@@ -140,8 +131,8 @@ export class Node implements INode {
 	}
 
 	getAttribute(name: string, namespace?: string): string | null {
-		if (this._attributes) {
-			for (const attr of this._attributes) {
+		if (this.attributes) {
+			for (const attr of this.attributes) {
 				if ((!namespace && attr.fullname === name) || (attr.name === name && attr.namespace === namespace)) {
 					return attr.value;
 				}
@@ -151,8 +142,8 @@ export class Node implements INode {
 	}
 
 	setAttribute(name: string, value: string, namespace?: string): void {
-		if (this._attributes) {
-			for (const attr of this._attributes) {
+		if (this.attributes) {
+			for (const attr of this.attributes) {
 				if ((!namespace && attr.fullname === name) || (attr.name === name && attr.namespace === namespace)) {
 					attr.value = value;
 					return;
@@ -168,16 +159,16 @@ export class Node implements INode {
 				newAttr.fullname = `${namespace}:${name}`;
 				newAttr.namespace = namespace;
 			}
-			this._attributes.push(newAttr);
+			this.attributes.push(newAttr);
 		}
 	}
 
 	removeAttribute(name: string, namespace?: string): void {
-		if (this._attributes) {
-			for (let i = this._attributes.length; i--;) {
-				const attr = this._attributes[i];
+		if (this.attributes) {
+			for (let i = this.attributes.length; i--;) {
+				const attr = this.attributes[i];
 				if ((!namespace && attr.fullname === name) || (attr.name === name && attr.namespace === namespace)) {
-					this._attributes.splice(i, 1);
+					this.attributes.splice(i, 1);
 					break;
 				}
 			}

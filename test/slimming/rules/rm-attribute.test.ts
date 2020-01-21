@@ -25,6 +25,8 @@ describe('rules/rm-attribute', () => {
 		<circle stroke="none" cx="1" cy="0.0"/>
 		<animate to="1"/>
 		<animate to="1" attributeName="title"/>
+		<animate to="x" attributeName="amplitude"/>
+		<animate to="x" from="0" attributeName="amplitude"/>
 		<g fill="#000">
 			<rect fill="black" stroke=""/>
 			<g fill="none">
@@ -35,7 +37,7 @@ describe('rules/rm-attribute', () => {
 		</svg>`;
 		const dom = await parse(xml) as ITagNode;
 		await rmAttribute([true, { rmDefault: true, keepEvent: false, keepAria: false }], dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg width="100" style="width:40"><a/><circle cx="1"/><animate/><animate/><g><rect/><g fill="none"><rect id="rect" fill="rgb(0,0,0,.5)" stroke="hsl(0,0%,0%)"/><use href="#b"/></g></g></svg>');
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg width="100" style="width:40"><a/><circle cx="1"/><animate/><animate/><animate/><animate from="0" attributeName="amplitude"/><g><rect/><g fill="none"><rect id="rect" fill="rgb(0,0,0,.5)" stroke="hsl(0,0%,0%)"/><use href="#b"/></g></g></svg>');
 	});
 
 	it('移除属性 - 反转规则', async () => {

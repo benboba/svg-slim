@@ -10,12 +10,10 @@ interface IAttrObj {
 
 const collapseAttributes = (node1: ITagNode, node2: ITagNode) => {
 	const attrObj: IAttrObj = {};
-	const attributes1 = node1.attributes;
-	const attributes2 = node2.attributes;
-	attributes1.forEach(attr => {
+	node1.attributes.forEach(attr => {
 		attrObj[attr.fullname] = attr;
 	});
-	attributes2.forEach(attr => {
+	node2.attributes.forEach(attr => {
 		if (attrObj.hasOwnProperty(attr.fullname)) {
 			if (transformAttributes.includes(attr.fullname)) {
 				attrObj[attr.fullname].value = `${attr.value} ${attrObj[attr.fullname].value}`;
@@ -33,7 +31,7 @@ const cantCollapse = (node: ITagNode) => node.attributes.filter(attr => cantColl
 const doCollapse = (dom: INode) => {
 	traversalNode<ITagNode>(propEq('nodeName', 'g'), node => {
 		const childNodes = node.childNodes;
-		const childTags = childNodes.filter(isTag) as ITagNode[];
+		const childTags = childNodes.filter(isTag);
 		if (!childTags.length) {
 			rmNode(node);
 		} else if (!cantCollapse(node)) {

@@ -19,9 +19,8 @@ export const combineTransform = async (rule: TFinalConfigItem, dom: INode): Prom
 			angelDigit: number;
 		};
 		traversalNode<ITagNode>(isTag, node => {
-			const attributes = node.attributes;
-			for (let i = attributes.length; i--;) {
-				const attr = attributes[i];
+			for (let i = node.attributes.length; i--;) {
+				const attr = node.attributes[i];
 				if (transformAttributes.includes(attr.name)) {
 					const transform: IMatrixFunc[] = [];
 					execMatrix(attr.value.trim()).forEach(mFunc => {

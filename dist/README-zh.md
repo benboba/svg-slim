@@ -1,6 +1,6 @@
 # 更新日志
 
-[查看更新日志](https://github.com/benboba/svg-slimming/blob/master/UPDATE-zh.md)
+[查看更新日志](https://github.com/benboba/svg-slimming/blob/master/CHANGELOG-zh.md)
 
 # SVG瘦身工具【svg slimming】
 
@@ -459,7 +459,7 @@ use 元素引用了不存在的 id
 ```json
 	{
 		"rm-unnecessary": [true, {
-			"tags": ["desc", "discard", "foreignObject", "video", "audio", "iframe", "canvas", "metadata", "script", "title", "unknown"]
+			"tags": ["desc", "discard", "foreignObject", "video", "audio", "iframe", "canvas", "metadata", "script", "title", "unknown", "image"]
 		}]
 	}
 ```
@@ -469,9 +469,9 @@ use 元素引用了不存在的 id
 	* **由于并没有对 javascript 脚本进行分析处理，如果默认不移除 script 标签，不能保证优化后的代码仍然可以正确执行**
 * 配置参数：
 	* tags
-		* 默认值：["desc", "discard", "foreignObject", "video", "audio", "iframe", "canvas", "metadata", "script", "title", "unknown"]
+		* 默认值：["desc", "discard", "foreignObject", "video", "audio", "iframe", "canvas", "metadata", "script", "title", "unknown", "image"]
 		* 限制为字符串列表
-		* 配置需要移除的标签名称，只能移除以下列表中的标签：["desc", "discard", "foreignObject", "video", "audio", "iframe", "canvas", "metadata", "script", "style", "title", "unknown"]
+		* 配置需要移除的标签名称，只能移除以下列表中的标签：["desc", "discard", "foreignObject", "video", "audio", "iframe", "canvas", "metadata", "script", "style", "title", "unknown", "image"]
 
 ### rm-version
 
@@ -627,7 +627,7 @@ use 元素引用了不存在的 id
 
 优化后将变为：
 ```xml
-	<rect fill="red" width="100" height="100" fill-opacity=".06"/>
+	<rect fill="red" width="100" height="100" fill-opacity="6%"/>
 ```
 
 ### shorten-defs
@@ -736,7 +736,8 @@ use 元素引用了不存在的 id
 ```json
 	{
 		"shorten-style-attr": [true, {
-			"exchange": false
+			"exchange": false,
+			"rmDefault": true
 		}]
 	}
 ```
@@ -749,6 +750,10 @@ use 元素引用了不存在的 id
 		* 默认值：false
 		* 无视 style 标签是否存在，强制执行 style 和属性的互转
 		* **注意：svg 的样式覆盖规则是 style 属性 > style 标签 > 属性，所以强制转换可能导致不正确的覆盖**
+	* rmDefault
+		* 默认值：true
+		* 移除与默认值相同的 property（仅涉及 style 属性）
+		* 某些属性针对不同元素可能有不同的默认值，此规则只验证单一默认值的情况
 
 例如：
 ```xml
@@ -771,7 +776,8 @@ use 元素引用了不存在的 id
 ```json
 	{
 		"shorten-style-tag": [true, {
-			"deepShorten": true
+			"deepShorten": true,
+			"rmDefault": true
 		}]
 	}
 ```
@@ -785,6 +791,10 @@ use 元素引用了不存在的 id
 		* 移除无效的选择器
 		* 合并多个相同的选择器
 		* 合并多个相同的规则
+	* rmDefault
+		* 默认值：true
+		* 移除与默认值相同的 property（仅涉及 style 元素内部）
+		* 某些属性针对不同元素可能有不同的默认值，此规则只验证单一默认值的情况
 
 ## 其它优化工作
 

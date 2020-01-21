@@ -1,95 +1,43 @@
-import { Declaration, KeyFrame, KeyFrames, Media, Node, Rule, StyleRules } from 'css';
-import { has } from 'ramda';
+import { Declaration, Node, Rule, StyleRules } from 'css';
+import { propEq } from 'ramda';
 import { regularAttr } from '../const/regular-attr';
 import { checkApply } from '../style/check-apply';
 import { execSelector } from '../style/exec-selector';
 import { mixWhiteSpace } from '../utils/mix-white-space';
-import { traversalObj } from '../utils/traversal-obj';
-import { legalValue } from '../validate/legal-value';
+import { valueIsEqual } from '../xml/attr-is-equal';
 import { getBySelector } from '../xml/get-by-selector';
-import { onlyInCSS } from '../const/definitions';
+import { traversalObj } from '../utils/traversal-obj';
 
 interface ICSSUnique {
 	[propName: string]: Rule;
 }
 
-const rmCSSNode = (cssNode: Node, parents: Array<Node | Node[]>) => {
-	const plen = parents.length;
-	const plist = parents[plen - 1] as Rule[];
-	plist.splice(plist.indexOf(cssNode), 1);
+const rmCSSNode = (cssNode: Node, plist: Node[]) => {
+	const index = plist.indexOf(cssNode);
+	if (index !== -1) {
+		plist.splice(index, 1);
+	}
 };
 
 export const shortenStyleTag = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0] && dom.stylesheet) {
-		const { deepShorten } = rule[1] as { deepShorten: boolean };
+		const { deepShorten, rmDefault } = rule[1] as { deepShorten: boolean; rmDefault: boolean };
 		const cssRules: StyleRules = dom.stylesheet.stylesheet as StyleRules;
 
 		// 遍历 style 解析对象，取得包含 css 定义的值
-		traversalObj<Node>(has('type'), (cssNode, parents) => {
-			switch (cssNode.type) {
-				case 'rule':
-				case 'keyframe':
-				case 'font-face':
-				case 'page':
-					const cssRule = cssNode as Rule | KeyFrame;
-					if (!cssRule.declarations) {
-						rmCSSNode(cssRule, parents);
-						return;
-					}
-					const declared: IUnique = {};
-					for (let i = cssRule.declarations.length; i--;) {
-						const ruleItem = cssRule.declarations[i] as Declaration;
-						// 排重
-						if (!declared[ruleItem.property as string]) {
-							declared[ruleItem.property as string] = true;
-						} else {
-							cssRule.declarations.splice(i, 1);
-						}
-					}
-					if (!cssRule.declarations.length) {
-						rmCSSNode(cssRule, parents);
-					}
-					break;
-				case 'declaration':
-					const declaration = cssNode as Declaration;
-					// 1、验证属性有效性  2、验证值合法性
-					if (!declaration.property || !declaration.value) {
-						rmCSSNode(cssNode, parents);
-					} else {
-						if (onlyInCSS.includes(declaration.property)) {
-							break;
-						}
-						if (!regularAttr[declaration.property].couldBeStyle || !legalValue(regularAttr[declaration.property], {
-							fullname: declaration.property,
-							name: declaration.property,
-							value: declaration.value,
-						})) {
-							rmCSSNode(cssNode, parents);
-						}
-					}
-					break;
-				case 'keyframes':
-					const keyframes = cssNode as KeyFrames;
-					if (!keyframes.keyframes || !keyframes.keyframes.length) {
-						rmCSSNode(cssNode, parents);
-					}
-					break;
-				case 'media':
-				case 'host':
-				case 'supports':
-				case 'document':
-					const ruleParent = cssNode as Media;
-					if (!ruleParent.rules || !ruleParent.rules.length) {
-						rmCSSNode(cssNode, parents);
-					}
-					break;
-				case 'comment':
-					rmCSSNode(cssNode, parents);
-					break;
-				default:
-					break;
+		traversalObj<Declaration>(propEq('type', 'declaration'), (cssNode, parents) => {
+			const attrDefine = regularAttr[cssNode.property as string];
+			if (!attrDefine.couldBeStyle) {
+				rmCSSNode(cssNode, parents[parents.length - 1] as Rule[]);
+			} else if (rmDefault) {
+				// 仅验证只有一种默认值的情况
+				if (typeof attrDefine.initValue === 'string' && valueIsEqual(attrDefine, cssNode.value as string, attrDefine.initValue)) {
+					rmCSSNode(cssNode, parents[parents.length - 1] as Rule[]);
+				}
 			}
 		}, cssRules.rules, true);
+
+		// TODO css all 属性命中后要清空样式
 		// TODO 连锁属性的判断
 		// TODO 直接把 style 应用到元素
 		// 深度优化
@@ -115,7 +63,7 @@ export const shortenStyleTag = async (rule: TFinalConfigItem, dom: IDomNode): Pr
 								const ruleItem = declarations[mi];
 								const property = ruleItem.property as string;
 								// 判断每一条属性与每一个命中元素的匹配情况
-								if (onlyInCSS.includes(property) || matchNodes.some(matchNode => checkApply(regularAttr[property], matchNode, dom, true))) {
+								if (matchNodes.some(matchNode => checkApply(regularAttr[property], matchNode, dom, true))) {
 									// 只要有一条匹配存在，就证明该选择器有效
 									anyMatch = true;
 									// 同时标记该属性有效

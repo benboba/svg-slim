@@ -24,42 +24,37 @@ const _regularTag: IRegularTagDefine = {
 		ownAttributes: ['href', 'target', 'download', 'rel', 'hreflang', 'type'].concat(conditionAndCore, deprecatedXlinkAttributes),
 	},
 	'animate': {
-		containTextNode: false,
 		legalChildElements: { childElements: baseChildren },
 		ownAttributes: ['attributeName'].concat(animateAttributes),
+		onlyAttr: ['fill'], // 动画元素的 fill 属性有另外的含义
 	},
 	'animateMotion': {
-		containTextNode: false,
 		legalChildElements: { childElements: ['mpath'].concat(baseChildren) },
 		ownAttributes: ['path', 'keyPoints', 'rotate', 'origin'].concat(animateAttributes),
+		onlyAttr: ['fill'], // 动画元素的 fill 属性有另外的含义
 	},
 	'animateTransform': {
-		containTextNode: false,
 		legalChildElements: { childElements: baseChildren },
 		ownAttributes: ['attributeName', 'type'].concat(animateAttributes),
+		onlyAttr: ['fill'], // 动画元素的 fill 属性有另外的含义
 	},
 	'audio': {
-		containTextNode: false,
 		legalChildElements: { childElements: [] },
 		ownAttributes: [],
 	},
 	'canvas': {
-		containTextNode: false,
 		legalChildElements: { childElements: [] },
 		ownAttributes: [],
 	},
 	'circle': {
-		containTextNode: false,
 		legalChildElements: { childElements: shapeChildren },
 		ownAttributes: ['cx', 'cy', 'r'].concat(shapeAttributes),
 	},
 	'clipPath': {
-		containTextNode: false,
 		legalChildElements: { childElements: ['text', 'use'].concat(baseChildren, animationElements, shapeElements) },
 		ownAttributes: ['externalResourcesRequired', 'transform', 'clipPathUnits'].concat(conditionAndCore),
 	},
 	'defs': {
-		containTextNode: false,
 		legalChildElements: { childElements: globalChildren },
 		ownAttributes: coreAttributes,
 	},
@@ -69,177 +64,142 @@ const _regularTag: IRegularTagDefine = {
 		ownAttributes: coreAttributes,
 	},
 	'discard': {
-		containTextNode: false,
 		legalChildElements: { childElements: baseChildren },
 		ownAttributes: ['begin', 'href'].concat(conditionAndCore),
 	},
 	'ellipse': {
-		containTextNode: false,
 		legalChildElements: { childElements: shapeChildren },
 		ownAttributes: ['cx', 'cy', 'rx', 'ry'].concat(shapeAttributes),
 	},
 	'feBlend': {
-		containTextNode: false,
 		legalChildElements: { childElements: feChildren },
 		ownAttributes: ['in', 'in2', 'mode'].concat(feAttributes),
 	},
 	'feColorMatrix': {
-		containTextNode: false,
 		legalChildElements: { childElements: feChildren },
 		ownAttributes: ['in', 'type', 'values'].concat(feAttributes),
 	},
 	'feComponentTransfer': {
-		containTextNode: false,
 		legalChildElements: { childElements: ['feFuncR', 'feFuncG', 'feFuncB', 'feFuncA'].concat(baseChildren) },
 		ownAttributes: ['in'].concat(feAttributes),
 	},
 	'feComposite': {
-		containTextNode: false,
 		legalChildElements: { childElements: feChildren },
 		ownAttributes: ['in', 'in2', 'operator', 'k1', 'k2', 'k3', 'k4'].concat(feAttributes),
 	},
 	'feConvolveMatrix': {
-		containTextNode: false,
 		legalChildElements: { childElements: feChildren },
 		ownAttributes: ['in', 'order', 'kernelMatrix', 'divisor', 'bias', 'targetX', 'targetY', 'edgeMode', 'kernelUnitLength', 'preserveAlpha'].concat(feAttributes),
 	},
 	'feDiffuseLighting': {
-		containTextNode: false,
 		legalChildElements: { childElements: baseChildren.concat(lightSourceElements) },
 		ownAttributes: ['in', 'surfaceScale', 'diffuseConstant', 'kernelUnitLength'].concat(feAttributes),
 	},
 	'feDisplacementMap': {
-		containTextNode: false,
 		legalChildElements: { childElements: feChildren },
 		ownAttributes: ['in', 'in2', 'scale', 'xChannelSelector', 'yChannelSelector'].concat(feAttributes),
 	},
 	'feDistantLight': {
-		containTextNode: false,
 		legalChildElements: { childElements: feChildren },
 		ownAttributes: ['azimuth', 'elevation'].concat(coreAttributes),
 	},
 	'feFlood': {
-		containTextNode: false,
 		legalChildElements: { childElements: feChildren },
 		ownAttributes: feAttributes,
 	},
 	'feFuncA': {
-		containTextNode: false,
 		legalChildElements: { childElements: feChildren },
 		ownAttributes: feFuncAttributes,
 	},
 	'feFuncB': {
-		containTextNode: false,
 		legalChildElements: { childElements: feChildren },
 		ownAttributes: feFuncAttributes,
 	},
 	'feFuncG': {
-		containTextNode: false,
 		legalChildElements: { childElements: feChildren },
 		ownAttributes: feFuncAttributes,
 	},
 	'feFuncR': {
-		containTextNode: false,
 		legalChildElements: { childElements: feChildren },
 		ownAttributes: feFuncAttributes,
 	},
 	'feGaussianBlur': {
-		containTextNode: false,
 		legalChildElements: { childElements: feChildren },
 		ownAttributes: ['in', 'stdDeviation', 'edgeMode'].concat(feAttributes),
 	},
 	'feImage': {
-		containTextNode: false,
 		legalChildElements: { childElements: ['animate', 'animateTransform', 'set'].concat(baseChildren) },
 		ownAttributes: ['externalResourcesRequired', 'preserveAspectRatio', 'xlink:href', 'href', 'crossorigin'].concat(feAttributes),
 	},
 	'feMerge': {
-		containTextNode: false,
 		legalChildElements: { childElements: ['feMergeNode'].concat(baseChildren) },
 		ownAttributes: feAttributes,
 	},
 	'feMergeNode': {
-		containTextNode: false,
 		legalChildElements: { childElements: feChildren },
 		ownAttributes: ['in'].concat(coreAttributes),
 	},
 	'feMorphology': {
-		containTextNode: false,
 		legalChildElements: { childElements: feChildren },
 		ownAttributes: ['in', 'operator', 'radius'].concat(feAttributes),
 	},
 	'feOffset': {
-		containTextNode: false,
 		legalChildElements: { childElements: feChildren },
 		ownAttributes: ['in', 'dx', 'dy'].concat(feAttributes),
 	},
 	'fePointLight': {
-		containTextNode: false,
 		legalChildElements: { childElements: feChildren },
 		ownAttributes: ['x', 'y', 'z'].concat(coreAttributes),
 	},
 	'feSpecularLighting': {
-		containTextNode: false,
 		legalChildElements: { childElements: baseChildren.concat(lightSourceElements) },
 		ownAttributes: ['in', 'surfaceScale', 'specularConstant', 'specularExponent', 'kernelUnitLength'].concat(feAttributes),
 	},
 	'feSpotLight': {
-		containTextNode: false,
 		legalChildElements: { childElements: feChildren },
 		ownAttributes: ['x', 'y', 'z'].concat(coreAttributes),
 	},
 	'feTile': {
-		containTextNode: false,
 		legalChildElements: { childElements: feChildren },
 		ownAttributes: ['in'].concat(feAttributes),
 	},
 	'feTurbulence': {
-		containTextNode: false,
 		legalChildElements: { childElements: feChildren },
 		ownAttributes: ['baseFrequency', 'numOctaves', 'seed', 'stitchTiles', 'type'].concat(feAttributes),
 	},
 	'filter': {
-		containTextNode: false,
 		legalChildElements: { childElements: feChildren.concat(filterPrimitiveElements) },
 		ownAttributes: ['externalResourcesRequired', 'filterUnits', 'primitiveUnits'].concat(coreAttributes, rectAttributes),
 	},
 	'foreignObject': {
-		containTextNode: false,
 		legalChildElements: { any: true, childElements: [] },
 		ownAttributes: rectAttributes.concat(conditionAndCore),
 	},
 	'g': {
-		containTextNode: false,
 		legalChildElements: { childElements: globalChildren },
 		ownAttributes: conditionAndCore,
 	},
 	'iframe': {
-		containTextNode: false,
 		legalChildElements: { childElements: [] },
 		ownAttributes: [],
 	},
 	'image': {
-		containTextNode: false,
 		legalChildElements: { childElements: ['clipPath', 'mask', 'style'].concat(animationElements, baseChildren) },
 		ownAttributes: ['preserveAspectRatio', 'href', 'crossorigin'].concat(conditionAndCore, deprecatedXlinkAttributes, rectAttributes),
 	},
 	'line': {
-		containTextNode: false,
 		legalChildElements: { childElements: shapeChildren },
 		ownAttributes: ['x1', 'y1', 'x2', 'y2'].concat(shapeAttributes),
 	},
 	'linearGradient': {
-		containTextNode: false,
 		legalChildElements: { childElements: gradientChildren },
 		ownAttributes: ['x1', 'y1', 'x2', 'y2', 'gradientUnits', 'gradientTransform', 'spreadMethod', 'href'].concat(coreAttributes, deprecatedXlinkAttributes),
 	},
 	'marker': {
-		containTextNode: false,
 		legalChildElements: { childElements: globalChildren },
 		ownAttributes: ['viewBox', 'preserveAspectRatio', 'refX', 'refY', 'markerUnits', 'markerWidth', 'markerHeight', 'orient'].concat(coreAttributes),
 	},
 	'mask': {
-		containTextNode: false,
 		legalChildElements: { childElements: ['a', 'clipPath', 'cursor', 'filter', 'foreignObject', 'image', 'marker', 'mask', 'pattern', 'style', 'switch', 'view', 'text'].concat(animationElements, baseChildren, shapeElements, structuralElements, gradientElements) },
 		ownAttributes: ['maskUnits', 'maskContentUnits'].concat(rectAttributes, conditionAndCore),
 	},
@@ -249,37 +209,31 @@ const _regularTag: IRegularTagDefine = {
 		ownAttributes: coreAttributes,
 	},
 	'mpath': {
-		containTextNode: false,
 		legalChildElements: { childElements: baseChildren },
 		ownAttributes: ['href'].concat(coreAttributes),
 	},
 	'path': {
-		containTextNode: false,
 		legalChildElements: { childElements: shapeChildren },
 		ownAttributes: ['d'].concat(shapeAttributes),
 	},
 	'pattern': {
-		containTextNode: false,
 		legalChildElements: { childElements: globalChildren },
 		ownAttributes: ['viewBox', 'preserveAspectRatio', 'patternUnits', 'patternContentUnits', 'patternTransform', 'href'].concat(coreAttributes, deprecatedXlinkAttributes, rectAttributes),
 	},
 	'polygon': {
-		containTextNode: false,
 		legalChildElements: { childElements: shapeChildren },
 		ownAttributes: ['points'].concat(shapeAttributes),
 	},
 	'polyline': {
-		containTextNode: false,
 		legalChildElements: { childElements: shapeChildren },
 		ownAttributes: ['points'].concat(shapeAttributes),
 	},
 	'radialGradient': {
-		containTextNode: false,
 		legalChildElements: { childElements: gradientChildren },
 		ownAttributes: ['cx', 'cy', 'r', 'fx', 'fy', 'fr', 'gradientUnits', 'gradientTransform', 'spreadMethod', 'href'].concat(coreAttributes, deprecatedXlinkAttributes),
+		onlyAttr: ['cx', 'cy', 'r'], // radialGradient 的这三个属性在 css 中没有效果 https://www.w3.org/TR/SVG/pservers.html#RadialGradientAttributes
 	},
 	'rect': {
-		containTextNode: false,
 		legalChildElements: { childElements: shapeChildren },
 		ownAttributes: ['rx', 'ry'].concat(rectAttributes, shapeAttributes),
 	},
@@ -289,12 +243,11 @@ const _regularTag: IRegularTagDefine = {
 		ownAttributes: ['type', 'href', 'crossorigin'].concat(coreAttributes, deprecatedXlinkAttributes),
 	},
 	'set': {
-		containTextNode: false,
 		legalChildElements: { childElements: baseChildren },
 		ownAttributes: ['to', 'attributeName'].concat(conditionAndCore, animationTimingAttributes),
+		onlyAttr: ['fill'], // 动画元素的 fill 属性有另外的含义
 	},
 	'stop': {
-		containTextNode: false,
 		legalChildElements: { childElements: ['animate', 'script', 'set', 'style'] },
 		ownAttributes: ['path', 'offset'].concat(coreAttributes),
 	},
@@ -304,17 +257,15 @@ const _regularTag: IRegularTagDefine = {
 		ownAttributes: ['type', 'media', 'title'].concat(coreAttributes),
 	},
 	'svg': {
-		containTextNode: false,
 		legalChildElements: { childElements: globalChildren },
 		ownAttributes: ['viewBox', 'preserveAspectRatio', 'zoomAndPan', 'transform'].concat(conditionAndCore, rectAttributes),
+		onlyAttr: ['width', 'height'], // 根元素的尺寸属性转 style 的话，在 css 中应用会导致尺寸问题
 	},
 	'switch': {
-		containTextNode: false,
 		legalChildElements: { childElements: ['a', 'audio', 'canvas', 'foreignObject', 'g', 'iframe', 'image', 'svg', 'switch', 'text', 'use', 'video'].concat(animationElements, shapeElements) },
 		ownAttributes: conditionAndCore,
 	},
 	'symbol': {
-		containTextNode: false,
 		legalChildElements: { childElements: globalChildren },
 		ownAttributes: ['preserveAspectRatio', 'viewBox', 'refX', 'refY'].concat(coreAttributes, rectAttributes),
 	},
@@ -322,6 +273,7 @@ const _regularTag: IRegularTagDefine = {
 		containTextNode: true,
 		legalChildElements: { childElements: ['a', 'clipPath', 'marker', 'mask', 'style'].concat(animationElements, baseChildren, paintServerElements, textContentChildElements) },
 		ownAttributes: ['lengthAdjust', 'x', 'y', 'dx', 'dy', 'rotate', 'textLength'].concat(conditionAndCore),
+		onlyAttr: ['x', 'y'], // text 和 tspan 的 x 和 y 不能放到 style 中
 	},
 	'textPath': {
 		containTextNode: true,
@@ -337,24 +289,21 @@ const _regularTag: IRegularTagDefine = {
 		containTextNode: true,
 		legalChildElements: { childElements: [] },
 		ownAttributes: ['lengthAdjust', 'x', 'y', 'dx', 'dy', 'rotate', 'textLength'].concat(conditionAndCore),
+		onlyAttr: ['x', 'y'], // text 和 tspan 的 x 和 y 不能放到 style 中
 	},
 	'unknown': {
-		containTextNode: false,
 		legalChildElements: { any: true, childElements: [] },
 		ownAttributes: conditionAndCore,
 	},
 	'use': {
-		containTextNode: false,
 		legalChildElements: { childElements: ['clipPath', 'mask', 'style'].concat(animationElements, baseChildren) },
 		ownAttributes: ['href'].concat(rectAttributes, conditionAndCore, deprecatedXlinkAttributes),
 	},
 	'video': {
-		containTextNode: false,
 		legalChildElements: { childElements: [] },
 		ownAttributes: [],
 	},
 	'view': {
-		containTextNode: false,
 		legalChildElements: { childElements: ['style'].concat(animationElements, baseChildren) },
 		ownAttributes: ['viewBox', 'preserveAspectRatio', 'zoomAndPan'].concat(coreAttributes),
 	},
@@ -362,7 +311,6 @@ const _regularTag: IRegularTagDefine = {
 
 const undefTag: IRegularTag = {
 	isUndef: true,
-	containTextNode: false,
 	legalChildElements: {},
 	ownAttributes: [],
 };

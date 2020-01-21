@@ -13,21 +13,25 @@ describe('rules/rm-hidden', () => {
 	});
 
 	it('移除隐藏对象', async () => {
-        const xml = `<svg>
-            <g display="none" style="display:none"><text>1</text></g>
-            <style></style>
-            <mask width="auto"><text id="a">1<rect fill="none" stroke="none"/></text></mask>
-            <mask width="0"/>
-            <mask width="1"><circle r="5"/></mask>
-            <use href="#use" id="use"/>
-            <use href="#used"/>
-            <use href="#a"/>
-            <use xlink:href="a"/>
-            <rect fill="none"/>
-            <use/>
-        </svg>`;
+		const xml = `<svg>
+			<g display="none" style="display:none"><text>1</text></g>
+			<style></style>
+			<mask width="auto"><text id="a">1<rect fill="none" stroke="none"/></text></mask>
+			<mask width="0"/>
+			<mask width="1"><circle r="5"/></mask>
+			<use href="#use" id="use"/>
+			<use href="#used"/>
+			<use href="#a"/>
+			<use xlink:href="a"/>
+			<rect fill="none"/>
+			<animate from="1" to="0" dur="5s" repeatCount="indefinite" />
+			<set attributeName="fill" />
+			<animateMotion />
+			<animateTransform attributeName="fill" by="blue" />
+			<use/>
+		</svg>`;
 		const dom = await parse(xml) as ITagNode;
 		await rmHidden([true], dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><mask width="auto"><text id="a">1<rect fill="none" stroke="none"/></text></mask><mask width="1"><circle r="5"/></mask><use href="#a"/></svg>');
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><mask width="auto"><text id="a">1<rect fill="none" stroke="none"/></text></mask><mask width="1"><circle r="5"/></mask><use href="#a"/><animateTransform attributeName="fill" by="blue"/></svg>');
 	});
 });

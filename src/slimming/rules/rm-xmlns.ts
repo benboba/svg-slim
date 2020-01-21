@@ -10,11 +10,10 @@ interface IXmlnsDefine {
 	[propName: string]: IXmlnsDefineUnit;
 }
 
-export const rmXMLNS = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const rmXMLNS = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		const traversalNode = (node: INode, nsStack: IXmlnsDefine[]) => {
 			if (isTag(node)) {
-				const _node = node as ITagNode;
 				const xmlnsObj: IXmlnsDefine = {};
 				Object.assign(xmlnsObj, nsStack[nsStack.length - 1]);
 
@@ -29,8 +28,8 @@ export const rmXMLNS = async (rule: TFinalConfigItem, dom: INode): Promise<null>
 				}
 
 				// 遍历节点属性的命名空间
-				for (let i = _node.attributes.length; i--;) {
-					const attr = _node.attributes[i];
+				for (let i = node.attributes.length; i--;) {
+					const attr = node.attributes[i];
 					if (attr.namespace === 'xmlns') {
 						xmlnsObj[attr.name] = {
 							target: node,
@@ -47,7 +46,7 @@ export const rmXMLNS = async (rule: TFinalConfigItem, dom: INode): Promise<null>
 
 				// 压栈，并遍历子节点
 				nsStack.push(xmlnsObj);
-				_node.childNodes.forEach(childNode => {
+				node.childNodes.forEach(childNode => {
 					traversalNode(childNode, nsStack);
 				});
 				Object.keys(xmlnsObj).forEach(ns => {
@@ -59,7 +58,7 @@ export const rmXMLNS = async (rule: TFinalConfigItem, dom: INode): Promise<null>
 			}
 		};
 
-		(dom as ITagNode).childNodes.forEach(node => {
+		dom.childNodes.forEach(node => {
 			traversalNode(node, [{}]);
 		});
 	}

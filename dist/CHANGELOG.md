@@ -1,6 +1,31 @@
 # Change Log
 
-## 2020.01.07 v1.5.0 **breaking change**
+## 2020.01.21 v1.5.1
+
+### Comprehensive
+
+* Renamed UPDATE* .md to CHANGELOG* .md
+
+### xml-parser
+
+* Optimized the implementation of xml-parser to improve the efficiency of parsing large files
+* xml-parser error message changed to English
+
+### svg-slimming
+
+* Optimize data structure to reduce packing capacity
+* The x, y, dx, dy, and rotate attributes of text and tspan now support length-percentage list form
+* Added logic for [<alpha-value>] (https://www.w3.org/TR/css-color/#typedef-alpha-value) which compares the percentage format and numeric format which is shorter
+* The compute-path rule now takes effect on the path property of animateMotion
+* Added the judgment of whether style attributes are inheritable when parsing the style tree (all styles were considered to be inheritable before, there are badcases)
+* Introduced css-validator for css class-style legality verification, removed some logic in the code regarding css legality verification
+* Updated regular-attr list, added some css attributes supported by svg, removed some obsolete attributes in svg specification
+* Added a configuration item rmDefault for shorten-style-tag and shorten-style-attr, which supports removing the css attribute with the same default value
+* Fixed a bug where all rules are not applicable to the current tag when validating the validity of attributes
+* rm-unnecessary rule removes image elements by default
+* Added logic to traverse nodes asynchronously
+
+## 2020.01.08 v1.5.0 **breaking change**
 
 ### svg-slimming
 

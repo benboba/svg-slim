@@ -1,6 +1,6 @@
 # Change Log
 
-[View change log](https://github.com/benboba/svg-slimming/blob/master/UPDATE.md)
+[View change log](https://github.com/benboba/svg-slimming/blob/master/CHANGELOG.md)
 
 # svg-slimming
 
@@ -458,7 +458,7 @@ After optimization will become:
 ```json
 	{
 		"rm-unnecessary": [true, {
-			"tags": ["desc", "discard", "foreignObject", "video", "audio", "iframe", "canvas", "metadata", "script", "title", "unknown"]
+			"tags": ["desc", "discard", "foreignObject", "video", "audio", "iframe", "canvas", "metadata", "script", "title", "unknown", "image"]
 		}]
 	}
 ```
@@ -468,9 +468,9 @@ After optimization will become:
 	* **As there is no analysis and processing of javascript scripts, if the script tag is not removed by default, there is no guarantee that the optimized code can still be executed correctly**
 * Configuration parameters:
 	* tags
-		* Default: ["desc", "discard", "foreignObject", "video", "audio", "iframe", "canvas", "metadata", "script", "title", "unknown"]
+		* Default: ["desc", "discard", "foreignObject", "video", "audio", "iframe", "canvas", "metadata", "script", "title", "unknown", "image"]
 		* Restricted to a list of strings
-		* Configure the tag names to be removed. Only tags in the following list can be removed: ["desc", "discard", "foreignObject", "video", "audio", "iframe", "canvas", "metadata", "script", "style", "title", "unknown"]
+		* Configure the tag names to be removed. Only tags in the following list can be removed: ["desc", "discard", "foreignObject", "video", "audio", "iframe", "canvas", "metadata", "script", "style", "title", "unknown", "image"]
 
 ### rm-version
 
@@ -626,7 +626,7 @@ E.g:
 
 After optimization will become:
 ```xml
-	<rect fill="red" width="100" height="100" fill-opacity=".06"/>
+	<rect fill="red" width="100" height="100" fill-opacity="6%"/>
 ```
 
 ### shorten-defs
@@ -735,7 +735,8 @@ After optimization will become:
 ```json
 	{
 		"shorten-style-attr": [true, {
-			"exchange": false
+			"exchange": false,
+			"rmDefault": true
 		}]
 	}
 ```
@@ -748,6 +749,10 @@ After optimization will become:
 		* Default: false
 		* Regardless of the existence of the style tag, enforce the mutual conversion of style and attributes
 		* **Note: svg's style override rules are style attributes > style tags > attributes, so coercion may cause incorrect overrides**
+	* rmDefault
+		* Default: true
+		* Remove the same property as the default (only the style property is involved)
+		* Some attributes may have different default values for different elements, this rule only verifies a single default value
 
 E.g:
 ```xml
@@ -771,7 +776,8 @@ After optimization will become (the fill attribute will be overwritten by the de
 ```json
 	{
 		"shorten-style-tag": [true, {
-			"deepShorten": true
+			"deepShorten": true,
+			"rmDefault": true
 		}]
 	}
 ```
@@ -785,6 +791,10 @@ After optimization will become (the fill attribute will be overwritten by the de
 		* Remove invalid selector
 		* Merge multiple same selectors
 		* Merge multiple same rules
+	* rmDefault
+		* Default: true
+		* Remove the same property as the default (only the style property is involved)
+		* Some attributes may have different default values for different elements, this rule only verifies a single default value
 
 ## Other optimization work
 

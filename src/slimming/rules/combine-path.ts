@@ -1,14 +1,14 @@
 // 合并属性和样式完全相同的路径
 import { has } from 'ramda';
 import { exec as execColor } from '../color/exec';
-import { validOpacity } from '../color/valid';
+import { execAlpha } from '../math/exec-alpha';
 // import { doCompute } from '../path/do-compute';
 // import { execPath } from '../path/exec';
 import { execStyleTree } from '../xml/exec-style-tree';
+import { getAttr } from '../xml/get-attr';
 import { isTag } from '../xml/is-tag';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
-import { getAttr } from '../xml/get-attr';
 // import { plus } from '../math/plus';
 
 interface IPathChildrenItem {
@@ -99,25 +99,22 @@ interface IPathChildren {
 // 	return true;
 // }
 
-const execOpacity = (opacity: string): number => {
-	if (opacity[opacity.length - 1] === '%') {
-		return validOpacity(opacity.length, '%', opacity.slice(0, opacity.length - 1));
-	} else {
-		return validOpacity(opacity.length, '', opacity);
-	}
-};
-
 const canbeCombine = (node1: ITagNode, node2: ITagNode, attr: IAttr, combineFill: boolean, combineOpacity: boolean): boolean => {
-	// 是否存在 marker 引用，有 marker 引用不能进行合并
+	// 不能存在任何子节点
+	if (node1.childNodes.length || node2.childNodes.length) {
+		return false;
+	}
+
+	// 有 marker 引用不能进行合并
 	const hasMarker = getAttr(node1, 'marker-start', 'none') !== 'none' || getAttr(node1, 'marker-mid', 'none') !== 'none' || getAttr(node1, 'marker-end', 'none') !== 'none';
 	if (hasMarker) {
 		return false;
 	}
 
 	const styles = node1.styles as IStyleObj;
-	const noOpacity: boolean = !styles.hasOwnProperty('opacity') || execOpacity(styles.opacity.value) === 1;
-	const noStrokeOpacity: boolean = execColor(styles.hasOwnProperty('stroke') ? styles.stroke.value : '').a === 1 && (!styles.hasOwnProperty('stroke-opacity') || execOpacity(styles['stroke-opacity'].value) === 1);
-	const noFillOpacity: boolean = execColor(styles.hasOwnProperty('fill') ? styles.fill.value : '').a === 1 && (!styles.hasOwnProperty('fill-opacity') || execOpacity(styles['fill-opacity'].value) === 1);
+	const noOpacity: boolean = !styles.hasOwnProperty('opacity') || execAlpha(styles.opacity.value) === 1;
+	const noStrokeOpacity: boolean = execColor(styles.hasOwnProperty('stroke') ? styles.stroke.value : '').a === 1 && (!styles.hasOwnProperty('stroke-opacity') || execAlpha(styles['stroke-opacity'].value) === 1);
+	const noFillOpacity: boolean = execColor(styles.hasOwnProperty('fill') ? styles.fill.value : '').a === 1 && (!styles.hasOwnProperty('fill-opacity') || execAlpha(styles['fill-opacity'].value) === 1);
 	// fill 为空
 	const noFill: boolean = styles.hasOwnProperty('fill') && styles.fill.value === 'none' && (combineOpacity || (noOpacity && noStrokeOpacity));
 	// 填充规则不能是 evenodd 必须是 nonzero

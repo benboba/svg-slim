@@ -3,6 +3,8 @@ import { both, curry, has } from 'ramda';
 import { animationAttributes } from '../const/definitions';
 import { regularAttr } from '../const/regular-attr';
 import { numberGlobal } from '../const/syntax';
+import { execAlpha } from '../math/exec-alpha';
+import { shortenAlpha } from '../math/shorten-alpha';
 import { toFixed } from '../math/tofixed';
 import { execStyle } from '../style/exec';
 import { stringifyStyle } from '../style/stringify';
@@ -22,19 +24,28 @@ export const shortenDecimalDigits = async (rule: TFinalConfigItem, dom: IDomNode
 		const fuzzyDigit = doShorten(sizeDigit);
 		const accurateDigit = doShorten(angelDigit);
 
+		const shortenValue = (key: string, value: string) => {
+			const define = regularAttr[key];
+			if (define.maybeAlpha) { // alpha 值采用特殊处理逻辑
+				const alpha = execAlpha(value);
+				if (typeof alpha === 'number') {
+					return shortenAlpha(angelDigit, alpha);
+				}
+			} else if (define.maybeSizeNumber) { // 可以模糊处理的数字
+				return fuzzyDigit(value);
+			} else if (define.maybeAccurateNumber) { // 需要较精确的数字
+				return accurateDigit(value);
+			}
+			return value;
+		};
+
 		if (dom.stylesheet) {
 			// 缩短 style 标签内的数值
 			const parsedCss = dom.stylesheet.stylesheet as StyleRules;
 			traversalObj(both(has('property'), has('value')), (cssRule: Declaration) => {
-				if (regularAttr[cssRule.property as string].maybeSizeNumber) { // 可以模糊处理的数字
-					cssRule.value = fuzzyDigit(cssRule.value as string);
-				} else if (regularAttr[cssRule.property as string].maybeAccurateNumber) { // 需要较精确的数字
-					cssRule.value = accurateDigit(cssRule.value as string);
-				}
+				cssRule.value = shortenValue(cssRule.property as string, cssRule.value as string);
 			}, parsedCss.rules);
 		}
-
-		// TODO 百分比和小数互转
 
 		traversalNode<ITagNode>(isTag, node => {
 			// 先取出来 attributeName 属性
@@ -43,29 +54,19 @@ export const shortenDecimalDigits = async (rule: TFinalConfigItem, dom: IDomNode
 			// 缩短节点属性的数值
 			node.attributes.forEach(attr => {
 				numberGlobal.lastIndex = 0;
-				if (regularAttr[attr.fullname].maybeSizeNumber) { // 可以模糊处理的数字
-					attr.value = fuzzyDigit(attr.value);
-				} else if (regularAttr[attr.fullname].maybeAccurateNumber) { // 需要较精确的数字
-					attr.value = accurateDigit(attr.value);
-				} else if (animationAttributes.includes(attr.fullname)) { // 动画处理的属性，需要根据 attributeName 属性判断
+				if (animationAttributes.includes(attr.fullname)) { // 动画处理的属性，需要根据 attributeName 属性判断
 					if (attributeName) {
-						if (regularAttr[attributeName].maybeSizeNumber) {
-							attr.value = fuzzyDigit(attr.value);
-						} else if (regularAttr[attributeName].maybeAccurateNumber) {
-							attr.value = accurateDigit(attr.value);
-						}
+						attr.value = shortenValue(attributeName, attr.value);
 					}
 				} else if (attr.fullname === 'style') { // css 样式处理，和属性类似
 					const style = execStyle(attr.value);
 					style.forEach(s => {
 						numberGlobal.lastIndex = 0;
-						if (regularAttr[s.fullname].maybeSizeNumber) {
-							s.value = fuzzyDigit(s.value);
-						} else if (regularAttr[s.fullname].maybeAccurateNumber) {
-							s.value = accurateDigit(s.value);
-						}
+						s.value = shortenValue(s.fullname, s.value);
 					});
 					attr.value = stringifyStyle(style);
+				} else {
+					attr.value = shortenValue(attr.fullname, attr.value);
 				}
 			});
 		}, dom);

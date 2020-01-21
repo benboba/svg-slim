@@ -47,4 +47,15 @@ describe('rules/combine-path', () => {
 		await combinePath([true, { disregardFill: true, disregardOpacity: true }], dom);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><path fill="red" d="M100.5.5H100Z" stroke="red" style="opacity:50%;stroke-opacity:1;fill-opacity:1"/><path fill="red" d="M200.5.5H100Z" stroke="red" style="opacity:50%;stroke-opacity:1;fill-opacity:1"/><path d="M100.5.5H100ZM200.5.5H100Z" style="opacity:100%;fill-opacity:.5"/></svg>');
 	});
+
+	it('包含子节点', async () => {
+		const xml = `<svg>
+		<path d="M100.5.5H100Z" style="opacity:100%;fill-opacity:.5" />
+		<path d="M200.5.5H100Z" style="opacity:100%;fill-opacity:.5"><animate attributeName="opacity" from="1" to="0" dur="5s" repeatCount="indefinite" /></path>
+		<path d="M200.5.5H100Z" style="opacity:100%;fill-opacity:.5" />
+		</svg>`;
+		const dom = await parse(xml) as ITagNode;
+		await combinePath([true, { disregardFill: true, disregardOpacity: true }], dom);
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><path d="M100.5.5H100Z" style="opacity:100%;fill-opacity:.5"/><path d="M200.5.5H100Z" style="opacity:100%;fill-opacity:.5"><animate attributeName="opacity" from="1" to="0" dur="5s" repeatCount="indefinite"/></path><path d="M200.5.5H100Z" style="opacity:100%;fill-opacity:.5"/></svg>');
+	});
 });
