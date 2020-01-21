@@ -4,7 +4,13 @@ import { execStyle } from './exec';
 
 // TODO：目前只验证了 href 和 xlink:href，其它 IRI 或 funcIRI 属性是否也需要验证？
 // 遇到引用属性，还需要递归验证被引用对象是否可应用样式
-const getXlink = (styleDefine: IRegularAttr, idStr: string, dom: INode, unique: INode[], fromStyleTag: boolean) => check(styleDefine, getById(idStr, dom), dom, unique, fromStyleTag);
+const getXlink = (
+	styleDefine: IRegularAttr,
+	idStr: string,
+	dom: INode,
+	unique: INode[],
+	fromStyleTag: boolean,
+) => check(styleDefine, getById(idStr, dom), dom, unique, fromStyleTag);
 
 // 定义一个特殊的遍历方法，只接收一个 condition 方法，只有该方法返回 true 才继续遍历子元素
 const traversal = (condition: (n: INode) => boolean, node: INode): void => {
@@ -16,13 +22,13 @@ const traversal = (condition: (n: INode) => boolean, node: INode): void => {
 	}
 };
 
-const check = (styleDefine: IRegularAttr, node: INode | undefined, dom: INode, unique: INode[], fromStyleTag: boolean): boolean => {
+const check = (styleDefine: IRegularAttr, node: ITagNode | undefined, dom: INode, unique: INode[], fromStyleTag: boolean): boolean => {
 	if (!node) return false;
 
 	// 如果是检测 style 标签的样式，则只要遇到同名的 style 属性就返回 false
 	if (fromStyleTag) {
-		for (let i = (node.attributes as IAttr[]).length; i--;) {
-			const attr = (node.attributes as IAttr[])[i];
+		for (let i = node.attributes.length; i--;) {
+			const attr = node.attributes[i];
 			if (attr.fullname === 'style') {
 				const childStyle = execStyle(attr.value);
 				if (childStyle.some(style => style.fullname === styleDefine.name)) {
@@ -65,8 +71,8 @@ const check = (styleDefine: IRegularAttr, node: INode | undefined, dom: INode, u
 		unique.push(childNode);
 
 		// 检查属性看是否被覆盖，是就不再继续
-		for (let i = (childNode.attributes as IAttr[]).length; i--;) {
-			const attr = (childNode.attributes as IAttr[])[i];
+		for (let i = childNode.attributes.length; i--;) {
+			const attr = childNode.attributes[i];
 			if (attr.fullname === 'style') {
 				const childStyle = execStyle(attr.value);
 				if (childStyle.some(style => style.fullname === styleDefine.name)) {
@@ -103,7 +109,7 @@ const check = (styleDefine: IRegularAttr, node: INode | undefined, dom: INode, u
 // 深度分析，判断样式继承链上是否存在可应用对象
 export const checkApply = (
 	styleDefine: IRegularAttr,
-	node: INode,
+	node: ITagNode,
 	dom: INode,
 	fromStyleTag = false, // 标记是否为检测 style 标签的样式
 ): boolean => check(styleDefine, node, dom, [], fromStyleTag);

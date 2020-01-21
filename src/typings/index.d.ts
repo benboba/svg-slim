@@ -37,30 +37,44 @@ declare interface IMatrixFunc {
 
 declare interface IRegularTag {
 	isUndef?: boolean;
-	containTextNode: boolean;
+	containTextNode?: boolean;
 	legalChildElements: { transparent?: boolean; noself?: boolean; any?: boolean; childElements?: string[] };
 	ownAttributes: string[];
+	onlyAttr?: string[];
 }
 
-declare interface ILegalValueItem {
-	type: 'enum' | 'reg' | 'attr' | 'string';
-	reg?: RegExp;
-	enum?: {};
+declare type TLegalValueItem = {
+	type: 'attr';
 	tag?: string[];
-	string?: string;
+} | {
+	type: 'string';
+	value: string;
+	tag?: string[];
+} | {
+	type: 'reg';
+	value: RegExp;
+	tag?: string[];
+} | {
+	type: 'enum';
+	value: string;
+	tag?: string[];
 }
 
 declare interface IRegularAttr {
 	name: string;
 	isUndef?: boolean;
-	couldBeStyle: boolean;
-	animatable: boolean;
-	maybeColor: boolean;
-	maybeIRI: boolean;
-	maybeFuncIRI: boolean;
-	maybeSizeNumber: boolean;
-	maybeAccurateNumber: boolean;
-	legalValues: ILegalValueItem[];
+	couldBeStyle?: boolean;
+	cantTrans?: boolean; // 不支持 css 和属性互转
+	cantBeAttr?: boolean; // 不能作为属性，只能放在 style 中
+	inherited?: boolean;
+	animatable?: boolean;
+	maybeColor?: boolean;
+	maybeIRI?: boolean;
+	maybeFuncIRI?: boolean;
+	maybeSizeNumber?: boolean;
+	maybeAccurateNumber?: boolean;
+	maybeAlpha?: boolean;
+	legalValues: TLegalValueItem[];
 	initValue: string | Array<{
 		val: string;
 		tag: string[];
@@ -97,4 +111,26 @@ declare module 'triangulate-contours' {
 		cells: [number, number, number][];
 	};
 	export = triangulate;
+}
+
+declare interface cssValidateErrorItem {
+	line: number;
+	level: number;
+	message: string;
+	type: string;
+}
+
+declare type TCSSValidateResult = {
+	validity: true;
+} | {
+	validity: false;
+	errors: cssValidateErrorItem[];
+}
+
+declare module 'css-validator' {
+	function cssValidator(option: {
+		text: string;
+		profile: string,
+	}, cb: (err: Error | void, data: TCSSValidateResult) => void): void;
+	export = cssValidator;
 }

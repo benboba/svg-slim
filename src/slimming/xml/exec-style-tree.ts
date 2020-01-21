@@ -38,7 +38,7 @@ const check = (dom: IDomNode, styleItems: IStyleItem[]) => {
 				});
 			} else if (attr.name === 'href') {
 				// 获取 xlink 引用
-				xlinkObj = getById(node.getAttribute(attr.fullname) as string, dom) as ITagNode;
+				xlinkObj = getById(node.getAttribute(attr.fullname) as string, dom);
 			} else if (regularAttr[attr.fullname].couldBeStyle) {
 				// 属性优先级最低，但可以覆盖继承
 				const styleDefine = nodeStyle[attr.fullname];
@@ -73,7 +73,7 @@ const check = (dom: IDomNode, styleItems: IStyleItem[]) => {
 		if (parentNode && parentNode.styles) {
 			// 可能从父元素继承的样式
 			Object.keys(parentNode.styles).forEach(key => {
-				if (!nodeStyle.hasOwnProperty(key)) {
+				if (!nodeStyle.hasOwnProperty(key) && regularAttr[key].inherited) {
 					nodeStyle[key] = {
 						value: (parentNode.styles as IStyleObj)[key].value,
 						from: 'inherit',

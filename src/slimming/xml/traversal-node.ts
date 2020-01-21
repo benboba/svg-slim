@@ -5,7 +5,7 @@
  * @param { Node } 目标节点
  */
 
-const traversal = <T extends INode>(condition: (n: INode) => boolean, cb: (n: T) => void, node: INode, breakImmediate: boolean): void => {
+const traversal = <T extends INode>(condition: (n: INode) => boolean | void, cb: (n: T) => void, node: INode, breakImmediate: boolean): void => {
 	// 此处不能用 forEach ，for 循环可以避免当前节点被移除导致下一个节点不会被遍历到的问题
 	if (node.childNodes) {
 		for (let i = 0; i < node.childNodes.length;) {
@@ -26,6 +26,6 @@ const traversal = <T extends INode>(condition: (n: INode) => boolean, cb: (n: T)
 	}
 };
 
-export const traversalNode = <T extends INode>(condition: (n: INode) => boolean, cb: (n: T) => void, dom: INode, breakImmediate = false): void => {
+export const traversalNode = <T extends INode>(condition: (n: INode) => boolean | void, cb: (n: T) => void, dom: INode, breakImmediate = false): void => {
 	traversal(condition, cb, dom, breakImmediate);
 };

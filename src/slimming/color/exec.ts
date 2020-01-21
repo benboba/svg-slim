@@ -1,12 +1,11 @@
 import { has } from 'ramda';
 import { CIRC, FF, GRAD, Hex, Hundred, OPACITY_DIGIT, RAD } from '../const';
 import { angel, numberPattern } from '../const/syntax';
-import { toFixed } from '../math/tofixed';
+import { shortenAlpha } from '../math/shorten-alpha';
+import { valid, validNum, validOpacity } from '../math/valid';
 import { shortenFunc } from '../utils/shorten-func';
 import { hsl2rgb } from './hsl2rgb';
 import { keywords } from './keywords';
-import { valid, validOpacity, validNum } from './valid';
-import { shortenPercent } from '../utils/shorten-percent';
 
 const rgbReg = new RegExp(`^rgba?\\((${numberPattern})(%?),(${numberPattern})(%?),(${numberPattern})(%?)(?:,(${numberPattern})(%?))?\\)$`, 'gi');
 const hslReg = new RegExp(`^hsla?\\((${numberPattern})((?:${angel})?),(${numberPattern})%,(${numberPattern})%(?:,(${numberPattern})(%?))?\\)$`, 'gi');
@@ -117,8 +116,6 @@ const alphaMap = {
 };
 
 export const exec = (color: string, digit = OPACITY_DIGIT): IRGBColor => {
-	const fixed3 = toFixed(digit);
-
 	// 首先对原始字符串进行基本的格式处理和类型转换
 	let _color = color.trim();
 	if (keywords.hasOwnProperty(_color)) {
@@ -153,14 +150,14 @@ export const exec = (color: string, digit = OPACITY_DIGIT): IRGBColor => {
 				result.g = parseInt(`0x${hex[1]}${hex[1]}`, Hex);
 				result.b = parseInt(`0x${hex[2]}${hex[2]}`, Hex);
 				const alpha4 = parseInt(`0x${hex[3]}${hex[3]}`, Hex);
-				result.a = has(`${alpha4}`, alphaMap) ? alphaMap[`${alpha4}` as keyof typeof alphaMap] / Hundred : fixed3(alpha4 / FF);
+				result.a = has(`${alpha4}`, alphaMap) ? alphaMap[`${alpha4}` as keyof typeof alphaMap] / Hundred : alpha4 / FF;
 				break;
 			case 8:
 				result.r = parseInt(`0x${hex[0]}${hex[1]}`, Hex);
 				result.g = parseInt(`0x${hex[2]}${hex[3]}`, Hex);
 				result.b = parseInt(`0x${hex[4]}${hex[5]}`, Hex);
 				const alpha8 = parseInt(`0x${hex[6]}${hex[7]}`, Hex);
-				result.a = has(`${alpha8}`, alphaMap) ? alphaMap[`${alpha8}` as keyof typeof alphaMap] / Hundred : fixed3(alpha8 / FF);
+				result.a = has(`${alpha8}`, alphaMap) ? alphaMap[`${alpha8}` as keyof typeof alphaMap] / Hundred : alpha8 / FF;
 				break;
 			default:
 				result.r = parseInt(`0x${hex[0]}${hex[1]}`, Hex);
@@ -180,7 +177,7 @@ export const exec = (color: string, digit = OPACITY_DIGIT): IRGBColor => {
 			result.g = valid(rgbMatch[4], FF, rgbMatch[3]);
 			result.b = valid(rgbMatch[6], FF, rgbMatch[5]);
 			if (rgbMatch[7]) {
-				result.a = validOpacity(digit, rgbMatch[8], rgbMatch[7]);
+				result.a = validOpacity(rgbMatch[8], rgbMatch[7]);
 			}
 		} else {
 			result.valid = false;
@@ -208,9 +205,9 @@ export const exec = (color: string, digit = OPACITY_DIGIT): IRGBColor => {
 		}
 		[result.r, result.g, result.b] = hsl2rgb(hue, +hslMatch[3] / Hundred, +hslMatch[4] / Hundred);
 		if (hslMatch[5]) {
-			result.a = validOpacity(digit, hslMatch[6], hslMatch[5]);
 			// 考虑到转来转去可能和原始字符串不同，保留一份缩短后的 hsl 原始字符串
-			result.origin = `hsl(${validNum(CIRC, hue)},${validNum(Hundred, +hslMatch[3])}%,${validNum(Hundred, +hslMatch[4])}%,${shortenPercent(digit, result.a)})`;
+			result.a = validOpacity(hslMatch[6], hslMatch[5]);
+			result.origin = `hsl(${validNum(CIRC, hue)},${validNum(Hundred, +hslMatch[3])}%,${validNum(Hundred, +hslMatch[4])}%,${shortenAlpha(digit, result.a)})`;
 		}
 		return result;
 	}

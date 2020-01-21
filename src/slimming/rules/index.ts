@@ -48,10 +48,10 @@ export const rules: RuleItem[] = [
 	[false, shortenID, 'shorten-id'], // 必须在 shorten-defs 之前
 	[false, shortenClass, 'shorten-class'],
 	[false, shortenDefs, 'shorten-defs'],
-	[false, rmPx, 'rm-px'],
+	[false, shortenStyleAttr, 'shorten-style-attr'], // 必须在 collpase-g、shorten-shape 和 compute-path 之前，必须在 rm-attribute 之前
+	[false, rmPx, 'rm-px'], // 必须在 shorten-style-attr 之后
 	[false, rmAttribute, 'rm-attribute'], // 必须在 collpase-g、shorten-shape 和 compute-path 之前
-	[false, shortenStyleAttr, 'shorten-style-attr'], // 必须在 collpase-g、shorten-shape 和 compute-path 之前
-	[false, combineTransform, 'combine-transform'], // 必须在 compute-path 和 collpase-g 之前
+	[false, combineTransform, 'combine-transform'], // 必须在 compute-path、shorten-shape 和 collpase-g 之前
 	[false, shortenShape, 'shorten-shape'], // 必须在 rm-hidden 和 compute-path 之前
 	[false, combinePath, 'combine-path'], // 必须在 rm-hidden 和 compute-path 之前
 	[false, computePath, 'compute-path'],

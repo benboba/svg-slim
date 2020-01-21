@@ -1,5 +1,4 @@
 import { eventAttributes } from './definitions';
-import { colorKeywords, systemColor, x11Colors } from './enum';
 
 // 符合官方定义的 token
 // https://drafts.csswg.org/css-syntax-3
@@ -64,10 +63,13 @@ export const controlPointsFullMatch = new RegExp(`^${controlPoint}(?:${semi}${co
 const Units = '(?:em|ex|ch|rem|vx|vw|vmin|vmax|cm|mm|Q|in|pt|pc|px)';
 export const percentageFullMatch = new RegExp(`^${numberPattern}%$`);
 const length = `${numberPattern}${Units}?`;
-const percentageLength = `(?:${length}|${numberPattern}%)`;
-export const lengthFullMatch = new RegExp(`^${length}$`);
+const lengthPercentage = `(?:${length}|${numberPattern}%)`;
+const lengthPair = `${length}${commaWsp}${length}`;
 
-export const dasharrayFullMatch = new RegExp(`^(?:${percentageLength}(?:${commaWsp}${percentageLength}))?$`);
+export const lengthPairFullMatch = new RegExp(`^${lengthPair}$`);
+export const lengthPairListFullMatch = new RegExp(`^${lengthPair}(?:${semi}${lengthPair})*$`);
+export const lengthPercentageFullMatch = new RegExp(`^${lengthPercentage}$`);
+export const lengthPercentageListFullMatch = new RegExp(`^${lengthPercentage}(?:${commaWsp}${lengthPercentage})*$`);
 
 export const viewBoxFullMatch = new RegExp(`^${controlPoint}$`);
 
@@ -90,12 +92,12 @@ export const timeListFullMatch = new RegExp(`^${timePattern}(\\s*;\\s*${timePatt
 
 // transform token
 // https://drafts.csswg.org/css-transforms/#svg-comma
-const translate = `translate${paren}${numberPattern}(?:(?:${commaWsp})?${numberPattern})?${rParen}`;
-const scale = `scale${paren}${numberPattern}(?:(?:${commaWsp})?${numberPattern})?${rParen}`;
-const rotate = `rotate${paren}${numberPattern}(?:(?:${commaWsp})?${numberPattern}(?:${commaWsp})?${numberPattern})?${rParen}`;
+const translate = `translate${paren}${numberPattern}(?:${commaWsp}?${numberPattern})?${rParen}`;
+const scale = `scale${paren}${numberPattern}(?:${commaWsp}?${numberPattern})?${rParen}`;
+const rotate = `rotate${paren}${numberPattern}(?:${commaWsp}?${numberPattern}${commaWsp}?${numberPattern})?${rParen}`;
 const skewX = `skewX${paren}${numberPattern}${rParen}`;
 const skewY = `skewY${paren}${numberPattern}${rParen}`;
-const matrix = `matrix${paren}${numberPattern}(?:(?:${commaWsp})?${numberPattern}){5}${rParen}`;
+const matrix = `matrix${paren}${numberPattern}(?:${commaWsp}?${numberPattern}){5}${rParen}`;
 export const transformListFullMatch = new RegExp(`^(?:\\s*(?:${translate}|${scale}|${rotate}|${skewX}|${skewY}|${matrix})\\s*)*$`);
 
 // uri token
@@ -132,43 +134,8 @@ export const pathFullMatch = new RegExp(`^${pathMTo}(?:${commaWsp}${pathPattern}
 
 export const preservAspectRatioFullMatch = /^(?:none|xMinYMin|xMidYMin|xMaxYMin|xMinYMid|xMidYMid|xMaxYMid|xMinYMax|xMidYMax|xMaxYMax)(?:\s+(?:meet|slice))?$/;
 
-// properties syntax
-
 // IRI
 export const funcIRIToID = /^url\((["']?)#(.+)\1\)$/;
 const url = 'url\\([^\\)]+\\)';
 export const funcIRIFullMatch = new RegExp(`^${url}$`);
 export const IRIFullMatch = /^#(.+)$/;
-
-const cursorStr = 'auto|default|none|context-menu|help|pointer|progress|wait|cell|crosshair|text|vertical-text|alias|copy|move|no-drop|not-allowed|grab|grabbing|e-resize|n-resize|ne-resize|nw-resize|s-resize|se-resize|sw-resize|w-resize|ew-resize|ns-resize|nesw-resize|nwse-resize|col-resize|row-resize|all-scroll|zoom-in|zoom-out';
-export const cursorFullMatch = new RegExp(`^(?:${url}\\s*(?:${numberPattern}\\s+${numberPattern})?${commaWsp})*\\s*(?:${cursorStr})$`);
-
-// shapes
-export const rectFullMatch = new RegExp(`rect${paren}${numberPattern}(?:(?:${commaWsp})?${numberPattern}){3}${rParen}`);
-// TODO：这个正则不够严谨
-export const basicShapeFullMatch = /^(?:inset|circle|ellipse|polygon)\([^\(\)]+\)$/;
-
-// color
-const rgb = `rgba?${paren}(?:${numberPattern}${commaWsp}${numberPattern}${commaWsp}${numberPattern}(?:${commaWsp}${numberPattern}%?)?|${numberPattern}%${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%(?:${commaWsp}${numberPattern}%?)?)${rParen}`;
-const hsl = `hsla?${paren}${numberPattern}(?:${angel})?${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%(?:${commaWsp}${numberPattern}%?)?${rParen}`;
-const hexColor = '#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})';
-export const colorFullMatch = new RegExp(`^(?:${rgb}|${hsl}|${hexColor})$`);
-export const iccColorFullMatch = new RegExp(`^icc-color${paren}${Name}(?:${commaWsp}${numberPattern})+${rParen}$`, uModifier);
-
-export const childFuncFullMatch = /^child\(\d+\)$/;
-
-// filter
-const blur = `blur${paren}(?:${length})?${rParen}`;
-const filterFuncNumberPercentage = `(?:brightness|contrast|grayscale|invert|opacity|saturate|sepia)${paren}(?:${numberPattern}%?)?${rParen}`;
-const dropShadow = `drop-shadow${paren}(?:(?:${rgb}|${hsl}|${hexColor}|${Object.keys(colorKeywords).join('|')}|${Object.keys(systemColor).join('|')}|${Object.keys(x11Colors).join('|')})?${commaWsp}(?:${length}|${numberPattern}%){2,3})?${rParen}`;
-const hueRotate = `hue-rotate${paren}(?:${numberPattern}(?:${angel})?|${zero})?${rParen}`;
-const filterFunc = `(?:${blur}|${filterFuncNumberPercentage}|${dropShadow}|${hueRotate})`;
-export const filterListFullMatch = new RegExp(`(?:(?:${filterFunc}|${url})${commaWsp})+`);
-
-export const fontWeightFullMatch = /^normal|bold|bolder|lighter|[1-9]00$/;
-export const textOrientationFullMatch = /^mixed|upright|sideways|auto|0deg|0|90deg|90$/;
-export const vectorEffectFullMatch = new RegExp(`^(?:(?:non-scaling-stroke|non-scaling-size|non-rotation|fixed-position)${commaWsp})+${commaWsp}(?:viewport|screen)?$`);
-
-export const transformOriginFullMatch = new RegExp(`^\\s*(?:left|center|right|top|bottom|${percentageLength})\\s*|\\s*(?:left|center|right|${percentageLength})\\s+(?:top|center|bottom|${percentageLength})\\s+(?:${length})?\\s*|\\s*(?:top|center|bottom)\\s+(?:left|center|right)\\s+(?:${length})?\\s*$`);
-
-export const textDecorationLine = /^none|(?:underline|overline|line-through|blink)(?:\s+(?:underline|overline|line-through|blink))*$/;

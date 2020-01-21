@@ -1,5 +1,5 @@
 import { CIRC, FF, HALF } from '../const';
-import { validNum } from './valid';
+import { validNum } from '../math/valid';
 
 const CIRC6 = CIRC / 6;
 

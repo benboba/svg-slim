@@ -305,7 +305,7 @@ tester(
 	`<svg>
     <polygon stroke-width="1.999" opacity="0.00099999" points="200000 , 0.1   -1.1 0.5" />
     </svg>`,
-	'<svg><polygon stroke-width="2" opacity=".001" points="2e5.1-1.1.5"/></svg>', {
+	'<svg><polygon stroke-width="2" opacity=".1%" points="2e5.1-1.1.5"/></svg>', {
 		'shorten-decimal-digits': [true, 1, 3]
 	}
 );
@@ -365,7 +365,7 @@ tester(
 	</g>
 	</g>
     </svg>`,
-	'<svg><g><text stroke="blue" fill="rebeccapurple" font-family="&quot;微软雅黑&quot;">123</text><g fill="#fff"><rect/></g></g></svg>', {
+	'<svg><g><text font-family="&quot;微软雅黑&quot;" fill="rebeccapurple" stroke="blue">123</text><g fill="#fff"><rect/></g></g></svg>', {
 		'shorten-style-attr': true
 	}
 );

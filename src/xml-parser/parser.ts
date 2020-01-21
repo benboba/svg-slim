@@ -6,6 +6,17 @@ import { REG_XML_DECL, REG_CDATA_SECT, REG_OTHER_SECT, REG_DOCTYPE, REG_OTHER_DE
 import { collapseQuot } from './utils';
 import { mixWhiteSpace } from '../slimming/utils/mix-white-space';
 
+interface IStatus {
+	line: number;
+	pos: number;
+	lastpos: number;
+}
+
+interface ICurrent {
+	node: Node;
+	lastIndex: number;
+}
+
 const configs: Array<[number, string, RegExp, number] | [number, RegExp, number]> = [
 	[1, 'xml-decl', REG_XML_DECL, NodeType.XMLDecl],
 	[1, 'cdata', REG_CDATA_SECT, NodeType.CDATA],
@@ -30,17 +41,18 @@ const updStatus = (pos: number, str: string, status: IStatus) => {
 };
 
 // 应对一个捕获组的状况
-const Process1 = (conf: [number, string, RegExp, number], str: string): { node: Node; str: string } | null => {
+const Process1 = (conf: [number, string, RegExp, number], str: string, lastIndex: number): ICurrent | null => {
 	const reg = conf[2];
+	reg.lastIndex = lastIndex;
 	const execResult = reg.exec(str);
-	if (execResult) {
+	if (execResult && execResult.index === lastIndex) {
 		return {
 			node: new Node({
 				nodeType: conf[3],
 				nodeName: `#${conf[1]}`,
 				textContent: execResult[1],
 			}),
-			str: str.slice(execResult[0].length),
+			lastIndex: reg.lastIndex,
 		};
 	}
 	return null;
@@ -48,33 +60,28 @@ const Process1 = (conf: [number, string, RegExp, number], str: string): { node: 
 
 
 // 应对两个捕获组的状况
-const Process2 = (conf: [number, RegExp, number], str: string): { node: Node; str: string } | null => {
+const Process2 = (conf: [number, RegExp, number], str: string, lastIndex: number): ICurrent | null => {
 	const reg = conf[1];
+	reg.lastIndex = lastIndex;
 	const execResult = reg.exec(str);
-	if (execResult) {
+	if (execResult && execResult.index === lastIndex) {
 		return {
 			node: new Node({
 				nodeType: conf[2],
 				nodeName: `#${execResult[1].toLowerCase()}`,
 				textContent: execResult[2],
 			}),
-			str: str.slice(execResult[0].length),
+			lastIndex: reg.lastIndex,
 		};
 	}
 	return null;
 };
 
-interface IStatus {
-	line: number;
-	pos: number;
-	lastpos: number;
-}
-
-
 // 处理标签
-const ProcessTag = (str: string, status: IStatus): { node: Node; str: string } | null => {
+const ProcessTag = (str: string, status: IStatus, lastIndex: number): ICurrent | null => {
+	REG_START_TAG.lastIndex = lastIndex;
 	const execResult = REG_START_TAG.exec(str);
-	if (execResult) {
+	if (execResult && execResult.index === lastIndex) {
 		const tempStatus: IStatus = { line: status.line, pos: status.pos, lastpos: 0 };
 		const result = {
 			node: new Node({
@@ -83,19 +90,17 @@ const ProcessTag = (str: string, status: IStatus): { node: Node; str: string } |
 				namespace: '',
 				selfClose: execResult[3] === '/',
 			}),
-			str: str.slice(execResult[0].length),
+			lastIndex: REG_START_TAG.lastIndex,
 		};
 
 		// 标签的 namespace
 		if (execResult[1].includes(':')) {
 			const tagName = execResult[1].split(':');
-			if (!tagName[1]) {
-				throw new Error(`错误的开始标签！ 在第 ${status.line} 行第 ${status.pos} 位`);
+			if (tagName.length !== 2 || !tagName[0] || !tagName[1]) {
+				throw new Error(`Wrong start tag! at ${status.line}:${status.pos}`);
 			} else {
 				result.node.nodeName = tagName[1];
-				if (tagName[0]) {
-					result.node.namespace = tagName[0];
-				}
+				result.node.namespace = tagName[0];
 			}
 		}
 
@@ -111,16 +116,16 @@ const ProcessTag = (str: string, status: IStatus): { node: Node; str: string } |
 
 			// 属性名排重
 			if (attrUnique[attrExec[1]]) {
-				throw new Error(`属性名重复！ 在第 ${tempStatus.line} 行第 ${tempStatus.pos} 位`);
+				throw new Error(`Duplicate property names! at ${tempStatus.line}:${tempStatus.pos}`);
 			}
 			attrUnique[attrExec[1]] = true;
 
 			if (attrExec[1].includes(':')) {
 				const attrName = attrExec[1].split(':');
-				if (attrName[1]) {
+				if (attrName.length === 2 && attrName[0] && attrName[1]) {
 					result.node.setAttribute(attrName[1], collapseQuot(attrExec[2]).trim(), attrName[0]);
 				} else {
-					throw new Error(`错误的属性名！ 在第 ${tempStatus.line + status.line - 1} 行第 ${tempStatus.line > 1 ? tempStatus.pos : status.pos + tempStatus.pos} 位`);
+					throw new Error(`Wrong attribute name! at ${tempStatus.line + status.line - 1}:${tempStatus.line > 1 ? tempStatus.pos : status.pos + tempStatus.pos}`);
 				}
 			} else {
 				result.node.setAttribute(attrExec[1], collapseQuot(attrExec[2]).trim());
@@ -134,26 +139,25 @@ const ProcessTag = (str: string, status: IStatus): { node: Node; str: string } |
 };
 
 
-const ProcessEndTag = (str: string, status: IStatus): { node: Node; str: string } | null => {
+const ProcessEndTag = (str: string, status: IStatus, lastIndex: number): ICurrent | null => {
+	REG_END_TAG.lastIndex = lastIndex;
 	const execResult = REG_END_TAG.exec(str);
-	if (execResult) {
+	if (execResult && execResult.index === lastIndex) {
 		const result = {
 			node: new Node({
 				nodeType: NodeType.EndTag,
 				nodeName: execResult[1],
 				namespace: '',
 			}),
-			str: str.slice(execResult[0].length),
+			lastIndex: REG_END_TAG.lastIndex,
 		};
 		if (execResult[1].includes(':')) {
 			const tagName = execResult[1].split(':');
-			if (!tagName[1]) {
-				throw new Error(`错误的结束标签！ 在第 ${status.line} 行第 ${status.pos} 位`);
+			if (tagName.length !== 2 || !tagName[1] || !tagName[0]) {
+				throw new Error(`Wrong end tag! at ${status.line}:${status.pos}`);
 			} else {
 				result.node.nodeName = tagName[1];
-				if (tagName[0]) {
-					result.node.namespace = tagName[0];
-				}
+				result.node.namespace = tagName[0];
 			}
 		}
 		return result;
@@ -162,47 +166,58 @@ const ProcessEndTag = (str: string, status: IStatus): { node: Node; str: string 
 };
 
 
-const parse = (str: string, status: IStatus): { node: Node; str: string } => {
-	const startCharPos = str.indexOf('<');
-	if (startCharPos === 0) { // 以 < 开始的情况都按节点处理
+const parse = (str: string, status: IStatus, lastIndex: number): ICurrent => {
+	const REG_LT = /</g;
+	REG_LT.lastIndex = lastIndex;
+	const ltExec = REG_LT.exec(str);
+	if (ltExec) {
+		if (ltExec.index === lastIndex) { // 以 < 开始的情况都按节点处理
 
-		for (const cfg of configs) {
-			if (cfg[0] === 1) {
-				const processResult1 = Process1(cfg as [number, string, RegExp, number], str);
-				if (processResult1) {
-					return processResult1;
-				}
-			} else {
-				const processResult2 = Process2(cfg as [number, RegExp, number], str);
-				if (processResult2) {
-					return processResult2;
+			for (const cfg of configs) {
+				if (cfg[0] === 1) {
+					const processResult1 = Process1(cfg as [number, string, RegExp, number], str, lastIndex);
+					if (processResult1) {
+						return processResult1;
+					}
+				} else {
+					const processResult2 = Process2(cfg as [number, RegExp, number], str, lastIndex);
+					if (processResult2) {
+						return processResult2;
+					}
 				}
 			}
+
+			const processTag = ProcessTag(str, status, lastIndex);
+			if (processTag) {
+				return processTag;
+			}
+
+			const processEndTag = ProcessEndTag(str, status, lastIndex);
+			if (processEndTag) {
+				return processEndTag;
+			}
+			throw new Error(`Failed to parse tags! at ${status.line}:${status.pos}`);
+
+		} else { // 非 < 开始的都按文本处理
+
+			return {
+				node: new Node({
+					nodeType: NodeType.Text,
+					nodeName: '#text',
+					textContent: mixWhiteSpace(str.slice(lastIndex, ltExec.index)),
+				}),
+				lastIndex: ltExec.index,
+			};
 		}
-
-		const processTag = ProcessTag(str, status);
-		if (processTag) {
-			return processTag;
-		}
-
-		const processEndTag = ProcessEndTag(str, status);
-		if (processEndTag) {
-			return processEndTag;
-		}
-		throw new Error(`解析标签失败！ 在第 ${status.line} 行第 ${status.pos} 位`);
-
-	} else { // 非 < 开始的都按文本处理
-
+	} else {
 		return {
 			node: new Node({
 				nodeType: NodeType.Text,
 				nodeName: '#text',
-				textContent: mixWhiteSpace(str.slice(0, startCharPos)),
+				textContent: mixWhiteSpace(str.slice(lastIndex)),
 			}),
-			str: startCharPos === -1 ? '' : str.slice(startCharPos),
+			lastIndex: str.length,
 		};
-
-
 	}
 };
 
@@ -219,21 +234,24 @@ export const Parser = async (str: string): Promise<Node> => {
 			pos: 0,
 			lastpos: 0,
 		};
+		const len = str.length;
 
-		let current: { node: Node; str: string };
+		let current: { node: Node; lastIndex: number };
 		let hasRoot = false;
 		const firstIndex = str.indexOf('<');
-		if (firstIndex > 0 && !!str.slice(0, firstIndex).replace(/\s+/, '')) {
-			reject(new Error(`意外的文本节点！ 在第 ${status.line} 行第 ${status.pos} 位`));
+		if (firstIndex > 0 && !/^\s+</.test(str)) {
+			reject(new Error(`Unexpected text node! at ${status.line}:${status.pos}`));
+			return;
 		}
 		try {
-			current = parse(str.slice(firstIndex), status); // 第一个 < 之前的全部字符都忽略掉
+			current = parse(str, status, firstIndex); // 第一个 < 之前的全部字符都忽略掉
 		} catch (e) {
 			reject(e);
 			return;
 		}
 		if (current.node.nodeType === NodeType.XMLDecl && firstIndex > 0) {
-			reject(new Error(`xml声明必须在文档最前面！ 在第 ${status.line} 行第 ${status.pos} 位`));
+			reject(new Error(`The xml declaration must be at the front of the document! at ${status.line}:${status.pos}`));
+			return;
 		}
 		doc.appendChild(current.node);
 		if (current.node.nodeType === NodeType.Tag) {
@@ -243,11 +261,11 @@ export const Parser = async (str: string): Promise<Node> => {
 			}
 		}
 
-		while (current.str) {
+		while (current.lastIndex < len) {
 
-			updStatus(str.indexOf(current.str), str, status);
+			updStatus(current.lastIndex, str, status);
 			try {
-				current = parse(current.str, status); // 第一个 < 之前的全部字符都忽略掉
+				current = parse(str, status, current.lastIndex); // 第一个 < 之前的全部字符都忽略掉
 			} catch (e) {
 				reject(e);
 				return;
@@ -268,11 +286,13 @@ export const Parser = async (str: string): Promise<Node> => {
 						}
 						stack.pop();
 					} else {
-						reject(new Error(`开始和结束标签无法匹配！ 在第 ${status.line} 行第 ${status.pos} 位`));
+						reject(new Error(`The start and end tags cannot match! at ${status.line}:${status.pos}`));
+						return;
 					}
 				} else {
 					// 没有开始标签而出现了结束标签
-					reject(new Error(`意外的结束标签！ 在第 ${status.line} 行第 ${status.pos} 位`));
+					reject(new Error(`Unexpected end tag! at ${status.line}:${status.pos}`));
+					return;
 				}
 
 
@@ -285,7 +305,8 @@ export const Parser = async (str: string): Promise<Node> => {
 				} else if (current.node.nodeType === NodeType.Text || current.node.nodeType === NodeType.CDATA) {
 					// 没有节点而出现了非空文本节点
 					if ((current.node.textContent as string).replace(/\s/g, '')) {
-						reject(new Error(`意外的文本节点！ 在第 ${status.line} 行第 ${status.pos} 位`));
+						reject(new Error(`Unexpected text node! at ${status.line}:${status.pos}`));
+						return;
 					}
 				} else {
 					// 直接扔到根下
@@ -295,7 +316,8 @@ export const Parser = async (str: string): Promise<Node> => {
 				if (current.node.nodeType === NodeType.Tag) {
 					if (!stackLen) {
 						if (hasRoot) {
-							reject(new Error(`只允许出现一个根元素节点！ 在第 ${status.line} 行第 ${status.pos} 位`));
+							reject(new Error(`Only one root element node is allowed! at ${status.line}:${status.pos}`));
+							return;
 						}
 						hasRoot = true;
 					}
@@ -305,18 +327,20 @@ export const Parser = async (str: string): Promise<Node> => {
 				}
 			}
 
-			if (!current.str) {
-				updStatus(str.length, str, status);
+			if (current.lastIndex === len) {
+				updStatus(len, str, status);
 			}
 
 		}
 
 		if (stack.length) {
-			reject(new Error(`文档结构错误！ 在第 ${status.line} 行第 ${status.pos} 位`));
+			reject(new Error(`Document structure is wrong! at ${status.line}:${status.pos}`));
+			return;
 		}
 
 		if (!hasRoot) {
-			reject(new Error(`没有根元素节点！ 在第 ${status.line} 行第 ${status.pos} 位`));
+			reject(new Error(`No root element node! at ${status.line}:${status.pos}`));
+			return;
 		}
 
 		resolve(doc);

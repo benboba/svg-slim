@@ -55,7 +55,7 @@ export const config: IFinalConfig = {
 	// 移除不必要的标签
 	// 配置需要移除的标签列表
 	'rm-unnecessary': [true, {
-		tags: ['desc', 'discard', 'foreignObject', 'video', 'audio', 'iframe', 'canvas', 'metadata', 'script', 'title', 'unknown'],
+		tags: ['desc', 'discard', 'foreignObject', 'video', 'audio', 'iframe', 'canvas', 'metadata', 'script', 'title', 'unknown', 'image'],
 		keyOrder: ['tags'],
 	}],
 	// 移除 svg 标签的 version 属性
@@ -92,12 +92,14 @@ export const config: IFinalConfig = {
 	// 缩短 style 属性
 	'shorten-style-attr': [true, {
 		exchange: false, // 根据情况进行 style 和属性的互转 （[warning] svg 的样式覆盖规则是 style 属性 > style 标签 > 属性，所以这个规则可能导致不正确的覆盖！）
+		rmDefault: true, // 移除与默认值相同的样式
 		keyOrder: ['exchange'],
 	}],
 	// 缩短 style 标签的内容（合并相同规则、移除无效样式）
 	// 深度分析，移除无效选择器、合并相同的选择器、合并相同规则
 	'shorten-style-tag': [true, {
 		deepShorten: true,
+		rmDefault: true, // 移除与默认值相同的样式
 		keyOrder: ['deepShorten'],
 	}],
 };

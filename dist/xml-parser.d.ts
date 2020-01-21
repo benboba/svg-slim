@@ -24,8 +24,8 @@ export interface INode {
     namespace?: string;
     selfClose?: boolean;
     textContent?: string;
-    readonly attributes: ReadonlyArray<IAttr> | null;
-    readonly childNodes: ReadonlyArray<INode> | null;
+    attributes?: IAttr[];
+    childNodes?: INode[];
     parentNode?: INode;
     cloneNode(): INode;
     appendChild(childNode: INode): void;
@@ -53,10 +53,8 @@ export declare class Node implements INode {
     namespace?: string;
     selfClose?: boolean;
     textContent?: string;
-    private _attributes?;
-    readonly attributes: ReadonlyArray<IAttr> | null;
-    private _childNodes?;
-    readonly childNodes: ReadonlyArray<INode> | null;
+    attributes?: IAttr[];
+    childNodes?: INode[];
     parentNode?: INode;
     cloneNode(): INode;
     appendChild(childNode: INode): void;

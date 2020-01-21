@@ -1,25 +1,26 @@
 import { regularAttr } from '../const/regular-attr';
 import { useEnum } from './use-enum';
 import { useReg } from './use-reg';
-import { CSSWideKeywords } from '../const/enum';
 
 export const legalValue = (attrDefine: IRegularAttr, attr: IAttr, nodeName = ''): boolean => {
 	if (attrDefine.legalValues.length) {
 		// 只要有一个规则命中就返回 true
+		let noMatchRule = true; // 重要！要判断是否有可以用于验证的规则，如果所有规则不适用于验证当前属性，则不应该 return false，而应该 return true
 		for (const legalRule of attrDefine.legalValues) {
 			// 当前验证规则可能只适用于某些 tag，legalTag 表示当前规则适用于所有 tag 或当前验证的 tag 在规则匹配列表中
 			const legalTag = !legalRule.tag || !nodeName || legalRule.tag.includes(nodeName);
 			if (legalTag) {
+				noMatchRule = false;
 				switch (legalRule.type) {
 					// 用正则判断
 					case 'reg':
-						if (legalRule.reg && useReg(legalRule.reg, attr.value)) {
+						if (useReg(legalRule.value, attr.value)) {
 							return true;
 						}
 						break;
 					// 用枚举判断
 					case 'enum':
-						if (legalRule.enum && useEnum(legalRule.enum, attr.value)) {
+						if (useEnum(legalRule.value, attr.value)) {
 							return true;
 						}
 						break;
@@ -30,23 +31,15 @@ export const legalValue = (attrDefine: IRegularAttr, attr: IAttr, nodeName = '')
 						}
 						break;
 					// 值应该是一个特定字符串
-					case 'string':
 					default:
-						if (legalRule.string === attr.value) {
+						if (legalRule.value === attr.value) {
 							return true;
 						}
 						break;
 				}
 			}
 		}
-		// 可以转为 css 的属性，还需要验证是否匹配 css 值的全局关键字
-		if (attrDefine.couldBeStyle) {
-			if (useEnum(CSSWideKeywords, attr.value)) {
-				return true;
-			}
-		}
-		return false;
-	} else {
-		return true;
+		return noMatchRule;
 	}
+	return !attrDefine.isUndef;
 };

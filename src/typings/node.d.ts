@@ -17,8 +17,8 @@ declare global {
 		selfClose?: boolean;
 		textContent?: string;
 	
-		readonly attributes: ReadonlyArray<IAttr> | null;
-		readonly childNodes: ReadonlyArray<INode> | null;
+		attributes?: Array<IAttr>;
+		childNodes?: Array<INode>;
 	
 		parentNode?: INode;
 	
@@ -44,8 +44,8 @@ declare global {
 	}
 
 	interface ITagNode extends INode {
-		readonly childNodes: INode[];
-		readonly attributes: IAttr[];
+		childNodes: INode[];
+		attributes: IAttr[];
 		cloneNode(): ITagNode;
 		styles?: IStyleObj;
 	}
@@ -56,14 +56,14 @@ declare global {
 	}
 
 	interface ITextNode extends INode {
-		readonly childNodes: null;
-		readonly attributes: null;
+		childNodes: undefined;
+		attributes: undefined;
 		textContent: string;
 	}
 
 	interface IPathNode extends ITagNode {
 		nodeName: 'path';
-		readonly attributes: [{
+		attributes: [{
 			name: 'd';
 			value: string;
 			fullname: 'd';

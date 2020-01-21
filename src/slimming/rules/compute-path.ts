@@ -1,4 +1,4 @@
-import { propEq } from 'ramda';
+import { propEq, or } from 'ramda';
 import { douglasPeucker } from '../algorithm/douglas-peucker';
 import { LineTypes } from '../const';
 import { plus } from '../math/plus';
@@ -85,8 +85,9 @@ export const computePath = async (rule: TFinalConfigItem, dom: INode): Promise<n
 			straighten: number;
 		};
 		execStyleTree(dom as IDomNode);
-		traversalNode<ITagNode>(propEq('nodeName', 'path'), node => {
-			const attrD = node.getAttribute('d');
+		traversalNode<ITagNode>(or(propEq('nodeName', 'path'), propEq('nodeName', 'animateMotion')), node => {
+			const attrName = node.nodeName === 'path' ? 'd' : 'path';
+			const attrD = node.getAttribute(attrName);
 			if (attrD) {
 				// 先运算一次 doCompute，拿到每条指令的 from 坐标
 				let pathResult = doCompute(execPath(attrD));
@@ -118,8 +119,8 @@ export const computePath = async (rule: TFinalConfigItem, dom: INode): Promise<n
 					return;
 				}
 
-				node.setAttribute('d', stringifyPath(pathResult, sizeDigit, angelDigit));
-			} else {
+				node.setAttribute(attrName, stringifyPath(pathResult, sizeDigit, angelDigit));
+			} else if (node.nodeName === 'path') {
 				rmNode(node);
 			}
 
