@@ -1,6 +1,6 @@
 import { containerElements, filterPrimitiveElements, gradientElements, graphicsElements, newViewportsElements, shapeElements, textContentElements } from './definitions';
 import { alignX, alignY, animateTransformType, blendMode, calcMode, channel, crossOrigin, dur, edgeMode, feColorMatrixType, feFuncType, feTurbulenceType, inVal, isolationMode, lengthAdjust, markerUnit, method, operater, operater1, orient, referrer, restart, spreadMethod, target, units } from './enum';
-import { angelFullMatch, clockFullMatch, controlPointsFullMatch, cssNameFullMatch, cssNameSpaceSeparatedFullMatch, indentFullMatch, integerFullMatch, langFullMatch, lengthPairFullMatch, lengthPairListFullMatch, lengthPercentageFullMatch, lengthPercentageListFullMatch, nameFullMatch, numberFullMatch, numberListFullMatch, numberOptionalFullMatch, numberSemiSepatatedFullMatch, pathFullMatch, percentageFullMatch, preservAspectRatioFullMatch, timeListFullMatch, transformListFullMatch, URIFullMatch, viewBoxFullMatch } from './syntax';
+import { angelFullMatch, clockFullMatch, controlPointsFullMatch, cssNameFullMatch, cssNameSpaceSeparatedFullMatch, indentFullMatch, integerFullMatch, langFullMatch, lengthPairFullMatch, lengthPairListFullMatch, lengthPercentageFullMatch, lengthPercentageListFullMatch, mediaTypeFullMatch, nameFullMatch, numberFullMatch, numberListFullMatch, numberOptionalFullMatch, numberSemiSepatatedFullMatch, pathFullMatch, percentageFullMatch, preservAspectRatioFullMatch, timeListFullMatch, transformListFullMatch, URIFullMatch, viewBoxFullMatch } from './syntax';
 
 const shapeAndText = shapeElements.concat(textContentElements);
 const viewport = ['pattern', 'marker'].concat(newViewportsElements);
@@ -697,7 +697,10 @@ const _regularAttr: IRegularAttrDefine = {
 	'media': {
 		name: 'media',
 		legalValues: [],
-		initValue: '',
+		initValue: [{
+			val: 'all',
+			tag: ['css'],
+		}],
 		applyTo: [],
 	},
 	'method': {
@@ -1406,6 +1409,14 @@ const _regularAttr: IRegularAttrDefine = {
 			type: 'enum',
 			value: feTurbulenceType,
 			tag: ['feTurbulence'],
+		}, {
+			type: 'reg',
+			value: mediaTypeFullMatch,
+			tag: ['script'],
+		}, {
+			type: 'reg',
+			value: mediaTypeFullMatch,
+			tag: ['style'],
 		}],
 		initValue: [{
 			val: 'translate',
@@ -1419,6 +1430,12 @@ const _regularAttr: IRegularAttrDefine = {
 		}, {
 			val: 'turbulence',
 			tag: ['feTurbulence'],
+		}, {
+			val: 'application/ecmascript',
+			tag: ['script'],
+		}, {
+			val: 'text/css',
+			tag: ['style'],
 		}],
 		applyTo: [],
 	},

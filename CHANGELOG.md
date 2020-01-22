@@ -18,11 +18,12 @@
 * Added logic for [<alpha-value>] (https://www.w3.org/TR/css-color/#typedef-alpha-value) which compares the percentage format and numeric format which is shorter
 * The compute-path rule now takes effect on the path property of animateMotion
 * Added the judgment of whether style attributes are inheritable when parsing the style tree (all styles were considered to be inheritable before, there are badcases)
-* Introduced css-validator for css class-style legality verification, removed some logic in the code regarding css legality verification
+* Introduced [css-validator](https://www.npmjs.com/package/css-validator) for css class-style legality verification, removed some logic in the code regarding css legality verification
 * Updated regular-attr list, added some css attributes supported by svg, removed some obsolete attributes in svg specification
 * Added a configuration item rmDefault for shorten-style-tag and shorten-style-attr, which supports removing the css attribute with the same default value
 * Fixed a bug where all rules are not applicable to the current tag when validating the validity of attributes
 * rm-unnecessary rule removes image elements by default
+* Improved the implementation of attribute and style conversion in shorten-style-attr
 * Added logic to traverse nodes asynchronously
 
 ## 2020.01.08 v1.5.0 **breaking change**

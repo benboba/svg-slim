@@ -1,6 +1,6 @@
 import { Declaration, StyleRules } from 'css';
 import { both, curry, has } from 'ramda';
-import { animationAttributes } from '../const/definitions';
+import { animationAttrElements, animationAttributes } from '../const/definitions';
 import { regularAttr } from '../const/regular-attr';
 import { numberGlobal } from '../const/syntax';
 import { execAlpha } from '../math/exec-alpha';
@@ -54,7 +54,7 @@ export const shortenDecimalDigits = async (rule: TFinalConfigItem, dom: IDomNode
 			// 缩短节点属性的数值
 			node.attributes.forEach(attr => {
 				numberGlobal.lastIndex = 0;
-				if (animationAttributes.includes(attr.fullname)) { // 动画处理的属性，需要根据 attributeName 属性判断
+				if (animationAttributes.includes(attr.fullname) && animationAttrElements.includes(node.nodeName)) { // 动画处理的属性，需要根据 attributeName 属性判断
 					if (attributeName) {
 						attr.value = shortenValue(attributeName, attr.value);
 					}

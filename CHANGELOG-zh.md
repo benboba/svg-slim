@@ -18,11 +18,12 @@
 * 追加了对于 [<alpha-value>](https://www.w3.org/TR/css-color/#typedef-alpha-value) 会对比百分比格式和数值格式哪个更短的逻辑
 * 现在 compute-path 规则会对 animateMotion 的 path 属性生效
 * 在解析样式树时，追加了样式属性是否可继承的判断（此前会将全部样式当作可继承，存在 badcase）
-* 引入 css-validator 进行 css 类样式的合法性验证，移除了代码中关于 css 合法性验证的部分逻辑
+* 引入 [css-validator](https://www.npmjs.com/package/css-validator) 进行 css 类样式的合法性验证，移除了代码中关于 css 合法性验证的部分逻辑
 * 更新了 regular-attr 列表，追加了一些 svg 支持的 css 属性，移除了一些在 svg 规范中被废弃的属性
 * 为 shorten-style-tag 和 shorten-style-attr 追加了一个配置项 rmDefault， 支持移除与默认值相同的 css 属性
 * 修复了属性合法性验证时，当所有规则都不适用于当前 tag，会意外判断为不合法 bug
 * rm-unnecessary 规则默认移除列表添加了 image 元素
+* 改进了 shorten-style-attr 中属性和 style 互转的实现
 * 添加了异步遍历节点的逻辑
 
 ## 2020.01.08 v1.5.0 **breaking change**

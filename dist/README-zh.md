@@ -1,8 +1,10 @@
-# 更新日志
+# SVG瘦身工具【svg slimming】
+
+[![npm version](https://badge.fury.io/js/svg-slimming.svg)](https://badge.fury.io/js/svg-slimming)
+
+## 更新日志
 
 [查看更新日志](https://github.com/benboba/svg-slimming/blob/master/CHANGELOG-zh.md)
-
-# SVG瘦身工具【svg slimming】
 
 ## 简介
 

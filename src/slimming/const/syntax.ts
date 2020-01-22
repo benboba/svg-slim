@@ -139,3 +139,5 @@ export const funcIRIToID = /^url\((["']?)#(.+)\1\)$/;
 const url = 'url\\([^\\)]+\\)';
 export const funcIRIFullMatch = new RegExp(`^${url}$`);
 export const IRIFullMatch = /^#(.+)$/;
+
+export const mediaTypeFullMatch = /^(?:image|audio|video|application|text|multipart|message)\/[^\/]+$/;
