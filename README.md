@@ -1,8 +1,10 @@
-# Change Log
+# svg-slimming
+
+[![npm version](https://badge.fury.io/js/svg-slimming.svg)](https://badge.fury.io/js/svg-slimming)
+
+## Change Log
 
 [View change log](https://github.com/benboba/svg-slimming/blob/master/CHANGELOG.md)
-
-# svg-slimming
 
 ## Introduction
 

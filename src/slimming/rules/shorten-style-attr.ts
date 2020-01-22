@@ -97,7 +97,7 @@ const checkAttr = async (node: ITagNode, dom: INode, rmDefault: boolean) => new 
 				node.removeAttribute(attr.fullname);
 				continue;
 			}
-			if (cantTrans(tagDefine, attr.fullname)) { // 有一些元素的某些属性不能被转为 style，此类属性也不宜再按照 css 属性来验证
+			if (attrDefine.cantTrans || cantTrans(tagDefine, attr.fullname)) { // 有一些元素的某些属性不能被转为 style，此类属性也不宜再按照 css 属性来验证
 				continue;
 			}
 
@@ -216,15 +216,11 @@ export const shortenStyleAttr = async (rule: TFinalConfigItem, dom: IDomNode): P
 				if (Object.values(attrObj).some(val => val.onlyCss) || Object.keys(attrObj).length > styleThreshold) {
 
 					// 属性转 style
-					for (let j = node.attributes.length; j--;) {
-						const attr = node.attributes[j];
-						if (cantTrans(tagDefine, attr.fullname)) {
-							continue;
+					Object.entries(attrObj).forEach(([key, val]) => {
+						if (!val.onlyCss) {
+							node.removeAttribute(key);
 						}
-						if (regularAttr[attr.fullname].couldBeStyle || attr.fullname === 'style') {
-							node.removeAttribute(attr.fullname);
-						}
-					}
+					});
 					// 执行一次 reverse 把顺序反转过来
 					node.setAttribute('style', style2value(Object.keys(attrObj).reverse().map(key => {
 						return {
@@ -237,12 +233,6 @@ export const shortenStyleAttr = async (rule: TFinalConfigItem, dom: IDomNode): P
 				} else {
 					// style 转属性
 					node.removeAttribute('style');
-					node.attributes.forEach(attr => {
-						if (has(attr.fullname, attrObj)) {
-							// tslint:disable-next-line:no-dynamic-delete
-							delete attrObj[attr.fullname];
-						}
-					});
 					// 执行一次 reverse 把顺序反转过来
 					Object.keys(attrObj).reverse().forEach(name => {
 						node.setAttribute(name, attrObj[name].value);

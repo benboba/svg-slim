@@ -87,108 +87,6 @@ const numberMap: INumberMap = {
 		allowAuto: true,
 		allowZero: false,
 	},
-	feBlend: {
-		attrs: ['width', 'height'],
-		allowEmpty: false,
-		allowAuto: false,
-		allowZero: false,
-	},
-	feColorMatrix: {
-		attrs: ['width', 'height'],
-		allowEmpty: false,
-		allowAuto: false,
-		allowZero: false,
-	},
-	feComponentTransfer: {
-		attrs: ['width', 'height'],
-		allowEmpty: false,
-		allowAuto: false,
-		allowZero: false,
-	},
-	feComposite: {
-		attrs: ['width', 'height'],
-		allowEmpty: false,
-		allowAuto: false,
-		allowZero: false,
-	},
-	feConvolveMatrix: {
-		attrs: ['width', 'height'],
-		allowEmpty: false,
-		allowAuto: false,
-		allowZero: false,
-	},
-	feDiffuseLighting: {
-		attrs: ['width', 'height'],
-		allowEmpty: false,
-		allowAuto: false,
-		allowZero: false,
-	},
-	feDisplacementMap: {
-		attrs: ['width', 'height'],
-		allowEmpty: false,
-		allowAuto: false,
-		allowZero: false,
-	},
-	feDropShadow: {
-		attrs: ['width', 'height'],
-		allowEmpty: false,
-		allowAuto: false,
-		allowZero: false,
-	},
-	feFlood: {
-		attrs: ['width', 'height'],
-		allowEmpty: false,
-		allowAuto: false,
-		allowZero: false,
-	},
-	feGaussianBlur: {
-		attrs: ['width', 'height'],
-		allowEmpty: false,
-		allowAuto: false,
-		allowZero: false,
-	},
-	feImage: {
-		attrs: ['width', 'height'],
-		allowEmpty: false,
-		allowAuto: false,
-		allowZero: false,
-	},
-	feMerge: {
-		attrs: ['width', 'height'],
-		allowEmpty: false,
-		allowAuto: false,
-		allowZero: false,
-	},
-	feMorphology: {
-		attrs: ['width', 'height'],
-		allowEmpty: false,
-		allowAuto: false,
-		allowZero: false,
-	},
-	feOffset: {
-		attrs: ['width', 'height'],
-		allowEmpty: false,
-		allowAuto: false,
-		allowZero: false,
-	},
-	feSpecularLighting: {
-		attrs: ['width', 'height'],
-		allowEmpty: false,
-		allowAuto: false,
-		allowZero: false,
-	},
-	feTile: {
-		attrs: ['width', 'height'],
-		allowEmpty: false,
-		allowAuto: false,
-		allowZero: false,
-	},
-	feTurbulence: {
-		attrs: ['width', 'height'],
-		allowEmpty: false,
-		allowAuto: false,
-		allowZero: false,
-	},
 };
 
 export const rmHidden = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
@@ -224,7 +122,7 @@ export const rmHidden = async (rule: TFinalConfigItem, dom: INode): Promise<null
 
 			const styles = node.styles as IStyleObj;
 
-			if (styles.hasOwnProperty('display') && styles.display.value === 'none') {
+			if (styles.hasOwnProperty('display') && styles.display.value === 'none' && !['script', 'style'].includes(node.nodeName)) {
 				rmNode(node);
 				return;
 			}

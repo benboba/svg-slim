@@ -35,6 +35,12 @@ export const combineScript = async (dom: INode): Promise<null> => new Promise((r
 	};
 
 	traversalNode<ITagNode>(propEq('nodeName', 'script'), node => {
+		const type = node.getAttribute('type');
+		if (type && !/^(?:application|text)\/(?:javascript|ecmascript)$/.test(type)) {
+			rmNode(node);
+			return;
+		}
+
 		if (firstScript) {
 			checkCNode(node);
 			rmNode(node);

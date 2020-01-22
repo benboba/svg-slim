@@ -51,16 +51,16 @@ export const rules: RuleItem[] = [
 	[false, shortenStyleAttr, 'shorten-style-attr'], // 必须在 collpase-g、shorten-shape 和 compute-path 之前，必须在 rm-attribute 之前
 	[false, rmPx, 'rm-px'], // 必须在 shorten-style-attr 之后
 	[false, rmAttribute, 'rm-attribute'], // 必须在 collpase-g、shorten-shape 和 compute-path 之前
-	[false, combineTransform, 'combine-transform'], // 必须在 compute-path、shorten-shape 和 collpase-g 之前
 	[false, shortenShape, 'shorten-shape'], // 必须在 rm-hidden 和 compute-path 之前
 	[false, combinePath, 'combine-path'], // 必须在 rm-hidden 和 compute-path 之前
 	[false, computePath, 'compute-path'],
 	[false, collapseG, 'collapse-g'], // 最好在 combine-path、shorten-shape、compute-path 之后
+	[false, combineTransform, 'combine-transform'], // 必须在 collpase-g 之后
 	[false, shortenDecimalDigits, 'shorten-decimal-digits'],
 	[false, shortenColor, 'shorten-color'],
 	[false, shortenStyleTag, 'shorten-style-tag'], // 最好在 combine-path、shorten-shape、collapse-g 等规则之后
 	[false, collapseTextwrap, 'collapse-textwrap'],
 	[true, combineTextNode],
 	[false, rmXMLNS, 'rm-xmlns'],
-	[false, rmHidden, 'rm-hidden'],
+	[false, rmHidden, 'rm-hidden'], // 最好在 rm-attribute 之后
 ];

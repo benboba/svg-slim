@@ -44,6 +44,11 @@ export const combineStyle = async (dom: IDomNode): Promise<null> => new Promise(
 	};
 
 	traversalNode<ITagNode>(propEq('nodeName', 'style'), node => {
+		const type = node.getAttribute('type');
+		if (type && type !== 'text/css') {
+			rmNode(node);
+			return;
+		}
 		if (firstStyle) {
 			checkCNode(node);
 			rmNode(node);
