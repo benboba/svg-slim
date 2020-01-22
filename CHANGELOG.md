@@ -1,6 +1,6 @@
 # Change Log
 
-## 2020.01.21 v1.5.1
+## 2020.01.22 v1.5.1
 
 ### Comprehensive
 
