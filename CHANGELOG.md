@@ -15,7 +15,7 @@
 
 * Optimize data structure to reduce packing capacity
 * The x, y, dx, dy, and rotate attributes of text and tspan now support length-percentage list form
-* Added logic for [<alpha-value>] (https://www.w3.org/TR/css-color/#typedef-alpha-value) which compares the percentage format and numeric format which is shorter
+* Added logic for [alpha-value](https://www.w3.org/TR/css-color/#typedef-alpha-value) which compares the percentage format and numeric format which is shorter
 * The compute-path rule now takes effect on the path property of animateMotion
 * Added the judgment of whether style attributes are inheritable when parsing the style tree (all styles were considered to be inheritable before, there are badcases)
 * Introduced [css-validator](https://www.npmjs.com/package/css-validator) for css class-style legality verification, removed some logic in the code regarding css legality verification
