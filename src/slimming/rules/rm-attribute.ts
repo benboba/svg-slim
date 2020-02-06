@@ -21,7 +21,7 @@ export const rmAttribute = async (rule: TFinalConfigItem, dom: INode): Promise<n
 			keepAria: boolean;
 		};
 
-		traversalNode<ITagNode>(isTag, node => {
+		traversalNode<ITagNode>(isTag, node => { // tslint:disable-line cyclomatic-complexity
 			if (rmDefault) {
 				execStyleTree(dom as ITagNode);
 			}
@@ -33,6 +33,13 @@ export const rmAttribute = async (rule: TFinalConfigItem, dom: INode): Promise<n
 				// attributeName 指定了不能实现动画的属性，视为无效
 				attributeName = '';
 				node.removeAttribute('attributeName');
+			}
+			if (node.nodeName === 'animateTransform' && attributeName !== 'transform' && attributeName !== 'patternTransform') {
+				// animateTransform 只能修改 tranform 类型的属性
+				// https://svgwg.org/specs/animations/#SVGExtensionsToSMILAnimation
+				attributeName = '';
+				node.removeAttribute('attributeName');
+				return;
 			}
 
 			// href 和 xlink:href 不能并存，如果并存，应该移除后者
@@ -72,20 +79,34 @@ export const rmAttribute = async (rule: TFinalConfigItem, dom: INode): Promise<n
 						animationAttributes.includes(attr.fullname) // 动画属性 from、to、by、values
 						&&
 						animationAttrElements.includes(node.nodeName) // 存在于动画元素上
-						&&
-						(
+					) {
+						if (
 							!attributeName // 没有 attributeName 属性的动画没有意义
 							||
-							// TODO values 没有进一步验证合法性
 							(attr.fullname !== 'values' && !legalValue(regularAttr[attributeName], attr, node.nodeName)) // 动画属性不合法
-						)
-					) {
-						node.removeAttribute(attr.fullname);
-						// 如果已经没有必备的动画属性，移除 attributeName 属性
-						if (!animationAttributes.some(key => node.hasAttribute(key))) {
-							node.removeAttribute('attributeName');
+						) {
+							node.removeAttribute(attr.fullname);
+							// 如果已经没有必备的动画属性，移除 attributeName 属性
+							if (!animationAttributes.some(key => node.hasAttribute(key))) {
+								node.removeAttribute('attributeName');
+							}
+							continue;
 						}
-						continue;
+						// values 是以分号分隔的，需要分隔后对每一项进行合法性验证
+						const values = attr.value.split(';');
+						if (values.every(val => !legalValue(regularAttr[attributeName], {
+							name: 'values',
+							fullname: 'values',
+							namespace: '',
+							value: val.trim(),
+						}, node.nodeName))) {
+							node.removeAttribute(attr.fullname);
+							// 如果已经没有必备的动画属性，移除 attributeName 属性
+							if (!animationAttributes.some(key => node.hasAttribute(key))) {
+								node.removeAttribute('attributeName');
+							}
+							continue;
+						}
 					}
 				}
 

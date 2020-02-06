@@ -415,13 +415,13 @@ const _regularAttr: IRegularAttrDefine = {
 		}],
 		initValue: [{
 			val: '100%',
-			tag: filterPrimitiveElements,
+			tag: filterPrimitiveElements.concat(['svg']),
 		}, {
 			val: '120%',
 			tag: ['filter', 'mask'],
 		}, {
 			val: '0',
-			tag: ['pattern'],
+			tag: ['pattern', 'rect', 'foreignObject'],
 		}, {
 			val: 'auto',
 			tag: ['svg', 'image', 'rect', 'foreignObject'],
@@ -1480,13 +1480,13 @@ const _regularAttr: IRegularAttrDefine = {
 		}],
 		initValue: [{
 			val: '100%',
-			tag: filterPrimitiveElements,
+			tag: filterPrimitiveElements.concat(['svg']),
 		}, {
 			val: '120%',
 			tag: ['filter', 'mask'],
 		}, {
 			val: '0',
-			tag: ['pattern'],
+			tag: ['pattern', 'rect', 'foreignObject'],
 		}, {
 			val: 'auto',
 			tag: ['svg', 'image', 'rect', 'foreignObject'],
@@ -2605,8 +2605,9 @@ const _regularAttr: IRegularAttrDefine = {
 	},
 	'transform-origin': {
 		name: 'transform-origin',
-		couldBeStyle: true,
 		animatable: true,
+		couldBeStyle: true,
+		cantTrans: true,
 		maybeSizeNumber: true,
 		legalValues: [],
 		initValue: '',

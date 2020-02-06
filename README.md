@@ -12,15 +12,15 @@ svg-slimming is an SVG compression tool that provides rich customization and fol
 
 ## Installation
 ```
-	npm install svg-slimming
+npm install svg-slimming
 ```
 
 ## Use
 ```js
-	const svgSlimming = require('svg-slimming');
-	svgSlimming(svgcode[, config]).then(result => {
-		console.log(result);
-	});
+const svgSlimming = require('svg-slimming');
+svgSlimming(svgcode[, config]).then(result => {
+	console.log(result);
+});
 ```
 
 Where svgcode is svg text in string format and config is user-defined optimized configuration
@@ -106,31 +106,31 @@ The optimized configuration is an object in JSON format, where key is the corres
 
 The following is an example of an optimized configuration:
 ```json
-	{
-		"collapse-g": [false],
-		"combine-transform": [true, {
-			"trifuncDigit": 3,
-			"sizeDigit": 2,
-			"angelDigit": 2
-		}]
-	}
+{
+	"collapse-g": [false],
+	"combine-transform": [true, {
+		"trifuncDigit": 3,
+		"sizeDigit": 2,
+		"angelDigit": 2
+	}]
+}
 ```
 
 ** Note: Although the old configuration method can also take effect, it may be removed in the future **
 ```json
-	{
-		"collapse-g": false,
-		"combine-transform": [true, 3, 2, 2]
-	}
+{
+	"collapse-g": false,
+	"combine-transform": [true, 3, 2, 2]
+}
 ```
 
 ### collapse-g
 
 * Default configuration:
 ```json
-	{
-		"collapse-g": [true]
-	}
+{
+	"collapse-g": [true]
+}
 ```
 * Explanation:
 	* When the g element has no children, remove the element
@@ -139,47 +139,47 @@ The following is an example of an optimized configuration:
 
 E.g:
 ```xml
-	<g></g>
-	<g fill="red"><rect width="100" height="100"/></g>
+<g></g>
+<g fill="red"><rect width="100" height="100"/></g>
 ```
 
 After optimization will become:
 ```xml
-	<rect fill="red" width="100" height="100"/>
+<rect fill="red" width="100" height="100"/>
 ```
 
 ### collapse-textwrap
 
 * Default configuration:
 ```json
-	{
-		"collapse-textwrap": [true]
-	}
+{
+	"collapse-textwrap": [true]
+}
 ```
 * Explanation:
 	* For all nested text containers, when the inner text container does not contain any valid attributes, remove the element and promote the text content to the child nodes of the parent element
 
 E.g:
 ```xml
-	<text></text>
-	<text fill="red"><tspan>123</tspan></text>
+<text></text>
+<text fill="red"><tspan>123</tspan></text>
 ```
 
 After optimization will become:
 ```xml
-	<text fill="red">123</text>
+<text fill="red">123</text>
 ```
 
 ### combine-path
 
 * Default configuration:
 ```json
-	{
-		"combine-path": [true, {
-			"disregardFill": false,
-			"disregardOpacity": false
-		}]
-	}
+{
+	"combine-path": [true, {
+		"disregardFill": false,
+		"disregardOpacity": false
+	}]
+}
 ```
 * Explanation:
 	* Merge path nodes that meet the following conditions:
@@ -200,26 +200,26 @@ After optimization will become:
 		* Whether to allow paths with transparency less than 1
 E.g:
 ```xml
-	<path d="M0,0L100,100" fill="none" stroke="red" stroke-width="2"/>
-	<path d="M0,50L100,150" fill="none" stroke="red" stroke-width="2"/>
+<path d="M0,0L100,100" fill="none" stroke="red" stroke-width="2"/>
+<path d="M0,50L100,150" fill="none" stroke="red" stroke-width="2"/>
 ```
 
 After optimization will become:
 ```xml
-	<path d="M0,0L100,100M0,50L100,150" fill="none" stroke="red" stroke-width="2"/>
+<path d="M0,0L100,100M0,50L100,150" fill="none" stroke="red" stroke-width="2"/>
 ```
 
 ### combine-transform
 
 * Default configuration:
 ```json
-	{
-		"combine-transform": [true, {
-			"angelDigit": 2,
-			"sizeDigit": 2,
-			"trifuncDigit": 3
-		}]
-	}
+{
+	"combine-transform": [true, {
+		"angelDigit": 2,
+		"sizeDigit": 2,
+		"trifuncDigit": 3
+	}]
+}
 ```
 * Explanation:
 	* Analyze and merge transform attributes
@@ -239,26 +239,26 @@ After optimization will become:
 
 E.g:
 ```xml
-	<rect fill="red" width="100" height="100" transform="translate(100,100)scale(2)rotate(180)"/>
+<rect fill="red" width="100" height="100" transform="translate(100,100)scale(2)rotate(180)"/>
 ```
 
 After optimization will become:
 ```xml
-	<rect fill="red" width="100" height="100" transform="matrix(-2,0,0,-2,100,100)"/>
+<rect fill="red" width="100" height="100" transform="matrix(-2,0,0,-2,100,100)"/>
 ```
 
 ### compute-path
 
 * Default configuration:
 ```json
-	{
-		"compute-path": [true, {
-			"angelDigit": 2,
-			"sizeDigit": 2,
-			"straighten": 0,
-			"thinning": 0
-		}]
-	}
+{
+	"compute-path": [true, {
+		"angelDigit": 2,
+		"sizeDigit": 2,
+		"straighten": 0,
+		"thinning": 0
+	}]
+}
 ```
 * Explanation:
 	* Calculate the d attribute of path to make it shorter
@@ -284,25 +284,25 @@ After optimization will become:
 
 E.g:
 ```xml
-	<path fill="red" d="M0,0L100,0,100,100,0,100z"/>
+<path fill="red" d="M0,0L100,0,100,100,0,100z"/>
 ```
 
 After optimization will become:
 ```xml
-	<path fill="red" d="m0,0h100v100H0z"/>
+<path fill="red" d="m0,0h100v100H0z"/>
 ```
 
 ### rm-attribute
 
 * Default configuration:
 ```json
-	{
-		"rm-attribute": [true, {
-			"keepAria": false,
-			"keepEvent": false,
-			"rmDefault": true
-		}]
-	}
+{
+	"rm-attribute": [true, {
+		"keepAria": false,
+		"keepEvent": false,
+		"rmDefault": true
+	}]
+}
 ```
 * Explanation:
 	* Remove non-canonical attributes (not in [SVG spec](https://www.w3.org/TR/SVG/attindex.html) and not attributes of the xmlns class)
@@ -319,25 +319,25 @@ After optimization will become:
 
 E.g:
 ```xml
-	<g fill="red">
-		<rect fill="black" width="100" height="100" aa="1" bb="2" cc="3" aria-autocomplete="both" onclick="console.log('a');"/>
-	</g>
+<g fill="red">
+	<rect fill="black" width="100" height="100" aa="1" bb="2" cc="3" aria-autocomplete="both" onclick="console.log('a');"/>
+</g>
 ```
 
 After optimization will become:
 ```xml
-	<g fill="red">
-		<rect fill="black" width="100" height="100"/>
-	</g>
+<g fill="red">
+	<rect fill="black" width="100" height="100"/>
+</g>
 ```
 
 ### rm-comments
 
 * Default configuration:
 ```json
-	{
-		"rm-comments": [true]
-	}
+{
+	"rm-comments": [true]
+}
 ```
 * Explanation:
 	* Remove comment
@@ -346,9 +346,9 @@ After optimization will become:
 
 * Default configuration:
 ```json
-	{
-		"rm-doctype": [true]
-	}
+{
+	"rm-doctype": [true]
+}
 ```
 * Explanation:
 	* Remove DOCTYPE declaration
@@ -357,9 +357,9 @@ After optimization will become:
 
 * Default configuration:
 ```json
-	{
-		"rm-hidden": [true]
-	}
+{
+	"rm-hidden": [true]
+}
 ```
 * Explanation:
 	* Remove elements with display attribute none
@@ -371,33 +371,33 @@ The following will be removed:
 
 display IS none
 ```xml
-	<g style="display:none"></g>
+<g style="display:none"></g>
 ```
 
 stroke and fill are none
 ```xml
-	<rect fill="none" stroke="none" width="100" height="100"/>
+<rect fill="none" stroke="none" width="100" height="100"/>
 ```
 
 use element references a non-existing id
 ```xml
-	<use href="#undefined"/>
+<use href="#undefined"/>
 ```
 
 Some elements that are not visible because the size attribute is 0, e.g:
 ```xml
-	<pattern id="pattern-1" width="0" height="0" />
+<pattern id="pattern-1" width="0" height="0" />
 ```
 
 ### rm-irregular-nesting
 
 * Default configuration:
 ```json
-	{
-		"rm-irregular-nesting": [true, {
-			"ignore": []
-		}]
-	}
+{
+	"rm-irregular-nesting": [true, {
+		"ignore": []
+	}]
+}
 ```
 * Explanation:
 	* Remove irregularly nested tags
@@ -408,23 +408,23 @@ Some elements that are not visible because the size attribute is 0, e.g:
 
 E.g:
 ```xml
-	<rect fill="red" width="100px" height="100px"><circle cx="100" cy="100" r="100"/></rect>
+<rect fill="red" width="100px" height="100px"><circle cx="100" cy="100" r="100"/></rect>
 ```
 
 After optimization will become:
 ```xml
-	<rect fill="red" width="100" height="100"/>
+<rect fill="red" width="100" height="100"/>
 ```
 
 ### rm-irregular-tag
 
 * Default configuration:
 ```json
-	{
-		"rm-irregular-tag": [true, {
-			"ignore": []
-		}]
-	}
+{
+	"rm-irregular-tag": [true, {
+		"ignore": []
+	}]
+}
 ```
 * Explanation:
 	* Remove tags that are not in [SVG Specification](https://www.w3.org/TR/SVG/eltindex.html)
@@ -437,32 +437,32 @@ After optimization will become:
 
 * Default configuration:
 ```json
-	{
-		"rm-px": [true]
-	}
+{
+	"rm-px": [true]
+}
 ```
 * Explanation:
 	* Remove px units and 0 units
 
 E.g:
 ```xml
-	<rect fill="red" width="100px" height="100px" rx="0pt"/>
+<rect fill="red" width="100px" height="100px" rx="0pt"/>
 ```
 
 After optimization will become:
 ```xml
-	<rect fill="red" width="100" height="100" rx="0"/>
+<rect fill="red" width="100" height="100" rx="0"/>
 ```
 
 ### rm-unnecessary
 
 * Default configuration:
 ```json
-	{
-		"rm-unnecessary": [true, {
-			"tags": ["desc", "discard", "foreignObject", "video", "audio", "iframe", "canvas", "metadata", "script", "title", "unknown", "image"]
-		}]
-	}
+{
+	"rm-unnecessary": [true, {
+		"tags": ["desc", "discard", "foreignObject", "video", "audio", "iframe", "canvas", "metadata", "script", "title", "unknown", "image"]
+	}]
+}
 ```
 * Explanation:
 	* Remove unnecessary tags
@@ -478,9 +478,9 @@ After optimization will become:
 
 * Default configuration:
 ```json
-	{
-		"rm-version": [true]
-	}
+{
+	"rm-version": [true]
+}
 ```
 * Explanation:
 	* Remove version attribute from svg element
@@ -489,30 +489,30 @@ After optimization will become:
 
 * Default configuration:
 ```json
-	{
-		"rm-viewbox": [true]
-	}
+{
+	"rm-viewbox": [true]
+}
 ```
 * Explanation:
 	* When x, y, width, height are exactly the same, remove viewBox property
 
 E.g:
 ```xml
-	<svg width="1000" height="600" viewBox="0 0 1000 600">
+<svg width="1000" height="600" viewBox="0 0 1000 600">
 ```
 
 After optimization will become:
 ```xml
-	<svg width="1000" height="600">
+<svg width="1000" height="600">
 ```
 
 ### rm-xml-decl
 
 * Default configuration:
 ```json
-	{
-		"rm-xml-decl": [true]
-	}
+{
+	"rm-xml-decl": [true]
+}
 ```
 * Explanation:
 	* Remove xml declaration
@@ -521,34 +521,34 @@ After optimization will become:
 
 * Default configuration:
 ```json
-	{
-		"rm-xmlns": [true]
-	}
+{
+	"rm-xmlns": [true]
+}
 ```
 * Explanation:
 	* Remove unreferenced xmlns definitions, remove attributes containing undefined namespaces
 
 E.g:
 ```xml
-	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-		<rect fill="red" width="100" height="100"/>
-	</svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<rect fill="red" width="100" height="100"/>
+</svg>
 ```
 
 After optimization will become(Since the xlink namespace is not referenced, it was removed):
 ```xml
-	<svg xmlns="http://www.w3.org/2000/svg">
-		<rect fill="red" width="100" height="100"/>
-	</svg>
+<svg xmlns="http://www.w3.org/2000/svg">
+	<rect fill="red" width="100" height="100"/>
+</svg>
 ```
 
 ### shorten-class
 
 * Default configuration:
 ```json
-	{
-		"shorten-class": [true]
-	}
+{
+	"shorten-class": [true]
+}
 ```
 * Explanation:
 	* Shorten className
@@ -556,26 +556,26 @@ After optimization will become(Since the xlink namespace is not referenced, it w
 
 E.g:
 ```xml
-	<style>.red_rect {fill: red;}</style>
-	<rect class="red_rect blue_rect" width="100" height="100"/>
+<style>.red_rect {fill: red;}</style>
+<rect class="red_rect blue_rect" width="100" height="100"/>
 ```
 
 After optimization will become (.red_rect is shortened to .a, .blue_rect is removed directly):
 ```xml
-	<style>.a {fill: red;}</style>
-	<rect class="a" width="100" height="100"/>
+<style>.a {fill: red;}</style>
+<rect class="a" width="100" height="100"/>
 ```
 
 ### shorten-color
 
 * Default configuration:
 ```json
-	{
-		"shorten-color": [true, {
-			"opacityDigit": 3,
-			"rrggbbaa": false
-		}]
-	}
+{
+	"shorten-color": [true, {
+		"opacityDigit": 3,
+		"rrggbbaa": false
+	}]
+}
 ```
 * Explanation:
 	* Keep color definitions as short as possible
@@ -590,24 +590,24 @@ After optimization will become (.red_rect is shortened to .a, .blue_rect is remo
 
 E.g:
 ```xml
-	<rect fill="#ff0000" stroke="rgb(255,255,255)" color="rgba(0,0,0,0)" width="100" height="100"/>
+<rect fill="#ff0000" stroke="rgb(255,255,255)" color="rgba(0,0,0,0)" width="100" height="100"/>
 ```
 
 After optimization will become:
 ```xml
-	<rect fill="red" stroke="#fff" color="transparent" width="100" height="100"/>
+<rect fill="red" stroke="#fff" color="transparent" width="100" height="100"/>
 ```
 
 ### shorten-decimal-digits
 
 * Default configuration:
 ```json
-	{
-		"shorten-decimal-digits": [true, {
-			"angelDigit": 2,
-			"sizeDigit": 2
-		}]
-	}
+{
+	"shorten-decimal-digits": [true, {
+		"angelDigit": 2,
+		"sizeDigit": 2
+	}]
+}
 ```
 * Explanation:
 	* Narrowing different types of numerical precision
@@ -623,21 +623,21 @@ After optimization will become:
 
 E.g:
 ```xml
-	<rect fill="red" width="100.00001" height="100.00001" fill-opacity="0.05999"/>
+<rect fill="red" width="100.00001" height="100.00001" fill-opacity="0.05999"/>
 ```
 
 After optimization will become:
 ```xml
-	<rect fill="red" width="100" height="100" fill-opacity="6%"/>
+<rect fill="red" width="100" height="100" fill-opacity="6%"/>
 ```
 
 ### shorten-defs
 
 * Default configuration:
 ```json
-	{
-		"shorten-defs": [true]
-	}
+{
+	"shorten-defs": [true]
+}
 ```
 * Explanation:
 	* Merge all defs tags
@@ -646,34 +646,34 @@ After optimization will become:
 
 E.g:
 ```xml
-	<defs>
-	    <circle id="circle-1" fill="#000" cx="60" cy="60" r="60"></circle>
-	</defs>
-	<defs>
-	    <circle fill-opacity="0.599999964" fill="#000000" cx="60" cy="60" r="60"></circle>
-	</defs>
-	<mask id="mask-2" fill="white">
-		<use xlink:href="#circle-1" />
-	</mask>
+<defs>
+	<circle id="circle-1" fill="#000" cx="60" cy="60" r="60"></circle>
+</defs>
+<defs>
+	<circle fill-opacity="0.599999964" fill="#000000" cx="60" cy="60" r="60"></circle>
+</defs>
+<mask id="mask-2" fill="white">
+	<use xlink:href="#circle-1" />
+</mask>
 ```
 
 After optimization will become:
 ```xml
-	<defs>
-	    <circle id="path-1" fill="#000" cx="60" cy="60" r="60"></circle>
-	</defs>
-	<mask id="mask-2" fill="white">
-		<use xlink:href="#path-1" />
-	</mask>
+<defs>
+	<circle id="path-1" fill="#000" cx="60" cy="60" r="60"></circle>
+</defs>
+<mask id="mask-2" fill="white">
+	<use xlink:href="#path-1" />
+</mask>
 ```
 
 ### shorten-id
 
 * Default configuration:
 ```json
-	{
-		"shorten-id": [true]
-	}
+{
+	"shorten-id": [true]
+}
 ```
 * Explanation:
 	* Shorten ID
@@ -681,35 +681,35 @@ After optimization will become:
 
 E.g:
 ```xml
-	<defs>
-	    <circle id="circle-1" fill="#000" cx="60" cy="60" r="60"></circle>
-	</defs>
-	<mask id="mask-2" fill="white">
-		<use xlink:href="#circle-1" />
-	</mask>
-	<rect id="rect-3" fill="red" width="100" height="100" mask="url(#mask-2)"/>
+<defs>
+	<circle id="circle-1" fill="#000" cx="60" cy="60" r="60"></circle>
+</defs>
+<mask id="mask-2" fill="white">
+	<use xlink:href="#circle-1" />
+</mask>
+<rect id="rect-3" fill="red" width="100" height="100" mask="url(#mask-2)"/>
 ```
 
 After optimization will become (#rect-3 is removed and the other 2 ids are shortened):
 ```xml
-	<defs>
-	    <circle id="a" fill="#000" cx="60" cy="60" r="60"></circle>
-	</defs>
-	<mask id="b" fill="white">
-		<use xlink:href="#a" />
-	</mask>
-	<rect fill="red" width="100" height="100" mask="url(#b)"/>
+<defs>
+	<circle id="a" fill="#000" cx="60" cy="60" r="60"></circle>
+</defs>
+<mask id="b" fill="white">
+	<use xlink:href="#a" />
+</mask>
+<rect fill="red" width="100" height="100" mask="url(#b)"/>
 ```
 
 ### shorten-shape(v1.5.0+)
 
 * Default configuration:
 ```json
-	{
-		"shorten-shape": [true, {
-			"thinning": 0
-		}]
-	}
+{
+	"shorten-shape": [true, {
+		"thinning": 0
+	}]
+}
 ```
 * Explanation:
 	* If the result of the shape mapping to path is shorter, use path
@@ -723,24 +723,24 @@ After optimization will become (#rect-3 is removed and the other 2 ids are short
 
 E.g:
 ```xml
-	<rect fill="red" width="100" height="100"/>
+<rect fill="red" width="100" height="100"/>
 ```
 
 After optimization will become:
 ```xml
-	<path fill="red" d="M0,0H100V100H0z"/>
+<path fill="red" d="M0,0H100V100H0z"/>
 ```
 
 ### shorten-style-attr
 
 * Default configuration:
 ```json
-	{
-		"shorten-style-attr": [true, {
-			"exchange": false,
-			"rmDefault": true
-		}]
-	}
+{
+	"shorten-style-attr": [true, {
+		"exchange": false,
+		"rmDefault": true
+	}]
+}
 ```
 * Explanation:
 	* Shorten style attribute
@@ -758,30 +758,30 @@ After optimization will become:
 
 E.g:
 ```xml
-	<rect fill="red" style="fill:blue;background:red;"/>
+<rect fill="red" style="fill:blue;background:red;"/>
 ```
 
 After optimization will become (the fill attribute will be overwritten by the definition of the same name in the style, so it is removed, and the background is not a standard svg style, so it is removed)
 :
 ```xml
-	<rect style="fill:blue;"/>
+<rect style="fill:blue;"/>
 ```
 
 如果 svg 中不存在 style 标签，或 exchange 被设定为 true ，则优化结果为：
 ```xml
-	<rect fill="blue"/>
+<rect fill="blue"/>
 ```
 
 ### shorten-style-tag
 
 * Default configuration:
 ```json
-	{
-		"shorten-style-tag": [true, {
-			"deepShorten": true,
-			"rmDefault": true
-		}]
-	}
+{
+	"shorten-style-tag": [true, {
+		"deepShorten": true,
+		"rmDefault": true
+	}]
+}
 ```
 * Explanation:
 	* Shorten the content of the style tag
@@ -820,13 +820,13 @@ An XML parsing tool is included in the project and can be used directly after in
 
 ## Use
 ```js
-	const xmlParser = require('svg-slimming/xml-parser.js');
-	
-	xmlParser.parse(xmlcode).then(result => {
-		console.log(result);
-	});
-	
-	console.log(xmlParser.NodeType);
+const xmlParser = require('svg-slimming/xml-parser.js');
+
+xmlParser.parse(xmlcode).then(result => {
+	console.log(result);
+});
+
+console.log(xmlParser.NodeType);
 ```
 
 Where xmlcode is xml text in string format (not limited to svg)
@@ -896,39 +896,39 @@ The specific definitions are as follows:
 
 ## Node definition (typescript format)
 ```ts
-	interface INode {
-		nodeName: string;
-		nodeType: NodeType;
-		namespace?: string;
-		textContent?: string;
+interface INode {
+	nodeName: string;
+	nodeType: NodeType;
+	namespace?: string;
+	textContent?: string;
 
-		readonly attributes?: IAttr[];
-		readonly childNodes?: INode[];
+	readonly attributes?: IAttr[];
+	readonly childNodes?: INode[];
 
-		parentNode?: INode;
+	parentNode?: INode;
 
-		cloneNode(): INode;
+	cloneNode(): INode;
 
-		appendChild(childNode: INode): void;
-		insertBefore(childNode: INode, previousTarget: INode): void;
-		replaceChild(childNode: INode, ...children: INode[]): void;
-		removeChild(childNode: INode): void;
+	appendChild(childNode: INode): void;
+	insertBefore(childNode: INode, previousTarget: INode): void;
+	replaceChild(childNode: INode, ...children: INode[]): void;
+	removeChild(childNode: INode): void;
 
-		hasAttribute(name: string, namespace?: string): boolean;
-		getAttribute(name: string, namespace?: string): string;
-		setAttribute(name: string, value: string, namespace?: string): void;
-		removeAttribute(name: string, namespace?: string): void;
-	}
+	hasAttribute(name: string, namespace?: string): boolean;
+	getAttribute(name: string, namespace?: string): string;
+	setAttribute(name: string, value: string, namespace?: string): void;
+	removeAttribute(name: string, namespace?: string): void;
+}
 ```
 
 ## Attribute definition (typescript format)
 ```ts
-	interface IAttr {
-		name: string; // Attribute name (without namespace)
-		value: string;
-		fullname: string; // Attribute full name (including namespace)
-		namespace?: string;
-	}
+interface IAttr {
+	name: string; // Attribute name (without namespace)
+	value: string;
+	fullname: string; // Attribute full name (including namespace)
+	namespace?: string;
+}
 ```
 
 ## What are the advantages of this xml parser?

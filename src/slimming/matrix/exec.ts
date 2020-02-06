@@ -37,7 +37,7 @@ export const execMatrix = (str: string): IMatrixFunc[] => {
 				}
 			}
 			result.push({
-				type: match[1],
+				type: match[1] as IMatrixFunc['type'],
 				val,
 			});
 			match = matrixReg.exec(str);

@@ -30,7 +30,7 @@ declare interface IFinalConfig {
 }
 
 declare interface IMatrixFunc {
-	type: string; // 函数类型
+	type: 'translate' | 'rotate' | 'scale' | 'skewX' | 'skewY' | 'matrix'; // 函数类型
 	noEffect?: boolean; // 是否无效
 	val: number[]; // 参数列表
 }
@@ -98,6 +98,11 @@ declare interface IRGBColor {
 	a: number;
 	origin: string;
 	valid: boolean;
+}
+
+declare interface IAnimateAttr {
+	attributeName: string;
+	value: string[];
 }
 
 declare module 'svg-path-contours' {

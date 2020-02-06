@@ -158,12 +158,12 @@
 
 E.g:
 ```xml
-	<svg><style>#redText{fill:yellow;marker-end:none}</style><text id="redText">123</text></svg>
+<svg><style>#redText{fill:yellow;marker-end:none}</style><text id="redText">123</text></svg>
 ```
 
 Now optimized to:
 ```xml
-	<svg><style>#redText{fill:yellow}</style><text id="redText">123</text></svg>
+<svg><style>#redText{fill:yellow}</style><text id="redText">123</text></svg>
 ```
 
 ## 2019.03.13 v1.3.2
@@ -174,17 +174,17 @@ Now optimized to:
 
 E.g:
 ```xml
-	<svg><g id="a" fill="red"><rect fill="white"/><g fill="blue"><rect/></g></g></svg>
+<svg><g id="a" fill="red"><rect fill="white"/><g fill="blue"><rect/></g></g></svg>
 ```
 
 The old optimization results were:
 ```xml
-	<svg><g id="a" fill="red"><rect fill="white"/><rect fill="blue"/></g></svg>
+<svg><g id="a" fill="red"><rect fill="white"/><rect fill="blue"/></g></svg>
 ```
 
 Now optimized to:
 ```xml
-	<svg><g id="a"><rect fill="white"/><rect fill="blue"/></g></svg>
+<svg><g id="a"><rect fill="white"/><rect fill="blue"/></g></svg>
 ```
 
 ## 2019.03.12 v1.3.1
@@ -325,9 +325,9 @@ Now optimized to:
 * The combine-path rule adds the restriction that only adjacent path nodes can be combined
 * Added attributes to svg-slimming package to point to xmlParser and NodeType, which can be called by
 ```javascript
-	const svgSlimming = require('svg-slimming');
-	svgSlimming.xmlParser('svg string').then(result => { console.log(result); });
-	console.log(svgSlimming.NodeType);
+const svgSlimming = require('svg-slimming');
+svgSlimming.xmlParser('svg string').then(result => { console.log(result); });
+console.log(svgSlimming.NodeType);
 ```
 
 ## 2018.08.15 v1.2.2

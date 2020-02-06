@@ -1,5 +1,5 @@
 import { equals } from 'ramda';
-import { exec as execColor } from '../color/exec';
+import { execColor } from '../color/exec';
 import { execNumberList } from '../utils/exec-numberlist';
 
 export const valueIsEqual = (attrDefine: IRegularAttr, value1: string, value2: string): boolean => {

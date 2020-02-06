@@ -82,6 +82,8 @@ export const config: IFinalConfig = {
 	}],
 	// 合并所有的 defs ，移除无效的 defs 定义
 	'shorten-defs': [true],
+	// 移除无效的滤镜元素，移除不必要的滤镜元素属性
+	'shorten-filter': [true],
 	// 缩短 ID ，并移除不被引用的 ID
 	'shorten-id': [true],
 	// 缩短 shape 类型的节点

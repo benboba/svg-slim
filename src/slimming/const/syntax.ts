@@ -52,6 +52,8 @@ export const numberOptionalFullMatch = new RegExp(`^${numberPattern}(?:\\s*${num
 export const numberListFullMatch = new RegExp(`^${numberSequence}$`);
 export const numberSemiSepatatedFullMatch = new RegExp(`^${numberPattern}(?:${semi}${numberPattern})*(?:${semi})?$`);
 export const integerFullMatch = /^[+-]?(?:\d+|(?:\d*\.)?\d+[eE][+-]?\d+)$/;
+export const pureNumOrWithPx = new RegExp(`^${numberPattern}(?:px)?$`);
+export const pureNumOrWithPxList = new RegExp(`^${numberPattern}(?:px)?(?:${commaWsp}${numberPattern}(?:px)?)*$`);
 
 // https://www.w3.org/TR/css-values-3/#angle-value
 export const angel = 'deg|grad|rad|turn';

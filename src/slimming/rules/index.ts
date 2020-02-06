@@ -25,6 +25,7 @@ import { shortenClass } from './shorten-class';
 import { shortenColor } from './shorten-color';
 import { shortenDecimalDigits } from './shorten-decimal-digits';
 import { shortenDefs } from './shorten-defs';
+import { shortenFilter } from './shorten-filter';
 import { shortenID } from './shorten-id';
 import { shortenShape } from './shorten-shape';
 import { shortenStyleAttr } from './shorten-style-attr';
@@ -45,6 +46,7 @@ export const rules: RuleItem[] = [
 	[false, rmIrregularNesting, 'rm-irregular-nesting'],
 	[false, rmUnnecessary, 'rm-unnecessary'],
 	[false, rmViewBox, 'rm-viewbox'],
+	[false, shortenFilter, 'shorten-filter'],
 	[false, shortenID, 'shorten-id'], // 必须在 shorten-defs 之前
 	[false, shortenClass, 'shorten-class'],
 	[false, shortenDefs, 'shorten-defs'],
@@ -56,8 +58,8 @@ export const rules: RuleItem[] = [
 	[false, computePath, 'compute-path'],
 	[false, collapseG, 'collapse-g'], // 最好在 combine-path、shorten-shape、compute-path 之后
 	[false, combineTransform, 'combine-transform'], // 必须在 collpase-g 之后
-	[false, shortenDecimalDigits, 'shorten-decimal-digits'],
-	[false, shortenColor, 'shorten-color'],
+	[false, shortenDecimalDigits, 'shorten-decimal-digits'], // 最后再优化数值
+	[false, shortenColor, 'shorten-color'], // 最后再优化数值
 	[false, shortenStyleTag, 'shorten-style-tag'], // 最好在 combine-path、shorten-shape、collapse-g 等规则之后
 	[false, collapseTextwrap, 'collapse-textwrap'],
 	[true, combineTextNode],
