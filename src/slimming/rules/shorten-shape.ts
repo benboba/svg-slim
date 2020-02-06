@@ -1,17 +1,17 @@
 import { douglasPeucker as DP } from '../algorithm/douglas-peucker';
 import { shapeElements } from '../const/definitions';
-import { numberGlobal, numberPattern } from '../const/syntax';
+import { numberGlobal, numberPattern, pureNumOrWithPx } from '../const/syntax';
 import { execNumberList } from '../utils/exec-numberlist';
 import { shortenNumber } from '../utils/shorten-number';
 import { shortenNumberList } from '../utils/shorten-number-list';
 import { createTag } from '../xml/create';
 import { execStyleTree } from '../xml/exec-style-tree';
+import { checkAnimateAttr, getAnimateAttr } from '../xml/get-animate-attr';
 import { getAttr } from '../xml/get-attr';
 import { rmAttrs } from '../xml/rm-attrs';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
 
-const pureNumOrWithPx = new RegExp(`^${numberPattern}(?:px)?$`);
 const startWithNumber = new RegExp(`^(${numberPattern})`);
 
 const formatRect = (node: ITagNode) => {
@@ -30,6 +30,13 @@ const formatRect = (node: ITagNode) => {
 	// 如果 rx 或 ry 存在，不能转换为 path
 	const rx = getAttr(node, 'rx', 'auto');
 	const ry = getAttr(node, 'ry', 'auto');
+	// rx 和 ry 相同，移除 ry
+	if (rx === ry || ry === 'auto') {
+		rmAttrs(node, ['ry']);
+	}
+	if (rx === 'auto') {
+		rmAttrs(node, ['rx']);
+	}
 	const rxExec = startWithNumber.exec(rx);
 	const ryExec = startWithNumber.exec(ry);
 	if (rxExec && +rxExec[1] > 0 && (!ryExec || +ryExec[1] !== 0)) {
@@ -67,9 +74,15 @@ const formatLine = (node: ITagNode) => {
 	const strokeWidth = getAttr(node, 'stroke-width', '1');
 
 	const swExec = startWithNumber.exec(strokeWidth);
+	const animateAttrs = getAnimateAttr(node);
 
 	// 是否存在 marker 引用
-	const hasMarker = getAttr(node, 'marker-start', 'none') !== 'none' || getAttr(node, 'marker-mid', 'none') !== 'none' || getAttr(node, 'marker-end', 'none') !== 'none';
+	const hasMarker = getAttr(node, 'marker-start', 'none') !== 'none'
+		|| getAttr(node, 'marker-mid', 'none') !== 'none'
+		|| getAttr(node, 'marker-end', 'none') !== 'none'
+		|| checkAnimateAttr(animateAttrs, 'marker-start', val => val !== 'none')
+		|| checkAnimateAttr(animateAttrs, 'marker-mid', val => val !== 'none')
+		|| checkAnimateAttr(animateAttrs, 'marker-end', val => val !== 'none');
 
 	// 如果 stroke 或 stroke-width 不合规范，直接移除
 	if (!hasMarker && (!stroke || stroke === 'none' || !swExec || +swExec[1] <= 0)) {
@@ -93,9 +106,13 @@ const formatLine = (node: ITagNode) => {
 	});
 
 	// 是否存在 stroke
-	const hasStroke = getAttr(node, 'stroke', 'none') !== 'none' && getAttr(node, 'stroke-width', '1') !== '0';
+	const hasStroke = (
+		getAttr(node, 'stroke', 'none') !== 'none' || checkAnimateAttr(animateAttrs, 'stroke', val => val !== 'none')
+	) && (
+		getAttr(node, 'stroke-width', '1') !== '0' || checkAnimateAttr(animateAttrs, 'stroke-width', val => val !== '0')
+	);
 	// 是否存在 stroke-linecap
-	const hasStrokeCap = getAttr(node, 'stroke-linecap', 'butt') !== 'butt';
+	const hasStrokeCap = getAttr(node, 'stroke-linecap', 'butt') !== 'butt' || checkAnimateAttr(animateAttrs, 'stroke-linecap', val => val !== 'butt');
 	// 如果没有发生移动，直接移除
 	if (shapeAttr.x1 === shapeAttr.x2 && shapeAttr.y1 === shapeAttr.y2 && !hasMarker && (!hasStroke || !hasStrokeCap)) {
 		node.nodeName = 'remove';
@@ -114,12 +131,22 @@ const formatPoly = (thinning: number, node: ITagNode, addZ: boolean) => {
 	let d = '';
 	if (node.hasAttribute('points')) {
 		let points = execNumberList(node.getAttribute('points') as string);
+		const animateAttrs = getAnimateAttr(node);
 		// 是否存在 marker 引用
-		const hasMarker = getAttr(node, 'marker-start', 'none') !== 'none' || getAttr(node, 'marker-mid', 'none') !== 'none' || getAttr(node, 'marker-end', 'none') !== 'none';
+		const hasMarker = getAttr(node, 'marker-start', 'none') !== 'none'
+			|| getAttr(node, 'marker-mid', 'none') !== 'none'
+			|| getAttr(node, 'marker-end', 'none') !== 'none'
+			|| checkAnimateAttr(animateAttrs, 'marker-start', val => val !== 'none')
+			|| checkAnimateAttr(animateAttrs, 'marker-mid', val => val !== 'none')
+			|| checkAnimateAttr(animateAttrs, 'marker-end', val => val !== 'none');
 		// 是否存在 stroke
-		const hasStroke = getAttr(node, 'stroke', 'none') !== 'none' && getAttr(node, 'stroke-width', '1') !== '0';
+		const hasStroke = (
+			getAttr(node, 'stroke', 'none') !== 'none' || checkAnimateAttr(animateAttrs, 'stroke', val => val !== 'none')
+		) && (
+			getAttr(node, 'stroke-width', '1') !== '0' || checkAnimateAttr(animateAttrs, 'stroke-width', val => val !== '0')
+		);
 		// 是否存在 stroke-linecap
-		const hasStrokeCap = getAttr(node, 'stroke-linecap', 'butt') !== 'butt';
+		const hasStrokeCap = getAttr(node, 'stroke-linecap', 'butt') !== 'butt' || checkAnimateAttr(animateAttrs, 'stroke-linecap', val => val !== 'butt');
 		if (points.length % 2 === 1) {
 			points.pop();
 		}
@@ -151,8 +178,14 @@ const ellipseToCircle = (node: ITagNode, r: string) => {
 };
 
 const formatEllipse = (node: ITagNode, originNode: ITagNode) => {
-	const rx = getAttr(node, 'rx', '');
-	const ry = getAttr(node, 'ry', '');
+	let rx = getAttr(node, 'rx', 'auto');
+	let ry = getAttr(node, 'ry', 'auto');
+	if (rx === 'auto') {
+		rx = ry;
+	}
+	if (ry === 'auto') {
+		ry = rx;
+	}
 
 	const rxExec = startWithNumber.exec(rx);
 	const ryExec = startWithNumber.exec(ry);

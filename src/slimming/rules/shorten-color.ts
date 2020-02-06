@@ -1,6 +1,6 @@
 import { Declaration, StyleRules } from 'css';
 import { both, has, pipe, toLower } from 'ramda';
-import { exec } from '../color/exec';
+import { execColor } from '../color/exec';
 import { rgb2hsl } from '../color/rgb2hsl';
 import { FF, Hundred, OPACITY_DIGIT } from '../const';
 import { regularAttr } from '../const/regular-attr';
@@ -156,7 +156,7 @@ const shortenMap = {
 const shortenReg = new RegExp(`(?:${Object.keys(shortenMap).join('|')})(?=[^0-9a-f]|$)`, 'gi');
 
 const formatColor = (rgba: boolean, str: string, digit: number): string => {
-	const color = exec(str, digit);
+	const color = execColor(str, digit);
 	let s = color.origin;
 
 	if (color.valid) {

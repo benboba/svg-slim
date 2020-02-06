@@ -1,6 +1,6 @@
 // 合并属性和样式完全相同的路径
 import { has } from 'ramda';
-import { exec as execColor } from '../color/exec';
+import { execColor } from '../color/exec';
 import { execAlpha } from '../math/exec-alpha';
 // import { doCompute } from '../path/do-compute';
 // import { execPath } from '../path/exec';

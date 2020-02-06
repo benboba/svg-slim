@@ -48,7 +48,7 @@ describe('rules/shorten-style-attr', () => {
 		</svg>`;
 		const dom = await parse(xml) as ITagNode;
 		await shortenStyleAttr([true, { exchange: true, rmDefault: true }], dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><g style="transform-origin:bottom;transform:rotate(45deg)"><text title="123" font-family="&quot;微软雅黑&quot;" fill="rebeccapurple" stroke="blue">123</text><g fill="#fff"><rect x="1"/></g></g><rect stroke="red" fill="blue"/><text title="444" style="fill:red;stroke:blue;font-family:Arial;font-weight:700;fill-opacity:0.5">345</text><animate attributeName="opacity" from="0"/></svg>');
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><g transform-origin="bottom" style="transform:rotate(45deg)"><text title="123" font-family="&quot;微软雅黑&quot;" fill="rebeccapurple" stroke="blue">123</text><g fill="#fff"><rect x="1"/></g></g><rect stroke="red" fill="blue"/><text title="444" style="fill:red;stroke:blue;font-family:Arial;font-weight:700;fill-opacity:0.5">345</text><animate attributeName="opacity" from="0"/></svg>');
 	});
 
 	it('深度继承的情况', async () => {

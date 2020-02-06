@@ -1,4 +1,4 @@
-import { descriptiveElements, animationElements, paintServerElements, shapeElements, structuralElements, lightSourceElements, filterPrimitiveElements, gradientElements, textContentChildElements, conditionalProcessingAttributes, coreAttributes, deprecatedXlinkAttributes, animationAdditionAttributes, animationTimingAttributes, animationValueAttributes, rectAttributes, transferFunctionElementAttributes } from './definitions';
+import { animationAdditionAttributes, animationElements, animationTimingAttributes, animationValueAttributes, conditionalProcessingAttributes, coreAttributes, deprecatedXlinkAttributes, descriptiveElements, filterPrimitiveElements, gradientElements, lightSourceElements, paintServerElements, rectAttributes, shapeElements, structuralElements, textContentChildElements, transferFunctionElementAttributes, transferFunctionElements } from './definitions';
 
 const baseChildren = ['script'].concat(descriptiveElements);
 const shapeChildren = ['clipPath', 'marker', 'mask', 'style'].concat(animationElements, baseChildren, paintServerElements);
@@ -80,7 +80,7 @@ const _regularTag: IRegularTagDefine = {
 		ownAttributes: ['in', 'type', 'values'].concat(feAttributes),
 	},
 	'feComponentTransfer': {
-		legalChildElements: { childElements: ['feFuncR', 'feFuncG', 'feFuncB', 'feFuncA'].concat(baseChildren) },
+		legalChildElements: { childElements: transferFunctionElements.concat(baseChildren) },
 		ownAttributes: ['in'].concat(feAttributes),
 	},
 	'feComposite': {

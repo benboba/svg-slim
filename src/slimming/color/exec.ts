@@ -115,7 +115,7 @@ const alphaMap = {
 	'0': 0,
 };
 
-export const exec = (color: string, digit = OPACITY_DIGIT): IRGBColor => {
+export const execColor = (color: string, digit = OPACITY_DIGIT): IRGBColor => {
 	// 首先对原始字符串进行基本的格式处理和类型转换
 	let _color = color.trim();
 	if (keywords.hasOwnProperty(_color)) {

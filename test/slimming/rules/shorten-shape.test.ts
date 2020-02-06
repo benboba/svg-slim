@@ -54,6 +54,7 @@ describe('rules/shorten-shape', () => {
 		<circle r="2" transform="matrix(1.5,0,0,2.5,0,0)"/>
 		<circle r="2" transform="scale(3)"/>
 		<ellipse/>
+		<ellipse rx="3" ry=""/>
 		<ellipse rx="3"/>
 		<ellipse style="fill:red" rx="100" ry="100"/>
 		<ellipse rx="3" ry="5" transform="scale(2)"/>
@@ -64,7 +65,7 @@ describe('rules/shorten-shape', () => {
 		</svg>`;
 		const dom = await parse(xml) as ITagNode;
 		await shortenShape([true, { thinning: 0 }], dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><circle r="2"/><circle r="2" transform="matrix(1.5,0,0,2.5,0,0)"/><circle r="2" transform="scale(3)"/><circle style="fill:red" r="1e2"/><ellipse rx="3" ry="5" transform="scale(2)"/><ellipse rx="3" ry="5" transform="rotate(15,1,1)"/><ellipse rx="30" ry="5" transform="scale(2)"/><ellipse rx="3" ry="5pt" transform="scale(2)"/><ellipse rx="3" ry="5"/></svg>');
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><circle r="2"/><circle r="2" transform="matrix(1.5,0,0,2.5,0,0)"/><circle r="2" transform="scale(3)"/><circle r="3"/><circle style="fill:red" r="1e2"/><ellipse rx="3" ry="5" transform="scale(2)"/><ellipse rx="3" ry="5" transform="rotate(15,1,1)"/><ellipse rx="30" ry="5" transform="scale(2)"/><ellipse rx="3" ry="5pt" transform="scale(2)"/><ellipse rx="3" ry="5"/></svg>');
 	});
 
 	it('道格拉斯普克', async () => {

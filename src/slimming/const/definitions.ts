@@ -4,6 +4,7 @@ export const animationAttrElements = ['animate', 'animateTransform', 'set'];
 export const descriptiveElements = ['desc', 'metadata', 'title'];
 export const gradientElements = ['linearGradient', 'radialGradient'];
 export const filterPrimitiveElements = ['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDropShadow', 'feFlood', 'feGaussianBlur', 'feImage', 'feMerge', 'feMorphology', 'feOffset', 'feSpecularLighting', 'feTile', 'feTurbulence'];
+export const transferFunctionElements = ['feFuncR', 'feFuncG', 'feFuncB', 'feFuncA'];
 export const lightSourceElements = ['feDistantLight', 'fePointLight', 'feSpotLight'];
 export const paintServerElements = ['solidcolor', 'linearGradient', 'radialGradient', 'meshgradient', 'pattern', 'hatch'];
 export const shapeElements = ['circle', 'ellipse', 'line', 'path', 'polygon', 'polyline', 'rect'];
