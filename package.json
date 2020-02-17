@@ -39,7 +39,6 @@
   "license": "MIT",
   "dependencies": {
     "css": "^2.2.3",
-    "css-validator": "^0.9.0",
     "he": "^1.2.0",
     "ramda": "^0.25.0",
     "svg-path-contours": "^2.0.0",

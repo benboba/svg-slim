@@ -3,6 +3,7 @@
 --recursive
 --full-trace
 --bail
+#test/slimming/rules/combine-transform.test.ts
 test/**/*.test.ts
 test/index.js
 test/xml-parser.js

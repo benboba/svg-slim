@@ -1,8 +1,11 @@
-import { APOS_LEN, APOS_RX, APOS_RY, APOS_X, APOS_Y } from '../const';
+// tslint:disable max-file-line-count
+import { APOS_LEN, APOS_RX, APOS_RY, APOS_X, APOS_Y, DEFAULT_MATRIX_DIGIT } from '../const';
 import { transformAttributes } from '../const/definitions';
+import { regularAttr } from '../const/regular-attr';
 import { pureNumOrWithPx, pureNumOrWithPxList } from '../const/syntax';
 import { multiply } from '../math/multiply';
 import { plus } from '../math/plus';
+import { toFixed } from '../math/tofixed';
 import { combineMatrix } from '../matrix/combine';
 import { execMatrix } from '../matrix/exec';
 import { Matrix } from '../matrix/matrix';
@@ -11,6 +14,8 @@ import { stringify } from '../matrix/stringify';
 import { doCompute } from '../path/do-compute';
 import { execPath } from '../path/exec';
 import { stringifyPath } from '../path/stringify';
+import { execStyle } from '../style/exec';
+import { stringifyStyle } from '../style/stringify';
 import { execNumberList } from '../utils/exec-numberlist';
 import { shortenNumber } from '../utils/shorten-number';
 import { shortenNumberList } from '../utils/shorten-number-list';
@@ -18,13 +23,12 @@ import { execStyleTree } from '../xml/exec-style-tree';
 import { checkAnimateAttr, getAnimateAttr } from '../xml/get-animate-attr';
 import { getAttr } from '../xml/get-attr';
 import { isTag } from '../xml/is-tag';
-import { traversalNode } from '../xml/traversal-node';
-import { execStyle } from '../style/exec';
-import { stringifyStyle } from '../style/stringify';
-import { regularAttr } from '../const/regular-attr';
 import { rmAttrs } from '../xml/rm-attrs';
+import { traversalNode } from '../xml/traversal-node';
 
 const SAFE_ROTATE_CORNER = 90;
+
+const fixedMVal = toFixed(DEFAULT_MATRIX_DIGIT);
 
 const applyNumber = (fn: (n1: number, n2: number) => number, s: string, ex: number) => shortenNumber(fn(parseFloat(s), ex));
 
@@ -75,15 +79,9 @@ const applyTextTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: I
 	// 必须是纯数值列表
 	if (pureNumOrWithPxList.test(dx) && pureNumOrWithPxList.test(dy)) {
 		const dxs = execNumberList(dx);
-		if (!dxs.length) {
-			dxs.push(0);
-		}
 		checkAttr(node, 'dx', applyNumberList(plus, dxs, matrix.val[0]));
 		if (matrix.val[1]) {
 			const dys = execNumberList(dy);
-			if (!dys.length) {
-				dys.push(0);
-			}
 			checkAttr(node, 'dy', applyNumberList(plus, dys, matrix.val[1]));
 		}
 		node.removeAttribute('transform');
@@ -150,11 +148,11 @@ const applyRectTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: I
 				let _x2 = plus(_x1, parseFloat(width));
 				let _y2 = plus(_y1, parseFloat(height));
 				// 运算
-				[_x1, _y1] = [plus(plus(multiply(mx.a, _x1), multiply(mx.c, _y1)), mx.e), plus(plus(multiply(mx.b, _x1), multiply(mx.d, _y1)), mx.f)];
-				[_x2, _y2] = [plus(plus(multiply(mx.a, _x2), multiply(mx.c, _y2)), mx.e), plus(plus(multiply(mx.b, _x2), multiply(mx.d, _y2)), mx.f)];
+				[_x1, _y1] = [mx.a * _x1 + mx.c * _y1 + mx.e, mx.b * _x1 + mx.d * _y1 + mx.f];
+				[_x2, _y2] = [mx.a * _x2 + mx.c * _y2 + mx.e, mx.b * _x2 + mx.d * _y2 + mx.f];
 				// 重新生成 x 和 y
-				checkAttr(node, 'x', `${Math.min(_x1, _x2)}`);
-				checkAttr(node, 'y', `${Math.min(_y1, _y2)}`);
+				checkAttr(node, 'x', `${fixedMVal(Math.min(_x1, _x2))}`);
+				checkAttr(node, 'y', `${fixedMVal(Math.min(_y1, _y2))}`);
 				if (Math.abs(matrix.val[0] % (SAFE_ROTATE_CORNER * 2)) === SAFE_ROTATE_CORNER) {
 					checkAttr(node, 'width', height);
 					checkAttr(node, 'height', width);
@@ -178,11 +176,13 @@ const applyRectTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: I
 			checkAttr(node, 'y', applyNumber(multiply, y, sy));
 			checkAttr(node, 'width', applyNumber(multiply, width, sx));
 			checkAttr(node, 'height', applyNumber(multiply, height, sy));
-			checkAttr(node, 'rx', applyNumber(multiply, rx, sx));
+			rx = applyNumber(multiply, rx, sx);
+			ry = applyNumber(multiply, ry, sy);
+			checkAttr(node, 'rx', rx);
 			if (rx === ry) {
 				rmAttrs(node, ['ry']);
 			} else {
-				checkAttr(node, 'ry', applyNumber(multiply, ry, sy));
+				checkAttr(node, 'ry', ry);
 			}
 			node.removeAttribute('transform');
 			return true;
@@ -192,14 +192,16 @@ const applyRectTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: I
 				const msx = matrix.val[0];
 				const msy = matrix.val[3];
 				checkAttr(node, 'x', applyNumber(plus, applyNumber(multiply, x, msx), matrix.val[4]));
-				checkAttr(node, 'y', applyNumber(plus, applyNumber(multiply, y, msy), matrix.val[5] || 0));
+				checkAttr(node, 'y', applyNumber(plus, applyNumber(multiply, y, msy), matrix.val[5]));
 				checkAttr(node, 'width', applyNumber(multiply, width, msx));
 				checkAttr(node, 'height', applyNumber(multiply, height, msy));
-				checkAttr(node, 'rx', applyNumber(multiply, rx, msx));
+				rx = applyNumber(multiply, rx, msx);
+				ry = applyNumber(multiply, ry, msy);
+				checkAttr(node, 'rx', rx);
 				if (rx === ry) {
 					rmAttrs(node, ['ry']);
 				} else {
-					checkAttr(node, 'ry', applyNumber(multiply, ry, msy));
+					checkAttr(node, 'ry', ry);
 				}
 				node.removeAttribute('transform');
 				return true;
@@ -247,10 +249,10 @@ const applyLineTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: I
 			const _y1 = parseFloat(y1);
 			const _x2 = parseFloat(x2);
 			const _y2 = parseFloat(y2);
-			checkAttr(node, 'x1', `${plus(plus(multiply(mx.a, _x1), multiply(mx.c, _y1)), mx.e)}`);
-			checkAttr(node, 'y1', `${plus(plus(multiply(mx.b, _x1), multiply(mx.d, _y1)), mx.f)}`);
-			checkAttr(node, 'x2', `${plus(plus(multiply(mx.a, _x2), multiply(mx.c, _y2)), mx.e)}`);
-			checkAttr(node, 'y2', `${plus(plus(multiply(mx.b, _x2), multiply(mx.d, _y2)), mx.f)}`);
+			checkAttr(node, 'x1', `${fixedMVal(mx.a * _x1 + mx.c * _y1 + mx.e)}`);
+			checkAttr(node, 'y1', `${fixedMVal(mx.b * _x1 + mx.d * _y1 + mx.f)}`);
+			checkAttr(node, 'x2', `${fixedMVal(mx.a * _x2 + mx.c * _y2 + mx.e)}`);
+			checkAttr(node, 'y2', `${fixedMVal(mx.b * _x2 + mx.d * _y2 + mx.f)}`);
 			node.removeAttribute('transform');
 			return true;
 		default:
@@ -290,8 +292,8 @@ const applyCircleTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs:
 			}
 			const _cx = parseFloat(cx);
 			const _cy = parseFloat(cy);
-			checkAttr(node, 'cx', `${plus(plus(multiply(mx.a, _cx), multiply(mx.c, _cy)), mx.e)}`);
-			checkAttr(node, 'cy', `${plus(plus(multiply(mx.b, _cx), multiply(mx.d, _cy)), mx.f)}`);
+			checkAttr(node, 'cx', `${fixedMVal(mx.a * _cx + mx.c * _cy + mx.e)}`);
+			checkAttr(node, 'cy', `${fixedMVal(mx.b * _cx + mx.d * _cy + mx.f)}`);
 			node.removeAttribute('transform');
 			return true;
 		case 'scale':
@@ -301,7 +303,7 @@ const applyCircleTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs:
 			const sx = matrix.val[0];
 			const sy = matrix.val.length === 2 ? matrix.val[1] : matrix.val[0];
 			checkAttr(node, 'cx', applyNumber(multiply, cx, sx));
-			checkAttr(node, 'cy', applyNumber(multiply, cx, sx));
+			checkAttr(node, 'cy', applyNumber(multiply, cy, sy));
 			if (sx === sy) {
 				checkAttr(node, 'r', applyNumber(multiply, r, sx));
 			} else {
@@ -315,11 +317,14 @@ const applyCircleTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs:
 			return true;
 		case 'matrix':
 			if (matrix.val[1] === 0 && matrix.val[2] === 0) {
+				if (hasStroke || !pureNumOrWithPx.test(r) || checkAnimateAttr(animateAttrs, 'r')) {
+					return false;
+				}
 				// 仅验证缩放 + 平移的情况
 				const msx = matrix.val[0];
 				const msy = matrix.val[3];
 				checkAttr(node, 'cx', applyNumber(plus, applyNumber(multiply, cx, msx), matrix.val[4]));
-				checkAttr(node, 'cy', applyNumber(plus, applyNumber(multiply, cy, msy), matrix.val[5] || 0));
+				checkAttr(node, 'cy', applyNumber(plus, applyNumber(multiply, cy, msy), matrix.val[5]));
 				if (msx === msy) {
 					checkAttr(node, 'r', applyNumber(multiply, r, msx));
 				} else {
@@ -352,13 +357,13 @@ const applyEllipseTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs
 		rx = '0';
 		ry = '0';
 	}
-	if (!pureNumOrWithPx.test(cx) || !pureNumOrWithPx.test(cy) || checkAnimateAttr(animateAttrs, 'cx') || checkAnimateAttr(animateAttrs, 'cy') || checkAnimateAttr(animateAttrs, 'rx') || checkAnimateAttr(animateAttrs, 'ry')) {
+	if (!pureNumOrWithPx.test(cx) || !pureNumOrWithPx.test(cy) || checkAnimateAttr(animateAttrs, 'cx') || checkAnimateAttr(animateAttrs, 'cy')) {
 		return false;
 	}
 	if (matrix.type !== 'translate' && hasMarker) {
 		return false;
 	}
-	if (rx === ry) {
+	if (rx === ry && !checkAnimateAttr(animateAttrs, 'rx') && !checkAnimateAttr(animateAttrs, 'ry')) {
 		node.nodeName = 'circle';
 		rmAttrs(node, ['rx', 'ry']);
 		checkAttr(node, 'r', rx);
@@ -373,7 +378,7 @@ const applyEllipseTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs
 			node.removeAttribute('transform');
 			return true;
 		case 'rotate':
-			// 百分比单位不能旋转！
+			// 仅限直角旋转
 			if (matrix.val[0] % SAFE_ROTATE_CORNER !== 0) {
 				return false;
 			}
@@ -390,12 +395,15 @@ const applyEllipseTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs
 			// 垂直的情况要交换 rx 和 ry
 			if (Math.abs(matrix.val[0] % (SAFE_ROTATE_CORNER * 2)) === SAFE_ROTATE_CORNER) {
 				// 如果存在百分比的尺寸，不能交换 rx 和 ry
-				if (rx.includes('%') || ry.includes('%')) {
+				// TODO：如果存在动画，暂时不做处理
+				if (rx.includes('%') || ry.includes('%') || checkAnimateAttr(animateAttrs, 'rx') || checkAnimateAttr(animateAttrs, 'ry')) {
 					return false;
 				}
+				checkAttr(node, 'rx', ry);
+				checkAttr(node, 'ry', rx);
 			}
-			checkAttr(node, 'cx', `${plus(plus(multiply(mx.a, _cx), multiply(mx.c, _cy)), mx.e)}`);
-			checkAttr(node, 'cy', `${plus(plus(multiply(mx.b, _cx), multiply(mx.d, _cy)), mx.f)}`);
+			checkAttr(node, 'cx', `${fixedMVal(mx.a * _cx + mx.c * _cy + mx.e)}`);
+			checkAttr(node, 'cy', `${fixedMVal(mx.b * _cx + mx.d * _cy + mx.f)}`);
 			node.removeAttribute('transform');
 			return true;
 		case 'scale':
@@ -405,37 +413,40 @@ const applyEllipseTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs
 			const sx = matrix.val[0];
 			const sy = matrix.val.length === 2 ? matrix.val[1] : matrix.val[0];
 			checkAttr(node, 'cx', applyNumber(multiply, cx, sx));
-			checkAttr(node, 'cy', applyNumber(multiply, cx, sx));
-			const _rx = applyNumber(multiply, rx, sx);
-			const _ry = applyNumber(multiply, ry, sy);
-			if (_rx === _ry) {
+			checkAttr(node, 'cy', applyNumber(multiply, cy, sy));
+			rx = applyNumber(multiply, rx, sx);
+			ry = applyNumber(multiply, ry, sy);
+			if (rx === ry) {
 				// 转成正圆
 				node.nodeName = 'circle';
 				rmAttrs(node, ['rx', 'ry']);
-				checkAttr(node, 'r', _rx);
+				checkAttr(node, 'r', rx);
 			} else {
-				checkAttr(node, 'rx', _rx);
-				checkAttr(node, 'ry', _ry);
+				checkAttr(node, 'rx', rx);
+				checkAttr(node, 'ry', ry);
 			}
 			node.removeAttribute('transform');
 			return true;
 		case 'matrix':
 			if (matrix.val[1] === 0 && matrix.val[2] === 0) {
+				if (hasStroke || !pureNumOrWithPx.test(rx) || !pureNumOrWithPx.test(ry) || checkAnimateAttr(animateAttrs, 'rx') || checkAnimateAttr(animateAttrs, 'ry')) {
+					return false;
+				}
 				// 仅验证缩放 + 平移的情况
 				const msx = matrix.val[0];
 				const msy = matrix.val[3];
 				checkAttr(node, 'cx', applyNumber(plus, applyNumber(multiply, cx, msx), matrix.val[4]));
-				checkAttr(node, 'cy', applyNumber(plus, applyNumber(multiply, cy, msy), matrix.val[5] || 0));
-				const mrx = applyNumber(multiply, rx, msx);
-				const mry = applyNumber(multiply, ry, msy);
-				if (mrx === mry) {
+				checkAttr(node, 'cy', applyNumber(plus, applyNumber(multiply, cy, msy), matrix.val[5]));
+				rx = applyNumber(multiply, rx, msx);
+				ry = applyNumber(multiply, ry, msy);
+				if (rx === ry) {
 					// 转成正圆
 					node.nodeName = 'circle';
 					rmAttrs(node, ['rx', 'ry']);
-					checkAttr(node, 'r', mrx);
+					checkAttr(node, 'r', rx);
 				} else {
-					checkAttr(node, 'rx', mrx);
-					checkAttr(node, 'ry', mry);
+					checkAttr(node, 'rx', rx);
+					checkAttr(node, 'ry', ry);
 				}
 				node.removeAttribute('transform');
 				return true;
@@ -446,22 +457,31 @@ const applyEllipseTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs
 	}
 };
 
-const applyPolyTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: IAnimateAttr[], hasStroke: boolean, hasMarker: boolean) => {
+const applyPolyTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: IAnimateAttr[], hasStroke: boolean, hasMarker: boolean, minStr: string) => {
 	if (checkAnimateAttr(animateAttrs, 'points')) {
 		return false;
 	}
 
-	const points = execNumberList(node.getAttribute('points') || '');
+	let pointVal = node.getAttribute('points') || '';
+	const points = execNumberList(pointVal);
+	// points 数量必须是偶数
 	if (points.length % 2 === 1) {
 		points.pop();
+		pointVal = shortenNumberList(points.map(shortenNumber).join(','));
+		node.setAttribute('points', pointVal);
 	}
 
 	if (matrix.type === 'translate') {
 		const tx = matrix.val[0];
 		const ty = matrix.val[1] || 0;
-		node.setAttribute('points', applyNumberPairs((x: number, y: number) => [plus(x, tx), plus(y, ty)], points));
-		node.removeAttribute('transform');
-		return true;
+		const _points = applyNumberPairs((x: number, y: number) => [plus(x, tx), plus(y, ty)], points);
+		if (_points.length < pointVal.length + minStr.length) {
+			node.setAttribute('points', _points);
+			node.removeAttribute('transform');
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	if (hasMarker || (matrix.type !== 'rotate' && hasStroke)) {
@@ -489,30 +509,43 @@ const applyPolyTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: I
 			mx = new Matrix(...matrix.val);
 			break;
 	}
-	node.setAttribute('points', applyNumberPairs(
+	const newPoints = applyNumberPairs(
 		(n1: number, n2: number) => [
-			plus(plus(multiply(mx.a, n1), multiply(mx.c, n2)), mx.e),
-			plus(plus(multiply(mx.b, n1), multiply(mx.d, n2)), mx.f),
+			fixedMVal(mx.a * n1 + mx.c * n2 + mx.e),
+			fixedMVal(mx.b * n1 + mx.d * n2 + mx.f),
 		],
-		points));
-	node.removeAttribute('transform');
-	return true;
+		points,
+	);
+	if (newPoints.length < pointVal.length + minStr.length) {
+		node.setAttribute('points', newPoints);
+		node.removeAttribute('transform');
+		return true;
+	} else {
+		return false;
+	}
 };
 
-const applyPathTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: IAnimateAttr[], hasStroke: boolean, hasMarker: boolean) => { // tslint:disable-line cyclomatic-complexity
+const applyPathTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: IAnimateAttr[], hasStroke: boolean, hasMarker: boolean, minStr: string) => { // tslint:disable-line cyclomatic-complexity
 	if (checkAnimateAttr(animateAttrs, 'd')) {
 		return false;
 	}
 
 	const d = node.getAttribute('d') || '';
-	const pathResult = execPath(d);
+	const pathResult = doCompute(execPath(d));
 
 	if (matrix.type === 'translate') {
 		const tx = matrix.val[0];
 		const ty = matrix.val[1] || 0;
-		pathResult.forEach(subPath => {
+		pathResult.forEach((subPath, index) => {
 			subPath.forEach(pathItem => {
 				switch (pathItem.type) {
+					case 'm':
+						// 第一个移动指令也要执行平移变换
+						if (index === 0) {
+							pathItem.val[0] = plus(pathItem.val[0], tx);
+							pathItem.val[1] = plus(pathItem.val[1], ty);
+						}
+						break;
 					case 'M':
 					case 'L':
 					case 'C':
@@ -545,9 +578,14 @@ const applyPathTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: I
 				}
 			});
 		});
-		node.setAttribute('d', stringifyPath(doCompute(pathResult)));
-		node.removeAttribute('transform');
-		return true;
+		const _d = stringifyPath(doCompute(pathResult));
+		if (_d.length < d.length + minStr.length) {
+			node.setAttribute('d', _d);
+			node.removeAttribute('transform');
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	// 不能有 marker
@@ -601,9 +639,14 @@ const applyPathTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: I
 				}
 			});
 		});
-		node.setAttribute('d', stringifyPath(doCompute(pathResult)));
-		node.removeAttribute('transform');
-		return true;
+		const _d = stringifyPath(doCompute(pathResult));
+		if (_d.length < d.length + minStr.length) {
+			node.setAttribute('d', _d);
+			node.removeAttribute('transform');
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	let mx = new Matrix();
@@ -627,7 +670,7 @@ const applyPathTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: I
 			break;
 	}
 
-	pathResult.forEach(subPath => {
+	pathResult.forEach((subPath, index) => {
 		subPath.forEach(pathItem => {
 			switch (pathItem.type) {
 				case 'M':
@@ -638,8 +681,8 @@ const applyPathTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: I
 				case 'T':
 					for (let i = 0; i < pathItem.val.length; i += 2) {
 						[pathItem.val[i], pathItem.val[i + 1]] = [
-							plus(plus(multiply(mx.a, pathItem.val[i]), multiply(mx.c, pathItem.val[i + 1])), mx.e),
-							plus(plus(multiply(mx.b, pathItem.val[i]), multiply(mx.d, pathItem.val[i + 1])), mx.f),
+							fixedMVal(mx.a * pathItem.val[i] + mx.c * pathItem.val[i + 1] + mx.e),
+							fixedMVal(mx.b * pathItem.val[i] + mx.d * pathItem.val[i + 1] + mx.f),
 						];
 					}
 					break;
@@ -651,29 +694,50 @@ const applyPathTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: I
 				case 't':
 					for (let i = 0; i < pathItem.val.length; i += 2) {
 						[pathItem.val[i], pathItem.val[i + 1]] = [
-							plus(multiply(mx.a, pathItem.val[i]), multiply(mx.c, pathItem.val[i + 1])),
-							plus(multiply(mx.b, pathItem.val[i]), multiply(mx.d, pathItem.val[i + 1])),
+							fixedMVal(mx.a * pathItem.val[i] + mx.c * pathItem.val[i + 1]),
+							fixedMVal(mx.b * pathItem.val[i] + mx.d * pathItem.val[i + 1]),
 						];
+					}
+					// 第一个移动指令也要执行平移变换
+					if (pathItem.type === 'm' && index === 0) {
+						pathItem.val[0] = fixedMVal(pathItem.val[0] + mx.e);
+						pathItem.val[1] = fixedMVal(pathItem.val[1] + mx.f);
 					}
 					break;
 				case 'H':
-					for (let i = 0; i < pathItem.val.length; i++) {
-						pathItem.val[i] = plus(multiply(mx.a, pathItem.val[i]), mx.e);
+					pathItem.type = 'L';
+					const HVal = pathItem.val.slice();
+					const Hy = pathItem.from[1];
+					for (let i = 0; i < HVal.length; i++) {
+						pathItem.val[i * 2] = fixedMVal(mx.a * HVal[i] + mx.c * Hy + mx.e);
+						pathItem.val[i * 2 + 1] = fixedMVal(mx.b * HVal[i] + mx.d * Hy + mx.f);
 					}
 					break;
 				case 'h':
-					for (let i = 0; i < pathItem.val.length; i++) {
-						pathItem.val[i] = multiply(mx.a, pathItem.val[i]);
+					pathItem.type = 'l';
+					const hVal = pathItem.val.slice();
+					const hy = 0;
+					for (let i = 0; i < hVal.length; i++) {
+						pathItem.val[i * 2] = fixedMVal(mx.a * hVal[i] + mx.c * hy);
+						pathItem.val[i * 2 + 1] = fixedMVal(mx.b * hVal[i] + mx.d * hy);
 					}
 					break;
 				case 'V':
-					for (let i = 0; i < pathItem.val.length; i++) {
-						pathItem.val[i] = plus(multiply(mx.d, pathItem.val[i]), mx.f);
+					pathItem.type = 'L';
+					const VVal = pathItem.val.slice();
+					const Vx = pathItem.from[0];
+					for (let i = 0; i < VVal.length; i++) {
+						pathItem.val[i * 2] = fixedMVal(mx.a * Vx + mx.c * VVal[i] + mx.e);
+						pathItem.val[i * 2 + 1] = fixedMVal(mx.b * Vx + mx.d * VVal[i] + mx.f);
 					}
 					break;
 				case 'v':
-					for (let i = 0; i < pathItem.val.length; i++) {
-						pathItem.val[i] = multiply(mx.d, pathItem.val[i]);
+					pathItem.type = 'l';
+					const vVal = pathItem.val.slice();
+					const vx = 0;
+					for (let i = 0; i < vVal.length; i++) {
+						pathItem.val[i * 2] = fixedMVal(mx.a * vx + mx.c * vVal[i]);
+						pathItem.val[i * 2 + 1] = fixedMVal(mx.b * vx + mx.d * vVal[i]);
 					}
 					break;
 				default:
@@ -681,12 +745,17 @@ const applyPathTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: I
 			}
 		});
 	});
-	node.setAttribute('d', stringifyPath(doCompute(pathResult)));
-	node.removeAttribute('transform');
-	return true;
+	const newD = stringifyPath(doCompute(pathResult));
+	if (newD.length < d.length + minStr.length) {
+		node.setAttribute('d', newD);
+		node.removeAttribute('transform');
+		return true;
+	} else {
+		return false;
+	}
 };
 
-const applyTransform = (node: ITagNode, matrix: IMatrixFunc) => {
+const applyTransform = (node: ITagNode, matrix: IMatrixFunc, minStr: string) => {
 	const animateAttrs = getAnimateAttr(node);
 	// 平移可以直接应用，旋转要判断节点类型，其它变形函数只能在没有描边的时候应用
 	const hasStroke = (
@@ -716,9 +785,9 @@ const applyTransform = (node: ITagNode, matrix: IMatrixFunc) => {
 			return applyEllipseTransform(node, matrix, animateAttrs, hasStroke, hasMarker);
 		case 'polyline':
 		case 'polygon':
-			return applyPolyTransform(node, matrix, animateAttrs, hasStroke, hasMarker);
+			return applyPolyTransform(node, matrix, animateAttrs, hasStroke, hasMarker, minStr);
 		case 'path':
-			return applyPathTransform(node, matrix, animateAttrs, hasStroke, hasMarker);
+			return applyPathTransform(node, matrix, animateAttrs, hasStroke, hasMarker, minStr);
 		default:
 			return false;
 	}
@@ -760,16 +829,19 @@ export const combineTransform = async (rule: TFinalConfigItem, dom: INode): Prom
 						const matrix = combineMatrix(transform, trigDigit, sizeDigit, angelDigit);
 						const transformStr = stringify(transform, trigDigit, sizeDigit, angelDigit);
 						const matrixStr = stringify([matrix], trigDigit, sizeDigit, angelDigit);
+						const minStr = (matrixStr.length < transformStr.length) ? matrixStr : transformStr;
 						if (matrix.noEffect) {
 							node.removeAttribute(attr.fullname);
-						} else if (attr.fullname === 'transform') {
+							return;
+						}
+						if (attr.fullname === 'transform') {
 							// TODO：进一步分析子元素
 							// TODO：暂时只应用 transform 属性
-							if (!node.childNodes.length && applyTransform(node, matrix)) {
+							if (applyTransform(node, matrix, ` ${attr.fullname}="${minStr}"`)) {
 								return;
 							}
-							attr.value = (matrixStr.length < transformStr.length) ? matrixStr : transformStr;
 						}
+						attr.value = minStr;
 					} else {
 						node.removeAttribute(attr.fullname);
 					}

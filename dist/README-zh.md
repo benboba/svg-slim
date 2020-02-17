@@ -12,15 +12,15 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 
 ## 安装
 ```
-	npm install svg-slimming
+npm install svg-slimming
 ```
 
 ## 使用
 ```js
-	const svgSlimming = require('svg-slimming');
-	svgSlimming(svgcode[, config]).then(result => {
-		console.log(result);
-	});
+const svgSlimming = require('svg-slimming');
+svgSlimming(svgcode[, config]).then(result => {
+	console.log(result);
+});
 ```
 
 其中 svgcode 为字符串格式的 svg 文本，config 为用户自定义的优化配置
@@ -86,7 +86,7 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 | 数字 | 精确优化不同类型的数值 | √ | × |
 | 数字 | 数字转科学计数法 | √ | × |
 | 矩阵 | 合并和缩短 transform | √ | √ |
-| 矩阵 | 直接把 transform 应用到属性 | × | √ |
+| 矩阵 | 直接把 transform 应用到属性 | v1.5.2 | √ |
 | 颜色 | 优化颜色 | √ | √ |
 | 颜色 | 支持 hsl/hsla 格式颜色 | √ | × |
 | 颜色 | 支持 rgba 格式颜色 | √ | × |
@@ -106,31 +106,31 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 
 下面是一个优化配置的示例：
 ```json
-	{
-		"collapse-g": [false],
-		"combine-transform": [true, {
-			"trifuncDigit": 3,
-			"sizeDigit": 2,
-			"angelDigit": 2
-		}]
-	}
+{
+	"collapse-g": [false],
+	"combine-transform": [true, {
+		"trifuncDigit": 3,
+		"sizeDigit": 2,
+		"angelDigit": 2
+	}]
+}
 ```
 
 **注意：旧版配置方式虽然也可以生效，但未来可能会移除**
 ```json
-	{
-		"collapse-g": false,
-		"combine-transform": [true, 3, 2, 2]
-	}
+{
+	"collapse-g": false,
+	"combine-transform": [true, 3, 2, 2]
+}
 ```
 
 ### collapse-g
 
 * 默认配置：
 ```json
-	{
-		"collapse-g": [true]
-	}
+{
+	"collapse-g": [true]
+}
 ```
 * 说明：
 	* 当 g 元素没有子元素时，移除该元素
@@ -139,47 +139,47 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 
 例如：
 ```xml
-	<g></g>
-	<g fill="red"><rect width="100" height="100"/></g>
+<g></g>
+<g fill="red"><rect width="100" height="100"/></g>
 ```
 
 优化后将变为：
 ```xml
-	<rect fill="red" width="100" height="100"/>
+<rect fill="red" width="100" height="100"/>
 ```
 
 ### collapse-textwrap
 
 * 默认配置：
 ```json
-	{
-		"collapse-textwrap": [true]
-	}
+{
+	"collapse-textwrap": [true]
+}
 ```
 * 说明：
 	* 对于所有嵌套的文本容器，当内部文本容器不包含任何有效属性时，移除该元素，并将文本内容提升为父元素的子节点
 
 例如：
 ```xml
-	<text></text>
-	<text fill="red"><tspan>123</tspan></text>
+<text></text>
+<text fill="red"><tspan>123</tspan></text>
 ```
 
 优化后将变为：
 ```xml
-	<text fill="red">123</text>
+<text fill="red">123</text>
 ```
 
 ### combine-path
 
 * 默认配置：
 ```json
-	{
-		"combine-path": [true, {
-			"disregardFill": false,
-			"disregardOpacity": false
-		}]
-	}
+{
+	"combine-path": [true, {
+		"disregardFill": false,
+		"disregardOpacity": false
+	}]
+}
 ```
 * 说明：
 	* 合并满足以下条件的路径节点：
@@ -201,26 +201,26 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 
 例如：
 ```xml
-	<path d="M0,0L100,100" fill="none" stroke="red" stroke-width="2"/>
-	<path d="M0,50L100,150" fill="none" stroke="red" stroke-width="2"/>
+<path d="M0,0L100,100" fill="none" stroke="red" stroke-width="2"/>
+<path d="M0,50L100,150" fill="none" stroke="red" stroke-width="2"/>
 ```
 
 优化后将变为
 ```xml
-	<path d="M0,0L100,100M0,50L100,150" fill="none" stroke="red" stroke-width="2"/>
+<path d="M0,0L100,100M0,50L100,150" fill="none" stroke="red" stroke-width="2"/>
 ```
 
 ### combine-transform
 
 * 默认配置：
 ```json
-	{
-		"combine-transform": [true, {
-			"angelDigit": 2,
-			"sizeDigit": 2,
-			"trifuncDigit": 3
-		}]
-	}
+{
+	"combine-transform": [true, {
+		"angelDigit": 2,
+		"sizeDigit": 2,
+		"trifuncDigit": 3
+	}]
+}
 ```
 * 说明：
 	* 分析并合并 transform 属性
@@ -240,26 +240,26 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 
 例如：
 ```xml
-	<rect fill="red" width="100" height="100" transform="translate(100,100)scale(2)rotate(180)"/>
+<rect fill="red" width="100" height="100" transform="translate(100,100)scale(2)rotate(180)"/>
 ```
 
 优化后将变为：
 ```xml
-	<rect fill="red" width="100" height="100" transform="matrix(-2,0,0,-2,100,100)"/>
+<rect fill="red" width="100" height="100" transform="matrix(-2,0,0,-2,100,100)"/>
 ```
 
 ### compute-path
 
 * 默认配置：
 ```json
-	{
-		"compute-path": [true, {
-			"angelDigit": 2,
-			"sizeDigit": 2,
-			"straighten": 0,
-			"thinning": 0
-		}]
-	}
+{
+	"compute-path": [true, {
+		"angelDigit": 2,
+		"sizeDigit": 2,
+		"straighten": 0,
+		"thinning": 0
+	}]
+}
 ```
 * 说明：
 	* 计算 path 的 d 属性，使之变得更短
@@ -285,25 +285,25 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 
 例如：
 ```xml
-	<path fill="red" d="M0,0L100,0,100,100,0,100z"/>
+<path fill="red" d="M0,0L100,0,100,100,0,100z"/>
 ```
 
 优化后将变为：
 ```xml
-	<path fill="red" d="m0,0h100v100H0z"/>
+<path fill="red" d="m0,0h100v100H0z"/>
 ```
 
 ### rm-attribute
 
 * 默认配置：
 ```json
-	{
-		"rm-attribute": [true, {
-			"keepAria": false,
-			"keepEvent": false,
-			"rmDefault": true
-		}]
-	}
+{
+	"rm-attribute": [true, {
+		"keepAria": false,
+		"keepEvent": false,
+		"rmDefault": true
+	}]
+}
 ```
 * 说明：
 	* 移除非规范的属性（不在[SVG规范](https://www.w3.org/TR/SVG/attindex.html)中，且并非xmlns类的属性）
@@ -320,25 +320,25 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 
 例如：
 ```xml
-	<g fill="red">
-		<rect fill="black" width="100" height="100" aa="1" bb="2" cc="3" aria-autocomplete="both" onclick="console.log('a');"/>
-	</g>
+<g fill="red">
+	<rect fill="black" width="100" height="100" aa="1" bb="2" cc="3" aria-autocomplete="both" onclick="console.log('a');"/>
+</g>
 ```
 
 优化后将变为：
 ```xml
-	<g fill="red">
-		<rect fill="black" width="100" height="100"/>
-	</g>
+<g fill="red">
+	<rect fill="black" width="100" height="100"/>
+</g>
 ```
 
 ### rm-comments
 
 * 默认配置：
 ```json
-	{
-		"rm-comments": [true]
-	}
+{
+	"rm-comments": [true]
+}
 ```
 * 说明：
 	* 移除注释
@@ -347,9 +347,9 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 
 * 默认配置：
 ```json
-	{
-		"rm-doctype": [true]
-	}
+{
+	"rm-doctype": [true]
+}
 ```
 * 说明：
 	* 移除 DOCTYPE 声明
@@ -358,9 +358,9 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 
 * 默认配置：
 ```json
-	{
-		"rm-hidden": [true]
-	}
+{
+	"rm-hidden": [true]
+}
 ```
 * 说明：
 	* 移除 display 属性为 none 的元素
@@ -372,33 +372,33 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 
 display 为 none
 ```xml
-	<g style="display:none"></g>
+<g style="display:none"></g>
 ```
 
 stroke 和 fill 均为 none
 ```xml
-	<rect fill="none" stroke="none" width="100" height="100"/>
+<rect fill="none" stroke="none" width="100" height="100"/>
 ```
 
 use 元素引用了不存在的 id
 ```xml
-	<use href="#undefined"/>
+<use href="#undefined"/>
 ```
 
 一些因尺寸属性为 0 导致不可见的元素，例如：
 ```xml
-	<pattern id="pattern-1" width="0" height="0" />
+<pattern id="pattern-1" width="0" height="0" />
 ```
 
 ### rm-irregular-nesting
 
 * 默认配置：
 ```json
-	{
-		"rm-irregular-nesting": [true, {
-			"ignore": []
-		}]
-	}
+{
+	"rm-irregular-nesting": [true, {
+		"ignore": []
+	}]
+}
 ```
 * 说明：
 	* 移除不规范嵌套的标签
@@ -409,23 +409,23 @@ use 元素引用了不存在的 id
 
 例如：
 ```xml
-	<rect fill="red" width="100px" height="100px"><circle cx="100" cy="100" r="100"/></rect>
+<rect fill="red" width="100px" height="100px"><circle cx="100" cy="100" r="100"/></rect>
 ```
 
 优化后将变为：
 ```xml
-	<rect fill="red" width="100" height="100"/>
+<rect fill="red" width="100" height="100"/>
 ```
 
 ### rm-irregular-tag
 
 * 默认配置：
 ```json
-	{
-		"rm-irregular-tag": [true, {
-			"ignore": []
-		}]
-	}
+{
+	"rm-irregular-tag": [true, {
+		"ignore": []
+	}]
+}
 ```
 * 说明：
 	* 移除不在[SVG规范](https://www.w3.org/TR/SVG/eltindex.html)内的标签
@@ -438,32 +438,32 @@ use 元素引用了不存在的 id
 
 * 默认配置：
 ```json
-	{
-		"rm-px": [true]
-	}
+{
+	"rm-px": [true]
+}
 ```
 * 说明：
 	* 移除 px 单位及 0 值的单位
 
 例如：
 ```xml
-	<rect fill="red" width="100px" height="100px" rx="0pt"/>
+<rect fill="red" width="100px" height="100px" rx="0pt"/>
 ```
 
 优化后将变为：
 ```xml
-	<rect fill="red" width="100" height="100" rx="0"/>
+<rect fill="red" width="100" height="100" rx="0"/>
 ```
 
 ### rm-unnecessary
 
 * 默认配置：
 ```json
-	{
-		"rm-unnecessary": [true, {
-			"tags": ["desc", "discard", "foreignObject", "video", "audio", "iframe", "canvas", "metadata", "script", "title", "unknown", "image"]
-		}]
-	}
+{
+	"rm-unnecessary": [true, {
+		"tags": ["desc", "discard", "foreignObject", "video", "audio", "iframe", "canvas", "metadata", "script", "title", "unknown", "image"]
+	}]
+}
 ```
 * 说明：
 	* 移除不必要的标签
@@ -479,9 +479,9 @@ use 元素引用了不存在的 id
 
 * 默认配置：
 ```json
-	{
-		"rm-version": [true]
-	}
+{
+	"rm-version": [true]
+}
 ```
 * 说明：
 	* 移除 svg 元素的 version 属性
@@ -490,30 +490,30 @@ use 元素引用了不存在的 id
 
 * 默认配置：
 ```json
-	{
-		"rm-viewbox": [true]
-	}
+{
+	"rm-viewbox": [true]
+}
 ```
 * 说明：
 	* 当 x、y、width、height 完全相同时，移除 viewBox 属性
 
 例如：
 ```xml
-	<svg width="1000" height="600" viewBox="0 0 1000 600">
+<svg width="1000" height="600" viewBox="0 0 1000 600">
 ```
 
 优化后将变为：
 ```xml
-	<svg width="1000" height="600">
+<svg width="1000" height="600">
 ```
 
 ### rm-xml-decl
 
 * 默认配置：
 ```json
-	{
-		"rm-xml-decl": [true]
-	}
+{
+	"rm-xml-decl": [true]
+}
 ```
 * 说明：
 	* 移除 xml 声明
@@ -522,34 +522,34 @@ use 元素引用了不存在的 id
 
 * 默认配置：
 ```json
-	{
-		"rm-xmlns": [true]
-	}
+{
+	"rm-xmlns": [true]
+}
 ```
 * 说明：
 	* 移除未被引用的 xmlns 定义，移除包含未定义命名空间的属性
 
 例如：
 ```xml
-	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-		<rect fill="red" width="100" height="100"/>
-	</svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<rect fill="red" width="100" height="100"/>
+</svg>
 ```
 
 优化后将变为（由于 xlink 这个 namespace 并没有被引用，所以被移除了）：
 ```xml
-	<svg xmlns="http://www.w3.org/2000/svg">
-		<rect fill="red" width="100" height="100"/>
-	</svg>
+<svg xmlns="http://www.w3.org/2000/svg">
+	<rect fill="red" width="100" height="100"/>
+</svg>
 ```
 
 ### shorten-class
 
 * 默认配置：
 ```json
-	{
-		"shorten-class": [true]
-	}
+{
+	"shorten-class": [true]
+}
 ```
 * 说明：
 	* 缩短 className
@@ -557,26 +557,26 @@ use 元素引用了不存在的 id
 
 例如：
 ```xml
-	<style>.red_rect {fill: red;}</style>
-	<rect class="red_rect blue_rect" width="100" height="100"/>
+<style>.red_rect {fill: red;}</style>
+<rect class="red_rect blue_rect" width="100" height="100"/>
 ```
 
 优化后将变为：（.red_rect 被缩短为 .a，.blue_rect 直接被移除）
 ```xml
-	<style>.a {fill: red;}</style>
-	<rect class="a" width="100" height="100"/>
+<style>.a {fill: red;}</style>
+<rect class="a" width="100" height="100"/>
 ```
 
 ### shorten-color
 
 * 默认配置：
 ```json
-	{
-		"shorten-color": [true, {
-			"opacityDigit": 3,
-			"rrggbbaa": false
-		}]
-	}
+{
+	"shorten-color": [true, {
+		"opacityDigit": 3,
+		"rrggbbaa": false
+	}]
+}
 ```
 * 说明：
 	* 尽可能地缩短颜色定义
@@ -591,24 +591,24 @@ use 元素引用了不存在的 id
 
 例如：
 ```xml
-	<rect fill="#ff0000" stroke="rgb(255,255,255)" color="rgba(0,0,0,0)" width="100" height="100"/>
+<rect fill="#ff0000" stroke="rgb(255,255,255)" color="rgba(0,0,0,0)" width="100" height="100"/>
 ```
 
 优化后将变为：
 ```xml
-	<rect fill="red" stroke="#fff" color="transparent" width="100" height="100"/>
+<rect fill="red" stroke="#fff" color="transparent" width="100" height="100"/>
 ```
 
 ### shorten-decimal-digits
 
 * 默认配置：
 ```json
-	{
-		"shorten-decimal-digits": [true, {
-			"angelDigit": 2,
-			"sizeDigit": 2
-		}]
-	}
+{
+	"shorten-decimal-digits": [true, {
+		"angelDigit": 2,
+		"sizeDigit": 2
+	}]
+}
 ```
 * 说明：
 	* 缩小不同类型的数值精度
@@ -624,21 +624,21 @@ use 元素引用了不存在的 id
 
 例如：
 ```xml
-	<rect fill="red" width="100.00001" height="100.00001" fill-opacity="0.05999"/>
+<rect fill="red" width="100.00001" height="100.00001" fill-opacity="0.05999"/>
 ```
 
 优化后将变为：
 ```xml
-	<rect fill="red" width="100" height="100" fill-opacity="6%"/>
+<rect fill="red" width="100" height="100" fill-opacity="6%"/>
 ```
 
 ### shorten-defs
 
 * 默认配置：
 ```json
-	{
-		"shorten-defs": [true]
-	}
+{
+	"shorten-defs": [true]
+}
 ```
 * 说明：
 	* 合并所有的 defs 标签
@@ -647,34 +647,69 @@ use 元素引用了不存在的 id
 
 例如：
 ```xml
-	<defs>
-	    <circle id="circle-1" fill="#000" cx="60" cy="60" r="60"></circle>
-	</defs>
-	<defs>
-	    <circle fill-opacity="0.599999964" fill="#000000" cx="60" cy="60" r="60"></circle>
-	</defs>
-	<mask id="mask-2" fill="white">
-		<use xlink:href="#circle-1" />
-	</mask>
+<defs>
+	<circle id="circle-1" fill="#000" cx="60" cy="60" r="60"></circle>
+</defs>
+<defs>
+	<circle fill-opacity="0.599999964" fill="#000000" cx="60" cy="60" r="60"></circle>
+</defs>
+<mask id="mask-2" fill="white">
+	<use xlink:href="#circle-1" />
+</mask>
 ```
 
 优化后将变为：
 ```xml
-	<defs>
-	    <circle id="path-1" fill="#000" cx="60" cy="60" r="60"></circle>
-	</defs>
-	<mask id="mask-2" fill="white">
-		<use xlink:href="#path-1" />
-	</mask>
+<defs>
+	<circle id="path-1" fill="#000" cx="60" cy="60" r="60"></circle>
+</defs>
+<mask id="mask-2" fill="white">
+	<use xlink:href="#path-1" />
+</mask>
+```
+
+### shorten-filter
+
+* 默认配置：
+```json
+{
+	"shorten-filter": [true]
+}
+```
+* 说明：
+	* 优化 [Filter Elements](https://drafts.fxtf.org/filter-effects/#FilterElement)
+	* 移除空的 filter 元素
+	* filter 元素的 width 和 height 不能是 0 或负数
+	* feComponentTransfer 下不允许重复的 transferFunctionElement
+	* transferFunctionElement 根据 type 只保留必要的属性
+
+例如：
+```xml
+<filter></filter>
+<filter>
+	<feComponentTransfer>
+		<feFuncR type="gamma" amplitude="1" exponent="1" offset="0"/>
+		<feFuncR type="linear" amplitude="1" exponent="1" offset="0" slope="2"/>
+	</feComponentTransfer>
+</filter>
+```
+
+优化后将变为：
+```xml
+<filter>
+	<feComponentTransfer>
+		<feFuncR type="linear" slope="2"/>
+	</feComponentTransfer>
+</filter>
 ```
 
 ### shorten-id
 
 * 默认配置：
 ```json
-	{
-		"shorten-id": [true]
-	}
+{
+	"shorten-id": [true]
+}
 ```
 * 说明：
 	* 缩短 ID
@@ -682,35 +717,35 @@ use 元素引用了不存在的 id
 
 例如：
 ```xml
-	<defs>
-	    <circle id="circle-1" fill="#000" cx="60" cy="60" r="60"></circle>
-	</defs>
-	<mask id="mask-2" fill="white">
-		<use xlink:href="#circle-1" />
-	</mask>
-	<rect id="rect-3" fill="red" width="100" height="100" mask="url(#mask-2)"/>
+<defs>
+	<circle id="circle-1" fill="#000" cx="60" cy="60" r="60"></circle>
+</defs>
+<mask id="mask-2" fill="white">
+	<use xlink:href="#circle-1" />
+</mask>
+<rect id="rect-3" fill="red" width="100" height="100" mask="url(#mask-2)"/>
 ```
 
 优化后将变为：（#rect-3 被移除，另外 2 个 id 被缩短）
 ```xml
-	<defs>
-	    <circle id="a" fill="#000" cx="60" cy="60" r="60"></circle>
-	</defs>
-	<mask id="b" fill="white">
-		<use xlink:href="#a" />
-	</mask>
-	<rect fill="red" width="100" height="100" mask="url(#b)"/>
+<defs>
+	<circle id="a" fill="#000" cx="60" cy="60" r="60"></circle>
+</defs>
+<mask id="b" fill="white">
+	<use xlink:href="#a" />
+</mask>
+<rect fill="red" width="100" height="100" mask="url(#b)"/>
 ```
 
 ### shorten-shape(v1.5.0+)
 
 * 默认配置：
 ```json
-	{
-		"shorten-shape": [true, {
-			"thinning": 0
-		}]
-	}
+{
+	"shorten-shape": [true, {
+		"thinning": 0
+	}]
+}
 ```
 * 说明：
 	* 如果形状映射到 path 的结果更短，则使用 path
@@ -724,24 +759,24 @@ use 元素引用了不存在的 id
 
 例如：
 ```xml
-	<rect fill="red" width="100" height="100"/>
+<rect fill="red" width="100" height="100"/>
 ```
 
 优化后将变为：
 ```xml
-	<path fill="red" d="M0,0H100V100H0z"/>
+<path fill="red" d="M0,0H100V100H0z"/>
 ```
 
 ### shorten-style-attr
 
 * 默认配置：
 ```json
-	{
-		"shorten-style-attr": [true, {
-			"exchange": false,
-			"rmDefault": true
-		}]
-	}
+{
+	"shorten-style-attr": [true, {
+		"exchange": false,
+		"rmDefault": true
+	}]
+}
 ```
 * 说明：
 	* 缩短 style 属性
@@ -759,29 +794,29 @@ use 元素引用了不存在的 id
 
 例如：
 ```xml
-	<rect fill="red" style="fill:blue;background:red;"/>
+<rect fill="red" style="fill:blue;background:red;"/>
 ```
 
 优化后将变为：（fill 属性将被 style 中的同名定义覆盖，所以被移除了，background 不是标准的 svg 样式，所以也被移除了）
 ```xml
-	<rect style="fill:blue;"/>
+<rect style="fill:blue;"/>
 ```
 
 如果 svg 中不存在 style 标签，或 exchange 被设定为 true ，则优化结果为：
 ```xml
-	<rect fill="blue"/>
+<rect fill="blue"/>
 ```
 
 ### shorten-style-tag
 
 * 默认配置：
 ```json
-	{
-		"shorten-style-tag": [true, {
-			"deepShorten": true,
-			"rmDefault": true
-		}]
-	}
+{
+	"shorten-style-tag": [true, {
+		"deepShorten": true,
+		"rmDefault": true
+	}]
+}
 ```
 * 说明：
 	* 缩短 style 标签的内容
@@ -820,13 +855,13 @@ use 元素引用了不存在的 id
 
 ## 使用
 ```js
-	const xmlParser = require('svg-slimming/xml-parser.js');
-	
-	xmlParser.parse(xmlcode).then(result => {
-		console.log(result);
-	});
-	
-	console.log(xmlParser.NodeType);
+const xmlParser = require('svg-slimming/xml-parser.js');
+
+xmlParser.parse(xmlcode).then(result => {
+	console.log(result);
+});
+
+console.log(xmlParser.NodeType);
 ```
 
 其中 xmlcode 为字符串格式的 xml 文本（不限于svg）
@@ -896,39 +931,39 @@ use 元素引用了不存在的 id
 
 ## 节点定义（typescript 格式）
 ```ts
-	interface INode {
-		nodeName: string; // 节点名称
-		nodeType: NodeType; // 节点类型
-		namespace?: string; // 命名空间（如果有）
-		textContent?: string; // 文本内容（如果有）
+interface INode {
+	nodeName: string; // 节点名称
+	nodeType: NodeType; // 节点类型
+	namespace?: string; // 命名空间（如果有）
+	textContent?: string; // 文本内容（如果有）
 
-		readonly attributes?: IAttr[]; // 属性列表（如果有）
-		readonly childNodes?: INode[]; // 子节点（如果有）
+	readonly attributes?: IAttr[]; // 属性列表（如果有）
+	readonly childNodes?: INode[]; // 子节点（如果有）
 
-		parentNode?: INode; // 父节点
+	parentNode?: INode; // 父节点
 
-		cloneNode(): INode;
+	cloneNode(): INode;
 
-		appendChild(childNode: INode): void; // 插入子节点
-		insertBefore(childNode: INode, previousTarget: INode): void; // 在某个指定的子节点之前插入子节点
-		replaceChild(childNode: INode, ...children: INode[]): void; // 替换某个子节点
-		removeChild(childNode: INode): void; // 移除某个子节点
+	appendChild(childNode: INode): void; // 插入子节点
+	insertBefore(childNode: INode, previousTarget: INode): void; // 在某个指定的子节点之前插入子节点
+	replaceChild(childNode: INode, ...children: INode[]): void; // 替换某个子节点
+	removeChild(childNode: INode): void; // 移除某个子节点
 
-		hasAttribute(name: string, namespace?: string): boolean;
-		getAttribute(name: string, namespace?: string): string; // 获取某个属性的值
-		setAttribute(name: string, value: string, namespace?: string): void; // 设置某个属性的值
-		removeAttribute(name: string, namespace?: string): void; // 移除某个属性
-	}
+	hasAttribute(name: string, namespace?: string): boolean;
+	getAttribute(name: string, namespace?: string): string; // 获取某个属性的值
+	setAttribute(name: string, value: string, namespace?: string): void; // 设置某个属性的值
+	removeAttribute(name: string, namespace?: string): void; // 移除某个属性
+}
 ```
 
 ## 属性定义（typescript 格式）
 ```ts
-	interface IAttr {
-		name: string; // 属性名称（不含命名空间）
-		value: string; // 值
-		fullname: string; // 属性完整名称（含命名空间）
-		namespace?: string; // 属性命名空间
-	}
+interface IAttr {
+	name: string; // 属性名称（不含命名空间）
+	value: string; // 值
+	fullname: string; // 属性完整名称（含命名空间）
+	namespace?: string; // 属性命名空间
+}
 ```
 
 ## 这个 xml 解析工具有什么优点？

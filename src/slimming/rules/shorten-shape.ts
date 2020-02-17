@@ -1,3 +1,4 @@
+import { complement, equals } from 'ramda';
 import { douglasPeucker as DP } from '../algorithm/douglas-peucker';
 import { shapeElements } from '../const/definitions';
 import { numberGlobal, numberPattern, pureNumOrWithPx } from '../const/syntax';
@@ -13,6 +14,7 @@ import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
 
 const startWithNumber = new RegExp(`^(${numberPattern})`);
+const notNone = complement(equals('none'));
 
 const formatRect = (node: ITagNode) => {
 	let width = getAttr(node, 'width', '0');
@@ -70,7 +72,6 @@ const formatRect = (node: ITagNode) => {
 };
 
 const formatLine = (node: ITagNode) => {
-	const stroke = getAttr(node, 'stroke', '');
 	const strokeWidth = getAttr(node, 'stroke-width', '1');
 
 	const swExec = startWithNumber.exec(strokeWidth);
@@ -80,12 +81,19 @@ const formatLine = (node: ITagNode) => {
 	const hasMarker = getAttr(node, 'marker-start', 'none') !== 'none'
 		|| getAttr(node, 'marker-mid', 'none') !== 'none'
 		|| getAttr(node, 'marker-end', 'none') !== 'none'
-		|| checkAnimateAttr(animateAttrs, 'marker-start', val => val !== 'none')
-		|| checkAnimateAttr(animateAttrs, 'marker-mid', val => val !== 'none')
-		|| checkAnimateAttr(animateAttrs, 'marker-end', val => val !== 'none');
+		|| checkAnimateAttr(animateAttrs, 'marker-start', notNone)
+		|| checkAnimateAttr(animateAttrs, 'marker-mid', notNone)
+		|| checkAnimateAttr(animateAttrs, 'marker-end', notNone);
+
+	// 是否存在 stroke
+	const hasStroke = (
+		getAttr(node, 'stroke', 'none') !== 'none' || checkAnimateAttr(animateAttrs, 'stroke', notNone)
+	) && (
+		strokeWidth !== '0' || checkAnimateAttr(animateAttrs, 'stroke-width', complement(equals('0')))
+	);
 
 	// 如果 stroke 或 stroke-width 不合规范，直接移除
-	if (!hasMarker && (!stroke || stroke === 'none' || !swExec || +swExec[1] <= 0)) {
+	if (!hasMarker && (!hasStroke || !swExec || +swExec[1] <= 0)) {
 		node.nodeName = 'remove';
 		return;
 	}
@@ -105,14 +113,8 @@ const formatLine = (node: ITagNode) => {
 		node.removeAttribute(key);
 	});
 
-	// 是否存在 stroke
-	const hasStroke = (
-		getAttr(node, 'stroke', 'none') !== 'none' || checkAnimateAttr(animateAttrs, 'stroke', val => val !== 'none')
-	) && (
-		getAttr(node, 'stroke-width', '1') !== '0' || checkAnimateAttr(animateAttrs, 'stroke-width', val => val !== '0')
-	);
 	// 是否存在 stroke-linecap
-	const hasStrokeCap = getAttr(node, 'stroke-linecap', 'butt') !== 'butt' || checkAnimateAttr(animateAttrs, 'stroke-linecap', val => val !== 'butt');
+	const hasStrokeCap = getAttr(node, 'stroke-linecap', 'butt') !== 'butt' || checkAnimateAttr(animateAttrs, 'stroke-linecap', complement(equals('butt')));
 	// 如果没有发生移动，直接移除
 	if (shapeAttr.x1 === shapeAttr.x2 && shapeAttr.y1 === shapeAttr.y2 && !hasMarker && (!hasStroke || !hasStrokeCap)) {
 		node.nodeName = 'remove';
@@ -136,17 +138,17 @@ const formatPoly = (thinning: number, node: ITagNode, addZ: boolean) => {
 		const hasMarker = getAttr(node, 'marker-start', 'none') !== 'none'
 			|| getAttr(node, 'marker-mid', 'none') !== 'none'
 			|| getAttr(node, 'marker-end', 'none') !== 'none'
-			|| checkAnimateAttr(animateAttrs, 'marker-start', val => val !== 'none')
-			|| checkAnimateAttr(animateAttrs, 'marker-mid', val => val !== 'none')
-			|| checkAnimateAttr(animateAttrs, 'marker-end', val => val !== 'none');
+			|| checkAnimateAttr(animateAttrs, 'marker-start', notNone)
+			|| checkAnimateAttr(animateAttrs, 'marker-mid', notNone)
+			|| checkAnimateAttr(animateAttrs, 'marker-end', notNone);
 		// 是否存在 stroke
 		const hasStroke = (
-			getAttr(node, 'stroke', 'none') !== 'none' || checkAnimateAttr(animateAttrs, 'stroke', val => val !== 'none')
+			getAttr(node, 'stroke', 'none') !== 'none' || checkAnimateAttr(animateAttrs, 'stroke', notNone)
 		) && (
-			getAttr(node, 'stroke-width', '1') !== '0' || checkAnimateAttr(animateAttrs, 'stroke-width', val => val !== '0')
+			getAttr(node, 'stroke-width', '1') !== '0' || checkAnimateAttr(animateAttrs, 'stroke-width', complement(equals('0')))
 		);
 		// 是否存在 stroke-linecap
-		const hasStrokeCap = getAttr(node, 'stroke-linecap', 'butt') !== 'butt' || checkAnimateAttr(animateAttrs, 'stroke-linecap', val => val !== 'butt');
+		const hasStrokeCap = getAttr(node, 'stroke-linecap', 'butt') !== 'butt' || checkAnimateAttr(animateAttrs, 'stroke-linecap', complement(equals('butt')));
 		if (points.length % 2 === 1) {
 			points.pop();
 		}

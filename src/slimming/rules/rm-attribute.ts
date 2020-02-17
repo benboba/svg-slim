@@ -83,7 +83,7 @@ export const rmAttribute = async (rule: TFinalConfigItem, dom: INode): Promise<n
 						if (
 							!attributeName // 没有 attributeName 属性的动画没有意义
 							||
-							(attr.fullname !== 'values' && !legalValue(regularAttr[attributeName], attr, node.nodeName)) // 动画属性不合法
+							(attr.fullname !== 'values' && !legalValue(regularAttr[attributeName], attr)) // 动画属性不合法
 						) {
 							node.removeAttribute(attr.fullname);
 							// 如果已经没有必备的动画属性，移除 attributeName 属性
@@ -99,7 +99,7 @@ export const rmAttribute = async (rule: TFinalConfigItem, dom: INode): Promise<n
 							fullname: 'values',
 							namespace: '',
 							value: val.trim(),
-						}, node.nodeName))) {
+						}))) {
 							node.removeAttribute(attr.fullname);
 							// 如果已经没有必备的动画属性，移除 attributeName 属性
 							if (!animationAttributes.some(key => node.hasAttribute(key))) {

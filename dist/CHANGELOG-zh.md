@@ -1,5 +1,17 @@
 # 更新日志
 
+## 2020.02.17 v1.5.2
+
+### xml-parser
+
+* 增加了 shorten-filter 规则，用于缩短滤镜元素
+* 在原有优化规则的基础上，增加了对动画的判断，以避免某些受动画影响渲染逻辑的元素和属性被误移除
+* 增加了动画元素 values 属性的合法性验证规则
+* 优化了 rm-hidden 规则，增加了一些移除逻辑
+* combine-transform 规则，增加了对 gradientTransform 和 patternTransform 的优化
+* combine-transform 规则，增加了直接将 tranform 的计算结果应用于图形和文本元素的逻辑
+* 由于性能问题，屏蔽了对 css-validator 的依赖，现在暂时不对 css 样式进行合法性验证
+
 ## 2020.01.22 v1.5.1
 
 ### 综合
@@ -15,7 +27,7 @@
 
 * 优化数据结构以降低打包的容量
 * text 和 tspan 的 x、y、dx、dy、rotate 属性现在支持 length-percentage 列表形式
-* 追加了对于 [<alpha-value>](https://www.w3.org/TR/css-color/#typedef-alpha-value) 会对比百分比格式和数值格式哪个更短的逻辑
+* 追加了对于 [alpha-value](https://www.w3.org/TR/css-color/#typedef-alpha-value) 会对比百分比格式和数值格式哪个更短的逻辑
 * 现在 compute-path 规则会对 animateMotion 的 path 属性生效
 * 在解析样式树时，追加了样式属性是否可继承的判断（此前会将全部样式当作可继承，存在 badcase）
 * 引入 [css-validator](https://www.npmjs.com/package/css-validator) 进行 css 类样式的合法性验证，移除了代码中关于 css 合法性验证的部分逻辑
@@ -24,6 +36,7 @@
 * 修复了属性合法性验证时，当所有规则都不适用于当前 tag，会意外判断为不合法 bug
 * rm-unnecessary 规则默认移除列表添加了 image 元素
 * 改进了 shorten-style-attr 中属性和 style 互转的实现
+* 现在会立即移除 type 不是 text/css 的 style 节点，和 type 不是 (application|text)/(ecmascript|javascript) 的 script 节点
 * 添加了异步遍历节点的逻辑
 
 ## 2020.01.08 v1.5.0 **breaking change**
@@ -157,12 +170,14 @@
 * 进一步改进了 shorten-style-tag 的优化结果，现在会验证每一条 css 规则的有效性，去除无效的 css 规则
 
 例如：
-
-	<svg><style>#redText{fill:yellow;marker-end:none}</style><text id="redText">123</text></svg>
+```xml
+<svg><style>#redText{fill:yellow;marker-end:none}</style><text id="redText">123</text></svg>
+```
 
 现在会优化为：
-
-	<svg><style>#redText{fill:yellow}</style><text id="redText">123</text></svg>
+```xml
+<svg><style>#redText{fill:yellow}</style><text id="redText">123</text></svg>
+```
 
 ## 2019.03.13 v1.3.2
 
@@ -171,16 +186,19 @@
 * 解决了 style/check-apply 命中穿透情况的一个 badcase
 
 例如：
-
-	<svg><g id="a" fill="red"><rect fill="white"/><g fill="blue"><rect/></g></g></svg>
+```xml
+<svg><g id="a" fill="red"><rect fill="white"/><g fill="blue"><rect/></g></g></svg>
+```
 
 旧的优化结果为：
-
-	<svg><g id="a" fill="red"><rect fill="white"/><rect fill="blue"/></g></svg>
+```xml
+<svg><g id="a" fill="red"><rect fill="white"/><rect fill="blue"/></g></svg>
+```
 
 现在会优化为：
-
-	<svg><g id="a"><rect fill="white"/><rect fill="blue"/></g></svg>
+```xml
+<svg><g id="a"><rect fill="white"/><rect fill="blue"/></g></svg>
+```
 
 ## 2019.03.12 v1.3.1
 
@@ -320,9 +338,11 @@
 * combine-path 规则，添加了只有相邻的 path 节点才能合并的限制
 * 为 svg-slimming 包添加了属性指向 xmlParser 和 NodeType，可以通过以下方式调用
 
-	const svgSlimming = require('svg-slimming');
-	svgSlimming.xmlParser('svg string').then(result => { console.log(result); });
-	console.log(svgSlimming.NodeType);
+```js
+const svgSlimming = require('svg-slimming');
+svgSlimming.xmlParser('svg string').then(result => { console.log(result); });
+console.log(svgSlimming.NodeType);
+```
 
 ## 2018.08.15 v1.2.2
 
