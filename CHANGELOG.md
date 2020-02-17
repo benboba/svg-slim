@@ -1,5 +1,17 @@
 # Change Log
 
+## 2020.02.17 v1.5.2
+
+### xml-parser
+
+* Added shorten-filter rule to shorten filter elements
+* On the basis of the original optimization rules, the judgment of animation is added to avoid some elements and attributes that are affected by the animation rendering logic from being removed by mistake
+* Added legality validation rules for values property of animation elements
+* Optimized rm-hidden rule and added some removal logic
+* combine-transform rule, added optimization for gradientTransform and patternTransform
+* combine-transform rule, added logic to directly apply tranform calculation results to graphics and text elements
+* Due to performance issues, the dependency on css-validator has been shielded, and css styles are not currently validated
+
 ## 2020.01.22 v1.5.1
 
 ### Comprehensive

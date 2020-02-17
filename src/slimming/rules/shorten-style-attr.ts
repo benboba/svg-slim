@@ -5,7 +5,7 @@ import { checkApply } from '../style/check-apply';
 import { execStyle } from '../style/exec';
 import { shortenStyle } from '../style/shorten';
 import { stringifyStyle } from '../style/stringify';
-import { legalCss } from '../validate/legal-css';
+// import { legalCss } from '../validate/legal-css';
 import { legalValue } from '../validate/legal-value';
 import { attrIsEqual } from '../xml/attr-is-equal';
 import { execStyleTree } from '../xml/exec-style-tree';
@@ -32,7 +32,7 @@ interface IStyleAttrObj {
 const checkAttr = async (node: ITagNode, dom: INode, rmDefault: boolean) => new Promise<{
 	attrObj: IStyleAttrObj;
 	tagDefine: IRegularTag;
-}>(async resolve => { // tslint:disable-line cyclomatic-complexity
+}>(resolve => { // tslint:disable-line cyclomatic-complexity
 	if (rmDefault) {
 		execStyleTree(dom as ITagNode);
 	}
@@ -50,6 +50,8 @@ const checkAttr = async (node: ITagNode, dom: INode, rmDefault: boolean) => new 
 				const styleItem = styleObj[si];
 				const styleDefine = regularAttr[styleItem.fullname];
 				if (
+					!styleDefine.couldBeStyle // 不能做样式
+					||
 					styleUnique[styleItem.fullname] // 排重
 					||
 					!checkApply(styleDefine, node, dom) // 样式继承链上不存在可应用对象
@@ -145,36 +147,49 @@ const checkAttr = async (node: ITagNode, dom: INode, rmDefault: boolean) => new 
 		}
 	}
 
-	// 在此处进行样式合法性验证
-	let cssString = 'g{';
-	Object.entries(attrObj).forEach(([key, { value }]) => {
-		cssString += `${key}:${value};
-`;
-	});
-	cssString += '}';
+// 	// 在此处进行样式合法性验证
+// 	let cssString = 'g{';
+// 	Object.entries(attrObj).forEach(([key, { value }]) => {
+// 		cssString += `${key}:${value};
+// `;
+// 	});
+// 	cssString += '}';
 
-	// 双重合法性验证
-	const result = await legalCss(cssString);
-	if (!result.validity) {
-		result.errors.forEach(err => {
-			if (err.type === 'zero') {
-				return;
-			}
-			const key = Object.keys(attrObj)[err.line - 1] as string | undefined;
-			if (key && err.message.includes(key)) { // cssValidator 有时候会报错行数，需要确保规则对得上
-				const styleItem = attrObj[key];
-				const styleDefine = regularAttr[key];
-				// css 验证失败，还需要进行一次 svg-slimming 的合法性验证，确保没有问题
-				if (!styleDefine.legalValues.length || !legalValue(styleDefine, {
-					fullname: key,
-					value: styleItem.value,
-					name: '',
-				})) {
-					styleItem.value = '';
-				}
-			}
-		});
-	}
+// 	// 双重合法性验证
+	// const result = await legalCss(cssString);
+	// if (!result.validity) {
+	// 	result.errors.forEach(err => {
+	// 		if (err.type === 'zero') {
+	// 			return;
+	// 		}
+	// 		const key = Object.keys(attrObj)[err.line - 1] as string | undefined;
+	// 		if (key && err.message.includes(key)) { // cssValidator 有时候会报错行数，需要确保规则对得上
+	// 			const styleItem = attrObj[key];
+	// 			const styleDefine = regularAttr[key];
+	// 			// css 验证失败，还需要进行一次 svg-slimming 的合法性验证，确保没有问题
+	// 			if (!styleDefine.legalValues.length || !legalValue(styleDefine, {
+	// 				fullname: key,
+	// 				value: styleItem.value,
+	// 				name: '',
+	// 			})) {
+	// 				styleItem.value = '';
+	// 			}
+	// 		}
+	// 	});
+	// }
+
+	// 只做基本验证
+	Object.keys(attrObj).forEach(key => {
+		const styleItem = attrObj[key];
+		const styleDefine = regularAttr[key];
+		if (!styleDefine.cantTrans && !legalValue(styleDefine, {
+			fullname: key,
+			value: styleItem.value,
+			name: '',
+		})) {
+			styleItem.value = '';
+		}
+	});
 
 	Object.entries(attrObj).forEach(([key, attrItem]) => {
 		if (attrItem.animateAttr) { // 对于动画属性，验证完合法性后就应该移除缓存

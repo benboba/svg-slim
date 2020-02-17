@@ -1,6 +1,6 @@
 # 更新日志
 
-## 2020.01. v1.5.2
+## 2020.02.17 v1.5.2
 
 ### xml-parser
 
@@ -8,7 +8,9 @@
 * 在原有优化规则的基础上，增加了对动画的判断，以避免某些受动画影响渲染逻辑的元素和属性被误移除
 * 增加了动画元素 values 属性的合法性验证规则
 * 优化了 rm-hidden 规则，增加了一些移除逻辑
+* combine-transform 规则，增加了对 gradientTransform 和 patternTransform 的优化
 * combine-transform 规则，增加了直接将 tranform 的计算结果应用于图形和文本元素的逻辑
+* 由于性能问题，屏蔽了对 css-validator 的依赖，现在暂时不对 css 样式进行合法性验证
 
 ## 2020.01.22 v1.5.1
 

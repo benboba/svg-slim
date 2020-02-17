@@ -19,8 +19,8 @@ describe('default-rules/combine-script', () => {
 		createXML(dom).should.equal('<svg><style>#id{fill:red}</style><g><style>.class{fill:blue}</style></g><script><![CDATA[console.log(1);a < b]]></script></svg>');
 	});
 
-	it('移除非文本子节点 && 移除空 script 标签', async () => {
-		const xml = '<svg><style >#id{fill:red}</style><script ><b>123</b></script><g><style>.class{fill:blue}</style><script><![CDATA[]]></script></g></svg>';
+	it('移除非文本子节点 && 移除空 script 标签 && 移除非法 type', async () => {
+		const xml = '<svg><script type="template">{{=item.title}}</script><style >#id{fill:red}</style><script ><b>123</b></script><g><style>.class{fill:blue}</style><script><![CDATA[]]></script></g></svg>';
 		const dom = await parse(xml) as IDomNode;
 		await combineScript(dom);
 		createXML(dom).should.equal('<svg><style>#id{fill:red}</style><g><style>.class{fill:blue}</style></g></svg>');

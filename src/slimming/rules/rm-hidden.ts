@@ -1,15 +1,15 @@
-import { gt, gte } from 'ramda';
-import { shapeElements, animationAttrElements, animationElements, animationAttributes, filterPrimitiveElements } from '../const/definitions';
+import { complement, equals, gt, gte } from 'ramda';
+import { animationAttrElements, animationAttributes, animationElements, filterPrimitiveElements, shapeElements } from '../const/definitions';
 import { regularTag } from '../const/regular-tag';
 import { IRIFullMatch } from '../const/syntax';
 import { execStyleTree } from '../xml/exec-style-tree';
 import { getAncestor } from '../xml/get-ancestor';
+import { checkAnimateAttr, getAnimateAttr } from '../xml/get-animate-attr';
 import { getAttr } from '../xml/get-attr';
 import { getById } from '../xml/get-by-id';
 import { isTag } from '../xml/is-tag';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
-import { getAnimateAttr, checkAnimateAttr } from '../xml/get-animate-attr';
 
 // 检测数值类属性
 const checkNumberAttr = (node: ITagNode, key: string, allowEmpty: boolean, allowAuto: boolean, allowZero: boolean, animateAttrs: IAnimateAttr[]): boolean => {
@@ -130,6 +130,7 @@ export const rmHidden = async (rule: TFinalConfigItem, dom: INode): Promise<null
 
 			const styles = node.styles as IStyleObj;
 			const animateAttrs = getAnimateAttr(node);
+			const notNone = complement(equals('none'));
 
 			if (
 				styles.hasOwnProperty('display')
@@ -139,7 +140,7 @@ export const rmHidden = async (rule: TFinalConfigItem, dom: INode): Promise<null
 				!['script', 'style', 'mpath'].concat(filterPrimitiveElements, animationElements).includes(node.nodeName)
 				&&
 				// 增加对动画的验证，对那些 display 为 none，但是动画会修改 display 的元素也不会进行移除
-				!checkAnimateAttr(animateAttrs, 'display', val => val !== 'none')
+				!checkAnimateAttr(animateAttrs, 'display', notNone)
 			) {
 				rmNode(node);
 				return;
@@ -147,8 +148,8 @@ export const rmHidden = async (rule: TFinalConfigItem, dom: INode): Promise<null
 
 			// 没有填充和描边的形状，不一定可以被移除，要再判断一下自身或父元素是否有 id
 			if (shapeElements.includes(node.nodeName)) {
-				const noFill = styles.hasOwnProperty('fill') && styles.fill.value === 'none' && !checkAnimateAttr(animateAttrs, 'fill', val => val !== 'none');
-				const noStroke = (!styles.hasOwnProperty('stroke') || styles.stroke.value === 'none') && !checkAnimateAttr(animateAttrs, 'stroke', val => val !== 'none');
+				const noFill = styles.hasOwnProperty('fill') && styles.fill.value === 'none' && !checkAnimateAttr(animateAttrs, 'fill', notNone);
+				const noStroke = (!styles.hasOwnProperty('stroke') || styles.stroke.value === 'none') && !checkAnimateAttr(animateAttrs, 'stroke', notNone);
 				if (noFill && noStroke && !getAncestor(node, (n: INode) => n.hasAttribute('id'))) {
 					rmNode(node);
 					return;

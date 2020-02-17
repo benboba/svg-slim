@@ -132,10 +132,11 @@ declare type TCSSValidateResult = {
 	errors: cssValidateErrorItem[];
 }
 
+declare type CSSValidator = (option: {
+	text: string;
+	profile: string,
+}, cb: (err: Error | void, data: TCSSValidateResult) => void) => void;
+
 declare module 'css-validator' {
-	function cssValidator(option: {
-		text: string;
-		profile: string,
-	}, cb: (err: Error | void, data: TCSSValidateResult) => void): void;
-	export = cssValidator;
+	export = CSSValidator;
 }

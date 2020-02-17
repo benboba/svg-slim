@@ -26,8 +26,10 @@ export const execPath = (str: string): IPathItem[][] => {
 		switch (type) {
 			// 平移的参数必须为偶数
 			case 'm':
-				result.push(temp);
-				temp = [];
+				if (temp.length) {
+					result.push(temp);
+					temp = [];
+				}
 				if (val.length % 2 !== 0) {
 					if (val.length > 2) {
 						temp.push({

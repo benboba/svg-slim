@@ -14,14 +14,14 @@ describe('default-rules/combine-style', () => {
 	});
 
 	it('CDATA 分支', async () => {
-		const xml = '<svg><style ><![CDATA[#id{content:"<"}]]></style><script >console.log(1)</script><g><style>.class{fill:blue}</style></g></svg>';
+		const xml = '<svg><style ><![CDATA[#id{font-family:"<"}]]></style><script >console.log(1)</script><g><style>.class{fill:blue}</style></g></svg>';
 		const dom = await parse(xml) as IDomNode;
 		await combineStyle(dom);
-		createXML(dom).should.equal('<svg><style><![CDATA[#id{content:"<"}.class{fill:blue}]]></style><script>console.log(1)</script><g/></svg>');
+		createXML(dom).should.equal('<svg><style><![CDATA[#id{font-family:"<"}.class{fill:blue}]]></style><script>console.log(1)</script><g/></svg>');
 	});
 
-	it('移除非文本子节点 && 移除空 style 标签', async () => {
-		const xml = '<svg><style ><b>123</b></style><script >console.log(1)</script><g><style><![CDATA[]]></style></g></svg>';
+	it('移除非文本子节点 && 移除空 style 标签 && 移除非法 type', async () => {
+		const xml = '<svg><style type="test">#id{fill:blue}</style><style ><b>123</b></style><script >console.log(1)</script><g><style><![CDATA[]]></style></g></svg>';
 		const dom = await parse(xml) as IDomNode;
 		await combineStyle(dom);
 		createXML(dom).should.equal('<svg><script>console.log(1)</script><g/></svg>');

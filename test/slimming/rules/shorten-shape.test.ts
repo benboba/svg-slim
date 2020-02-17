@@ -78,4 +78,20 @@ describe('rules/shorten-shape', () => {
 		await shortenShape([true, { thinning: 30 }], dom);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><path d="M0,0,30,30"/><path d="M0,0,1e2,2e2,3e2,3e2,298,298z"/></svg>');
 	});
+
+	it('check animate', async () => {
+		const xml = `<svg>
+		<line x2="100" stroke-width="0">
+			<animate attributeName="stroke" to="block"/>
+			<animate attributeName="stroke-width" to="0"/>
+		</line>
+		<polyline points="10,10" stroke-width="0" stroke="block">
+			<animate attributeName="stroke" to="none"/>
+			<animate attributeName="stroke-width" to="0"/>
+		</polyline>
+		</svg>`;
+		const dom = await parse(xml) as ITagNode;
+		await shortenShape([true, { thinning: 30 }], dom);
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg></svg>');
+	});
 });

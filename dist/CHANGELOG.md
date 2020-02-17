@@ -1,5 +1,17 @@
 # Change Log
 
+## 2020.02.17 v1.5.2
+
+### xml-parser
+
+* Added shorten-filter rule to shorten filter elements
+* On the basis of the original optimization rules, the judgment of animation is added to avoid some elements and attributes that are affected by the animation rendering logic from being removed by mistake
+* Added legality validation rules for values property of animation elements
+* Optimized rm-hidden rule and added some removal logic
+* combine-transform rule, added optimization for gradientTransform and patternTransform
+* combine-transform rule, added logic to directly apply tranform calculation results to graphics and text elements
+* Due to performance issues, the dependency on css-validator has been shielded, and css styles are not currently validated
+
 ## 2020.01.22 v1.5.1
 
 ### Comprehensive
@@ -15,7 +27,7 @@
 
 * Optimize data structure to reduce packing capacity
 * The x, y, dx, dy, and rotate attributes of text and tspan now support length-percentage list form
-* Added logic for [<alpha-value>] (https://www.w3.org/TR/css-color/#typedef-alpha-value) which compares the percentage format and numeric format which is shorter
+* Added logic for [alpha-value](https://www.w3.org/TR/css-color/#typedef-alpha-value) which compares the percentage format and numeric format which is shorter
 * The compute-path rule now takes effect on the path property of animateMotion
 * Added the judgment of whether style attributes are inheritable when parsing the style tree (all styles were considered to be inheritable before, there are badcases)
 * Introduced [css-validator](https://www.npmjs.com/package/css-validator) for css class-style legality verification, removed some logic in the code regarding css legality verification
@@ -158,12 +170,12 @@
 
 E.g:
 ```xml
-	<svg><style>#redText{fill:yellow;marker-end:none}</style><text id="redText">123</text></svg>
+<svg><style>#redText{fill:yellow;marker-end:none}</style><text id="redText">123</text></svg>
 ```
 
 Now optimized to:
 ```xml
-	<svg><style>#redText{fill:yellow}</style><text id="redText">123</text></svg>
+<svg><style>#redText{fill:yellow}</style><text id="redText">123</text></svg>
 ```
 
 ## 2019.03.13 v1.3.2
@@ -174,17 +186,17 @@ Now optimized to:
 
 E.g:
 ```xml
-	<svg><g id="a" fill="red"><rect fill="white"/><g fill="blue"><rect/></g></g></svg>
+<svg><g id="a" fill="red"><rect fill="white"/><g fill="blue"><rect/></g></g></svg>
 ```
 
 The old optimization results were:
 ```xml
-	<svg><g id="a" fill="red"><rect fill="white"/><rect fill="blue"/></g></svg>
+<svg><g id="a" fill="red"><rect fill="white"/><rect fill="blue"/></g></svg>
 ```
 
 Now optimized to:
 ```xml
-	<svg><g id="a"><rect fill="white"/><rect fill="blue"/></g></svg>
+<svg><g id="a"><rect fill="white"/><rect fill="blue"/></g></svg>
 ```
 
 ## 2019.03.12 v1.3.1
@@ -325,9 +337,9 @@ Now optimized to:
 * The combine-path rule adds the restriction that only adjacent path nodes can be combined
 * Added attributes to svg-slimming package to point to xmlParser and NodeType, which can be called by
 ```javascript
-	const svgSlimming = require('svg-slimming');
-	svgSlimming.xmlParser('svg string').then(result => { console.log(result); });
-	console.log(svgSlimming.NodeType);
+const svgSlimming = require('svg-slimming');
+svgSlimming.xmlParser('svg string').then(result => { console.log(result); });
+console.log(svgSlimming.NodeType);
 ```
 
 ## 2018.08.15 v1.2.2

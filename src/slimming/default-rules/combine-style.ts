@@ -5,7 +5,7 @@ import { mixWhiteSpace } from '../utils/mix-white-space';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
 import { traversalObj } from '../utils/traversal-obj';
-import { legalCss } from '../validate/legal-css';
+// import { legalCss } from '../validate/legal-css';
 import { regularAttr } from '../const/regular-attr';
 import { legalValue } from '../validate/legal-value';
 
@@ -137,42 +137,56 @@ export const combineStyle = async (dom: IDomNode): Promise<null> => new Promise(
 	}
 
 	if (ruleParents.length) {
-		(async () => { // tslint:disable-line no-floating-promises
+		// (async () => { // tslint:disable-line no-floating-promises
 			for (const [rule, parent] of ruleParents) {
-				let cssString = 'text,rect{';
-				rule.declarations.forEach(d => {
-					cssString += `${d.property}:${d.value};
-`;
-				});
-				cssString += '}';
-				const result = await legalCss(cssString);
-				if (!result.validity) {
-					result.errors.forEach(err => {
-						if (err.type === 'zero') { // 忽略没有单位导致的错误
-							return;
-						}
-						const styleItem = rule.declarations[err.line - 1] as Declaration | undefined;
-						if (styleItem && err.message.includes(styleItem.property as string)) { // cssValidator 有时候会报错行数，需要确保规则对得上
-							const styleDefine = regularAttr[styleItem.property as string];
-							// css 验证失败，还需要进行一次 svg-slimming 的合法性验证，确保没有问题
-							if (!styleDefine.legalValues.length || !legalValue(styleDefine, {
-								fullname: styleItem.property as string,
-								value: styleItem.value as string,
-								name: '',
-							})) {
-								styleItem.value = '';
-							}
-						}
-					});
-					rule.declarations = rule.declarations.filter(item => !!item.value);
-					if (!rule.declarations.length) {
-						rmCSSNode(rule as Node, parent);
+// 				if (typeof document === 'undefined') { // tslint:disable-line strict-type-predicates
+// 					let cssString = 'text,rect{';
+// 					rule.declarations.forEach(d => {
+// 						cssString += `${d.property}:${d.value};
+// `;
+// 					});
+// 					cssString += '}';
+// 					const result = await legalCss(cssString);
+// 					if (!result.validity) {
+// 						result.errors.forEach(err => {
+// 							if (err.type === 'zero') { // 忽略没有单位导致的错误
+// 								return;
+// 							}
+// 							const styleItem = rule.declarations[err.line - 1] as Declaration | undefined;
+// 							if (styleItem && err.message.includes(styleItem.property as string)) { // cssValidator 有时候会报错行数，需要确保规则对得上
+// 								const styleDefine = regularAttr[styleItem.property as string];
+// 								// css 验证失败，还需要进行一次 svg-slimming 的合法性验证，确保没有问题
+// 								if (!styleDefine.legalValues.length || !legalValue(styleDefine, {
+// 									fullname: styleItem.property as string,
+// 									value: styleItem.value as string,
+// 									name: '',
+// 								})) {
+// 									styleItem.value = '';
+// 								}
+// 							}
+// 						});
+// 					}
+// 				}
+				// 只做基本验证
+				rule.declarations.forEach(styleItem => {
+					const styleDefine = regularAttr[styleItem.property as string];
+					if (!legalValue(styleDefine, {
+						fullname: styleItem.property as string,
+						value: styleItem.value as string,
+						name: '',
+					})) {
+						styleItem.value = '';
 					}
+				});
+				rule.declarations = rule.declarations.filter(item => !!item.value);
+				if (!rule.declarations.length) {
+					rmCSSNode(rule as Node, parent);
 				}
 			}
-			resolve();
-		})();
-	} else {
-		resolve();
+			// resolve();
+		// })();
 	}
+	// } else {
+		resolve();
+	// }
 });

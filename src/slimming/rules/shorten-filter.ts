@@ -16,8 +16,9 @@ const feTypeNeed = {
 const checkFeAttrs = (type: string, rmAttrs: string[]) => {
 	if (feTypeNeed.hasOwnProperty(type)) {
 		feTypeNeed[type as keyof typeof feTypeNeed].forEach(val => {
-			if (rmAttrs.includes(val)) {
-				rmAttrs.splice(rmAttrs.indexOf(val), 1);
+			const index = rmAttrs.indexOf(val);
+			if (index !== -1) {
+				rmAttrs.splice(index, 1);
 			}
 		});
 	}
@@ -30,7 +31,7 @@ export const shortenFilter = async (rule: TFinalConfigItem, dom: INode): Promise
 				const width = node.getAttribute('width');
 				const height = node.getAttribute('height');
 				// 滤镜元素的 region 尺寸必须合法
-				if ((width && parseFloat(width) <= 0) || height && parseFloat(height) <= 0) {
+				if ((width && parseFloat(width) <= 0) || (height && parseFloat(height) <= 0)) {
 					rmNode(node);
 					return;
 				}

@@ -81,4 +81,11 @@ describe('rules/compute-path', () => {
 		await computePath([true, { thinning: 0, sizeDigit: 2, angelDigit: 2, straighten: 10 }], dom);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><defs><marker id="m1" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="8" markerHeight="8"><circle r="5"/></marker></defs><path d="m0,0" marker-start="url(#m1)"/></svg>');
 	});
+
+	it('animateMotion', async () => {
+		const xml = '<svg><animateMotion path="M0,0"/><animateMotion/></svg>';
+		const dom = await parse(xml) as ITagNode;
+		await computePath([true, { thinning: 0, sizeDigit: 2, angelDigit: 2, straighten: 0 }], dom);
+		createXML(dom).should.equal('<svg><animateMotion/><animateMotion/></svg>');
+	});
 });

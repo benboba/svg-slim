@@ -35,4 +35,22 @@ describe('rules/rm-hidden', () => {
 		await rmHidden([true], dom);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><mask width="auto"><text id="a">1<rect fill="none" stroke="none"/></text></mask><mask width="1"><circle r="5"/></mask><use href="#a"/><animate attributeName="fill" by="blue"/></svg>');
 	});
+
+	it('check animate', async () => {
+		const xml = `<svg>
+			<rect display="none">
+				<animate from="block" attributeName="display"/>
+			</rect>
+			<rect display="none">
+				<animate from="1" attributeName="x"/>
+			</rect>
+			<rect fill="none">
+				<animate to="none" attributeName="fill"/>
+				<animate to="none" attributeName="stroke"/>
+			</rect>
+		</svg>`;
+		const dom = await parse(xml) as ITagNode;
+		await rmHidden([true], dom);
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><rect display="none"><animate from="block" attributeName="display"/></rect></svg>');
+	});
 });

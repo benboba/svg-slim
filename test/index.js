@@ -90,7 +90,7 @@ tester(
     <text transform="matrix(1,0,0,1,1,0)">2</text>
     <text transform="matrix(0.988,-0.156,0.156,0.988,0,0)">2</text>
     </svg>`,
-	'<svg><text>1</text><text transform="scale(3)">2</text><text transform="matrix(0,1.32-1.32,0,13.2.1)">2</text><text transform="scale(2,3)">2</text><text transform="translate(1)">2</text><text transform="rotate(-8.97)">2</text></svg>', {
+	'<svg><text>1</text><text transform="scale(3)">2</text><text transform="matrix(0,1.32-1.32,0,13.2.1)">2</text><text transform="scale(2,3)">2</text><text dx="1">2</text><text transform="rotate(-8.97)">2</text></svg>', {
 		'combine-transform': [true, 3, 1]
 	}
 );

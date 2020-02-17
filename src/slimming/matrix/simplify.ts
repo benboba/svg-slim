@@ -49,7 +49,6 @@ export const simplify = (matrix: IMatrixFunc, digit1: number, digit2: number): I
 			val: [corner],
 		};
 	}
-
 	if (
 		fixed1(matrix.val[aPos]) === fixed1(matrix.val[dPos])
 		&&
