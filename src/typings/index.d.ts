@@ -102,7 +102,9 @@ declare interface IRGBColor {
 
 declare interface IAnimateAttr {
 	attributeName: string;
-	value: string[];
+	node: INode,
+	keys: string[],
+	values: string[];
 }
 
 declare module 'svg-path-contours' {

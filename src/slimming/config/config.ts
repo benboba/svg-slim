@@ -66,6 +66,10 @@ export const config: IFinalConfig = {
 	'rm-xml-decl': [true],
 	// 如有必要，移除 xml 命名空间
 	'rm-xmlns': [true],
+	// 缩短动画元素
+	'shorten-animate': [true, {
+		remove: false, // 直接移除所有的动画元素
+	}],
 	// 缩短 className ，并移除不被引用的 className
 	'shorten-class': [true],
 	// 缩短颜色

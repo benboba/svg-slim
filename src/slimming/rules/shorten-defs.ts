@@ -5,6 +5,10 @@ import { isTag } from '../xml/is-tag';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
 import { getAncestor } from '../xml/get-ancestor';
+import { execStyleTree } from '../xml/exec-style-tree';
+import { execStyle } from '../style/exec';
+import { stringifyStyle } from '../style/stringify';
+import { shapeElements } from '../const/definitions';
 
 interface IIDCacheITem {
 	tag?: ITagNode; // 具有该 id 的节点
@@ -43,7 +47,76 @@ const checkSub = (node: ITagNode, IDList: IIDCache, isDefs = false) => {
 	}
 };
 
-export const shortenDefs = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+const checkDefsApply = (item: IIDCacheITem) => {
+	const [node] = item.iri[0];
+	switch (node.nodeName) {
+		case 'use':
+			// TODO 有 x 和 y 的暂不做应用（实际效果应该相当于 translate，待验证）
+			if (node.hasAttribute('x') || node.hasAttribute('y')) {
+				return;
+			}
+			// 具有 viewport ，且 use 定义了宽高，不进行应用
+			if (['svg', 'symbol'].includes((item.tag as ITagNode).nodeName) && (node.hasAttribute('width') || node.hasAttribute('height'))) {
+				return;
+			}
+			const originStyle: IAttrObj = {};
+			const originAttr: IAttrObj = {};
+			for (const [key, val] of Object.entries(node.styles as IStyleObj)) {
+				// 如果 use 元素被 style 命中，不能进行应用
+				if (val.from === 'styletag') {
+					return;
+				}
+				if (val.from === 'attr') {
+					originAttr[key] = val.value;
+				}
+				if (val.from === 'inline') {
+					originStyle[key] = val.value;
+				}
+			}
+			const useTag = item.tag as ITagNode;
+			(node.parentNode as ITagNode).replaceChild(node, useTag);
+			const styleArray: IAttr[] = useTag.hasAttribute('style') ? execStyle(useTag.getAttribute('style') as string) : [];
+			for (const [key, val] of Object.entries(originAttr)) {
+				if (!useTag.hasAttribute(key) && !styleArray.some(sItem => sItem.fullname === key)) {
+					useTag.setAttribute(key, val);
+				}
+			}
+			for (const [key, val] of Object.entries(originStyle)) {
+				if (!useTag.hasAttribute(key) && !styleArray.some(sItem => sItem.fullname === key)) {
+					styleArray.push({
+						name: key,
+						fullname: key,
+						value: val,
+					});
+				}
+			}
+			if (styleArray.length) {
+				useTag.setAttribute('style', stringifyStyle(styleArray));
+			}
+			return;
+		case 'mpath':
+			const pathTag = item.tag as ITagNode;
+			const mpathParent = node.parentNode as ITagNode;
+			if (!shapeElements.includes(pathTag.nodeName) || mpathParent.nodeName !== 'animateMotion') {
+				rmNode(node);
+				return;
+			}
+			// 只针对路径元素进行应用
+			if (pathTag.nodeName === 'path') {
+				const d = pathTag.getAttribute('d');
+				if (d) {
+					mpathParent.setAttribute('path', d);
+					rmNode(node);
+					rmNode(pathTag);
+				}
+			}
+			return;
+		default:
+			break;
+	}
+};
+
+export const shortenDefs = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		let firstDefs: ITagNode | undefined;
 
@@ -99,8 +172,8 @@ export const shortenDefs = async (rule: TFinalConfigItem, dom: INode): Promise<n
 			}, dom);
 
 			checkSub(firstDefs, IDList, true);
+			execStyleTree(dom);
 
-			// TODO 把 defs 直接应用
 			(Object.values(IDList) as IIDCacheITem[]).forEach(item => {
 				if (item.tag) {
 					// 有可能引用对象存在于 defs 内部，并且已被移除
@@ -113,6 +186,10 @@ export const shortenDefs = async (rule: TFinalConfigItem, dom: INode): Promise<n
 					}
 					if (!item.iri.length) {
 						rmNode(item.tag);
+					}
+
+					if (item.iri.length === 1) {
+						checkDefsApply(item);
 					}
 				}
 			});

@@ -1,11 +1,11 @@
-import { animationAttributes, animationAttrElements, ariaAttributes, eventAttributes } from '../const/definitions';
+import { ariaAttributes, eventAttributes } from '../const/definitions';
 import { regularAttr } from '../const/regular-attr';
 import { regularTag } from '../const/regular-tag';
 import { legalValue } from '../validate/legal-value';
+import { attrIsEqual } from '../xml/attr-is-equal';
 import { execStyleTree } from '../xml/exec-style-tree';
 import { isTag } from '../xml/is-tag';
 import { traversalNode } from '../xml/traversal-node';
-import { attrIsEqual } from '../xml/attr-is-equal';
 
 // rm-attirbute 不再验证 css 类的属性，只关注该 css 属性是否是 svg 所支持的
 export const rmAttribute = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
@@ -27,20 +27,6 @@ export const rmAttribute = async (rule: TFinalConfigItem, dom: INode): Promise<n
 			}
 
 			const tagDefine: IRegularTag = regularTag[node.nodeName];
-			// 先取出来 attributeName 属性
-			let attributeName = node.getAttribute('attributeName') || '';
-			if (attributeName && !regularAttr[attributeName].animatable) {
-				// attributeName 指定了不能实现动画的属性，视为无效
-				attributeName = '';
-				node.removeAttribute('attributeName');
-			}
-			if (node.nodeName === 'animateTransform' && attributeName !== 'transform' && attributeName !== 'patternTransform') {
-				// animateTransform 只能修改 tranform 类型的属性
-				// https://svgwg.org/specs/animations/#SVGExtensionsToSMILAnimation
-				attributeName = '';
-				node.removeAttribute('attributeName');
-				return;
-			}
 
 			// href 和 xlink:href 不能并存，如果并存，应该移除后者
 			if (node.hasAttribute('href') && node.hasAttribute('xlink:href')) {
@@ -75,39 +61,6 @@ export const rmAttribute = async (rule: TFinalConfigItem, dom: INode): Promise<n
 						node.removeAttribute(attr.fullname);
 						continue;
 					}
-					if (
-						animationAttributes.includes(attr.fullname) // 动画属性 from、to、by、values
-						&&
-						animationAttrElements.includes(node.nodeName) // 存在于动画元素上
-					) {
-						if (
-							!attributeName // 没有 attributeName 属性的动画没有意义
-							||
-							(attr.fullname !== 'values' && !legalValue(regularAttr[attributeName], attr)) // 动画属性不合法
-						) {
-							node.removeAttribute(attr.fullname);
-							// 如果已经没有必备的动画属性，移除 attributeName 属性
-							if (!animationAttributes.some(key => node.hasAttribute(key))) {
-								node.removeAttribute('attributeName');
-							}
-							continue;
-						}
-						// values 是以分号分隔的，需要分隔后对每一项进行合法性验证
-						const values = attr.value.split(';');
-						if (values.every(val => !legalValue(regularAttr[attributeName], {
-							name: 'values',
-							fullname: 'values',
-							namespace: '',
-							value: val.trim(),
-						}))) {
-							node.removeAttribute(attr.fullname);
-							// 如果已经没有必备的动画属性，移除 attributeName 属性
-							if (!animationAttributes.some(key => node.hasAttribute(key))) {
-								node.removeAttribute('attributeName');
-							}
-							continue;
-						}
-					}
 				}
 
 				if (rmDefault) {
@@ -118,6 +71,22 @@ export const rmAttribute = async (rule: TFinalConfigItem, dom: INode): Promise<n
 					}
 					if (attrIsEqual(attrDefine, value, node.nodeName)) {
 						node.removeAttribute(attr.fullname);
+					}
+				}
+
+				// use 元素的宽高不能为负
+				if (node.nodeName === 'use') {
+					if (node.hasAttribute('width')) {
+						const width = node.getAttribute('width') as string;
+						if (+width < 0) {
+							node.removeAttribute('width');
+						}
+					}
+					if (node.hasAttribute('height')) {
+						const height = node.getAttribute('height') as string;
+						if (+height < 0) {
+							node.removeAttribute('height');
+						}
 					}
 				}
 			}

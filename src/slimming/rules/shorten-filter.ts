@@ -80,7 +80,7 @@ export const shortenFilter = async (rule: TFinalConfigItem, dom: INode): Promise
 				checkFeAttrs(type, rmAttrs);
 				// 遍历并保留每一个 animate type 的必备属性
 				animateAttrs.forEach(item => {
-					item.value.forEach(val => {
+					item.values.forEach(val => {
 						checkFeAttrs(val, rmAttrs);
 					});
 				});

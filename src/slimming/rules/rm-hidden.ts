@@ -94,6 +94,7 @@ export const rmHidden = async (rule: TFinalConfigItem, dom: INode): Promise<null
 	if (rule[0]) {
 		execStyleTree(dom as ITagNode);
 
+		// tslint:disable-next-line: cyclomatic-complexity
 		traversalNode<ITagNode>(isTag, node => {
 
 			// 未包含子节点的文本容器视为隐藏节点
@@ -102,29 +103,23 @@ export const rmHidden = async (rule: TFinalConfigItem, dom: INode): Promise<null
 				return;
 			}
 
-			// 对于 animate、set、animateTransform 元素，attributeName 是必须的属性
-			if (animationAttrElements.includes(node.nodeName)) {
-				const attributeName = node.getAttribute('attributeName');
-				if (!attributeName) {
-					rmNode(node);
-					return;
-				}
-				if (node.nodeName === 'set' && !node.getAttribute('to')) {
-					rmNode(node);
-					return;
-				}
-				// animateTransform 只能修改 tranform 类型的属性
-				// https://svgwg.org/specs/animations/#SVGExtensionsToSMILAnimation
-				if (node.nodeName === 'animateTransform' && attributeName !== 'transform' && attributeName !== 'patternTransform') {
-					rmNode(node);
-					return;
-				}
-			}
-
-			if (node.nodeName.indexOf('animate') === 0) {
-				if (!animationAttributes.some(key => node.hasAttribute(key))) {
-					rmNode(node);
-					return;
+			// textPath 如果没有 path 属性，则 href 和 xlink:href 必须指向 path 或 shape 元素
+			if (node.nodeName === 'textPath') {
+				if (!node.hasAttribute('path')) {
+					const id = node.getAttribute('href') || node.getAttribute('xlink:href');
+					if (!id) {
+						rmNode(node);
+						return;
+					}
+					const target = getById(id, dom);
+					if (!target) {
+						rmNode(node);
+						return;
+					}
+					if (!shapeElements.includes(target.nodeName)) {
+						rmNode(node);
+						return;
+					}
 				}
 			}
 
