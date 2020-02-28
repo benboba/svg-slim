@@ -59,7 +59,7 @@ svgSlimming(svgcode[, config]).then(result => {
 | 元素 | 移除不符合 svg 规范的元素 | √ | √ |
 | 元素 | 优化不规范的元素嵌套 | √ | √ |
 | 元素 | 优化 defs | √ | √ |
-| 元素 | 直接应用 defs 到元素 | × | √ |
+| 元素 | 直接应用 defs 到元素 | v1.5.3 | √ |
 | svg 元素 | viewBox vs 尺寸 | 优先使用尺寸 | 优先使用 viewBox |
 | svg 元素 | 移除 version 属性 | √ | √ |
 | svg 元素 | 优化 xmlns | √ | √ |
@@ -96,8 +96,8 @@ svgSlimming(svgcode[, config]).then(result => {
 | css | 优化 style 内容 | √ | √ |
 | css | 缩短 className | √ | × |
 | css | style 转属性 | √ | √ |
-| css | 属性转 style | √（存在 badcase） | × |
-| css | 移除 svg 不支持的 css 样式 | √（存在 badcase） | × |
+| css | 属性转 style | √ | × |
+| css | 移除 svg 不支持的 css 样式 | √（不完整） | × |
 | css | 直接把 style 内容应用到元素 | × | √ |
 
 ## 优化配置
@@ -542,6 +542,33 @@ use 元素引用了不存在的 id
 	<rect fill="red" width="100" height="100"/>
 </svg>
 ```
+
+### shorten-animate
+
+* 默认配置：
+```json
+{
+	"shorten-animate": [true, {
+		"remove": false
+	}]
+}
+```
+* 说明：
+	* 优化动画元素，同时移除不合法的动画元素
+* 配置参数
+	* remove
+		* 默认值：false
+		* 不做任何验证，直接移除所有的动画元素
+
+例如：
+```xml
+<animate/><!-- 没有 attributeName -->
+<animate attributeName="title" to="test"/><!-- title 不是 animatable 的属性 -->
+<animate attributeName="x"/><!-- 没有 from/to/by/values -->
+<animate attributeName="x" to="abc"/><!-- to 的值与 x 不匹配 -->
+```
+
+经过优化以上元素都会被移除
 
 ### shorten-class
 

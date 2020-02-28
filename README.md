@@ -86,7 +86,7 @@ Where svgcode is svg text in string format and config is user-defined optimized 
 | Numbers | Precisely optimize different types of values | √ | × |
 | Numbers | Digital to Scientific Notation | √ | × |
 | Matrix | merge and shorten transform | √ | √ |
-| Matrix | Apply transform directly to attributes | × | √ |
+| Matrix | Apply transform directly to attributes | v1.5.2 | √ |
 | Color | Optimize Color | √ | √ |
 | Color | Support hsl / hsla format color | √ | × |
 | Color | Support rgba format color | √ | × |

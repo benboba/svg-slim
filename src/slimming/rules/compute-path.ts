@@ -11,6 +11,7 @@ import { execStyleTree } from '../xml/exec-style-tree';
 import { getAttr } from '../xml/get-attr';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
+import { getAnimateAttr, checkAnimateAttr, findAnimateAttr } from '../xml/get-animate-attr';
 
 const DPItemNormalize = (pathItem: IPathResultItem): IPathResultItem => {
 	switch (pathItem.type) {
@@ -71,60 +72,109 @@ const DPInit = (threshold: number, pathArr: IPathResultItem[]): IPathResultItem[
 	return pathResult;
 };
 
+const processPath = (dVal: string, hasMarker: boolean, hasStroke: boolean, hasStrokeCap: boolean, {
+	thinning,
+	sizeDigit,
+	angelDigit,
+	straighten,
+}: {
+	thinning: number;
+	sizeDigit: number;
+	angelDigit: number;
+	straighten: number;
+}) => {
+	// 先运算一次 doCompute，拿到每条指令的 from 坐标
+	let pathResult = doCompute(execPath(dVal));
+
+	// 如果存在 marker 引用，多余的优化都不能做
+	if (!hasMarker) {
+		// 存在小尺寸曲线转直线的规则
+		if (straighten) {
+			// doCompute 必须执行
+			pathResult = doCompute(pathResult.map(p => straightenPath(straighten, p)));
+		}
+		// 存在路径抽稀规则
+		if (thinning) {
+			// doCompute 必须执行
+			pathResult = doCompute(pathResult.map(p => DPInit(thinning, p)));
+		}
+		// 进行合并、指令转换等运算
+		pathResult = doCompute(checkSubPath(pathResult, hasStroke, hasStrokeCap, sizeDigit, angelDigit));
+	}
+	if (pathResult.length) {
+		return stringifyPath(pathResult, sizeDigit, angelDigit);
+	} else {
+		return '';
+	}
+};
+
 export const computePath = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
-		const {
-			thinning,
-			sizeDigit,
-			angelDigit,
-			straighten,
-		} = rule[1] as {
-			thinning: number;
-			sizeDigit: number;
-			angelDigit: number;
-			straighten: number;
-		};
 		execStyleTree(dom as IDomNode);
-		traversalNode<ITagNode>(anyPass([propEq('nodeName', 'path'), propEq('nodeName', 'animateMotion')]), node => {
+		traversalNode<ITagNode>(anyPass([propEq('nodeName', 'path'), propEq('nodeName', 'animateMotion'), propEq('nodeName', 'textPath')]), node => {
+			const option = rule[1] as {
+				thinning: number;
+				sizeDigit: number;
+				angelDigit: number;
+				straighten: number;
+			};
+
 			const attrName = node.nodeName === 'path' ? 'd' : 'path';
 			const attrD = node.getAttribute(attrName);
-			// todo 验证动画元素中的对应项，并进行优化
+			const animateAttrs = getAnimateAttr(node);
+
+			// 是否存在 marker 引用，没有 marker 可以移除所有空移动指令
+			const hasMarker = getAttr(node, 'marker-start', 'none') !== 'none' || getAttr(node, 'marker-mid', 'none') !== 'none' || getAttr(node, 'marker-end', 'none') !== 'none';
+			// 是否存在 stroke，没有 stroke 可以移除面积为 0 的子路径
+			const hasStroke = getAttr(node, 'stroke', 'none') !== 'none' && getAttr(node, 'stroke-width', '1') !== '0';
+			// 是否存在 stroke-linecap，没有 stroke-linecap 可以移除长度为 0 的指令
+			const hasStrokeCap = getAttr(node, 'stroke-linecap', 'butt') !== 'butt';
+			let noAttrD = true;
+			let noAnimateD = true;
+
 			if (attrD) {
-				// 先运算一次 doCompute，拿到每条指令的 from 坐标
-				let pathResult = doCompute(execPath(attrD));
-
-				// 是否存在 marker 引用，没有 marker 可以移除所有空移动指令
-				const hasMarker = getAttr(node, 'marker-start', 'none') !== 'none' || getAttr(node, 'marker-mid', 'none') !== 'none' || getAttr(node, 'marker-end', 'none') !== 'none';
-				// 是否存在 stroke，没有 stroke 可以移除面积为 0 的子路径
-				const hasStroke = getAttr(node, 'stroke', 'none') !== 'none' && getAttr(node, 'stroke-width', '1') !== '0';
-				// 是否存在 stroke-linecap，没有 stroke-linecap 可以移除长度为 0 的指令
-				const hasStrokeCap = getAttr(node, 'stroke-linecap', 'butt') !== 'butt';
-				// 如果存在 marker 引用，多余的优化都不能做
-				if (!hasMarker) {
-					// 存在小尺寸曲线转直线的规则
-					if (straighten) {
-						// doCompute 必须执行
-						pathResult = doCompute(pathResult.map(p => straightenPath(straighten, p)));
-					}
-					// 存在路径抽稀规则
-					if (thinning) {
-						// doCompute 必须执行
-						pathResult = doCompute(pathResult.map(p => DPInit(thinning, p)));
-					}
-					// 进行合并、指令转换等运算
-					pathResult = doCompute(checkSubPath(pathResult, hasStroke, hasStrokeCap, sizeDigit, angelDigit));
-				}
-				if (!pathResult.length) {
-					if (node.nodeName === 'path') {
-						rmNode(node);
-					} else {
-						node.removeAttribute(attrName);
-					}
+				const pathResult = processPath(attrD, hasMarker, hasStroke, hasStrokeCap, option);
+				if (!pathResult) {
+					node.removeAttribute(attrName);
 				} else {
-					node.setAttribute(attrName, stringifyPath(pathResult, sizeDigit, angelDigit));
+					noAttrD = false;
+					node.setAttribute(attrName, pathResult);
 				}
+			}
 
-			} else if (node.nodeName === 'path') {
+			// animateMotion 的 path 属性不能再次被动画元素修改
+			if (node.nodeName !== 'animateMotion' && checkAnimateAttr(animateAttrs, attrName)) {
+				const animateD = findAnimateAttr(animateAttrs, attrName);
+				animateD.forEach(item => {
+					const value = item.values.map(val => processPath(val, hasMarker, hasStroke, hasStrokeCap, option));
+					item.keys.forEach((key, index) => {
+						if (key === 'values') {
+							const values = value.slice(index).filter(v => !!v).join(';');
+							if (values) {
+								item.node.setAttribute(key, values);
+							} else {
+								item.node.removeAttribute(key);
+							}
+						} else {
+							if (value[index]) {
+								item.node.setAttribute(key, value[index]);
+							} else {
+								item.node.removeAttribute(key);
+							}
+						}
+					});
+				});
+
+				// 再次更新动画属性再进行判断
+				if (node.nodeName === 'path' && checkAnimateAttr(getAnimateAttr(node), attrName)) {
+					noAnimateD = false;
+				}
+			}
+
+			// 既没有 d 属性也没有动画 d 属性的 path 元素可以移除
+			// textPath 不适用，还需要判断 href 和 xlink:href 且 href 指向了正确的目标
+			// animateMotion 不适用，还需要判断是否有 mpath 子元素，且 mpath 指向了正确的目标
+			if (noAttrD && noAnimateD && node.nodeName === 'path') {
 				rmNode(node);
 			}
 

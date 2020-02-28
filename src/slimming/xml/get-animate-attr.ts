@@ -13,21 +13,28 @@ export const getAnimateAttr = (node: ITagNode) => {
 					const to = childNode.getAttribute('to');
 					const by = childNode.getAttribute('by');
 					const values = childNode.getAttribute('values');
+					const key: string[] = [];
 					if (from) {
 						value.push(from);
+						key.push('from');
 					}
 					if (to) {
 						value.push(to);
+						key.push('to');
 					}
 					if (by) {
 						value.push(by);
+						key.push('by');
 					}
 					if (values) {
 						value.push(...values.split(';').map(val => val.trim()).filter(val => !!val));
+						key.push('values');
 					}
 					result.push({
+						node: childNode,
 						attributeName,
-						value,
+						keys: key,
+						values: value,
 					});
 				}
 			}
@@ -36,4 +43,6 @@ export const getAnimateAttr = (node: ITagNode) => {
 	return result;
 };
 
-export const checkAnimateAttr = (animateAttrs: IAnimateAttr[], name: string, condition: (v: string) => boolean = (v: string) => true) => animateAttrs.some(item => item.attributeName === name && item.value.some(condition));
+export const checkAnimateAttr = (animateAttrs: IAnimateAttr[], name: string, condition: (v: string) => boolean = (v: string) => true) => animateAttrs.some(item => item.attributeName === name && item.values.some(condition));
+
+export const findAnimateAttr = (animateAttrs: IAnimateAttr[], name: string) => animateAttrs.filter(item => item.attributeName === name);

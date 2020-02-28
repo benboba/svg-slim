@@ -21,6 +21,7 @@ import { rmVersion } from './rm-version';
 import { rmViewBox } from './rm-viewbox';
 import { rmXMLDecl } from './rm-xml-decl';
 import { rmXMLNS } from './rm-xmlns';
+import { shortenAnimate } from './shorten-animate';
 import { shortenClass } from './shorten-class';
 import { shortenColor } from './shorten-color';
 import { shortenDecimalDigits } from './shorten-decimal-digits';
@@ -46,13 +47,14 @@ export const rules: RuleItem[] = [
 	[false, rmIrregularNesting, 'rm-irregular-nesting'],
 	[false, rmUnnecessary, 'rm-unnecessary'],
 	[false, rmViewBox, 'rm-viewbox'],
+	[false, shortenAnimate, 'shorten-animate'], // 必须在所有依赖 getAnimateAttr 的规则之前
 	[false, shortenFilter, 'shorten-filter'],
 	[false, shortenID, 'shorten-id'], // 必须在 shorten-defs 之前
 	[false, shortenClass, 'shorten-class'],
-	[false, shortenDefs, 'shorten-defs'],
 	[false, shortenStyleAttr, 'shorten-style-attr'], // 必须在 collpase-g、shorten-shape 和 compute-path 之前，必须在 rm-attribute 之前
 	[false, rmPx, 'rm-px'], // 必须在 shorten-style-attr 之后
 	[false, rmAttribute, 'rm-attribute'], // 必须在 collpase-g、shorten-shape 和 compute-path 之前
+	[false, shortenDefs, 'shorten-defs'], // 依赖 rm-attribute
 	[false, shortenShape, 'shorten-shape'], // 必须在 rm-hidden 和 compute-path 之前
 	[false, combinePath, 'combine-path'], // 必须在 rm-hidden 和 compute-path 之前
 	[false, computePath, 'compute-path'],

@@ -1,8 +1,20 @@
 # 更新日志
 
+## 2020.02. v1.5.3
+
+### svg-slimming
+
+* compute-path 增加对 textPath 元素 path 属性的优化逻辑
+* compute-path 增加对动画属性的判断，当 d/path 属性被动画元素修改时，会一起进行优化
+* rm-hidden 完善了对动画元素的移除规则
+* rm-hidden 增加了对无效 textPath 的移除规则
+* shorten-defs 追加单例引用在特定条件下直接应用的逻辑
+* rm-attribute 追加了部分属性的移除规则
+* 增加了 shorten-animate 的规则，用于对动画元素进行优化，也支持通过可选配置直接移除所有的动画元素
+
 ## 2020.02.17 v1.5.2
 
-### xml-parser
+### svg-slimming
 
 * 增加了 shorten-filter 规则，用于缩短滤镜元素
 * 在原有优化规则的基础上，增加了对动画的判断，以避免某些受动画影响渲染逻辑的元素和属性被误移除
