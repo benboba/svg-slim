@@ -49,6 +49,7 @@ describe('rules/shorten-style-tag', () => {
 		}
 		@media test {
 			text::before {
+				amplitude: 0;
 				fill:green;
 			}
 		}

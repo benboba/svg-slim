@@ -4,8 +4,10 @@ import { traversalNode } from '../xml/traversal-node';
 import { getById } from '../xml/get-by-id';
 import { regularAttr } from '../const/regular-attr';
 import { legalValue } from '../validate/legal-value';
+import { regularTag } from '../const/regular-tag';
+import { checkAnimateMotion } from '../animate/check-animate-motion';
 
-export const shortenAnimate = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const shortenAnimate = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise((resolve, reject) => {
 	if (rule[0]) {
 		const { remove } = rule[1] as { remove: boolean };
 		// tslint:disable-next-line: cyclomatic-complexity
@@ -15,12 +17,30 @@ export const shortenAnimate = async (rule: TFinalConfigItem, dom: INode): Promis
 				return;
 			}
 
+			// 不管 href 能不能找到目标，都移除该属性，改为设置成 target 的子元素
+			const href = node.hasAttribute('href') ? node.getAttribute('href') : node.getAttribute('xlink:href');
+			if (href) {
+				const target = getById(href, dom);
+				if (target) {
+					target.appendChild(node);
+				}
+			}
+			node.removeAttribute('href');
+			node.removeAttribute('xlink:href');
+
 			// 处理 attributeName 属性
 			if (animationAttrElements.includes(node.nodeName)) {
 				// 先取出来 attributeName 属性
 				const attributeName = node.getAttribute('attributeName') || '';
 				if (!attributeName || !regularAttr[attributeName].animatable) {
 					// attributeName 指定了不能实现动画的属性，视为无效
+					rmNode(node);
+					return;
+				}
+
+				// attributeName 和父元素不匹配
+				const parentName = (node.parentNode as ITagNode).nodeName;
+				if (!regularAttr[attributeName].applyTo.includes(parentName) && !regularTag[parentName].ownAttributes.includes(attributeName)) {
 					rmNode(node);
 					return;
 				}
@@ -66,35 +86,11 @@ export const shortenAnimate = async (rule: TFinalConfigItem, dom: INode): Promis
 
 			// animateMotion 如果没有 path 属性，则必须包含有效的 mpath ，规则是 href 或 xlink:href 指向 path 或 shape 元素
 			if (node.nodeName === 'animateMotion') {
-				if (!node.hasAttribute('path') && !node.childNodes.some(subNode => {
-					if (subNode.nodeName !== 'mpath') {
-						return false;
-					}
-					const id = subNode.getAttribute('href') || subNode.getAttribute('xlink:href');
-					if (!id) {
-						return false;
-					}
-					const target = getById(id, dom);
-					if (!target) {
-						return false;
-					}
-					return shapeElements.includes(target.nodeName);
-				})) {
+				if (!checkAnimateMotion(node, dom)) {
 					rmNode(node);
 					return;
 				}
 			}
-
-			// 不管 href 能不能找到目标，都移除该属性
-			const href = node.hasAttribute('href') ? node.getAttribute('href') : node.getAttribute('xlink:href');
-			if (href) {
-				const target = getById(href, dom);
-				if (target) {
-					target.appendChild(node);
-				}
-			}
-			node.removeAttribute('href');
-			node.removeAttribute('xlink:href');
 		}, dom);
 	}
 	resolve();

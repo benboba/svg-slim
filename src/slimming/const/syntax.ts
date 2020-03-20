@@ -40,7 +40,6 @@ export const cssNameSpaceSeparatedFullMatch = new RegExp(`^${cssName}(?:\\s+${cs
 // https://www.w3.org/TR/css-syntax-3/#number-token-diagram
 // https://www.w3.org/TR/css-syntax-3/#percentage-token-diagram
 export const numberPattern = '[+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?';
-const zero = '[+-]?(?:0+\\.)?0+(?:[eE][+-]?\\d+)?';
 export const numberSequence = `${numberPattern}(?:${commaWsp}${numberPattern})*`;
 const numberPair = `${numberPattern}${commaWsp}${numberPattern}`;
 const numberPairSequence = `${numberPair}(?:${commaWsp}${numberPair})*`;

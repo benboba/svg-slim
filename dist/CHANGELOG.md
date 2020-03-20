@@ -1,8 +1,24 @@
 # Change Log
 
+## 2020.03.20 v1.5.3
+
+### svg-slimming
+
+* compute-path adds optimization logic for path attribute of textPath element
+* compute-path increases the judgment of animation properties. When the d / path property is modified by an animation element, it will be optimized together.
+* rm-hidden improved removal rules for animated elements
+* rm-hidden added removal rules for invalid textPath
+* shorten-defs appends singleton references to logic that applies directly under certain conditions
+* rm-attribute added some attribute removal rules
+* Added shorten-animate rules for optimizing animated elements, and also supports the direct removal of all animated elements through optional configuration
+* Optimized the color parsing logic
+* Fixed the bug that shorten-id did not verify the reference to id in the style attribute, causing id to be accidentally removed
+* shorten-style-attr rule now verifies that the current style is covered by all child elements
+* Adjusted the rule order for better compression effect
+
 ## 2020.02.17 v1.5.2
 
-### xml-parser
+### svg-slimming
 
 * Added shorten-filter rule to shorten filter elements
 * On the basis of the original optimization rules, the judgment of animation is added to avoid some elements and attributes that are affected by the animation rendering logic from being removed by mistake

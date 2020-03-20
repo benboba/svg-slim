@@ -1,13 +1,17 @@
 import { Rule, StyleRules } from 'css';
-import { has } from 'ramda';
+import { has, pipe } from 'ramda';
 import { createShortenID } from '../algorithm/create-shorten-id';
 import { regularAttr } from '../const/regular-attr';
 import { funcIRIToID, IRIFullMatch } from '../const/syntax';
 import { traversalObj } from '../utils/traversal-obj';
 import { isTag } from '../xml/is-tag';
 import { traversalNode } from '../xml/traversal-node';
+import { execStyle } from '../style/exec';
+import { stringifyStyle } from '../style/stringify';
+import { shortenStyle } from '../style/shorten';
 
 const idSelectorReg = /#([^,\*#>+~:{\s\[\.]+)/gi;
+const style2value = pipe(stringifyStyle, shortenStyle);
 
 // [原始 id]: [短 id, 所属节点, 唯一 key]
 interface IIDCache {
@@ -55,6 +59,17 @@ export const shortenID = async (rule: TFinalConfigItem, dom: IDomNode): Promise<
 					if (iri) {
 						attr.value = `#${shorten(node, attr.fullname, iri[1])}`;
 					}
+				} else if (attr.fullname === 'style') {
+					const styleObj = execStyle(attr.value);
+					styleObj.forEach(styleItem => {
+						if (regularAttr[styleItem.fullname].maybeFuncIRI) {
+							const firi = funcIRIToID.exec(styleItem.value);
+							if (firi) {
+								styleItem.value = `url(#${shorten(node, `style|${styleItem.fullname}`, firi[2])})`;
+							}
+						}
+					});
+					attr.value = style2value(styleObj);
 				}
 			});
 		}, dom);
@@ -76,8 +91,18 @@ export const shortenID = async (rule: TFinalConfigItem, dom: IDomNode): Promise<
 
 		// 最后移除不存在的 ID 引用
 		Object.values(IDList).forEach(item => {
-			if (typeof item[2] === 'string') {
-				item[1].removeAttribute(item[2]);
+			const attrName = item[2];
+			if (typeof attrName === 'string') {
+				if (attrName.startsWith('style|')) {
+					const styleObj = execStyle(item[1].getAttribute('style') as string).filter(styleItem => styleItem.fullname !== attrName.slice(6));
+					if (styleObj.length) {
+						item[1].setAttribute('style', style2value(styleObj));
+					} else {
+						item[1].removeAttribute('style');
+					}
+				} else {
+					item[1].removeAttribute(attrName);
+				}
 			} else {
 				const reg = new RegExp(`#${item[0]}(?=[,\\*#>+~:{\\s\\[\\.]|$)`);
 				traversalObj(has('selectors'), (ruleItem: Rule, path) => {

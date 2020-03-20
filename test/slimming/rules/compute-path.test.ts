@@ -86,6 +86,20 @@ describe('rules/compute-path', () => {
 		const xml = '<svg><animateMotion path="M0,0"/><animateMotion/></svg>';
 		const dom = await parse(xml) as ITagNode;
 		await computePath([true, { thinning: 0, sizeDigit: 2, angelDigit: 2, straighten: 0 }], dom);
-		createXML(dom).should.equal('<svg><animateMotion/><animateMotion/></svg>');
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><animateMotion/><animateMotion/></svg>');
+	});
+
+	it('with animate', async () => {
+		const xml = `<svg>
+			<path>
+				<animate attributeName="d" to="M5e5.1L-1-1,0,0,10,0,20,0,50,0,100,0,100,100,0,100Z" values="M5e5.1L-1-1,0,0,10,0,20,0,50,0,100,0,100,100,0,100Z"/>
+			</path>
+			<path>
+				<animate attributeName="d" from="M0,0" values="M30,30"/>
+			</path>
+		</svg>`;
+		const dom = await parse(xml) as ITagNode;
+		await computePath([true, { thinning: 0, sizeDigit: 2, angelDigit: 2, straighten: 0 }], dom);
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><path><animate attributeName="d" to="m5e5.1L-1-1,0,0h1e2v1e2H0z" values="m5e5.1L-1-1,0,0h1e2v1e2H0z"/></path></svg>');
 	});
 });

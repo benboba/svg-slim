@@ -9,6 +9,7 @@ import { execStyleTree } from '../xml/exec-style-tree';
 import { execStyle } from '../style/exec';
 import { stringifyStyle } from '../style/stringify';
 import { shapeElements } from '../const/definitions';
+import { checkAnimateMotion } from '../animate/check-animate-motion';
 
 interface IIDCacheITem {
 	tag?: ITagNode; // 具有该 id 的节点
@@ -47,8 +48,12 @@ const checkSub = (node: ITagNode, IDList: IIDCache, isDefs = false) => {
 	}
 };
 
-const checkDefsApply = (item: IIDCacheITem) => {
-	const [node] = item.iri[0];
+const checkDefsApply = (item: IIDCacheITem, dom: IDomNode) => {
+	const [node, attrName] = item.iri[0];
+	// 只有 href 和 xlink:href 才能应用
+	if (attrName !== 'href' && attrName !== 'xlink:href') {
+		return;
+	}
 	switch (node.nodeName) {
 		case 'use':
 			// TODO 有 x 和 y 的暂不做应用（实际效果应该相当于 translate，待验证）
@@ -97,8 +102,12 @@ const checkDefsApply = (item: IIDCacheITem) => {
 		case 'mpath':
 			const pathTag = item.tag as ITagNode;
 			const mpathParent = node.parentNode as ITagNode;
-			if (!shapeElements.includes(pathTag.nodeName) || mpathParent.nodeName !== 'animateMotion') {
+			if (!shapeElements.includes(pathTag.nodeName)) {
 				rmNode(node);
+				rmNode(pathTag);
+				if (!checkAnimateMotion(mpathParent, dom)) {
+					rmNode(mpathParent);
+				}
 				return;
 			}
 			// 只针对路径元素进行应用
@@ -189,7 +198,7 @@ export const shortenDefs = async (rule: TFinalConfigItem, dom: IDomNode): Promis
 					}
 
 					if (item.iri.length === 1) {
-						checkDefsApply(item);
+						checkDefsApply(item, dom);
 					}
 				}
 			});
