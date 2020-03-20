@@ -24,16 +24,25 @@ describe('rules/rm-hidden', () => {
 			<use href="#a"/>
 			<use xlink:href="a"/>
 			<rect fill="none"/>
-			<animate from="1" to="0" dur="5s" repeatCount="indefinite" />
-			<set attributeName="fill" />
-			<animateMotion />
-			<animate attributeName="fill" by="blue" />
-			<animateTransform attributeName="fill" by="blue" />
 			<use/>
 		</svg>`;
 		const dom = await parse(xml) as ITagNode;
 		await rmHidden([true], dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><mask width="auto"><text id="a">1<rect fill="none" stroke="none"/></text></mask><mask width="1"><circle r="5"/></mask><use href="#a"/><animate attributeName="fill" by="blue"/></svg>');
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><mask width="auto"><text id="a">1<rect fill="none" stroke="none"/></text></mask><mask width="1"><circle r="5"/></mask><use href="#a"/></svg>');
+	});
+
+	it('textPath', async () => {
+		const xml = `<svg>
+		<rect id="a"/>
+		<textPath id="b" path="M0,0L100H100z">123</textPath>
+		<textPath>123</textPath>
+		<textPath xlink:href="#a">123</textPath>
+		<textPath href="#b">123</textPath>
+		<textPath href="#c">123</textPath>
+		</svg>`;
+		const dom = await parse(xml) as ITagNode;
+		await rmHidden([true], dom);
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><rect id="a"/><textPath id="b" path="M0,0L100H100z">123</textPath><textPath xlink:href="#a">123</textPath></svg>');
 	});
 
 	it('check animate', async () => {

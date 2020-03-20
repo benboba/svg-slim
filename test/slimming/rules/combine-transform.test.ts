@@ -173,9 +173,18 @@ describe('rules/combine-transform', () => {
 			<path transform="translate(1)">
 				<animate attributeName="d" to="5,5"/>
 			</path>
+			<path transform="scale(2)">
+				<animate attributeName="marker-start" to="5,5"/>
+			</path>
+			<path transform="scale(2)">
+				<animate attributeName="marker-mid" to="5,5"/>
+			</path>
+			<path transform="scale(2)">
+				<animate attributeName="marker-end" to="5,5"/>
+			</path>
 		</svg>`;
 		const dom = await parse(xml) as ITagNode;
 		await combineTransform([true, { trigDigit: 3, sizeDigit: 2, angelDigit: 2 }], dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><rect transform="translate(1,2)" stroke-width="0"><animate attributeName="y" to="5"/><animate attributeName="stroke" to="red"/><animate attributeName="stroke-width" to="3"/></rect><rect transform="rotate(90)"><animate attributeName="ry" to="5"/></rect><line transform="translate(1)"><animate attributeName="y2" to="5"/></line><circle transform="translate(1)"><animate attributeName="cx" to="5"/></circle><circle transform="scale(2)"><animate attributeName="r" to="5"/></circle><circle transform="matrix(2,0,0,2,5,5)" r="5"><animate attributeName="r" to="5"/></circle><ellipse transform="translate(1)"><animate attributeName="cx" to="5"/></ellipse><ellipse transform="scale(2)" rx="1" ry="2"><animate attributeName="ry" to="5"/></ellipse><ellipse transform="matrix(2,0,0,2,5,5)" rx="1" ry="2"><animate attributeName="ry" to="5"/></ellipse><polyline transform="translate(1)"><animate attributeName="points" to="5,5"/></polyline><path transform="translate(1)"><animate attributeName="d" to="5,5"/></path></svg>');
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><rect transform="translate(1,2)" stroke-width="0"><animate attributeName="y" to="5"/><animate attributeName="stroke" to="red"/><animate attributeName="stroke-width" to="3"/></rect><rect transform="rotate(90)"><animate attributeName="ry" to="5"/></rect><line transform="translate(1)"><animate attributeName="y2" to="5"/></line><circle transform="translate(1)"><animate attributeName="cx" to="5"/></circle><circle transform="scale(2)"><animate attributeName="r" to="5"/></circle><circle transform="matrix(2,0,0,2,5,5)" r="5"><animate attributeName="r" to="5"/></circle><ellipse transform="translate(1)"><animate attributeName="cx" to="5"/></ellipse><ellipse transform="scale(2)" rx="1" ry="2"><animate attributeName="ry" to="5"/></ellipse><ellipse transform="matrix(2,0,0,2,5,5)" rx="1" ry="2"><animate attributeName="ry" to="5"/></ellipse><polyline transform="translate(1)"><animate attributeName="points" to="5,5"/></polyline><path transform="translate(1)"><animate attributeName="d" to="5,5"/></path><path transform="scale(2)"><animate attributeName="marker-start" to="5,5"/></path><path transform="scale(2)"><animate attributeName="marker-mid" to="5,5"/></path><path transform="scale(2)"><animate attributeName="marker-end" to="5,5"/></path></svg>');
 	});
 });

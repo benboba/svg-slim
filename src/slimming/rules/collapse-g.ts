@@ -25,7 +25,7 @@ const collapseAttributes = (node1: ITagNode, node2: ITagNode) => {
 	});
 };
 
-// 包含某些特定属性，不允许进行合并
+// 包含某些特定属性，不允许进行塌陷
 const cantCollapse = (node: ITagNode) => node.attributes.filter(attr => cantCollapseAttributes.includes(attr.fullname)).length;
 
 const doCollapse = (dom: INode) => {

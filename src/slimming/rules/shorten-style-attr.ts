@@ -33,9 +33,7 @@ const checkAttr = async (node: ITagNode, dom: INode, rmDefault: boolean) => new 
 	attrObj: IStyleAttrObj;
 	tagDefine: IRegularTag;
 }>(resolve => { // tslint:disable-line cyclomatic-complexity
-	if (rmDefault) {
-		execStyleTree(dom as ITagNode);
-	}
+	execStyleTree(dom as ITagNode);
 	const attrObj: IStyleAttrObj = {}; // 存储所有样式和可以转为样式的属性
 	const tagDefine = regularTag[node.nodeName];
 	// 逆序循环，并从后向前移除属性
@@ -79,6 +77,7 @@ const checkAttr = async (node: ITagNode, dom: INode, rmDefault: boolean) => new 
 						}
 					}
 				}
+
 				styleUnique[styleItem.fullname] = true;
 				attrObj[styleItem.fullname] = {
 					value: styleItem.value,
@@ -111,6 +110,15 @@ const checkAttr = async (node: ITagNode, dom: INode, rmDefault: boolean) => new 
 						node.removeAttribute(attr.fullname);
 						continue;
 					}
+				}
+			}
+
+			// 如果样式无法应用到当前元素，且所有子元素都无法应用或已覆盖，则可以移除
+			if (!attrDefine.applyTo.includes(node.nodeName) && attrDefine.inherited) {
+				const subTags = node.childNodes.filter(subNode => isTag(subNode) && subNode.styles) as Array<Required<ITagNode>>;
+				if (subTags.length && subTags.every(subTag => subTag.styles[attr.fullname].from !== 'inherit' || !checkApply(attrDefine, subTag, dom))) {
+					node.removeAttribute(attr.fullname);
+					continue;
 				}
 			}
 
@@ -200,6 +208,7 @@ const checkAttr = async (node: ITagNode, dom: INode, rmDefault: boolean) => new 
 		} else {
 			if (!attrItem.value) {
 				delete attrObj[key]; // tslint:disable-line no-dynamic-delete
+				node.removeAttribute(key);
 			}
 		}
 	});
@@ -221,7 +230,6 @@ export const shortenStyleAttr = async (rule: TFinalConfigItem, dom: IDomNode): P
 
 		traversalNodeAsync<ITagNode>(isTag, async node => checkAttr(node, dom, rmDefault).then(({
 			attrObj,
-			tagDefine,
 		}) => { // tslint:disable-line no-floating-promises
 			// TODO css all 属性命中后要清空样式
 			// TODO 连锁属性的判断

@@ -7,7 +7,7 @@ import { shortenFunc } from '../utils/shorten-func';
 import { hsl2rgb } from './hsl2rgb';
 import { keywords } from './keywords';
 
-const rgbReg = new RegExp(`^rgba?\\((${numberPattern})(%?),(${numberPattern})(%?),(${numberPattern})(%?)(?:,(${numberPattern})(%?))?\\)$`, 'gi');
+const rgbReg = new RegExp(`^rgba?\\((${numberPattern})(%?),(${numberPattern})\\2,(${numberPattern})\\2(?:,(${numberPattern})(%?))?\\)$`, 'gi');
 const hslReg = new RegExp(`^hsla?\\((${numberPattern})((?:${angel})?),(${numberPattern})%,(${numberPattern})%(?:,(${numberPattern})(%?))?\\)$`, 'gi');
 const hexReg = /^#([0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i;
 
@@ -172,15 +172,11 @@ export const execColor = (color: string, digit = OPACITY_DIGIT): IRGBColor => {
 	rgbReg.lastIndex = 0; // 重置正则表达式匹配位置
 	const rgbMatch = rgbReg.exec(_color);
 	if (rgbMatch) {
-		if (rgbMatch[2] === rgbMatch[4] && rgbMatch[4] === rgbMatch[6]) {
-			result.r = valid(rgbMatch[2], FF, rgbMatch[1]);
-			result.g = valid(rgbMatch[4], FF, rgbMatch[3]);
-			result.b = valid(rgbMatch[6], FF, rgbMatch[5]);
-			if (rgbMatch[7]) {
-				result.a = validOpacity(rgbMatch[8], rgbMatch[7]);
-			}
-		} else {
-			result.valid = false;
+		result.r = valid(rgbMatch[2], FF, rgbMatch[1]);
+		result.g = valid(rgbMatch[2], FF, rgbMatch[3]);
+		result.b = valid(rgbMatch[2], FF, rgbMatch[4]);
+		if (rgbMatch[5]) {
+			result.a = validOpacity(rgbMatch[6], rgbMatch[5]);
 		}
 		return result;
 	}

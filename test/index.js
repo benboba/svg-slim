@@ -331,7 +331,7 @@ tester(
     <polygon id="path-1" points="46 0 46 52 0 52 0 0 46 0"></polygon>
 </defs>
     </svg>`,
-	'<svg><defs><pattern id="TrianglePattern"><path d="M 0 0 L 7 0 L 3.5 7 z"/></pattern><polygon id="path-1" points="46 0 46 52 0 52 0 0 46 0"/></defs><ellipse fill="url(#TrianglePattern)"/><mask id="mask-2" fill="white"><use xlink:href="#path-1"/></mask></svg>', {
+	'<svg><defs><pattern id="TrianglePattern"><path d="M 0 0 L 7 0 L 3.5 7 z"/></pattern></defs><ellipse fill="url(#TrianglePattern)"/><mask id="mask-2" fill="white"><polygon id="path-1" points="46 0 46 52 0 52 0 0 46 0"/></mask></svg>', {
 		'shorten-defs': true
 	}
 );

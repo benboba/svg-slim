@@ -76,16 +76,9 @@ export const rmAttribute = async (rule: TFinalConfigItem, dom: INode): Promise<n
 
 				// use 元素的宽高不能为负
 				if (node.nodeName === 'use') {
-					if (node.hasAttribute('width')) {
-						const width = node.getAttribute('width') as string;
-						if (+width < 0) {
-							node.removeAttribute('width');
-						}
-					}
-					if (node.hasAttribute('height')) {
-						const height = node.getAttribute('height') as string;
-						if (+height < 0) {
-							node.removeAttribute('height');
+					if (attr.fullname === 'width' || attr.fullname === 'height') {
+						if (+value < 0) {
+							node.removeAttribute(attr.fullname);
 						}
 					}
 				}

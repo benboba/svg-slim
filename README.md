@@ -59,7 +59,7 @@ Where svgcode is svg text in string format and config is user-defined optimized 
 | Elements | remove elements that do not conform to the svg specification | √ | √ |
 | Elements | Optimize nesting of irregular elements | √ | √ |
 | Elements | optimization defs | √ | √ |
-| Elements | Apply defs directly to the element | × | √ |
+| Elements | Apply defs directly to the element | v1.5.3 | √ |
 | svg element | viewBox vs size | size preferred | viewbox preferred |
 | svg element | remove version attribute | √ | √ |
 | svg element | optimization xmlns | √ | √ |
@@ -541,6 +541,33 @@ After optimization will become(Since the xlink namespace is not referenced, it w
 	<rect fill="red" width="100" height="100"/>
 </svg>
 ```
+
+### shorten-animate
+
+* Default configuration:
+```json
+{
+	"shorten-animate": [true, {
+		"remove": false
+	}]
+}
+```
+* Explanation:
+	* Optimize animation elements and remove illegal animation elements
+* Configuration parameters:
+	* remove
+		* Default: false
+		* Remove all animation elements without any verification
+
+E.g:
+```xml
+<animate/><!-- no attributeName -->
+<animate attributeName="title" to="test"/><!-- title is not animatable attribute -->
+<animate attributeName="x"/><!-- no from/to/by/values -->
+<animate attributeName="x" to="abc"/><!-- the value of to does not match x -->
+```
+
+经过优化以上元素都会被移除
 
 ### shorten-class
 

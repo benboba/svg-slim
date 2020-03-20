@@ -23,24 +23,19 @@ describe('rules/rm-attribute', () => {
 		>
 		<a x="1"/>
 		<circle stroke="none" cx="1" cy="0.0"/>
-		<animate to="1"/>
-		<animate to="1" attributeName="title"/>
-		<animate to="x" attributeName="amplitude"/>
-		<animate to="x" from="0" attributeName="amplitude"/>
-		<animate values="a;b;c" attributeName="x"/>
-		<animate values="a;b;c" to="100" attributeName="x"/>
-		<animateTransform attributeName="x"/>
 		<g fill="#000">
 			<rect fill="black" stroke=""/>
 			<g fill="none">
 				<rect id="rect" fill="rgb(0,0,0,.5)" stroke="hsl(0,0%,0%)"/>
 				<use href="#b" xlink:href="#rect"/>
+				<use href="#b" width="-1" height="-1"/>
+				<use href="#b" width="1" height="1"/>
 			</g>
 		</g>
 		</svg>`;
 		const dom = await parse(xml) as ITagNode;
 		await rmAttribute([true, { rmDefault: true, keepEvent: false, keepAria: false }], dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg width="100" style="width:40"><a/><circle cx="1"/><animate/><animate/><animate/><animate from="0" attributeName="amplitude"/><animate/><animate to="100" attributeName="x"/><animateTransform/><g><rect/><g fill="none"><rect id="rect" fill="rgb(0,0,0,.5)" stroke="hsl(0,0%,0%)"/><use href="#b"/></g></g></svg>');
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg width="100" style="width:40"><a/><circle cx="1"/><g><rect/><g fill="none"><rect id="rect" fill="rgb(0,0,0,.5)" stroke="hsl(0,0%,0%)"/><use href="#b"/><use href="#b"/><use href="#b" width="1" height="1"/></g></g></svg>');
 	});
 
 	it('移除属性 - 反转规则', async () => {
