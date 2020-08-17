@@ -1,0 +1,10 @@
+.vscode
+.nyc_output
+node_modules
+coverage
+test
+src
+.eslintrc.js
+.mocharc.js
+rollup.config.js
+tsconfig.test.json
