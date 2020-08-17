@@ -1,8 +1,8 @@
-import { NodeType } from '../node';
-import { parse } from '../xml-parser/app';
-import { rules } from './rules/index';
-import { createXML } from './xml/create';
-import { mergeConfig } from './config/merge';
+import { NodeType } from './node';
+import { parse } from './xml-parser';
+import { rules } from './slimming/rules/index';
+import { createXML } from './slimming/xml/create';
+import { mergeConfig } from './slimming/config/merge';
 
 const exportFunc: {
 	(data: string, userConfig?: unknown): Promise<string>;

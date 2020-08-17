@@ -1,9 +1,8 @@
 import typescript from 'rollup-plugin-typescript2';
 import pkg from './package.json';
-import copy from 'rollup-plugin-copy';
 
 export default [{
-    input: './src/slimming/app.ts',
+    input: './src/svg-slimming.ts',
     output: [
         {
             file: pkg.module,
@@ -17,15 +16,9 @@ export default [{
     ],
     plugins: [
         typescript(),
-        copy({
-            targets: [{
-                src: ['*.md', 'package.json'],
-                dest: 'dist',
-            }],
-        }),
     ],
 }, {
-    input: './src/xml-parser/app.ts',
+    input: './src/xml-parser.ts',
     output: [
         {
             file: 'dist/xml-parser.mjs',

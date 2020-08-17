@@ -46,7 +46,7 @@ Where svgcode is svg text in string format and config is user-defined optimized 
 | ---- | ---- | ---- | ---- |
 | Basic | svg parsing | Built-in parser xml-parser | sax |
 | Basic | Non-svg xml node processing logic | Remove | Report error |
-| Basic | Oversized svg processing | × | √ |
+| Basic | Oversized svg processing | 1.5.3 | √ |
 | Basic | Compressing Redundant Blanks | √ | √ |
 | Basic | Remove Comments | √ | √ |
 | Basic | Remove xml declaration and doctype | √ | √ |

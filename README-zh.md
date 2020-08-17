@@ -46,7 +46,7 @@ svgSlimming(svgcode[, config]).then(result => {
 | ---- | ---- | ---- | ---- |
 | 基本 | svg 解析 | 自己写的解析器 xml-parser | sax |
 | 基本 | 非 svg 的 xml 节点处理逻辑 | 移除 | 报错 |
-| 基本 | 超大 svg 处理 | × | √ |
+| 基本 | 超大 svg 处理 | 1.5.3 | √ |
 | 基本 | 压缩冗余空白 | √ | √ |
 | 基本 | 移除注释 | √ | √ |
 | 基本 | 移除 xml declaration 和 doctype | √ | √ |

@@ -2,7 +2,7 @@ const chai = require('chai');
 const should = chai.should();
 import { shortenClass } from '../../../src/slimming/rules/shorten-class';
 import { combineStyle } from '../../../src/slimming/default-rules/combine-style';
-import { parse } from '../../../src/xml-parser/app';
+import { parse } from '../../../src/xml-parser';
 import { createXML } from '../../../src/slimming/xml/create';
 
 

@@ -1,6 +1,6 @@
 const chai = require('chai');
 const should = chai.should();
-import slimming from '../../src/slimming/app';
+import slimming from '../src/svg-slimming';
 
 describe('svg-slimming 入口', () => {
 	it('传入配置', async () => {
