@@ -567,7 +567,7 @@ E.g:
 <animate attributeName="x" to="abc"/><!-- the value of to does not match x -->
 ```
 
-经过优化以上元素都会被移除
+After optimization, the above elements will be deleted.
 
 ### shorten-class
 
@@ -828,7 +828,7 @@ After optimization will become (the fill attribute will be overwritten by the de
 <rect style="fill:blue;"/>
 ```
 
-如果 svg 中不存在 style 标签，或 exchange 被设定为 true ，则优化结果为：
+If the style tag does not exist in the svg, or the exchange is set to true, the optimization result is:
 ```xml
 <rect fill="blue"/>
 ```

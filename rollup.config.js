@@ -1,5 +1,6 @@
 import typescript from 'rollup-plugin-typescript2';
 import pkg from './package.json';
+import copy from 'rollup-plugin-copy';
 
 export default [{
     input: './src/slimming/app.ts',
@@ -14,7 +15,15 @@ export default [{
             name: 'svg-slimming',
         },
     ],
-    plugins: [typescript()],
+    plugins: [
+        typescript(),
+        copy({
+            targets: [{
+                src: ['*.md', 'package.json'],
+                dest: 'dist',
+            }],
+        }),
+    ],
 }, {
     input: './src/xml-parser/app.ts',
     output: [

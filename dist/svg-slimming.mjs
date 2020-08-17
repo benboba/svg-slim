@@ -184,7 +184,7 @@ const SDDecl = `\\s+standalone${Eq}(?:'(?:yes|no)'|"(?:yes|no)")`;
 const Reference = `(?:&${Name};|&#[0-9]+;|&#x[0-9a-fA-F]+;)`;
 const AttrVal = `"(?:[^<&"]|${Reference})*"|'(?:[^<&']|${Reference})*'`;
 // tslint:disable-next-line
-const DeclContent = `(?:[^<>'"]+|[^<>']*'[^']*'[^<>']*|[^<>"]*"[^"]*"[^<>"]*|[^<>'"]*<[^<>]*>[^<>'"]*)+?`;
+const DeclContent = '(?:[^<>\'"]+|[^<>\']*\'[^\']*\'[^<>\']*|[^<>"]*"[^"]*"[^<>"]*|[^<>\'"]*<[^<>]*>[^<>\'"]*)+?';
 const REG_XML_DECL = new RegExp(`<\\?xml(${VersionInfo}(?:${EncodingDecl})?(?:${SDDecl})?\\s*)\\?>`, 'g');
 const REG_CDATA_SECT = /<!\[CDATA\[([\d\D]*?)\]\]>/g;
 const REG_OTHER_SECT = /<!\[\s?([A-Z]+)\s?\[([\d\D]*?)\]\]>/g;
@@ -544,7 +544,7 @@ const traversalNode = (condition, cb, dom, breakImmediate = false) => {
 };
 
 // 合并多个 script 标签，并将内容合并为一个子节点
-const combineScript = async (dom) => new Promise((resolve, reject) => {
+const combineScript = async (dom) => new Promise(resolve => {
     let firstScript;
     let lastChildNode;
     const checkCNode = (node) => {
@@ -806,7 +806,7 @@ const matrix = `matrix${paren}${numberPattern}(?:${commaWsp}?${numberPattern}){5
 const transformListFullMatch = new RegExp(`^(?:\\s*(?:${translate}|${scale}|${rotate}|${skewX}|${skewY}|${matrix})\\s*)*$`);
 // uri token
 // http://www.ietf.org/rfc/rfc3986.txt
-const URIFullMatch = /^(?:[^:/?#]+\:)?(?:\/\/[^/?#]*)?(?:[^?#]*)(?:\?[^#]*)?(?:#.*)?$/;
+const URIFullMatch = /^(?:[^:/?#]+:)?(?:\/\/[^/?#]*)?(?:[^?#]*)(?:\?[^#]*)?(?:#.*)?$/;
 // https://tools.ietf.org/html/bcp47#section-2.1
 const langFullMatch = /^[a-zA-Z]{2,}(?:-[a-zA-Z0-9%]+)*$/;
 // https://drafts.csswg.org/css-syntax-3/#typedef-ident-token
@@ -825,7 +825,7 @@ const preservAspectRatioFullMatch = /^(?:none|xMinYMin|xMidYMin|xMaxYMin|xMinYMi
 // IRI
 const funcIRIToID = /^url\((["']?)#(.+)\1\)$/;
 const IRIFullMatch = /^#(.+)$/;
-const mediaTypeFullMatch = /^(?:image|audio|video|application|text|multipart|message)\/[^\/]+$/;
+const mediaTypeFullMatch = /^(?:image|audio|video|application|text|multipart|message)\/[^/]+$/;
 
 const shapeAndText = shapeElements.concat(textContentElements);
 const viewport = ['pattern', 'marker'].concat(newViewportsElements);
@@ -3562,7 +3562,7 @@ const rmCSSNode = (cssNode, plist) => {
     }
 };
 // 合并多个 style 标签，并将文本节点合并到一个子节点
-const combineStyle = async (dom) => new Promise((resolve, reject) => {
+const combineStyle = async (dom) => new Promise(resolve => {
     let firstStyle;
     let lastChildNode;
     const checkCNode = (node) => {
@@ -3624,7 +3624,7 @@ const combineStyle = async (dom) => new Promise((resolve, reject) => {
                             case 'rule':
                             case 'keyframe':
                             case 'font-face':
-                            case 'page':
+                            case 'page': {
                                 const cssRule = cssNode;
                                 if (!cssRule.declarations) {
                                     rmCSSNode(cssRule, parents[parents.length - 1]);
@@ -3649,21 +3649,24 @@ const combineStyle = async (dom) => new Promise((resolve, reject) => {
                                     ruleParents.push([cssRule, parents[parents.length - 1]]);
                                 }
                                 break;
-                            case 'keyframes':
+                            }
+                            case 'keyframes': {
                                 const keyframes = cssNode;
                                 if (!keyframes.keyframes || !keyframes.keyframes.length) {
                                     rmCSSNode(cssNode, parents[parents.length - 1]);
                                 }
                                 break;
+                            }
                             case 'media':
                             case 'host':
                             case 'supports':
-                            case 'document':
+                            case 'document': {
                                 const ruleParent = cssNode;
                                 if (!ruleParent.rules || !ruleParent.rules.length) {
                                     rmCSSNode(cssNode, parents[parents.length - 1]);
                                 }
                                 break;
+                            }
                             case 'comment':
                                 rmCSSNode(cssNode, parents[parents.length - 1]);
                                 break;
@@ -4049,7 +4052,7 @@ const regularTag = new Proxy(_regularTag, {
     },
 });
 
-const combineTextNode = async (dom) => new Promise((resolve, reject) => {
+const combineTextNode = async (dom) => new Promise(resolve => {
     // 首先移除所有可移除的文本节点，并对文本节点进行冗余空格清理
     traversalNode(node => node.nodeType === NodeType.Text || node.nodeType === NodeType.CDATA, node => {
         const parentName = node.parentNode && node.parentNode.nodeName;
@@ -4086,10 +4089,12 @@ const combineTextNode = async (dom) => new Promise((resolve, reject) => {
 });
 
 // 移除其它类型的 xml 定义节点和 xml 片段节点
-const rmUseless = async (dom) => new Promise((resolve, reject) => {
+const rmUseless = async (dom) => new Promise(resolve => {
     traversalNode(anyPass([propEq('nodeType', NodeType.OtherSect), propEq('nodeType', NodeType.OtherDecl)]), rmNode, dom);
     resolve();
 });
+
+const hasProp = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
 
 const isTag = propEq('nodeType', NodeType.Tag);
 
@@ -4099,7 +4104,7 @@ const collapseAttributes = (node1, node2) => {
         attrObj[attr.fullname] = attr;
     });
     node2.attributes.forEach(attr => {
-        if (attrObj.hasOwnProperty(attr.fullname)) {
+        if (hasProp(attrObj, attr.fullname)) {
             if (transformAttributes.includes(attr.fullname)) {
                 attrObj[attr.fullname].value = `${attr.value} ${attrObj[attr.fullname].value}`;
             }
@@ -4131,14 +4136,14 @@ const doCollapse = (dom) => {
         }
     }, dom);
 };
-const collapseG = async (rule, dom) => new Promise((resolve, reject) => {
+const collapseG = async (rule, dom) => new Promise(resolve => {
     if (rule[0]) {
         doCollapse(dom);
     }
     resolve();
 });
 
-const collapseTextwrap = async (rule, dom) => new Promise((resolve, reject) => {
+const collapseTextwrap = async (rule, dom) => new Promise(resolve => {
     if (rule[0]) {
         traversalNode(isTag, node => {
             const tagDefine = regularTag[node.nodeName];
@@ -4213,11 +4218,9 @@ const hsl2rgb = (h, s, l) => {
     let _R;
     let G;
     let B;
-    let X;
-    let C;
     let _h = (h % CIRC) / CIRC6;
-    C = s * 2 * (l < HALF ? l : 1 - l);
-    X = C * (1 - Math.abs(_h % 2 - 1));
+    const C = s * 2 * (l < HALF ? l : 1 - l);
+    const X = C * (1 - Math.abs(_h % 2 - 1));
     _R = G = B = l - C / 2;
     _h = ~~_h;
     _R += [C, X, 0, 0, X, C][_h];
@@ -4486,7 +4489,7 @@ const alphaMap = {
 const execColor = (color, digit = OPACITY_DIGIT) => {
     // 首先对原始字符串进行基本的格式处理和类型转换
     let _color = color.trim();
-    if (keywords.hasOwnProperty(_color)) {
+    if (hasProp(keywords, _color)) {
         // 关键字转为 16 位色
         _color = keywords[_color];
     }
@@ -4512,20 +4515,22 @@ const execColor = (color, digit = OPACITY_DIGIT) => {
                 result.g = parseInt(`0x${hex[1]}${hex[1]}`, Hex);
                 result.b = parseInt(`0x${hex[2]}${hex[2]}`, Hex);
                 break;
-            case 4:
+            case 4: {
                 result.r = parseInt(`0x${hex[0]}${hex[0]}`, Hex);
                 result.g = parseInt(`0x${hex[1]}${hex[1]}`, Hex);
                 result.b = parseInt(`0x${hex[2]}${hex[2]}`, Hex);
                 const alpha4 = parseInt(`0x${hex[3]}${hex[3]}`, Hex);
                 result.a = has(`${alpha4}`, alphaMap) ? alphaMap[`${alpha4}`] / Hundred : alpha4 / FF;
                 break;
-            case 8:
+            }
+            case 8: {
                 result.r = parseInt(`0x${hex[0]}${hex[1]}`, Hex);
                 result.g = parseInt(`0x${hex[2]}${hex[3]}`, Hex);
                 result.b = parseInt(`0x${hex[4]}${hex[5]}`, Hex);
                 const alpha8 = parseInt(`0x${hex[6]}${hex[7]}`, Hex);
                 result.a = has(`${alpha8}`, alphaMap) ? alphaMap[`${alpha8}`] / Hundred : alpha8 / FF;
                 break;
+            }
             default:
                 result.r = parseInt(`0x${hex[0]}${hex[1]}`, Hex);
                 result.g = parseInt(`0x${hex[2]}${hex[3]}`, Hex);
@@ -4623,7 +4628,7 @@ const execStyle = (styleStr) => {
 const idChar = '#[^#\\.\\[\\*:\\s]+';
 const classChar = '\\.[^#\\.\\[\\*:\\s]+';
 // tslint:disable-next-line
-const attrChar = `\\[[a-zA-Z][a-zA-Z0-9\\-]*(?:[\\|\\^\\$\\*~]?=(?:'[^']*'|"[^"]*"|[^'"\\]]+))?\\]`;
+const attrChar = '\\[[a-zA-Z][a-zA-Z0-9\\-]*(?:[\\|\\^\\$\\*~]?=(?:\'[^\']*\'|"[^"]*"|[^\'"\\]]+))?\\]';
 const pseudoChar = '\\:{1,2}[a-zA-Z-]+(?:\\((?:[^\\)]+|[^\\(]+\\([^\\)]+\\))\\))?';
 
 // 选择器混合字符，不含后代选择器（空格）
@@ -4667,7 +4672,7 @@ const execSelector = (selector) => {
                     case '.': // class 选择器
                         selectorUnit.class.push(specialExec[0].slice(1));
                         break;
-                    case '[': // 属性选择器
+                    case '[': { // 属性选择器
                         const attrStr = specialExec[0].slice(1, -1);
                         const eqIndex = attrStr.indexOf('=');
                         if (eqIndex === -1) {
@@ -4694,7 +4699,8 @@ const execSelector = (selector) => {
                             }
                         }
                         break;
-                    case ':': // 伪类，伪元素
+                    }
+                    case ':': { // 伪类，伪元素
                         const isClass = specialExec[0][1] !== ':';
                         const pseudoStr = specialExec[0].replace(/^:+/, '');
                         const parenIndex = pseudoStr.indexOf('(');
@@ -4713,6 +4719,7 @@ const execSelector = (selector) => {
                             });
                         }
                         break;
+                    }
                     default: // id 选择器
                         selectorUnit.id.push(specialExec[0].slice(1));
                         break;
@@ -4970,7 +4977,7 @@ const getBySelector = (dom, selectors) => {
                     }
                     return;
                 // 后代选择器
-                default:
+                default: {
                     let parent = currentNode.parentNode;
                     while (parent) {
                         if (matchI(parent)) {
@@ -4983,6 +4990,7 @@ const getBySelector = (dom, selectors) => {
                         return;
                     }
                     break;
+                }
             }
             i--;
         }
@@ -5049,7 +5057,7 @@ const check = (dom, styleItems) => {
         if (parentNode && parentNode.styles) {
             // 可能从父元素继承的样式
             Object.keys(parentNode.styles).forEach(key => {
-                if (!nodeStyle.hasOwnProperty(key) && regularAttr[key].inherited) {
+                if (!hasProp(nodeStyle, key) && regularAttr[key].inherited) {
                     nodeStyle[key] = {
                         value: parentNode.styles[key].value,
                         from: 'inherit',
@@ -5066,7 +5074,7 @@ const check = (dom, styleItems) => {
                 xlinkObj.styles = styleObj;
             }
             Object.keys(nodeStyle).forEach(key => {
-                if (!styleObj.hasOwnProperty(key)) {
+                if (!hasProp(styleObj, key)) {
                     styleObj[key] = {
                         value: nodeStyle[key].value,
                         from: 'inherit',
@@ -5122,7 +5130,7 @@ const execStyleTree = (dom) => {
 const getAttr = (node, key, defaultVal) => {
     let val = defaultVal;
     const styles = node.styles;
-    if (styles.hasOwnProperty(key)) {
+    if (hasProp(styles, key)) {
         val = styles[key].value;
     }
     return val;
@@ -5216,15 +5224,15 @@ const canbeCombine = (node1, node2, attr, combineFill, combineOpacity) => {
         return false;
     }
     const styles = node1.styles;
-    const noOpacity = !styles.hasOwnProperty('opacity') || execAlpha(styles.opacity.value) === 1;
-    const noStrokeOpacity = execColor(styles.hasOwnProperty('stroke') ? styles.stroke.value : '').a === 1 && (!styles.hasOwnProperty('stroke-opacity') || execAlpha(styles['stroke-opacity'].value) === 1);
-    const noFillOpacity = execColor(styles.hasOwnProperty('fill') ? styles.fill.value : '').a === 1 && (!styles.hasOwnProperty('fill-opacity') || execAlpha(styles['fill-opacity'].value) === 1);
+    const noOpacity = !hasProp(styles, 'opacity') || execAlpha(styles.opacity.value) === 1;
+    const noStrokeOpacity = execColor(hasProp(styles, 'stroke') ? styles.stroke.value : '').a === 1 && (!hasProp(styles, 'stroke-opacity') || execAlpha(styles['stroke-opacity'].value) === 1);
+    const noFillOpacity = execColor(hasProp(styles, 'fill') ? styles.fill.value : '').a === 1 && (!hasProp(styles, 'fill-opacity') || execAlpha(styles['fill-opacity'].value) === 1);
     // fill 为空
-    const noFill = styles.hasOwnProperty('fill') && styles.fill.value === 'none' && (combineOpacity || (noOpacity && noStrokeOpacity));
+    const noFill = hasProp(styles, 'fill') && styles.fill.value === 'none' && (combineOpacity || (noOpacity && noStrokeOpacity));
     // 填充规则不能是 evenodd 必须是 nonzero
-    const noEvenOdd = !styles.hasOwnProperty('fill-rule') || styles['fill-rule'].value !== 'evenodd';
+    const noEvenOdd = !hasProp(styles, 'fill-rule') || styles['fill-rule'].value !== 'evenodd';
     // stroke 为空
-    const noStroke = (!styles.hasOwnProperty('stroke') || styles.stroke.value === 'none') && (combineOpacity || (noOpacity && noFillOpacity));
+    const noStroke = (!hasProp(styles, 'stroke') || styles.stroke.value === 'none') && (combineOpacity || (noOpacity && noFillOpacity));
     return noFill || (combineFill && noStroke && noEvenOdd) /* || noJoin(attr.value, node2.getAttribute('d'))*/;
 };
 const getKey = (node) => {
@@ -5241,7 +5249,7 @@ const getKey = (node) => {
     });
     return `attr:${keyObj.attr}|inline:${keyObj.inline}|styletag:${keyObj.styletag}|inherit:${keyObj.inherit}`;
 };
-const combinePath = async (rule, dom) => new Promise((resolve, reject) => {
+const combinePath = async (rule, dom) => new Promise(resolve => {
     if (rule[0]) {
         const { disregardFill, disregardOpacity, } = rule[1];
         execStyleTree(dom);
@@ -5502,7 +5510,7 @@ const shorten = (m, digit1 = DEFAULT_MATRIX_DIGIT, digit2 = DEFAULT_SIZE_DIGIT, 
                 res.noEffect = true;
             }
             break;
-        default:
+        default: {
             const _res = simplify(m, digit1, digit2);
             if (_res.type === 'matrix') {
                 _res.val.forEach((v, i) => {
@@ -5513,6 +5521,7 @@ const shorten = (m, digit1 = DEFAULT_MATRIX_DIGIT, digit2 = DEFAULT_SIZE_DIGIT, 
             else {
                 return shorten(_res, digit1, digit2, digit3);
             }
+        }
     }
     return res;
 };
@@ -5672,14 +5681,14 @@ const toScientific = (s) => {
 
 const shortenNumber = pipe(toScientific, shortenPureDecimal);
 
-const shortenNumberList = (s) => s.trim().replace(/\s*,\s*|\s+/g, ',').replace(/,(?=[+-]\.?\d+)/g, '').replace(/([\.eE]\d+),(?=\.\d+)/g, '$1');
+const shortenNumberList = (s) => s.trim().replace(/\s*,\s*|\s+/g, ',').replace(/,(?=[+-]\.?\d+)/g, '').replace(/([.eE]\d+),(?=\.\d+)/g, '$1');
 
 // 将函数类参数转为字符串，并优化（转科学计数法，移除掉正、负号前面的逗号，移除掉0.前面的0，移除掉.1,.1或e1,.1这种case中间的逗号）
 const stringifyFuncVal = (s) => shortenNumberList(s.map(shortenNumber).join(','));
 
 const stringify = (m, digit1 = DEFAULT_MATRIX_DIGIT, digit2 = DEFAULT_SIZE_DIGIT, digit3 = DEFAULT_ACCURATE_DIGIT) => {
     let result = '';
-    m.forEach((v, i) => {
+    m.forEach(v => {
         const _v = shorten(v, digit1, digit2, digit3);
         if (!_v.noEffect) {
             result += `${_v.type}(${stringifyFuncVal(_v.val)})`;
@@ -6388,7 +6397,7 @@ const execPath = (str) => {
                     break outer;
                 }
                 break;
-            case 'a':
+            case 'a': {
                 // a 的参数第 3、4 位必须是 0 或 1
                 const _val = [];
                 val.every((v, i) => {
@@ -6409,6 +6418,7 @@ const execPath = (str) => {
                     break outer;
                 }
                 break;
+            }
         }
         // 只有 z 指令不能没有参数
         if (type !== 'z' && !val.length) {
@@ -6533,7 +6543,7 @@ const getAnimateAttr = (node) => {
     });
     return result;
 };
-const checkAnimateAttr = (animateAttrs, name, condition = (v) => true) => animateAttrs.some(item => item.attributeName === name && item.values.some(condition));
+const checkAnimateAttr = (animateAttrs, name, condition = () => true) => animateAttrs.some(item => item.attributeName === name && item.values.some(condition));
 const findAnimateAttr = (animateAttrs, name) => animateAttrs.filter(item => item.attributeName === name);
 
 const rmAttrs = (node, attrs) => {
@@ -6690,7 +6700,7 @@ const applyRectTransform = (node, matrix, animateAttrs, hasStroke, hasMarker) =>
                 return true;
             }
             return false;
-        case 'scale':
+        case 'scale': {
             // 1. 没有描边
             // 2. 属性不存在，或者没有百分比的值
             const sx = matrix.val[0];
@@ -6710,6 +6720,7 @@ const applyRectTransform = (node, matrix, animateAttrs, hasStroke, hasMarker) =>
             }
             node.removeAttribute('transform');
             return true;
+        }
         case 'matrix':
             if (matrix.val[1] === 0 && matrix.val[2] === 0) {
                 // 仅验证缩放 + 平移的情况
@@ -6748,7 +6759,7 @@ const applyLineTransform = (node, matrix, animateAttrs, hasMarker) => {
         return false;
     }
     switch (matrix.type) {
-        case 'translate':
+        case 'translate': {
             const tx = matrix.val[0];
             const ty = matrix.val[1] || 0;
             checkAttr$1(node, 'x1', applyNumber(plus, x1, tx));
@@ -6757,7 +6768,8 @@ const applyLineTransform = (node, matrix, animateAttrs, hasMarker) => {
             checkAttr$1(node, 'y2', applyNumber(plus, y2, ty));
             node.removeAttribute('transform');
             return true;
-        case 'rotate':
+        }
+        case 'rotate': {
             if (hasMarker) {
                 return false;
             }
@@ -6780,6 +6792,7 @@ const applyLineTransform = (node, matrix, animateAttrs, hasMarker) => {
             checkAttr$1(node, 'y2', `${fixedMVal(mx.b * _x2 + mx.d * _y2 + mx.f)}`);
             node.removeAttribute('transform');
             return true;
+        }
         default:
             return false;
     }
@@ -6798,14 +6811,15 @@ const applyCircleTransform = (node, matrix, animateAttrs, hasStroke, hasMarker) 
         return false;
     }
     switch (matrix.type) {
-        case 'translate':
+        case 'translate': {
             const tx = matrix.val[0];
             const ty = matrix.val[1] || 0;
             checkAttr$1(node, 'cx', applyNumber(plus, cx, tx));
             checkAttr$1(node, 'cy', applyNumber(plus, cy, ty));
             node.removeAttribute('transform');
             return true;
-        case 'rotate':
+        }
+        case 'rotate': {
             let mx = new Matrix();
             if (matrix.val.length === 3) {
                 mx = mx.translate(matrix.val[1], matrix.val[2]);
@@ -6821,7 +6835,8 @@ const applyCircleTransform = (node, matrix, animateAttrs, hasStroke, hasMarker) 
             checkAttr$1(node, 'cy', `${fixedMVal(mx.b * _cx + mx.d * _cy + mx.f)}`);
             node.removeAttribute('transform');
             return true;
-        case 'scale':
+        }
+        case 'scale': {
             if (hasStroke || !pureNumOrWithPx.test(r) || checkAnimateAttr(animateAttrs, 'r')) {
                 return false;
             }
@@ -6841,6 +6856,7 @@ const applyCircleTransform = (node, matrix, animateAttrs, hasStroke, hasMarker) 
             }
             node.removeAttribute('transform');
             return true;
+        }
         case 'matrix':
             if (matrix.val[1] === 0 && matrix.val[2] === 0) {
                 if (hasStroke || !pureNumOrWithPx.test(r) || checkAnimateAttr(animateAttrs, 'r')) {
@@ -6897,14 +6913,15 @@ const applyEllipseTransform = (node, matrix, animateAttrs, hasStroke, hasMarker)
         return applyCircleTransform(node, matrix, animateAttrs, hasStroke, hasMarker);
     }
     switch (matrix.type) {
-        case 'translate':
+        case 'translate': {
             const tx = matrix.val[0];
             const ty = matrix.val[1] || 0;
             checkAttr$1(node, 'cx', applyNumber(plus, cx, tx));
             checkAttr$1(node, 'cy', applyNumber(plus, cy, ty));
             node.removeAttribute('transform');
             return true;
-        case 'rotate':
+        }
+        case 'rotate': {
             // 仅限直角旋转
             if (matrix.val[0] % SAFE_ROTATE_CORNER !== 0) {
                 return false;
@@ -6934,7 +6951,8 @@ const applyEllipseTransform = (node, matrix, animateAttrs, hasStroke, hasMarker)
             checkAttr$1(node, 'cy', `${fixedMVal(mx.b * _cx + mx.d * _cy + mx.f)}`);
             node.removeAttribute('transform');
             return true;
-        case 'scale':
+        }
+        case 'scale': {
             if (hasStroke || !pureNumOrWithPx.test(rx) || !pureNumOrWithPx.test(ry) || checkAnimateAttr(animateAttrs, 'rx') || checkAnimateAttr(animateAttrs, 'ry')) {
                 return false;
             }
@@ -6956,6 +6974,7 @@ const applyEllipseTransform = (node, matrix, animateAttrs, hasStroke, hasMarker)
             }
             node.removeAttribute('transform');
             return true;
+        }
         case 'matrix':
             if (matrix.val[1] === 0 && matrix.val[2] === 0) {
                 if (hasStroke || !pureNumOrWithPx.test(rx) || !pureNumOrWithPx.test(ry) || checkAnimateAttr(animateAttrs, 'rx') || checkAnimateAttr(animateAttrs, 'ry')) {
@@ -7220,7 +7239,7 @@ const applyPathTransform = (node, matrix, animateAttrs, hasStroke, hasMarker, mi
                         pathItem.val[1] = fixedMVal(pathItem.val[1] + mx.f);
                     }
                     break;
-                case 'H':
+                case 'H': {
                     pathItem.type = 'L';
                     const HVal = pathItem.val.slice();
                     const Hy = pathItem.from[1];
@@ -7229,7 +7248,8 @@ const applyPathTransform = (node, matrix, animateAttrs, hasStroke, hasMarker, mi
                         pathItem.val[i * 2 + 1] = fixedMVal(mx.b * HVal[i] + mx.d * Hy + mx.f);
                     }
                     break;
-                case 'h':
+                }
+                case 'h': {
                     pathItem.type = 'l';
                     const hVal = pathItem.val.slice();
                     const hy = 0;
@@ -7238,7 +7258,8 @@ const applyPathTransform = (node, matrix, animateAttrs, hasStroke, hasMarker, mi
                         pathItem.val[i * 2 + 1] = fixedMVal(mx.b * hVal[i] + mx.d * hy);
                     }
                     break;
-                case 'V':
+                }
+                case 'V': {
                     pathItem.type = 'L';
                     const VVal = pathItem.val.slice();
                     const Vx = pathItem.from[0];
@@ -7247,7 +7268,8 @@ const applyPathTransform = (node, matrix, animateAttrs, hasStroke, hasMarker, mi
                         pathItem.val[i * 2 + 1] = fixedMVal(mx.b * Vx + mx.d * VVal[i] + mx.f);
                     }
                     break;
-                case 'v':
+                }
+                case 'v': {
                     pathItem.type = 'l';
                     const vVal = pathItem.val.slice();
                     const vx = 0;
@@ -7256,6 +7278,7 @@ const applyPathTransform = (node, matrix, animateAttrs, hasStroke, hasMarker, mi
                         pathItem.val[i * 2 + 1] = fixedMVal(mx.b * vx + mx.d * vVal[i]);
                     }
                     break;
+                }
             }
         });
     });
@@ -7301,7 +7324,7 @@ const applyTransform = (node, matrix, minStr) => {
             return false;
     }
 };
-const combineTransform = async (rule, dom) => new Promise((resolve, reject) => {
+const combineTransform = async (rule, dom) => new Promise(resolve => {
     if (rule[0]) {
         execStyleTree(dom);
         // digit1 = 矩阵前 4 位的精度，digit2 = 矩阵后 2 位的精度
@@ -7727,6 +7750,7 @@ const complex = (item, lastItem) => {
     return complexItem;
 };
 
+/* eslint-disable @typescript-eslint/no-var-requires */
 const contours = require('svg-path-contours');
 const triangle = require('triangulate-contours');
 // 当前子路径中除了起始点和自己之外，还有其它任意指令
@@ -7850,7 +7874,9 @@ const checkSubPath = (pathResult, hasStroke, hasStrokeCap, sizeDigit, angelDigit
                     continue;
                 }
             }
-            catch (e) { }
+            catch (e) {
+                // empty
+            }
         }
         // 同向路径合并
         for (let j = subPath.length; j--;) {
@@ -8009,7 +8035,7 @@ const processPath = (dVal, hasMarker, hasStroke, hasStrokeCap, { thinning, sizeD
         return '';
     }
 };
-const computePath = async (rule, dom) => new Promise((resolve, reject) => {
+const computePath = async (rule, dom) => new Promise(resolve => {
     if (rule[0]) {
         execStyleTree(dom);
         traversalNode(anyPass([propEq('nodeName', 'path'), propEq('nodeName', 'animateMotion'), propEq('nodeName', 'textPath')]), node => {
@@ -8113,7 +8139,7 @@ const attrIsEqual = (attrDefine, value, nodeName) => {
 };
 
 // rm-attirbute 不再验证 css 类的属性，只关注该 css 属性是否是 svg 所支持的
-const rmAttribute = async (rule, dom) => new Promise((resolve, reject) => {
+const rmAttribute = async (rule, dom) => new Promise(resolve => {
     if (rule[0]) {
         const { rmDefault, keepEvent, keepAria, } = rule[1];
         traversalNode(isTag, node => {
@@ -8156,7 +8182,7 @@ const rmAttribute = async (rule, dom) => new Promise((resolve, reject) => {
                 if (rmDefault) {
                     // 如果父元素上有同名的样式类属性，则不能移除和默认值相同的属性
                     const parentStyle = node.parentNode.styles;
-                    if (attrDefine.inherited && parentStyle && parentStyle.hasOwnProperty(attr.fullname)) {
+                    if (attrDefine.inherited && parentStyle && hasProp(parentStyle, attr.fullname)) {
                         continue;
                     }
                     if (attrIsEqual(attrDefine, value, node.nodeName)) {
@@ -8177,14 +8203,14 @@ const rmAttribute = async (rule, dom) => new Promise((resolve, reject) => {
     resolve();
 });
 
-const rmComments = async (rule, dom) => new Promise((resolve, reject) => {
+const rmComments = async (rule, dom) => new Promise(resolve => {
     if (rule[0]) {
         traversalNode(propEq('nodeType', NodeType.Comments), rmNode, dom);
     }
     resolve();
 });
 
-const rmDocType = async (rule, dom) => new Promise((resolve, reject) => {
+const rmDocType = async (rule, dom) => new Promise(resolve => {
     if (rule[0]) {
         traversalNode(propEq('nodeType', NodeType.DocType), rmNode, dom);
     }
@@ -8217,7 +8243,7 @@ const checkNumberAttr = (node, key, allowEmpty, allowAuto, allowZero, animateAtt
         return allowAuto;
     // 是否必须大于 0
     const compare = allowZero ? gte : gt;
-    if (compare(parseFloat(val), 0) || checkAnimateAttr(animateAttrs, key, v => compare(parseFloat(val), 0))) {
+    if (compare(parseFloat(val), 0) || checkAnimateAttr(animateAttrs, key, () => compare(parseFloat(val), 0))) {
         return true;
     }
     return false;
@@ -8272,7 +8298,7 @@ const numberMap = {
         allowZero: false,
     },
 };
-const rmHidden = async (rule, dom) => new Promise((resolve, reject) => {
+const rmHidden = async (rule, dom) => new Promise(resolve => {
     if (rule[0]) {
         execStyleTree(dom);
         // tslint:disable-next-line: cyclomatic-complexity
@@ -8304,7 +8330,7 @@ const rmHidden = async (rule, dom) => new Promise((resolve, reject) => {
             const styles = node.styles;
             const animateAttrs = getAnimateAttr(node);
             const notNone = complement(equals('none'));
-            if (styles.hasOwnProperty('display')
+            if (hasProp(styles, 'display')
                 &&
                     styles.display.value === 'none'
                 &&
@@ -8317,14 +8343,14 @@ const rmHidden = async (rule, dom) => new Promise((resolve, reject) => {
             }
             // 没有填充和描边的形状，不一定可以被移除，要再判断一下自身或父元素是否有 id
             if (shapeElements.includes(node.nodeName)) {
-                const noFill = styles.hasOwnProperty('fill') && styles.fill.value === 'none' && !checkAnimateAttr(animateAttrs, 'fill', notNone);
-                const noStroke = (!styles.hasOwnProperty('stroke') || styles.stroke.value === 'none') && !checkAnimateAttr(animateAttrs, 'stroke', notNone);
+                const noFill = hasProp(styles, 'fill') && styles.fill.value === 'none' && !checkAnimateAttr(animateAttrs, 'fill', notNone);
+                const noStroke = (!hasProp(styles, 'stroke') || styles.stroke.value === 'none') && !checkAnimateAttr(animateAttrs, 'stroke', notNone);
                 if (noFill && noStroke && !getAncestor(node, (n) => n.hasAttribute('id'))) {
                     rmNode(node);
                     return;
                 }
             }
-            if (numberMap.hasOwnProperty(node.nodeName)) {
+            if (hasProp(numberMap, node.nodeName)) {
                 const nubmerItem = numberMap[node.nodeName];
                 for (let i = nubmerItem.attrs.length; i--;) {
                     if (!checkNumberAttr(node, nubmerItem.attrs[i], nubmerItem.allowEmpty, nubmerItem.allowAuto, nubmerItem.allowZero, animateAttrs)) {
@@ -8341,7 +8367,7 @@ const rmHidden = async (rule, dom) => new Promise((resolve, reject) => {
     resolve();
 });
 
-const rmIrregularNesting = async (rule, dom) => new Promise((resolve, reject) => {
+const rmIrregularNesting = async (rule, dom) => new Promise(resolve => {
     if (rule[0]) {
         const { ignore } = rule[1];
         const notIgnore = (node) => not(any(equals(prop('nodeName', node)), ignore));
@@ -8376,7 +8402,7 @@ const rmIrregularNesting = async (rule, dom) => new Promise((resolve, reject) =>
     resolve();
 });
 
-const rmIrregularTag = async (rule, dom) => new Promise((resolve, reject) => {
+const rmIrregularTag = async (rule, dom) => new Promise(resolve => {
     if (rule[0]) {
         const { ignore } = rule[1];
         const notIgnore = (node) => not(any(equals(prop('nodeName', node)), ignore));
@@ -8390,7 +8416,7 @@ const rmIrregularTag = async (rule, dom) => new Promise((resolve, reject) => {
 });
 
 const pxReg = new RegExp(`(^|\\(|\\s|,|{|;|:)(${numberPattern})px(?=$|\\)|\\s|,|;|})`, 'gi');
-const rmPx = async (rule, dom) => new Promise((resolve, reject) => {
+const rmPx = async (rule, dom) => new Promise(resolve => {
     if (rule[0]) {
         traversalNode(isTag, node => {
             node.attributes.forEach(attr => {
@@ -8425,7 +8451,7 @@ const rmPx = async (rule, dom) => new Promise((resolve, reject) => {
     resolve();
 });
 
-const rmUnnecessary = async (rule, dom) => new Promise((resolve, reject) => {
+const rmUnnecessary = async (rule, dom) => new Promise(resolve => {
     if (rule[0]) {
         const { tags } = rule[1];
         if (tags.length) {
@@ -8435,7 +8461,7 @@ const rmUnnecessary = async (rule, dom) => new Promise((resolve, reject) => {
     resolve();
 });
 
-const rmVersion = async (rule, dom) => new Promise((resolve, reject) => {
+const rmVersion = async (rule, dom) => new Promise(resolve => {
     if (rule[0]) {
         traversalNode(propEq('nodeName', 'svg'), node => {
             node.removeAttribute('version');
@@ -8444,7 +8470,7 @@ const rmVersion = async (rule, dom) => new Promise((resolve, reject) => {
     resolve();
 });
 
-const rmViewBox = async (rule, dom) => new Promise((resolve, reject) => {
+const rmViewBox = async (rule, dom) => new Promise(resolve => {
     if (rule[0]) {
         traversalNode(node => node.hasAttribute('viewBox'), node => {
             const size = ['0', '0', '0', '0'];
@@ -8489,14 +8515,14 @@ const rmViewBox = async (rule, dom) => new Promise((resolve, reject) => {
     resolve();
 });
 
-const rmXMLDecl = async (rule, dom) => new Promise((resolve, reject) => {
+const rmXMLDecl = async (rule, dom) => new Promise(resolve => {
     if (rule[0]) {
         traversalNode(propEq('nodeType', NodeType.XMLDecl), rmNode, dom);
     }
     resolve();
 });
 
-const rmXMLNS = async (rule, dom) => new Promise((resolve, reject) => {
+const rmXMLNS = async (rule, dom) => new Promise(resolve => {
     if (rule[0]) {
         const traversalNode = (node, nsStack) => {
             if (isTag(node)) {
@@ -8504,7 +8530,7 @@ const rmXMLNS = async (rule, dom) => new Promise((resolve, reject) => {
                 Object.assign(xmlnsObj, nsStack[nsStack.length - 1]);
                 // 首先判断节点是否存在命名空间
                 if (node.namespace) {
-                    if (xmlnsObj.hasOwnProperty(node.namespace)) {
+                    if (hasProp(xmlnsObj, node.namespace)) {
                         xmlnsObj[node.namespace].count++;
                     }
                     else {
@@ -8522,7 +8548,7 @@ const rmXMLNS = async (rule, dom) => new Promise((resolve, reject) => {
                         };
                     }
                     else if (attr.namespace) {
-                        if (xmlnsObj.hasOwnProperty(attr.namespace)) {
+                        if (hasProp(xmlnsObj, attr.namespace)) {
                             xmlnsObj[attr.namespace].count++;
                         }
                         else {
@@ -8570,7 +8596,7 @@ const checkAnimateMotion = (node, dom) => {
             });
 };
 
-const shortenAnimate = async (rule, dom) => new Promise((resolve, reject) => {
+const shortenAnimate = async (rule, dom) => new Promise(resolve => {
     if (rule[0]) {
         const { remove } = rule[1];
         // tslint:disable-next-line: cyclomatic-complexity
@@ -8662,22 +8688,22 @@ let slen = startLen;
 let pi = 0;
 const createShortenID = (si) => {
     while (si >= slen) {
-        sList.push.apply(sList, nameChar.split('').map(s => sList[pi] + s));
+        sList.push(...nameChar.split('').map(s => sList[pi] + s));
         slen += nameLen;
         pi++;
     }
     return sList[si];
 };
 
-const classSelectorReg = /\.([^,\*#>+~:{\s\[\.]+)/gi;
-const shortenClass = async (rule, dom) => new Promise((resolve, reject) => {
+const classSelectorReg = /\.([^,*#>+~:{\s[.]+)/gi;
+const shortenClass = async (rule, dom) => new Promise(resolve => {
     if (rule[0]) {
         const parsedCss = dom.stylesheet;
         if (parsedCss) {
             let si = 0;
             const classList = {};
             const shorten = (key) => {
-                if (classList.hasOwnProperty(key)) {
+                if (hasProp(classList, key)) {
                     return classList[key][0];
                 }
                 const sid = createShortenID(si++);
@@ -8700,7 +8726,7 @@ const shortenClass = async (rule, dom) => new Promise((resolve, reject) => {
                 if (classAttr !== null) {
                     const className = mixWhiteSpace(classAttr.trim()).split(/\s+/);
                     for (let ci = className.length; ci--;) {
-                        if (classList.hasOwnProperty(className[ci])) {
+                        if (hasProp(classList, className[ci])) {
                             const cName = classList[className[ci]][0];
                             classList[className[ci]][1] = true;
                             className[ci] = cName;
@@ -8954,7 +8980,7 @@ const formatColor = (rgba, str, digit) => {
     }
     return s;
 };
-const shortenColor = async (rule, dom) => new Promise((resolve, reject) => {
+const shortenColor = async (rule, dom) => new Promise(resolve => {
     if (rule[0]) {
         const { rrggbbaa, opacityDigit } = rule[1];
         const digit = Math.min(opacityDigit, OPACITY_DIGIT);
@@ -8989,7 +9015,7 @@ const shortenColor = async (rule, dom) => new Promise((resolve, reject) => {
 
 // 移除掉正、负号前面的逗号，移除掉0.前面的0，移除掉.1,.1或e1,.1这种case中间的逗号
 const doShorten = curry((digit, val) => shortenNumberList(val.replace(numberGlobal, s => `${shortenNumber(toFixed(digit, parseFloat(s)))}`)));
-const shortenDecimalDigits = async (rule, dom) => new Promise((resolve, reject) => {
+const shortenDecimalDigits = async (rule, dom) => new Promise(resolve => {
     if (rule[0]) {
         const { sizeDigit, angelDigit } = rule[1];
         const fuzzyDigit = doShorten(sizeDigit);
@@ -9081,7 +9107,7 @@ const checkDefsApply = (item, dom) => {
         return;
     }
     switch (node.nodeName) {
-        case 'use':
+        case 'use': {
             // TODO 有 x 和 y 的暂不做应用（实际效果应该相当于 translate，待验证）
             if (node.hasAttribute('x') || node.hasAttribute('y')) {
                 return;
@@ -9125,7 +9151,8 @@ const checkDefsApply = (item, dom) => {
                 useTag.setAttribute('style', stringifyStyle(styleArray));
             }
             return;
-        case 'mpath':
+        }
+        case 'mpath': {
             const pathTag = item.tag;
             const mpathParent = node.parentNode;
             if (!shapeElements.includes(pathTag.nodeName)) {
@@ -9146,9 +9173,10 @@ const checkDefsApply = (item, dom) => {
                 }
             }
             return;
+        }
     }
 };
-const shortenDefs = async (rule, dom) => new Promise((resolve, reject) => {
+const shortenDefs = async (rule, dom) => new Promise(resolve => {
     if (rule[0]) {
         let firstDefs;
         // 首先合并 defs 标签
@@ -9236,7 +9264,7 @@ const feTypeNeed = {
     gamma: ['amplitude', 'exponent', 'offset'],
 };
 const checkFeAttrs = (type, rmAttrs) => {
-    if (feTypeNeed.hasOwnProperty(type)) {
+    if (hasProp(feTypeNeed, type)) {
         feTypeNeed[type].forEach(val => {
             const index = rmAttrs.indexOf(val);
             if (index !== -1) {
@@ -9245,7 +9273,7 @@ const checkFeAttrs = (type, rmAttrs) => {
         });
     }
 };
-const shortenFilter = async (rule, dom) => new Promise((resolve, reject) => {
+const shortenFilter = async (rule, dom) => new Promise(resolve => {
     if (rule[0]) {
         traversalNode(isTag, (node) => {
             if (filterPrimitiveElements.includes(node.nodeName) || node.nodeName === 'filter') {
@@ -9312,16 +9340,16 @@ const shortenFilter = async (rule, dom) => new Promise((resolve, reject) => {
     resolve();
 });
 
-const shortenStyle = (s) => mixWhiteSpace(s.trim()).replace(/\s*([@='"#\.\*+>~\[\]\(\){}:,;])\s*/g, '$1').replace(/;$/, '');
+const shortenStyle = (s) => mixWhiteSpace(s.trim()).replace(/\s*([@='"#.*+>~[\](){}:,;])\s*/g, '$1').replace(/;$/, '');
 
-const idSelectorReg = /#([^,\*#>+~:{\s\[\.]+)/gi;
+const idSelectorReg = /#([^,*#>+~:{\s[.]+)/gi;
 const style2value = pipe(stringifyStyle, shortenStyle);
-const shortenID = async (rule, dom) => new Promise((resolve, reject) => {
+const shortenID = async (rule, dom) => new Promise(resolve => {
     if (rule[0]) {
         let si = 0;
         const IDList = {};
         const shorten = (node, attrname, key) => {
-            if (IDList.hasOwnProperty(key)) {
+            if (hasProp(IDList, key)) {
                 return IDList[key][0];
             }
             const sid = createShortenID(si++);
@@ -9374,7 +9402,7 @@ const shortenID = async (rule, dom) => new Promise((resolve, reject) => {
         traversalNode(isTag, (node) => {
             const ID = node.getAttribute('id');
             if (ID !== null) {
-                if (IDList.hasOwnProperty(ID)) {
+                if (hasProp(IDList, ID)) {
                     const id = IDList[ID][0];
                     // tslint:disable-next-line:no-dynamic-delete
                     delete IDList[ID];
@@ -9440,12 +9468,13 @@ const createNode = (node) => {
         case NodeType.XMLDecl:
             xml += `<?xml${mixWhiteSpace(` ${textContent}`).replace(/\s(?="|=|$)/g, '')}?>`;
             break;
-        case NodeType.Comments:
+        case NodeType.Comments: {
             const comments = mixWhiteSpace(textContent).trim();
             if (comments) {
                 xml += `<!--${comments}-->`;
             }
             break;
+        }
         case NodeType.CDATA:
             if (!textContent.includes('<')) {
                 xml += textContent;
@@ -9638,7 +9667,7 @@ const ellipseToCircle = (node, r) => {
     node.setAttribute('r', r.replace(numberGlobal, s => shortenNumber(+s)));
     rmAttrs(node, ['rx', 'ry']);
 };
-const formatEllipse = (node, originNode) => {
+const formatEllipse = (node) => {
     let rx = getAttr(node, 'rx', 'auto');
     let ry = getAttr(node, 'ry', 'auto');
     if (rx === 'auto') {
@@ -9658,14 +9687,14 @@ const formatEllipse = (node, originNode) => {
         ellipseToCircle(node, rx);
     }
 };
-const formatCircle = (node, originNode) => {
+const formatCircle = (node) => {
     const r = getAttr(node, 'r', '');
     const rExec = startWithNumber.exec(r);
     if (!rExec || +rExec[1] <= 0) {
         node.nodeName = 'remove';
     }
 };
-const shortenShape = async (rule, dom) => new Promise((resolve, reject) => {
+const shortenShape = async (rule, dom) => new Promise(resolve => {
     if (rule[0]) {
         execStyleTree(dom);
         const { thinning, } = rule[1];
@@ -9880,7 +9909,7 @@ const checkAttr$2 = async (node, dom, rmDefault) => new Promise(resolve => {
                 if (rmDefault) {
                     // 如果父元素上有同名的样式类属性，则不能移除和默认值相同的属性
                     const parentStyle = node.parentNode.styles;
-                    if (!styleDefine.inherited || !parentStyle || !parentStyle.hasOwnProperty(styleItem.fullname)) {
+                    if (!styleDefine.inherited || !parentStyle || !hasProp(parentStyle, styleItem.fullname)) {
                         if (attrIsEqual(styleDefine, styleItem.value, node.nodeName)) {
                             continue;
                         }
@@ -9912,7 +9941,7 @@ const checkAttr$2 = async (node, dom, rmDefault) => new Promise(resolve => {
             if (rmDefault) {
                 // 如果父元素上有同名的样式类属性，则不能移除和默认值相同的属性
                 const parentStyle = node.parentNode.styles;
-                if (!attrDefine.inherited || !parentStyle || !parentStyle.hasOwnProperty(attr.fullname)) {
+                if (!attrDefine.inherited || !parentStyle || !hasProp(parentStyle, attr.fullname)) {
                     if (attrIsEqual(attrDefine, attr.value, node.nodeName)) {
                         node.removeAttribute(attr.fullname);
                         continue;
@@ -9927,7 +9956,7 @@ const checkAttr$2 = async (node, dom, rmDefault) => new Promise(resolve => {
                     continue;
                 }
             }
-            if (attrObj.hasOwnProperty(attr.fullname) // 已被 style 属性覆盖
+            if (hasProp(attrObj, attr.fullname) // 已被 style 属性覆盖
                 ||
                     !checkApply(attrDefine, node, dom) // 样式继承链上不存在可应用对象
             ) {
@@ -10022,7 +10051,7 @@ const checkAttr$2 = async (node, dom, rmDefault) => new Promise(resolve => {
         tagDefine,
     });
 });
-const shortenStyleAttr = async (rule, dom) => new Promise((resolve, reject) => {
+const shortenStyleAttr = async (rule, dom) => new Promise(resolve => {
     if (rule[0]) {
         const { exchange, rmDefault } = rule[1];
         const hasStyleTag = !!dom.styletag;
@@ -10072,7 +10101,7 @@ const rmCSSNode$1 = (cssNode, plist) => {
         plist.splice(index, 1);
     }
 };
-const shortenStyleTag = async (rule, dom) => new Promise((resolve, reject) => {
+const shortenStyleTag = async (rule, dom) => new Promise(resolve => {
     if (rule[0] && dom.stylesheet) {
         const { deepShorten, rmDefault } = rule[1];
         const cssRules = dom.stylesheet.stylesheet;
@@ -10145,7 +10174,7 @@ const shortenStyleTag = async (rule, dom) => new Promise((resolve, reject) => {
                     theSelectors.sort((a, b) => a < b ? -1 : 1);
                     styleRule.selectors = theSelectors.map(s => mixWhiteSpace(s.trim()));
                     const selectorKey = styleRule.selectors.join(',');
-                    if (selectorUnique.hasOwnProperty(selectorKey)) {
+                    if (hasProp(selectorUnique, selectorKey)) {
                         const uDeclarations = selectorUnique[selectorKey].declarations.concat(styleRule.declarations);
                         // 合并之后依然要排重
                         const declared = {};
@@ -10169,7 +10198,7 @@ const shortenStyleTag = async (rule, dom) => new Promise((resolve, reject) => {
                     // 合并相同规则
                     styleRule.declarations.sort((a, b) => a.property < b.property ? -1 : 1);
                     const declareKey = styleRule.declarations.map((d) => `${d.property}:${d.value}`).join(';');
-                    if (declareUnique.hasOwnProperty(declareKey)) {
+                    if (hasProp(declareUnique, declareKey)) {
                         const selectors = declareUnique[declareKey].selectors.concat(styleRule.selectors);
                         const selected = {};
                         for (let j = selectors.length; j--;) {
@@ -10378,7 +10407,7 @@ const mergeConfig = (userConfig) => {
     if (typeof userConfig === 'object' && userConfig) {
         for (const [key, val] of Object.entries(userConfig)) {
             // 只合并存在的值
-            if (finalConfig.hasOwnProperty(key)) {
+            if (hasProp(finalConfig, key)) {
                 const conf = finalConfig[key];
                 // 布尔值直接设置开关位置
                 if (typeof val === 'boolean') {
@@ -10392,7 +10421,7 @@ const mergeConfig = (userConfig) => {
                         if (typeof val[1] === 'object' && val[1] && !Array.isArray(val[1])) {
                             // 如果拿到的是 IConfigOption 类型
                             for (const [k, v] of Object.entries(val[1])) {
-                                if (k !== 'keyOrder' && conf[1].hasOwnProperty(k)) {
+                                if (k !== 'keyOrder' && hasProp(conf[1], k)) {
                                     conf[1][k] = mergeUserVal(conf[1][k], v);
                                 }
                             }
