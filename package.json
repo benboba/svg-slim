@@ -5,7 +5,7 @@
   "main": "dist/svg-slimming.js",
   "module": "dist/svg-slimming.mjs",
   "scripts": {
-    "build": "cross-env NODE_ENV=development rollup -c",
+    "build": "rm -rf dist && cross-env NODE_ENV=development rollup -c",
     "lint": "eslint --ext .ts ./src",
     "test": "cross-env TS_NODE_FILES=true TS_NODE_PROJECT=tsconfig.test.json nyc mocha --timeout 10000"
   },
@@ -61,10 +61,11 @@
     "mocha": "^8.1.1",
     "nyc": "^15.1.0",
     "rollup": "^2.26.2",
+    "rollup-plugin-copy": "^3.3.0",
     "rollup-plugin-typescript2": "^0.27.2",
     "source-map-support": "^0.5.13",
     "terser-webpack-plugin": "^1.2.1",
-    "ts-node": "^8.3.0",
-    "typescript": "^3.7.3"
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.7"
   }
 }
