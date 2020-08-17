@@ -1,3 +1,4 @@
+import { hasProp } from '../utils/has-prop';
 import { isTag } from '../xml/is-tag';
 import { rmNode } from '../xml/rm-node';
 
@@ -10,7 +11,7 @@ interface IXmlnsDefine {
 	[propName: string]: IXmlnsDefineUnit;
 }
 
-export const rmXMLNS = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise((resolve, reject) => {
+export const rmXMLNS = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 		const traversalNode = (node: INode, nsStack: IXmlnsDefine[]) => {
 			if (isTag(node)) {
@@ -19,7 +20,7 @@ export const rmXMLNS = async (rule: TFinalConfigItem, dom: IDomNode): Promise<nu
 
 				// 首先判断节点是否存在命名空间
 				if (node.namespace) {
-					if (xmlnsObj.hasOwnProperty(node.namespace)) {
+					if (hasProp(xmlnsObj, node.namespace)) {
 						xmlnsObj[node.namespace].count++;
 					} else {
 						rmNode(node);
@@ -36,7 +37,7 @@ export const rmXMLNS = async (rule: TFinalConfigItem, dom: IDomNode): Promise<nu
 							count: 0,
 						};
 					} else if (attr.namespace) {
-						if (xmlnsObj.hasOwnProperty(attr.namespace)) {
+						if (hasProp(xmlnsObj, attr.namespace)) {
 							xmlnsObj[attr.namespace].count++;
 						} else {
 							node.removeAttribute(attr.fullname);

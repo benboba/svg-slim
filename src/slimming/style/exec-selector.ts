@@ -24,7 +24,7 @@ export const execSelector = (selector: string): ISelector[] => {
 					case '.': // class 选择器
 						selectorUnit.class.push(specialExec[0].slice(1));
 						break;
-					case '[': // 属性选择器
+					case '[': { // 属性选择器
 						const attrStr: string = specialExec[0].slice(1, -1);
 						const eqIndex: number = attrStr.indexOf('=');
 						if (eqIndex === -1) {
@@ -49,7 +49,8 @@ export const execSelector = (selector: string): ISelector[] => {
 							}
 						}
 						break;
-					case ':': // 伪类，伪元素
+					}
+					case ':': { // 伪类，伪元素
 						const isClass = specialExec[0][1] !== ':';
 						const pseudoStr = specialExec[0].replace(/^:+/, '');
 						const parenIndex: number = pseudoStr.indexOf('(');
@@ -67,6 +68,7 @@ export const execSelector = (selector: string): ISelector[] => {
 							});
 						}
 						break;
+					}
 					default: // id 选择器
 						selectorUnit.id.push(specialExec[0].slice(1));
 						break;

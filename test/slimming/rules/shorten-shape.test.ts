@@ -1,4 +1,4 @@
-import chai = require('chai');
+const chai = require('chai');
 const should = chai.should();
 import { shortenShape } from '../../../src/slimming/rules/shorten-shape';
 import { parse } from '../../../src/xml-parser/app';

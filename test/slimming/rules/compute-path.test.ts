@@ -1,4 +1,4 @@
-import chai = require('chai');
+const chai = require('chai');
 const should = chai.should();
 import { computePath } from '../../../src/slimming/rules/compute-path';
 import { parse } from '../../../src/xml-parser/app';

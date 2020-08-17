@@ -1,4 +1,4 @@
-import chai = require('chai');
+const chai = require('chai');
 const should = chai.should();
 import { traversalNodeAsync } from '../../../src/slimming/xml/traversal-node-async';
 import { parse } from '../../../src/xml-parser/app';

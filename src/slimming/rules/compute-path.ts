@@ -108,7 +108,7 @@ const processPath = (dVal: string, hasMarker: boolean, hasStroke: boolean, hasSt
 	}
 };
 
-export const computePath = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const computePath = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 		execStyleTree(dom as IDomNode);
 		traversalNode<ITagNode>(anyPass([propEq('nodeName', 'path'), propEq('nodeName', 'animateMotion'), propEq('nodeName', 'textPath')]), node => {

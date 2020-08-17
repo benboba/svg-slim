@@ -1,4 +1,4 @@
-import chai = require('chai');
+const chai = require('chai');
 const should = chai.should();
 import { combineTransform } from '../../../src/slimming/rules/combine-transform';
 import { parse } from '../../../src/xml-parser/app';

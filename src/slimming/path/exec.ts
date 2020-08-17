@@ -88,7 +88,7 @@ export const execPath = (str: string): IPathItem[][] => {
 					break outer;
 				}
 				break;
-			case 'a':
+			case 'a': {
 				// a 的参数第 3、4 位必须是 0 或 1
 				const _val: number[] = [];
 				val.every((v, i) => {
@@ -109,6 +109,7 @@ export const execPath = (str: string): IPathItem[][] => {
 					break outer;
 				}
 				break;
+			}
 			default:
 				break;
 		}

@@ -17,12 +17,13 @@ export const createNode = (node: INode): string => {
 		case NodeType.XMLDecl:
 			xml += `<?xml${mixWhiteSpace(` ${textContent}`).replace(/\s(?="|=|$)/g, '')}?>`;
 			break;
-		case NodeType.Comments:
+		case NodeType.Comments: {
 			const comments = mixWhiteSpace(textContent as string).trim();
 			if (comments) {
 				xml += `<!--${comments}-->`;
 			}
 			break;
+		}
 		case NodeType.CDATA:
 			if (!(textContent as string).includes('<')) {
 				xml += textContent;

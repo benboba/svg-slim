@@ -1,4 +1,4 @@
-import chai = require('chai');
+const chai = require('chai');
 const should = chai.should();
 import { rmIrregularNesting } from '../../../src/slimming/rules/rm-irregular-nesting';
 import { parse } from '../../../src/xml-parser/app';

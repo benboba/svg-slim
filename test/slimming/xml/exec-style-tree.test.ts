@@ -1,4 +1,4 @@
-import chai = require('chai');
+const chai = require('chai');
 const should = chai.should();
 import { execStyleTree } from '../../../src/slimming/xml/exec-style-tree';
 import { combineStyle } from '../../../src/slimming/default-rules/combine-style';

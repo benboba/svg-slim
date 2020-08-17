@@ -1,8 +1,9 @@
-import { traversalNode } from '../xml/traversal-node';
-import { isTag } from '../xml/is-tag';
 import { filterPrimitiveElements, transferFunctionElements } from '../const/definitions';
-import { rmNode } from '../xml/rm-node';
+import { hasProp } from '../utils/has-prop';
 import { getAnimateAttr } from '../xml/get-animate-attr';
+import { isTag } from '../xml/is-tag';
+import { rmNode } from '../xml/rm-node';
+import { traversalNode } from '../xml/traversal-node';
 
 const feFuncAttr = ['tableValues', 'slope', 'intercept', 'amplitude', 'exponent', 'offset'];
 const feTypeNeed = {
@@ -14,7 +15,7 @@ const feTypeNeed = {
 };
 
 const checkFeAttrs = (type: string, rmAttrs: string[]) => {
-	if (feTypeNeed.hasOwnProperty(type)) {
+	if (hasProp(feTypeNeed, type)) {
 		feTypeNeed[type as keyof typeof feTypeNeed].forEach(val => {
 			const index = rmAttrs.indexOf(val);
 			if (index !== -1) {
@@ -24,7 +25,7 @@ const checkFeAttrs = (type: string, rmAttrs: string[]) => {
 	}
 };
 
-export const shortenFilter = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const shortenFilter = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 		traversalNode(isTag, (node: ITagNode) => {
 			if (filterPrimitiveElements.includes(node.nodeName) || node.nodeName === 'filter') {

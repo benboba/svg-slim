@@ -2,7 +2,7 @@ import { equals } from 'ramda';
 import { execNumberList } from '../utils/exec-numberlist';
 import { traversalNode } from '../xml/traversal-node';
 
-export const rmViewBox = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const rmViewBox = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 		traversalNode<ITagNode>(node => node.hasAttribute('viewBox'), node => {
 			const size: string[] = ['0', '0', '0', '0'];

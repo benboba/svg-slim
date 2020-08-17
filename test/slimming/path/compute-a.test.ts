@@ -1,4 +1,4 @@
-import chai = require('chai');
+const chai = require('chai');
 const should = chai.should();
 import { execPath } from '../../../src/slimming/path/exec';
 import { doCompute } from '../../../src/slimming/path/do-compute';

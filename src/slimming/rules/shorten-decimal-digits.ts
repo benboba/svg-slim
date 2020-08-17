@@ -17,7 +17,7 @@ import { traversalNode } from '../xml/traversal-node';
 // 移除掉正、负号前面的逗号，移除掉0.前面的0，移除掉.1,.1或e1,.1这种case中间的逗号
 const doShorten = curry((digit: number, val: string) => shortenNumberList(val.replace(numberGlobal, s => `${shortenNumber(toFixed(digit, parseFloat(s)))}`)));
 
-export const shortenDecimalDigits = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise((resolve, reject) => {
+export const shortenDecimalDigits = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 		const { sizeDigit, angelDigit } = rule[1] as { sizeDigit: number; angelDigit: number };
 

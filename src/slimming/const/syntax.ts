@@ -103,7 +103,7 @@ export const transformListFullMatch = new RegExp(`^(?:\\s*(?:${translate}|${scal
 
 // uri token
 // http://www.ietf.org/rfc/rfc3986.txt
-export const URIFullMatch = /^(?:[^:/?#]+\:)?(?:\/\/[^/?#]*)?(?:[^?#]*)(?:\?[^#]*)?(?:#.*)?$/;
+export const URIFullMatch = /^(?:[^:/?#]+:)?(?:\/\/[^/?#]*)?(?:[^?#]*)(?:\?[^#]*)?(?:#.*)?$/;
 
 // https://tools.ietf.org/html/bcp47#section-2.1
 export const langFullMatch = /^[a-zA-Z]{2,}(?:-[a-zA-Z0-9%]+)*$/;
@@ -141,4 +141,4 @@ const url = 'url\\([^\\)]+\\)';
 export const funcIRIFullMatch = new RegExp(`^${url}$`);
 export const IRIFullMatch = /^#(.+)$/;
 
-export const mediaTypeFullMatch = /^(?:image|audio|video|application|text|multipart|message)\/[^\/]+$/;
+export const mediaTypeFullMatch = /^(?:image|audio|video|application|text|multipart|message)\/[^/]+$/;

@@ -1,17 +1,17 @@
 import { has, pipe } from 'ramda';
+import { animationAttrElements, animationAttributes } from '../const/definitions';
 import { regularAttr } from '../const/regular-attr';
 import { regularTag } from '../const/regular-tag';
 import { checkApply } from '../style/check-apply';
 import { execStyle } from '../style/exec';
 import { shortenStyle } from '../style/shorten';
 import { stringifyStyle } from '../style/stringify';
-// import { legalCss } from '../validate/legal-css';
+import { hasProp } from '../utils/has-prop';
 import { legalValue } from '../validate/legal-value';
 import { attrIsEqual } from '../xml/attr-is-equal';
 import { execStyleTree } from '../xml/exec-style-tree';
 import { isTag } from '../xml/is-tag';
 import { traversalNodeAsync } from '../xml/traversal-node-async';
-import { animationAttributes, animationAttrElements } from '../const/definitions';
 
 // 属性转 style 的临界值
 const styleThreshold = 4;
@@ -70,7 +70,7 @@ const checkAttr = async (node: ITagNode, dom: INode, rmDefault: boolean) => new 
 				if (rmDefault) {
 					// 如果父元素上有同名的样式类属性，则不能移除和默认值相同的属性
 					const parentStyle = (node.parentNode as ITagNode).styles;
-					if (!styleDefine.inherited || !parentStyle || !parentStyle.hasOwnProperty(styleItem.fullname)) {
+					if (!styleDefine.inherited || !parentStyle || !hasProp(parentStyle, styleItem.fullname)) {
 						if (attrIsEqual(styleDefine, styleItem.value, node.nodeName)) {
 							styleObj.slice(si, 1);
 							continue;
@@ -105,7 +105,7 @@ const checkAttr = async (node: ITagNode, dom: INode, rmDefault: boolean) => new 
 			if (rmDefault) {
 				// 如果父元素上有同名的样式类属性，则不能移除和默认值相同的属性
 				const parentStyle = (node.parentNode as ITagNode).styles;
-				if (!attrDefine.inherited || !parentStyle || !parentStyle.hasOwnProperty(attr.fullname)) {
+				if (!attrDefine.inherited || !parentStyle || !hasProp(parentStyle, attr.fullname)) {
 					if (attrIsEqual(attrDefine, attr.value, node.nodeName)) {
 						node.removeAttribute(attr.fullname);
 						continue;
@@ -123,7 +123,7 @@ const checkAttr = async (node: ITagNode, dom: INode, rmDefault: boolean) => new 
 			}
 
 			if (
-				attrObj.hasOwnProperty(attr.fullname) // 已被 style 属性覆盖
+				hasProp(attrObj, attr.fullname) // 已被 style 属性覆盖
 				||
 				!checkApply(attrDefine, node, dom) // 样式继承链上不存在可应用对象
 			) {
@@ -155,15 +155,15 @@ const checkAttr = async (node: ITagNode, dom: INode, rmDefault: boolean) => new 
 		}
 	}
 
-// 	// 在此处进行样式合法性验证
-// 	let cssString = 'g{';
-// 	Object.entries(attrObj).forEach(([key, { value }]) => {
-// 		cssString += `${key}:${value};
-// `;
-// 	});
-// 	cssString += '}';
+	// 	// 在此处进行样式合法性验证
+	// 	let cssString = 'g{';
+	// 	Object.entries(attrObj).forEach(([key, { value }]) => {
+	// 		cssString += `${key}:${value};
+	// `;
+	// 	});
+	// 	cssString += '}';
 
-// 	// 双重合法性验证
+	// 	// 双重合法性验证
 	// const result = await legalCss(cssString);
 	// if (!result.validity) {
 	// 	result.errors.forEach(err => {
@@ -223,7 +223,7 @@ const checkAttr = async (node: ITagNode, dom: INode, rmDefault: boolean) => new 
 	});
 });
 
-export const shortenStyleAttr = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise((resolve, reject) => {
+export const shortenStyleAttr = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 		const { exchange, rmDefault } = rule[1] as { exchange: boolean; rmDefault: boolean };
 		const hasStyleTag = !!dom.styletag;

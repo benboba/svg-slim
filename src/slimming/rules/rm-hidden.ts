@@ -1,7 +1,8 @@
 import { complement, equals, gt, gte } from 'ramda';
-import { animationAttrElements, animationAttributes, animationElements, filterPrimitiveElements, shapeElements } from '../const/definitions';
+import { animationElements, filterPrimitiveElements, shapeElements } from '../const/definitions';
 import { regularTag } from '../const/regular-tag';
 import { IRIFullMatch } from '../const/syntax';
+import { hasProp } from '../utils/has-prop';
 import { execStyleTree } from '../xml/exec-style-tree';
 import { getAncestor } from '../xml/get-ancestor';
 import { checkAnimateAttr, getAnimateAttr } from '../xml/get-animate-attr';
@@ -23,7 +24,7 @@ const checkNumberAttr = (node: ITagNode, key: string, allowEmpty: boolean, allow
 
 	// 是否必须大于 0
 	const compare = allowZero ? gte : gt;
-	if (compare(parseFloat(val), 0) || checkAnimateAttr(animateAttrs, key, v => compare(parseFloat(val), 0))) {
+	if (compare(parseFloat(val), 0) || checkAnimateAttr(animateAttrs, key, () => compare(parseFloat(val), 0))) {
 		return true;
 	}
 	return false;
@@ -90,7 +91,7 @@ const numberMap: INumberMap = {
 	},
 };
 
-export const rmHidden = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const rmHidden = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 		execStyleTree(dom as ITagNode);
 
@@ -128,7 +129,7 @@ export const rmHidden = async (rule: TFinalConfigItem, dom: INode): Promise<null
 			const notNone = complement(equals('none'));
 
 			if (
-				styles.hasOwnProperty('display')
+				hasProp(styles, 'display')
 				&&
 				styles.display.value === 'none'
 				&&
@@ -143,15 +144,15 @@ export const rmHidden = async (rule: TFinalConfigItem, dom: INode): Promise<null
 
 			// 没有填充和描边的形状，不一定可以被移除，要再判断一下自身或父元素是否有 id
 			if (shapeElements.includes(node.nodeName)) {
-				const noFill = styles.hasOwnProperty('fill') && styles.fill.value === 'none' && !checkAnimateAttr(animateAttrs, 'fill', notNone);
-				const noStroke = (!styles.hasOwnProperty('stroke') || styles.stroke.value === 'none') && !checkAnimateAttr(animateAttrs, 'stroke', notNone);
+				const noFill = hasProp(styles, 'fill') && styles.fill.value === 'none' && !checkAnimateAttr(animateAttrs, 'fill', notNone);
+				const noStroke = (!hasProp(styles, 'stroke') || styles.stroke.value === 'none') && !checkAnimateAttr(animateAttrs, 'stroke', notNone);
 				if (noFill && noStroke && !getAncestor(node, (n: INode) => n.hasAttribute('id'))) {
 					rmNode(node);
 					return;
 				}
 			}
 
-			if (numberMap.hasOwnProperty(node.nodeName as keyof typeof numberMap)) {
+			if (hasProp(numberMap, node.nodeName as keyof typeof numberMap)) {
 				const nubmerItem = numberMap[node.nodeName as keyof typeof numberMap];
 				for (let i = nubmerItem.attrs.length; i--;) {
 					if (!checkNumberAttr(node, nubmerItem.attrs[i], nubmerItem.allowEmpty, nubmerItem.allowAuto, nubmerItem.allowZero, animateAttrs)) {

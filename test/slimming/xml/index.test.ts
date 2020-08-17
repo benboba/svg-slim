@@ -1,4 +1,4 @@
-import chai = require('chai');
+const chai = require('chai');
 const should = chai.should();
 import { createXML } from '../../../src/slimming/xml/create';
 import { getById } from '../../../src/slimming/xml/get-by-id';

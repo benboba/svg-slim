@@ -2,7 +2,7 @@ import { regularTag } from '../const/regular-tag';
 import { isTag } from '../xml/is-tag';
 import { traversalNode } from '../xml/traversal-node';
 
-export const collapseTextwrap = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const collapseTextwrap = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 		traversalNode<ITagNode>(isTag, node => {
 			const tagDefine = regularTag[node.nodeName];

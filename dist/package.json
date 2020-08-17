@@ -2,7 +2,8 @@
 	"name": "svg-slimming",
 	"version": "1.5.3",
 	"description": "svg slimming",
-	"main": "svg-slimming.min.js",
+	"main": "svg-slimming.js",
+	"module": "svg-slimming.mjs",
 	"keywords": [
 		"svg",
 		"xml",

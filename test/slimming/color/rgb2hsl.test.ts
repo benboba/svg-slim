@@ -1,4 +1,4 @@
-import chai = require('chai');
+const chai = require('chai');
 const should = chai.should();
 import { rgb2hsl } from '../../../src/slimming/color/rgb2hsl';
 
