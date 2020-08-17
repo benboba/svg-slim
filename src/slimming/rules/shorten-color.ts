@@ -193,7 +193,7 @@ const formatColor = (rgba: boolean, str: string, digit: number): string => {
 	return s;
 };
 
-export const shortenColor = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise((resolve, reject) => {
+export const shortenColor = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 		const { rrggbbaa, opacityDigit } = rule[1] as { rrggbbaa: boolean; opacityDigit: number };
 		const digit = Math.min(opacityDigit, OPACITY_DIGIT);

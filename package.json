@@ -3,10 +3,11 @@
   "version": "1.5.3",
   "description": "svg slimming",
   "main": "dist/svg-slimming.js",
+  "module": "dist/svg-slimming.mjs",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack --watch --progress --color --profile --bail --display-modules",
-    "build": "cross-env NODE_ENV=production webpack --progress --color --profile --bail --display-modules",
-    "test": "cross-env TS_NODE_FILES=true nyc mocha --timeout 10000"
+    "build": "cross-env NODE_ENV=development rollup -c",
+    "lint": "eslint --ext .ts ./src",
+    "test": "cross-env TS_NODE_FILES=true TS_NODE_PROJECT=tsconfig.test.json nyc mocha --timeout 10000"
   },
   "nyc": {
     "include": [
@@ -51,20 +52,19 @@
     "@types/mocha": "^5.2.7",
     "@types/node": "^12.12.18",
     "@types/ramda": "^0.25.36",
+    "@typescript-eslint/eslint-plugin": "^3.9.0",
+    "@typescript-eslint/parser": "^3.9.0",
     "chai": "^4.1.2",
-    "copy-webpack-plugin": "^4.5.2",
     "cross-env": "^3.2.4",
+    "eslint": "^7.7.0",
     "lodash": "^4.17.15",
-    "mocha": "^5.2.0",
-    "nyc": "^14.1.1",
+    "mocha": "^8.1.1",
+    "nyc": "^15.1.0",
+    "rollup": "^2.26.2",
+    "rollup-plugin-typescript2": "^0.27.2",
     "source-map-support": "^0.5.13",
     "terser-webpack-plugin": "^1.2.1",
-    "ts-loader": "^4.4.2",
     "ts-node": "^8.3.0",
-    "tslint": "^5.19.0",
-    "tslint-loader": "^3.6.0",
-    "typescript": "^3.7.3",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.1.0"
+    "typescript": "^3.7.3"
   }
 }

@@ -1,4 +1,4 @@
-import chai = require('chai');
+const chai = require('chai');
 const should = chai.should();
 import { getBySelector } from '../../../src/slimming/xml/get-by-selector';
 import { parse } from '../../../src/xml-parser/app';

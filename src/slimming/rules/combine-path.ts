@@ -2,6 +2,7 @@
 import { has } from 'ramda';
 import { execColor } from '../color/exec';
 import { execAlpha } from '../math/exec-alpha';
+import { hasProp } from '../utils/has-prop';
 // import { doCompute } from '../path/do-compute';
 // import { execPath } from '../path/exec';
 import { execStyleTree } from '../xml/exec-style-tree';
@@ -112,15 +113,15 @@ const canbeCombine = (node1: ITagNode, node2: ITagNode, attr: IAttr, combineFill
 	}
 
 	const styles = node1.styles as IStyleObj;
-	const noOpacity: boolean = !styles.hasOwnProperty('opacity') || execAlpha(styles.opacity.value) === 1;
-	const noStrokeOpacity: boolean = execColor(styles.hasOwnProperty('stroke') ? styles.stroke.value : '').a === 1 && (!styles.hasOwnProperty('stroke-opacity') || execAlpha(styles['stroke-opacity'].value) === 1);
-	const noFillOpacity: boolean = execColor(styles.hasOwnProperty('fill') ? styles.fill.value : '').a === 1 && (!styles.hasOwnProperty('fill-opacity') || execAlpha(styles['fill-opacity'].value) === 1);
+	const noOpacity: boolean = !hasProp(styles, 'opacity') || execAlpha(styles.opacity.value) === 1;
+	const noStrokeOpacity: boolean = execColor(hasProp(styles, 'stroke') ? styles.stroke.value : '').a === 1 && (!hasProp(styles, 'stroke-opacity') || execAlpha(styles['stroke-opacity'].value) === 1);
+	const noFillOpacity: boolean = execColor(hasProp(styles, 'fill') ? styles.fill.value : '').a === 1 && (!hasProp(styles, 'fill-opacity') || execAlpha(styles['fill-opacity'].value) === 1);
 	// fill 为空
-	const noFill: boolean = styles.hasOwnProperty('fill') && styles.fill.value === 'none' && (combineOpacity || (noOpacity && noStrokeOpacity));
+	const noFill: boolean = hasProp(styles, 'fill') && styles.fill.value === 'none' && (combineOpacity || (noOpacity && noStrokeOpacity));
 	// 填充规则不能是 evenodd 必须是 nonzero
-	const noEvenOdd: boolean = !styles.hasOwnProperty('fill-rule') || styles['fill-rule'].value !== 'evenodd';
+	const noEvenOdd: boolean = !hasProp(styles, 'fill-rule') || styles['fill-rule'].value !== 'evenodd';
 	// stroke 为空
-	const noStroke: boolean = (!styles.hasOwnProperty('stroke') || styles.stroke.value === 'none') && (combineOpacity || (noOpacity && noFillOpacity));
+	const noStroke: boolean = (!hasProp(styles, 'stroke') || styles.stroke.value === 'none') && (combineOpacity || (noOpacity && noFillOpacity));
 	return noFill || (combineFill && noStroke && noEvenOdd)/* || noJoin(attr.value, node2.getAttribute('d'))*/;
 };
 
@@ -139,7 +140,7 @@ const getKey = (node: ITagNode): string => {
 	return `attr:${keyObj.attr}|inline:${keyObj.inline}|styletag:${keyObj.styletag}|inherit:${keyObj.inherit}`;
 };
 
-export const combinePath = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const combinePath = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 		const {
 			disregardFill,

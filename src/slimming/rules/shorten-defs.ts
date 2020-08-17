@@ -55,7 +55,7 @@ const checkDefsApply = (item: IIDCacheITem, dom: IDomNode) => {
 		return;
 	}
 	switch (node.nodeName) {
-		case 'use':
+		case 'use': {
 			// TODO 有 x 和 y 的暂不做应用（实际效果应该相当于 translate，待验证）
 			if (node.hasAttribute('x') || node.hasAttribute('y')) {
 				return;
@@ -99,7 +99,8 @@ const checkDefsApply = (item: IIDCacheITem, dom: IDomNode) => {
 				useTag.setAttribute('style', stringifyStyle(styleArray));
 			}
 			return;
-		case 'mpath':
+		}
+		case 'mpath': {
 			const pathTag = item.tag as ITagNode;
 			const mpathParent = node.parentNode as ITagNode;
 			if (!shapeElements.includes(pathTag.nodeName)) {
@@ -120,12 +121,13 @@ const checkDefsApply = (item: IIDCacheITem, dom: IDomNode) => {
 				}
 			}
 			return;
+		}
 		default:
 			break;
 	}
 };
 
-export const shortenDefs = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise((resolve, reject) => {
+export const shortenDefs = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 		let firstDefs: ITagNode | undefined;
 

@@ -1,6 +1,7 @@
 import { ariaAttributes, eventAttributes } from '../const/definitions';
 import { regularAttr } from '../const/regular-attr';
 import { regularTag } from '../const/regular-tag';
+import { hasProp } from '../utils/has-prop';
 import { legalValue } from '../validate/legal-value';
 import { attrIsEqual } from '../xml/attr-is-equal';
 import { execStyleTree } from '../xml/exec-style-tree';
@@ -8,7 +9,7 @@ import { isTag } from '../xml/is-tag';
 import { traversalNode } from '../xml/traversal-node';
 
 // rm-attirbute 不再验证 css 类的属性，只关注该 css 属性是否是 svg 所支持的
-export const rmAttribute = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const rmAttribute = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 
 		const {
@@ -66,7 +67,7 @@ export const rmAttribute = async (rule: TFinalConfigItem, dom: INode): Promise<n
 				if (rmDefault) {
 					// 如果父元素上有同名的样式类属性，则不能移除和默认值相同的属性
 					const parentStyle = (node.parentNode as ITagNode).styles;
-					if (attrDefine.inherited && parentStyle && parentStyle.hasOwnProperty(attr.fullname)) {
+					if (attrDefine.inherited && parentStyle && hasProp(parentStyle, attr.fullname)) {
 						continue;
 					}
 					if (attrIsEqual(attrDefine, value, node.nodeName)) {

@@ -1,4 +1,4 @@
-import chai = require('chai');
+const chai = require('chai');
 const should = chai.should();
 import { collapseG } from '../../../src/slimming/rules/collapse-g';
 import { parse } from '../../../src/xml-parser/app';

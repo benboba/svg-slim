@@ -3,10 +3,11 @@ import { propEq } from 'ramda';
 import { regularAttr } from '../const/regular-attr';
 import { checkApply } from '../style/check-apply';
 import { execSelector } from '../style/exec-selector';
+import { hasProp } from '../utils/has-prop';
 import { mixWhiteSpace } from '../utils/mix-white-space';
+import { traversalObj } from '../utils/traversal-obj';
 import { valueIsEqual } from '../xml/attr-is-equal';
 import { getBySelector } from '../xml/get-by-selector';
-import { traversalObj } from '../utils/traversal-obj';
 
 interface ICSSUnique {
 	[propName: string]: Rule;
@@ -19,7 +20,7 @@ const rmCSSNode = (cssNode: Node, plist: Node[]) => {
 	}
 };
 
-export const shortenStyleTag = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise((resolve, reject) => {
+export const shortenStyleTag = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
 	if (rule[0] && dom.stylesheet) {
 		const { deepShorten, rmDefault } = rule[1] as { deepShorten: boolean; rmDefault: boolean };
 		const cssRules: StyleRules = dom.stylesheet.stylesheet as StyleRules;
@@ -95,7 +96,7 @@ export const shortenStyleTag = async (rule: TFinalConfigItem, dom: IDomNode): Pr
 					theSelectors.sort((a, b) => a < b ? -1 : 1);
 					styleRule.selectors = theSelectors.map(s => mixWhiteSpace(s.trim()));
 					const selectorKey = styleRule.selectors.join(',');
-					if (selectorUnique.hasOwnProperty(selectorKey)) {
+					if (hasProp(selectorUnique, selectorKey)) {
 						const uDeclarations = (selectorUnique[selectorKey].declarations as Declaration[]).concat(styleRule.declarations as Declaration[]);
 						// 合并之后依然要排重
 						const declared: IUnique = {};
@@ -118,7 +119,7 @@ export const shortenStyleTag = async (rule: TFinalConfigItem, dom: IDomNode): Pr
 					// 合并相同规则
 					(styleRule.declarations as Declaration[]).sort((a: Declaration, b: Declaration) => (a.property as string) < (b.property as string) ? -1 : 1);
 					const declareKey = (styleRule.declarations as Declaration[]).map((d: Declaration) => `${d.property}:${d.value}`).join(';');
-					if (declareUnique.hasOwnProperty(declareKey)) {
+					if (hasProp(declareUnique, declareKey)) {
 						const selectors: string[] = (declareUnique[declareKey].selectors as string[]).concat(styleRule.selectors);
 						const selected: IUnique = {};
 						for (let j = selectors.length; j--;) {

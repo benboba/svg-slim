@@ -1,4 +1,4 @@
-import chai = require('chai');
+const chai = require('chai');
 const should = chai.should();
 import { legalValue } from '../../../src/slimming/validate/legal-value';
 import { regularAttr } from '../../../src/slimming/const/regular-attr';

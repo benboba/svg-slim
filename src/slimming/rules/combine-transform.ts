@@ -167,7 +167,7 @@ const applyRectTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: I
 				return true;
 			}
 			return false;
-		case 'scale':
+		case 'scale': {
 			// 1. 没有描边
 			// 2. 属性不存在，或者没有百分比的值
 			const sx = matrix.val[0];
@@ -186,6 +186,7 @@ const applyRectTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: I
 			}
 			node.removeAttribute('transform');
 			return true;
+		}
 		case 'matrix':
 			if (matrix.val[1] === 0 && matrix.val[2] === 0) {
 				// 仅验证缩放 + 平移的情况
@@ -224,7 +225,7 @@ const applyLineTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: I
 		return false;
 	}
 	switch (matrix.type) {
-		case 'translate':
+		case 'translate': {
 			const tx = matrix.val[0];
 			const ty = matrix.val[1] || 0;
 			checkAttr(node, 'x1', applyNumber(plus, x1, tx));
@@ -233,7 +234,8 @@ const applyLineTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: I
 			checkAttr(node, 'y2', applyNumber(plus, y2, ty));
 			node.removeAttribute('transform');
 			return true;
-		case 'rotate':
+		}
+		case 'rotate': {
 			if (hasMarker) {
 				return false;
 			}
@@ -255,6 +257,7 @@ const applyLineTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: I
 			checkAttr(node, 'y2', `${fixedMVal(mx.b * _x2 + mx.d * _y2 + mx.f)}`);
 			node.removeAttribute('transform');
 			return true;
+		}
 		default:
 			return false;
 	}
@@ -274,14 +277,15 @@ const applyCircleTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs:
 		return false;
 	}
 	switch (matrix.type) {
-		case 'translate':
+		case 'translate': {
 			const tx = matrix.val[0];
 			const ty = matrix.val[1] || 0;
 			checkAttr(node, 'cx', applyNumber(plus, cx, tx));
 			checkAttr(node, 'cy', applyNumber(plus, cy, ty));
 			node.removeAttribute('transform');
 			return true;
-		case 'rotate':
+		}
+		case 'rotate': {
 			let mx = new Matrix();
 			if (matrix.val.length === 3) {
 				mx = mx.translate(matrix.val[1], matrix.val[2]);
@@ -296,7 +300,8 @@ const applyCircleTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs:
 			checkAttr(node, 'cy', `${fixedMVal(mx.b * _cx + mx.d * _cy + mx.f)}`);
 			node.removeAttribute('transform');
 			return true;
-		case 'scale':
+		}
+		case 'scale': {
 			if (hasStroke || !pureNumOrWithPx.test(r) || checkAnimateAttr(animateAttrs, 'r')) {
 				return false;
 			}
@@ -315,6 +320,7 @@ const applyCircleTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs:
 			}
 			node.removeAttribute('transform');
 			return true;
+		}
 		case 'matrix':
 			if (matrix.val[1] === 0 && matrix.val[2] === 0) {
 				if (hasStroke || !pureNumOrWithPx.test(r) || checkAnimateAttr(animateAttrs, 'r')) {
@@ -370,14 +376,15 @@ const applyEllipseTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs
 		return applyCircleTransform(node, matrix, animateAttrs, hasStroke, hasMarker);
 	}
 	switch (matrix.type) {
-		case 'translate':
+		case 'translate': {
 			const tx = matrix.val[0];
 			const ty = matrix.val[1] || 0;
 			checkAttr(node, 'cx', applyNumber(plus, cx, tx));
 			checkAttr(node, 'cy', applyNumber(plus, cy, ty));
 			node.removeAttribute('transform');
 			return true;
-		case 'rotate':
+		}
+		case 'rotate': {
 			// 仅限直角旋转
 			if (matrix.val[0] % SAFE_ROTATE_CORNER !== 0) {
 				return false;
@@ -406,7 +413,8 @@ const applyEllipseTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs
 			checkAttr(node, 'cy', `${fixedMVal(mx.b * _cx + mx.d * _cy + mx.f)}`);
 			node.removeAttribute('transform');
 			return true;
-		case 'scale':
+		}
+		case 'scale': {
 			if (hasStroke || !pureNumOrWithPx.test(rx) || !pureNumOrWithPx.test(ry) || checkAnimateAttr(animateAttrs, 'rx') || checkAnimateAttr(animateAttrs, 'ry')) {
 				return false;
 			}
@@ -427,6 +435,7 @@ const applyEllipseTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs
 			}
 			node.removeAttribute('transform');
 			return true;
+		}
 		case 'matrix':
 			if (matrix.val[1] === 0 && matrix.val[2] === 0) {
 				if (hasStroke || !pureNumOrWithPx.test(rx) || !pureNumOrWithPx.test(ry) || checkAnimateAttr(animateAttrs, 'rx') || checkAnimateAttr(animateAttrs, 'ry')) {
@@ -704,7 +713,7 @@ const applyPathTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: I
 						pathItem.val[1] = fixedMVal(pathItem.val[1] + mx.f);
 					}
 					break;
-				case 'H':
+				case 'H': {
 					pathItem.type = 'L';
 					const HVal = pathItem.val.slice();
 					const Hy = pathItem.from[1];
@@ -713,7 +722,8 @@ const applyPathTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: I
 						pathItem.val[i * 2 + 1] = fixedMVal(mx.b * HVal[i] + mx.d * Hy + mx.f);
 					}
 					break;
-				case 'h':
+				}
+				case 'h': {
 					pathItem.type = 'l';
 					const hVal = pathItem.val.slice();
 					const hy = 0;
@@ -722,7 +732,8 @@ const applyPathTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: I
 						pathItem.val[i * 2 + 1] = fixedMVal(mx.b * hVal[i] + mx.d * hy);
 					}
 					break;
-				case 'V':
+				}
+				case 'V': {
 					pathItem.type = 'L';
 					const VVal = pathItem.val.slice();
 					const Vx = pathItem.from[0];
@@ -731,7 +742,8 @@ const applyPathTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: I
 						pathItem.val[i * 2 + 1] = fixedMVal(mx.b * Vx + mx.d * VVal[i] + mx.f);
 					}
 					break;
-				case 'v':
+				}
+				case 'v': {
 					pathItem.type = 'l';
 					const vVal = pathItem.val.slice();
 					const vx = 0;
@@ -740,6 +752,7 @@ const applyPathTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: I
 						pathItem.val[i * 2 + 1] = fixedMVal(mx.b * vx + mx.d * vVal[i]);
 					}
 					break;
+				}
 				default:
 					break;
 			}
@@ -793,7 +806,7 @@ const applyTransform = (node: ITagNode, matrix: IMatrixFunc, minStr: string) => 
 	}
 };
 
-export const combineTransform = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const combineTransform = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 		execStyleTree(dom as ITagNode);
 		// digit1 = 矩阵前 4 位的精度，digit2 = 矩阵后 2 位的精度

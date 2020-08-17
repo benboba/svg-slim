@@ -4,7 +4,7 @@ import { mixWhiteSpace } from '../utils/mix-white-space';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
 
-export const combineTextNode = async (dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const combineTextNode = async (dom: INode): Promise<null> => new Promise(resolve => {
 
 	// 首先移除所有可移除的文本节点，并对文本节点进行冗余空格清理
 	traversalNode<ITextNode>(node => node.nodeType === NodeType.Text || node.nodeType === NodeType.CDATA, node => {

@@ -1,4 +1,4 @@
-import chai = require('chai');
+const chai = require('chai');
 const should = chai.should();
 import { rmComments } from '../../../src/slimming/rules/rm-comments';
 import { rmDocType } from '../../../src/slimming/rules/rm-doctype';

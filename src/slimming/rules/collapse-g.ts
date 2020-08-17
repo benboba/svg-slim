@@ -1,5 +1,6 @@
 import { propEq } from 'ramda';
 import { cantCollapseAttributes, transformAttributes } from '../const/definitions';
+import { hasProp } from '../utils/has-prop';
 import { isTag } from '../xml/is-tag';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
@@ -14,7 +15,7 @@ const collapseAttributes = (node1: ITagNode, node2: ITagNode) => {
 		attrObj[attr.fullname] = attr;
 	});
 	node2.attributes.forEach(attr => {
-		if (attrObj.hasOwnProperty(attr.fullname)) {
+		if (hasProp(attrObj, attr.fullname)) {
 			if (transformAttributes.includes(attr.fullname)) {
 				attrObj[attr.fullname].value = `${attr.value} ${attrObj[attr.fullname].value}`;
 			}
@@ -46,7 +47,7 @@ const doCollapse = (dom: INode) => {
 	}, dom);
 };
 
-export const collapseG = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const collapseG = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 		doCollapse(dom);
 	}

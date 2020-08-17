@@ -24,7 +24,7 @@ export const getBySelector = (dom: INode, selectors: ISelector[]): ITagNode[] =>
 						break;
 					}
 					return;
-				// 相邻兄弟选择器
+					// 相邻兄弟选择器
 				case selectorUnitCombinator['+']:
 					if (currentNode.parentNode) {
 						const brothers = (currentNode.parentNode as ITagNode).childNodes;
@@ -36,7 +36,7 @@ export const getBySelector = (dom: INode, selectors: ISelector[]): ITagNode[] =>
 						break;
 					}
 					return;
-				// 兄弟选择器
+					// 兄弟选择器
 				case selectorUnitCombinator['~']:
 					if (currentNode.parentNode) {
 						const _brothers = (currentNode.parentNode as ITagNode).childNodes;
@@ -58,8 +58,8 @@ export const getBySelector = (dom: INode, selectors: ISelector[]): ITagNode[] =>
 						break;
 					}
 					return;
-				// 后代选择器
-				default:
+					// 后代选择器
+				default: {
 					let parent = currentNode.parentNode;
 					while (parent) {
 						if (matchI(parent)) {
@@ -72,6 +72,7 @@ export const getBySelector = (dom: INode, selectors: ISelector[]): ITagNode[] =>
 						return;
 					}
 					break;
+				}
 			}
 			i--;
 		}

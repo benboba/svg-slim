@@ -1,4 +1,4 @@
-import chai = require('chai');
+const chai = require('chai');
 const should = chai.should();
 import { shortenStyleTag } from '../../../src/slimming/rules/shorten-style-tag';
 import { combineStyle } from '../../../src/slimming/default-rules/combine-style';

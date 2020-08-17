@@ -1,4 +1,4 @@
-import chai = require('chai');
+const chai = require('chai');
 const should = chai.should();
 import { idChar, classChar, attrChar, pseudoChar } from '../../../src/slimming/const/regs';
 

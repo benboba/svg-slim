@@ -6,8 +6,8 @@ import { mergeConfig } from './config/merge';
 
 const exportFunc: {
 	(data: string, userConfig?: unknown): Promise<string>;
-	xmlParser?(s: string): Promise<INode>;
-	NodeType?: {};
+	xmlParser(s: string): Promise<INode>;
+	NodeType: typeof NodeType;
 } = async (data: string, userConfig: unknown = null): Promise<string> => new Promise((resolve, reject) => {
 	parse(data).then(async (dom: INode) => {
 		const finalConfig = mergeConfig(userConfig);
@@ -25,4 +25,4 @@ const exportFunc: {
 exportFunc.xmlParser = parse;
 exportFunc.NodeType = NodeType;
 
-export = exportFunc;
+export default exportFunc;

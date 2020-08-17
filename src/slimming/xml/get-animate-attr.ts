@@ -43,6 +43,6 @@ export const getAnimateAttr = (node: ITagNode) => {
 	return result;
 };
 
-export const checkAnimateAttr = (animateAttrs: IAnimateAttr[], name: string, condition: (v: string) => boolean = (v: string) => true) => animateAttrs.some(item => item.attributeName === name && item.values.some(condition));
+export const checkAnimateAttr = (animateAttrs: IAnimateAttr[], name: string, condition: (v: string) => boolean = () => true) => animateAttrs.some(item => item.attributeName === name && item.values.some(condition));
 
 export const findAnimateAttr = (animateAttrs: IAnimateAttr[], name: string) => animateAttrs.filter(item => item.attributeName === name);
