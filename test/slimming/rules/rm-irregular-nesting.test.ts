@@ -1,7 +1,7 @@
 const chai = require('chai');
 const should = chai.should();
 import { rmIrregularNesting } from '../../../src/slimming/rules/rm-irregular-nesting';
-import { parse } from '../../../src/xml-parser/app';
+import { parse } from '../../../src/xml-parser';
 import { createXML } from '../../../src/slimming/xml/create';
 
 describe('rules/rm-irregular-nesting', () => {

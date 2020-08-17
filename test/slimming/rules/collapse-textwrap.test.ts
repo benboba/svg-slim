@@ -1,7 +1,7 @@
 const chai = require('chai');
 const should = chai.should();
 import { collapseTextwrap } from '../../../src/slimming/rules/collapse-textwrap';
-import { parse } from '../../../src/xml-parser/app';
+import { parse } from '../../../src/xml-parser';
 import { createXML } from '../../../src/slimming/xml/create';
 
 describe('rules/collapse-textwrap', () => {

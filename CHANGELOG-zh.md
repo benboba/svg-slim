@@ -1,13 +1,15 @@
 # 更新日志
 
-## 2020.08. v1.6.0
+## 2020.08. v1.6.0 **breaking change**
 
 ### 综合
 
 * 使用 rollup 代替 webpack 打包
 * 使用 eslint + typescript-eslint 代替 tslint
-* 不再打包压缩文件 svg-slimming.min.js 和 xml-parser.min.js
+* [**breaking change**] 不再打包压缩文件 svg-slimming.min.js 和 xml-parser.min.js
 * 增加 svg-slimming.mjs 和 xml-parser.mjs
+* [**breaking change**] 不再从 dist 目录发布项目，而是直接从根目录发布
+* 调整了目录结构
 
 ## 2020.03.20 v1.5.3
 

@@ -2,7 +2,7 @@ const chai = require('chai');
 const should = chai.should();
 import { shortenAnimate } from '../../../src/slimming/rules/shorten-animate';
 import { createXML } from '../../../src/slimming/xml/create';
-import { parse } from '../../../src/xml-parser/app';
+import { parse } from '../../../src/xml-parser';
 
 describe('rules/shorten-animate', () => {
 	it('rule false branch', async () => {

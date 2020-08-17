@@ -1,7 +1,7 @@
 const chai = require('chai');
 const should = chai.should();
 import { getBySelector } from '../../../src/slimming/xml/get-by-selector';
-import { parse } from '../../../src/xml-parser/app';
+import { parse } from '../../../src/xml-parser';
 
 
 describe('xml/get-by-selector', () => {

@@ -10,7 +10,8 @@
 			"ramda": [
 				"location-of-types/npm-ramda-package/index"
 			]
-		}
+		},
+		"declaration": true
 	},
 	"include": [
 		"src/**/*",
