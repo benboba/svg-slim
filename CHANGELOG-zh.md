@@ -11,6 +11,11 @@
 * [**breaking change**] 不再从 dist 目录发布项目，而是直接从根目录发布
 * 调整了目录结构
 
+### svg-slimming
+
+* 修复属性验证规则中 enum 类型可能导致误判的 bug
+* 增加大量 CSS 属性的规则验证
+
 ## 2020.03.20 v1.5.3
 
 ### svg-slimming

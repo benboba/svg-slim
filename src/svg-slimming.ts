@@ -1,6 +1,6 @@
 import { NodeType } from './node';
 import { parse } from './xml-parser';
-import { rules } from './slimming/rules/index';
+import { rules } from './slimming/rules';
 import { createXML } from './slimming/xml/create';
 import { mergeConfig } from './slimming/config/merge';
 
