@@ -1,6 +1,7 @@
 import { regularAttr } from '../const/regular-attr';
 import { useEnum } from './use-enum';
 import { useReg } from './use-reg';
+import { useFunc } from './use-func';
 
 export const legalValue = (attrDefine: IRegularAttr, attr: IAttr, nodeName = ''): boolean => {
 	if (attrDefine.legalValues.length) {
@@ -27,6 +28,12 @@ export const legalValue = (attrDefine: IRegularAttr, attr: IAttr, nodeName = '')
 					// 值应该是一个属性名，而且不允许循环引用
 					case 'attr':
 						if (!regularAttr[attr.value].isUndef && attr.fullname !== attr.value) {
+							return true;
+						}
+						break;
+					// 值应该是一个函数
+					case 'func':
+						if (useFunc(legalRule.value, attr.value)) {
 							return true;
 						}
 						break;
