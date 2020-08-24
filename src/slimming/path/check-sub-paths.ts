@@ -1,6 +1,6 @@
-// tslint:disable:no-require-imports
-import contours = require('svg-path-contours');
-import triangle = require('triangulate-contours');
+/* eslint-disable @typescript-eslint/no-var-requires */
+const contours = require('svg-path-contours');
+const triangle = require('triangulate-contours');
 import { combineA, combineHV, combineL } from './combine';
 import { complex } from './complex';
 import { getRel } from './translate';
@@ -133,7 +133,9 @@ export const checkSubPath = (pathResult: IPathResultItem[][], hasStroke: boolean
 				if (!shapes.cells.length) {
 					continue;
 				}
-			} catch (e) {}
+			} catch (e) {
+				// empty
+			}
 		}
 
 		// 同向路径合并

@@ -58,6 +58,10 @@ declare type TLegalValueItem = {
 	type: 'enum';
 	value: string;
 	tag?: string[];
+} | {
+	type: 'func';
+	value: IFnDef;
+	tag?: string[];
 }
 
 declare interface IRegularAttr {
@@ -120,25 +124,22 @@ declare module 'triangulate-contours' {
 	export = triangulate;
 }
 
-declare interface cssValidateErrorItem {
-	line: number;
-	level: number;
-	message: string;
-	type: string;
-}
-
-declare type TCSSValidateResult = {
-	validity: true;
+declare type TFnValue = {
+	type: 'number' | 'int';
+	area?: [number, number];
 } | {
-	validity: false;
-	errors: cssValidateErrorItem[];
+	type: 'length';
+	unit?: string;
+	area?: [number, number];
+} | {
+	type: 'enum';
+	enum: string;
 }
 
-declare type CSSValidator = (option: {
-	text: string;
-	profile: string,
-}, cb: (err: Error | void, data: TCSSValidateResult) => void) => void;
-
-declare module 'css-validator' {
-	export = CSSValidator;
+declare interface IFnDef {
+	name: string;
+	values: TFnValue[];
+	valueLen?: [number, number]; // [a, b]，值的长度应符合 an+b 的规则，即 (value.length - b) % a = 0
+	valueLenArea?: [number, number]; // 值的长度的最小值和最大值
+	valueRepeat: [number, number]; // [a, b]，用于规定 values 规则的 an+b 重复逻辑
 }

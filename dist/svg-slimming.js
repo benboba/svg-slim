@@ -1,1751 +1,10466 @@
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory();
-	else if(typeof define === 'function' && define.amd)
-		define([], factory);
-	else if(typeof exports === 'object')
-		exports["svg-slimming"] = factory();
-	else
-		root["svg-slimming"] = factory();
-})(global, function() {
-return /******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/slimming/app.ts");
-/******/ })
-/************************************************************************/
-/******/ ({
-
-/***/ "./src/node/index.ts":
-/*!***************************!*\
-  !*** ./src/node/index.ts ***!
-  \***************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\n/*\r\n * 除了 EndTag ，其它值都来自标准：\r\n * https://developer.mozilla.org/zh-CN/docs/Web/API/Node/nodeType\r\n */\r\nvar NodeType;\r\n(function (NodeType) {\r\n    NodeType[NodeType[\"EndTag\"] = -1] = \"EndTag\";\r\n    NodeType[NodeType[\"Tag\"] = 1] = \"Tag\";\r\n    NodeType[NodeType[\"Text\"] = 3] = \"Text\";\r\n    NodeType[NodeType[\"CDATA\"] = 4] = \"CDATA\";\r\n    NodeType[NodeType[\"OtherSect\"] = 5] = \"OtherSect\";\r\n    NodeType[NodeType[\"OtherDecl\"] = 6] = \"OtherDecl\";\r\n    NodeType[NodeType[\"XMLDecl\"] = 7] = \"XMLDecl\";\r\n    NodeType[NodeType[\"Comments\"] = 8] = \"Comments\";\r\n    NodeType[NodeType[\"Document\"] = 9] = \"Document\";\r\n    NodeType[NodeType[\"DocType\"] = 10] = \"DocType\";\r\n})(NodeType = exports.NodeType || (exports.NodeType = {}));\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/node/index.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/algorithm/create-shorten-id.ts":
-/*!*****************************************************!*\
-  !*** ./src/slimming/algorithm/create-shorten-id.ts ***!
-  \*****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst letterList = 'abcdefghijklmnopqrstuvwxyz';\r\nconst numberList = '0123456789';\r\nconst startChar = `${letterList}${letterList.toUpperCase()}_`;\r\nconst nameChar = `${startChar}${numberList}-`;\r\nconst startLen = startChar.length;\r\nconst nameLen = nameChar.length;\r\nconst sList = startChar.split('');\r\nlet slen = startLen;\r\nlet pi = 0;\r\nexports.createShortenID = (si) => {\r\n    while (si >= slen) {\r\n        sList.push.apply(sList, nameChar.split('').map(s => sList[pi] + s));\r\n        slen += nameLen;\r\n        pi++;\r\n    }\r\n    return sList[si];\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/algorithm/create-shorten-id.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/algorithm/douglas-peucker.ts":
-/*!***************************************************!*\
-  !*** ./src/slimming/algorithm/douglas-peucker.ts ***!
-  \***************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst vector_1 = __webpack_require__(/*! ../math/vector */ \"./src/slimming/math/vector.ts\");\r\nconst minus_1 = __webpack_require__(/*! ../math/minus */ \"./src/slimming/math/minus.ts\");\r\nconst check = (threshold, startI, endI, paths) => {\r\n    let max = 0;\r\n    let maxI = 0;\r\n    // 拿到基础向量\r\n    const baseVector = new vector_1.Vector(minus_1.minus(paths[endI], paths[startI]), minus_1.minus(paths[endI + 1], paths[startI + 1]));\r\n    for (let i = startI + 2; i < endI; i += 2) {\r\n        // 获取每个点基于起始和结束位置的向量\r\n        const vectorToStart = new vector_1.Vector(minus_1.minus(paths[i], paths[startI]), minus_1.minus(paths[i + 1], paths[startI + 1]));\r\n        const vectorToEnd = new vector_1.Vector(minus_1.minus(paths[i], paths[endI]), minus_1.minus(paths[i + 1], paths[endI + 1]));\r\n        let distance = 0;\r\n        // 与起始或结束点重合的点直接跳过\r\n        if (!vectorToStart.isZero && !vectorToEnd.isZero) {\r\n            // 边界情况：投影分量的模大于基础向量，说明途径点在起始点或结束点之外，不能单纯靠垂直分量来抽稀\r\n            const prjToStart = vector_1.Vector.projected(vectorToStart, baseVector);\r\n            const prjToEnd = vector_1.Vector.projected(vectorToEnd, baseVector);\r\n            if (prjToStart.modulo > baseVector.modulo) {\r\n                distance = prjToStart.modulo;\r\n            }\r\n            else if (prjToEnd.modulo > baseVector.modulo) {\r\n                distance = prjToEnd.modulo;\r\n            }\r\n            else {\r\n                distance = vector_1.Vector.plumb(vectorToStart, baseVector).modulo;\r\n            }\r\n            if (distance > max) {\r\n                max = distance;\r\n                maxI = i;\r\n            }\r\n        }\r\n    }\r\n    if (max <= threshold) {\r\n        paths.splice(startI + 2, endI - startI - 2);\r\n    }\r\n    else {\r\n        if (maxI < endI - 2) {\r\n            check(threshold, maxI, endI, paths);\r\n        }\r\n        if (maxI > startI + 2) {\r\n            check(threshold, startI, maxI, paths);\r\n        }\r\n    }\r\n};\r\nexports.douglasPeucker = (threshold, pathArr) => {\r\n    const pathCopy = pathArr.slice();\r\n    check(threshold, 0, pathCopy.length - 2, pathCopy);\r\n    return pathCopy;\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/algorithm/douglas-peucker.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/animate/check-animate-motion.ts":
-/*!******************************************************!*\
-  !*** ./src/slimming/animate/check-animate-motion.ts ***!
-  \******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst definitions_1 = __webpack_require__(/*! ../const/definitions */ \"./src/slimming/const/definitions.ts\");\r\nconst get_by_id_1 = __webpack_require__(/*! ../xml/get-by-id */ \"./src/slimming/xml/get-by-id.ts\");\r\n// 验证 animateMotion 的合法性\r\nexports.checkAnimateMotion = (node, dom) => {\r\n    return node.hasAttribute('path')\r\n        ||\r\n            node.childNodes.some(subNode => {\r\n                if (subNode.nodeName !== 'mpath') {\r\n                    return false;\r\n                }\r\n                const id = subNode.getAttribute('href') || subNode.getAttribute('xlink:href');\r\n                if (!id) {\r\n                    return false;\r\n                }\r\n                const target = get_by_id_1.getById(id, dom);\r\n                if (!target) {\r\n                    return false;\r\n                }\r\n                return definitions_1.shapeElements.includes(target.nodeName);\r\n            });\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/animate/check-animate-motion.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/app.ts":
-/*!*****************************!*\
-  !*** ./src/slimming/app.ts ***!
-  \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nconst node_1 = __webpack_require__(/*! ../node */ \"./src/node/index.ts\");\r\nconst app_1 = __webpack_require__(/*! ../xml-parser/app */ \"./src/xml-parser/app.ts\");\r\nconst index_1 = __webpack_require__(/*! ./rules/index */ \"./src/slimming/rules/index.ts\");\r\nconst create_1 = __webpack_require__(/*! ./xml/create */ \"./src/slimming/xml/create.ts\");\r\nconst merge_1 = __webpack_require__(/*! ./config/merge */ \"./src/slimming/config/merge.ts\");\r\nconst exportFunc = async (data, userConfig = null) => new Promise((resolve, reject) => {\r\n    app_1.parse(data).then(async (dom) => {\r\n        const finalConfig = merge_1.mergeConfig(userConfig);\r\n        for (const item of index_1.rules) {\r\n            if (item[0]) {\r\n                await (item[1])(dom);\r\n            }\r\n            else {\r\n                await (item[1])(finalConfig[item[2]], dom);\r\n            }\r\n        }\r\n        resolve(create_1.createXML(dom));\r\n    }, reject);\r\n});\r\nexportFunc.xmlParser = app_1.parse;\r\nexportFunc.NodeType = node_1.NodeType;\r\nmodule.exports = exportFunc;\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/app.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/color/exec.ts":
-/*!************************************!*\
-  !*** ./src/slimming/color/exec.ts ***!
-  \************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst const_1 = __webpack_require__(/*! ../const */ \"./src/slimming/const/index.ts\");\r\nconst syntax_1 = __webpack_require__(/*! ../const/syntax */ \"./src/slimming/const/syntax.ts\");\r\nconst shorten_alpha_1 = __webpack_require__(/*! ../math/shorten-alpha */ \"./src/slimming/math/shorten-alpha.ts\");\r\nconst valid_1 = __webpack_require__(/*! ../math/valid */ \"./src/slimming/math/valid.ts\");\r\nconst shorten_func_1 = __webpack_require__(/*! ../utils/shorten-func */ \"./src/slimming/utils/shorten-func.ts\");\r\nconst hsl2rgb_1 = __webpack_require__(/*! ./hsl2rgb */ \"./src/slimming/color/hsl2rgb.ts\");\r\nconst keywords_1 = __webpack_require__(/*! ./keywords */ \"./src/slimming/color/keywords.ts\");\r\nconst rgbReg = new RegExp(`^rgba?\\\\((${syntax_1.numberPattern})(%?),(${syntax_1.numberPattern})\\\\2,(${syntax_1.numberPattern})\\\\2(?:,(${syntax_1.numberPattern})(%?))?\\\\)$`, 'gi');\r\nconst hslReg = new RegExp(`^hsla?\\\\((${syntax_1.numberPattern})((?:${syntax_1.angel})?),(${syntax_1.numberPattern})%,(${syntax_1.numberPattern})%(?:,(${syntax_1.numberPattern})(%?))?\\\\)$`, 'gi');\r\nconst hexReg = /^#([0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i;\r\nconst alphaMap = {\r\n    '255': 100,\r\n    '252': 99,\r\n    '250': 98,\r\n    '247': 97,\r\n    '245': 96,\r\n    '242': 95,\r\n    '240': 94,\r\n    '237': 93,\r\n    '235': 92,\r\n    '232': 91,\r\n    '230': 90,\r\n    '227': 89,\r\n    '224': 88,\r\n    '222': 87,\r\n    '219': 86,\r\n    '217': 85,\r\n    '214': 84,\r\n    '212': 83,\r\n    '209': 82,\r\n    '207': 81,\r\n    '204': 80,\r\n    '201': 79,\r\n    '199': 78,\r\n    '196': 77,\r\n    '194': 76,\r\n    '191': 75,\r\n    '189': 74,\r\n    '186': 73,\r\n    '184': 72,\r\n    '181': 71,\r\n    '179': 70,\r\n    '176': 69,\r\n    '173': 68,\r\n    '171': 67,\r\n    '168': 66,\r\n    '166': 65,\r\n    '163': 64,\r\n    '161': 63,\r\n    '158': 62,\r\n    '156': 61,\r\n    '153': 60,\r\n    '150': 59,\r\n    '148': 58,\r\n    '145': 57,\r\n    '143': 56,\r\n    '140': 55,\r\n    '138': 54,\r\n    '135': 53,\r\n    '133': 52,\r\n    '130': 51,\r\n    '128': 50,\r\n    '125': 49,\r\n    '122': 48,\r\n    '120': 47,\r\n    '117': 46,\r\n    '115': 45,\r\n    '112': 44,\r\n    '110': 43,\r\n    '107': 42,\r\n    '105': 41,\r\n    '102': 40,\r\n    '99': 39,\r\n    '97': 38,\r\n    '94': 37,\r\n    '92': 36,\r\n    '89': 35,\r\n    '87': 34,\r\n    '84': 33,\r\n    '82': 32,\r\n    '79': 31,\r\n    '77': 30,\r\n    '74': 29,\r\n    '71': 28,\r\n    '69': 27,\r\n    '66': 26,\r\n    '64': 25,\r\n    '61': 24,\r\n    '59': 23,\r\n    '56': 22,\r\n    '54': 21,\r\n    '51': 20,\r\n    '48': 19,\r\n    '46': 18,\r\n    '43': 17,\r\n    '41': 16,\r\n    '38': 15,\r\n    '36': 14,\r\n    '33': 13,\r\n    '31': 12,\r\n    '28': 11,\r\n    '26': 10,\r\n    '23': 9,\r\n    '20': 8,\r\n    '18': 7,\r\n    '15': 6,\r\n    '13': 5,\r\n    '10': 4,\r\n    '8': 3,\r\n    '5': 2,\r\n    '3': 1,\r\n    '0': 0,\r\n};\r\nexports.execColor = (color, digit = const_1.OPACITY_DIGIT) => {\r\n    // 首先对原始字符串进行基本的格式处理和类型转换\r\n    let _color = color.trim();\r\n    if (keywords_1.keywords.hasOwnProperty(_color)) {\r\n        // 关键字转为 16 位色\r\n        _color = keywords_1.keywords[_color];\r\n    }\r\n    else if (/^(?:rgb|hsl)a?\\s*\\(/.test(_color)) {\r\n        // 缩短函数类\r\n        _color = shorten_func_1.shortenFunc(_color);\r\n    }\r\n    const result = {\r\n        r: 0,\r\n        g: 0,\r\n        b: 0,\r\n        a: 1,\r\n        origin: _color,\r\n        valid: true,\r\n    };\r\n    // 16 位色直接解析\r\n    const hexMatch = _color.match(hexReg);\r\n    if (hexMatch) {\r\n        const hex = hexMatch[1];\r\n        switch (hex.length) {\r\n            case 3:\r\n                result.r = parseInt(`0x${hex[0]}${hex[0]}`, const_1.Hex);\r\n                result.g = parseInt(`0x${hex[1]}${hex[1]}`, const_1.Hex);\r\n                result.b = parseInt(`0x${hex[2]}${hex[2]}`, const_1.Hex);\r\n                break;\r\n            case 4:\r\n                result.r = parseInt(`0x${hex[0]}${hex[0]}`, const_1.Hex);\r\n                result.g = parseInt(`0x${hex[1]}${hex[1]}`, const_1.Hex);\r\n                result.b = parseInt(`0x${hex[2]}${hex[2]}`, const_1.Hex);\r\n                const alpha4 = parseInt(`0x${hex[3]}${hex[3]}`, const_1.Hex);\r\n                result.a = ramda_1.has(`${alpha4}`, alphaMap) ? alphaMap[`${alpha4}`] / const_1.Hundred : alpha4 / const_1.FF;\r\n                break;\r\n            case 8:\r\n                result.r = parseInt(`0x${hex[0]}${hex[1]}`, const_1.Hex);\r\n                result.g = parseInt(`0x${hex[2]}${hex[3]}`, const_1.Hex);\r\n                result.b = parseInt(`0x${hex[4]}${hex[5]}`, const_1.Hex);\r\n                const alpha8 = parseInt(`0x${hex[6]}${hex[7]}`, const_1.Hex);\r\n                result.a = ramda_1.has(`${alpha8}`, alphaMap) ? alphaMap[`${alpha8}`] / const_1.Hundred : alpha8 / const_1.FF;\r\n                break;\r\n            default:\r\n                result.r = parseInt(`0x${hex[0]}${hex[1]}`, const_1.Hex);\r\n                result.g = parseInt(`0x${hex[2]}${hex[3]}`, const_1.Hex);\r\n                result.b = parseInt(`0x${hex[4]}${hex[5]}`, const_1.Hex);\r\n                break;\r\n        }\r\n        return result;\r\n    }\r\n    // rgb/rgba/hsl/hsla 解析\r\n    rgbReg.lastIndex = 0; // 重置正则表达式匹配位置\r\n    const rgbMatch = rgbReg.exec(_color);\r\n    if (rgbMatch) {\r\n        result.r = valid_1.valid(rgbMatch[2], const_1.FF, rgbMatch[1]);\r\n        result.g = valid_1.valid(rgbMatch[2], const_1.FF, rgbMatch[3]);\r\n        result.b = valid_1.valid(rgbMatch[2], const_1.FF, rgbMatch[4]);\r\n        if (rgbMatch[5]) {\r\n            result.a = valid_1.validOpacity(rgbMatch[6], rgbMatch[5]);\r\n        }\r\n        return result;\r\n    }\r\n    hslReg.lastIndex = 0;\r\n    const hslMatch = hslReg.exec(_color);\r\n    if (hslMatch) {\r\n        let hue;\r\n        switch (hslMatch[2].toLowerCase()) {\r\n            case 'grad':\r\n                hue = +hslMatch[1] * const_1.CIRC / const_1.GRAD;\r\n                break;\r\n            case 'rad':\r\n                hue = +hslMatch[1] * const_1.CIRC / const_1.RAD;\r\n                break;\r\n            case 'turn':\r\n                hue = +hslMatch[1] * const_1.CIRC;\r\n                break;\r\n            default: // deg 和纯数值都按照 360 解析\r\n                hue = +hslMatch[1];\r\n                break;\r\n        }\r\n        [result.r, result.g, result.b] = hsl2rgb_1.hsl2rgb(hue, +hslMatch[3] / const_1.Hundred, +hslMatch[4] / const_1.Hundred);\r\n        if (hslMatch[5]) {\r\n            // 考虑到转来转去可能和原始字符串不同，保留一份缩短后的 hsl 原始字符串\r\n            result.a = valid_1.validOpacity(hslMatch[6], hslMatch[5]);\r\n            result.origin = `hsl(${valid_1.validNum(const_1.CIRC, hue)},${valid_1.validNum(const_1.Hundred, +hslMatch[3])}%,${valid_1.validNum(const_1.Hundred, +hslMatch[4])}%,${shorten_alpha_1.shortenAlpha(digit, result.a)})`;\r\n        }\r\n        return result;\r\n    }\r\n    if (_color === 'transparent') {\r\n        result.a = 0;\r\n        return result;\r\n    }\r\n    result.valid = false;\r\n    return result;\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/color/exec.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/color/hsl2rgb.ts":
-/*!***************************************!*\
-  !*** ./src/slimming/color/hsl2rgb.ts ***!
-  \***************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst const_1 = __webpack_require__(/*! ../const */ \"./src/slimming/const/index.ts\");\r\nconst valid_1 = __webpack_require__(/*! ../math/valid */ \"./src/slimming/math/valid.ts\");\r\nconst CIRC6 = const_1.CIRC / 6;\r\nexports.hsl2rgb = (h, s, l) => {\r\n    let _R;\r\n    let G;\r\n    let B;\r\n    let X;\r\n    let C;\r\n    let _h = (h % const_1.CIRC) / CIRC6;\r\n    C = s * 2 * (l < const_1.HALF ? l : 1 - l);\r\n    X = C * (1 - Math.abs(_h % 2 - 1));\r\n    _R = G = B = l - C / 2;\r\n    _h = ~~_h;\r\n    _R += [C, X, 0, 0, X, C][_h];\r\n    G += [X, C, C, X, 0, 0][_h];\r\n    B += [0, 0, X, C, C, X][_h];\r\n    return [valid_1.validNum(const_1.FF, _R * const_1.FF), valid_1.validNum(const_1.FF, G * const_1.FF), valid_1.validNum(const_1.FF, B * const_1.FF)];\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/color/hsl2rgb.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/color/keywords.ts":
-/*!****************************************!*\
-  !*** ./src/slimming/color/keywords.ts ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nexports.keywords = {\r\n    'aliceblue': '#f0f8ff',\r\n    'antiquewhite': '#faebd7',\r\n    'aqua': '#00ffff',\r\n    'aquamarine': '#7fffd4',\r\n    'azure': '#f0ffff',\r\n    'beige': '#f5f5dc',\r\n    'bisque': '#ffe4c4',\r\n    'black': '#000000',\r\n    'blanchedalmond': '#ffebcd',\r\n    'blue': '#0000ff',\r\n    'blueviolet': '#8a2be2',\r\n    'brown': '#a52a2a',\r\n    'burlywood': '#deb887',\r\n    'cadetblue': '#5f9ea0',\r\n    'chartreuse': '#7fff00',\r\n    'chocolate': '#d2691e',\r\n    'coral': '#ff7f50',\r\n    'cornflowerblue': '#6495ed',\r\n    'cornsilk': '#fff8dc',\r\n    'crimson': '#dc143c',\r\n    'cyan': '#00ffff',\r\n    'darkblue': '#00008b',\r\n    'darkcyan': '#008b8b',\r\n    'darkgoldenrod': '#b8860b',\r\n    'darkgray': '#a9a9a9',\r\n    'darkgreen': '#006400',\r\n    'darkgrey': '#a9a9a9',\r\n    'darkkhaki': '#bdb76b',\r\n    'darkmagenta': '#8b008b',\r\n    'darkolivegreen': '#556b2f',\r\n    'darkorange': '#ff8c00',\r\n    'darkorchid': '#9932cc',\r\n    'darkred': '#8b0000',\r\n    'darksalmon': '#e9967a',\r\n    'darkseagreen': '#8fbc8f',\r\n    'darkslateblue': '#483d8b',\r\n    'darkslategray': '#2f4f4f',\r\n    'darkslategrey': '#2f4f4f',\r\n    'darkturquoise': '#00ced1',\r\n    'darkviolet': '#9400d3',\r\n    'deeppink': '#ff1493',\r\n    'deepskyblue': '#00bfff',\r\n    'dimgray': '#696969',\r\n    'dimgrey': '#696969',\r\n    'dodgerblue': '#1e90ff',\r\n    'firebrick': '#b22222',\r\n    'floralwhite': '#fffaf0',\r\n    'forestgreen': '#228b22',\r\n    'fuchsia': '#ff00ff',\r\n    'gainsboro': '#dcdcdc',\r\n    'ghostwhite': '#f8f8ff',\r\n    'gold': '#ffd700',\r\n    'goldenrod': '#daa520',\r\n    'gray': '#808080',\r\n    'green': '#008000',\r\n    'greenyellow': '#adff2f',\r\n    'grey': '#808080',\r\n    'honeydew': '#f0fff0',\r\n    'hotpink': '#ff69b4',\r\n    'indianred': '#cd5c5c',\r\n    'indigo': '#4b0082',\r\n    'ivory': '#fffff0',\r\n    'khaki': '#f0e68c',\r\n    'lavender': '#e6e6fa',\r\n    'lavenderblush': '#fff0f5',\r\n    'lawngreen': '#7cfc00',\r\n    'lemonchiffon': '#fffacd',\r\n    'lightblue': '#add8e6',\r\n    'lightcoral': '#f08080',\r\n    'lightcyan': '#e0ffff',\r\n    'lightgoldenrodyellow': '#fafad2',\r\n    'lightgray': '#d3d3d3',\r\n    'lightgreen': '#90ee90',\r\n    'lightgrey': '#d3d3d3',\r\n    'lightpink': '#ffb6c1',\r\n    'lightsalmon': '#ffa07a',\r\n    'lightseagreen': '#20b2aa',\r\n    'lightskyblue': '#87cefa',\r\n    'lightslategray': '#778899',\r\n    'lightslategrey': '#778899',\r\n    'lightsteelblue': '#b0c4de',\r\n    'lightyellow': '#ffffe0',\r\n    'lime': '#00ff00',\r\n    'limegreen': '#32cd32',\r\n    'linen': '#faf0e6',\r\n    'magenta': '#ff00ff',\r\n    'maroon': '#800000',\r\n    'mediumaquamarine': '#66cdaa',\r\n    'mediumblue': '#0000cd',\r\n    'mediumorchid': '#ba55d3',\r\n    'mediumpurple': '#9370db',\r\n    'mediumseagreen': '#3cb371',\r\n    'mediumslateblue': '#7b68ee',\r\n    'mediumspringgreen': '#00fa9a',\r\n    'mediumturquoise': '#48d1cc',\r\n    'mediumvioletred': '#c71585',\r\n    'midnightblue': '#191970',\r\n    'mintcream': '#f5fffa',\r\n    'mistyrose': '#ffe4e1',\r\n    'moccasin': '#ffe4b5',\r\n    'navajowhite': '#ffdead',\r\n    'navy': '#000080',\r\n    'oldlace': '#fdf5e6',\r\n    'olive': '#808000',\r\n    'olivedrab': '#6b8e23',\r\n    'orange': '#ffa500',\r\n    'orangered': '#ff4500',\r\n    'orchid': '#da70d6',\r\n    'palegoldenrod': '#eee8aa',\r\n    'palegreen': '#98fb98',\r\n    'paleturquoise': '#afeeee',\r\n    'palevioletred': '#db7093',\r\n    'papayawhip': '#ffefd5',\r\n    'peachpuff': '#ffdab9',\r\n    'peru': '#cd853f',\r\n    'pink': '#ffc0cb',\r\n    'plum': '#dda0dd',\r\n    'powderblue': '#b0e0e6',\r\n    'purple': '#800080',\r\n    'rebeccapurple': '#663399',\r\n    'red': '#ff0000',\r\n    'rosybrown': '#bc8f8f',\r\n    'royalblue': '#4169e1',\r\n    'saddlebrown': '#8b4513',\r\n    'salmon': '#fa8072',\r\n    'sandybrown': '#f4a460',\r\n    'seagreen': '#2e8b57',\r\n    'seashell': '#fff5ee',\r\n    'sienna': '#a0522d',\r\n    'silver': '#c0c0c0',\r\n    'skyblue': '#87ceeb',\r\n    'slateblue': '#6a5acd',\r\n    'slategray': '#708090',\r\n    'slategrey': '#708090',\r\n    'snow': '#fffafa',\r\n    'springgreen': '#00ff7f',\r\n    'steelblue': '#4682b4',\r\n    'tan': '#d2b48c',\r\n    'teal': '#008080',\r\n    'thistle': '#d8bfd8',\r\n    'tomato': '#ff6347',\r\n    'turquoise': '#40e0d0',\r\n    'violet': '#ee82ee',\r\n    'wheat': '#f5deb3',\r\n    'white': '#ffffff',\r\n    'whitesmoke': '#f5f5f5',\r\n    'yellow': '#ffff00',\r\n    'yellowgreen': '#9acd32',\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/color/keywords.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/color/rgb2hsl.ts":
-/*!***************************************!*\
-  !*** ./src/slimming/color/rgb2hsl.ts ***!
-  \***************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst const_1 = __webpack_require__(/*! ../const */ \"./src/slimming/const/index.ts\");\r\nconst valid_1 = __webpack_require__(/*! ../math/valid */ \"./src/slimming/math/valid.ts\");\r\nexports.rgb2hsl = (rgb) => {\r\n    const r = rgb.r / const_1.FF;\r\n    const g = rgb.g / const_1.FF;\r\n    const b = rgb.b / const_1.FF;\r\n    const max = Math.max(r, g, b);\r\n    const min = Math.min(r, g, b);\r\n    const diff = max - min;\r\n    const l = (max + min) / 2;\r\n    const h = diff === 0 ?\r\n        0 :\r\n        max === r ?\r\n            (g - b) / diff :\r\n            max === g ?\r\n                (b - r) / diff + 2 :\r\n                (r - g) / diff + 4;\r\n    const s = diff === 0 ?\r\n        0 :\r\n        l < const_1.HALF ?\r\n            diff / (l * 2) :\r\n            diff / (2 - l * 2);\r\n    return { h: valid_1.validNum(const_1.CIRC, (h + const_1.CIRC) % 6 * (const_1.CIRC / 6)), s: valid_1.validNum(const_1.Hundred, s * const_1.Hundred), l: valid_1.validNum(const_1.Hundred, l * const_1.Hundred) };\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/color/rgb2hsl.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/config/config.ts":
-/*!***************************************!*\
-  !*** ./src/slimming/config/config.ts ***!
-  \***************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst const_1 = __webpack_require__(/*! ../const */ \"./src/slimming/const/index.ts\");\r\nexports.config = {\r\n    // 合并 g 标签\r\n    'collapse-g': [true],\r\n    // 塌陷无意义的文本节点\r\n    'collapse-textwrap': [true],\r\n    // 合并 path 标签\r\n    'combine-path': [true, {\r\n            disregardFill: false,\r\n            disregardOpacity: false,\r\n            keyOrder: ['disregardFill', 'disregardOpacity'],\r\n        }],\r\n    // 分析并合并 transform 属性\r\n    'combine-transform': [true, {\r\n            angelDigit: const_1.DEFAULT_ACCURATE_DIGIT,\r\n            sizeDigit: const_1.DEFAULT_SIZE_DIGIT,\r\n            trifuncDigit: const_1.DEFAULT_MATRIX_DIGIT,\r\n            keyOrder: ['trifuncDigit', 'sizeDigit', 'angelDigit'],\r\n        }],\r\n    // 计算 path 的 d 属性，使之变得更短\r\n    'compute-path': [true, {\r\n            angelDigit: const_1.DEFAULT_ACCURATE_DIGIT,\r\n            sizeDigit: const_1.DEFAULT_SIZE_DIGIT,\r\n            straighten: 0,\r\n            thinning: 0,\r\n            keyOrder: ['removed thinning switch@v1.5.0', 'thinning', 'size', 'angelDigit', 'straighten'],\r\n        }],\r\n    // 移除非规范的属性\r\n    'rm-attribute': [true, {\r\n            keepAria: false,\r\n            keepEvent: false,\r\n            rmDefault: true,\r\n            keyOrder: ['rmDefault', 'keepEvent', 'keepAria'],\r\n        }],\r\n    // 移除注释\r\n    'rm-comments': [true],\r\n    // 移除 DOCTYPE 声明\r\n    'rm-doctype': [true],\r\n    // 移除隐藏对象\r\n    'rm-hidden': [true],\r\n    // 移除不规范嵌套的标签\r\n    'rm-irregular-nesting': [true, {\r\n            ignore: [],\r\n            keyOrder: ['ignore'],\r\n        }],\r\n    // 移除非规范的标签\r\n    // 配置不移除的非规范标签\r\n    'rm-irregular-tag': [true, {\r\n            ignore: [],\r\n            keyOrder: ['ignore'],\r\n        }],\r\n    // 移除 px 单位\r\n    'rm-px': [true],\r\n    // 移除不必要的标签\r\n    // 配置需要移除的标签列表\r\n    'rm-unnecessary': [true, {\r\n            tags: ['desc', 'discard', 'foreignObject', 'video', 'audio', 'iframe', 'canvas', 'metadata', 'script', 'title', 'unknown', 'image'],\r\n            keyOrder: ['tags'],\r\n        }],\r\n    // 移除 svg 标签的 version 属性\r\n    'rm-version': [true],\r\n    // 是否强制移除 viewBox 属性\r\n    'rm-viewbox': [true],\r\n    // 移除 xml 声明\r\n    'rm-xml-decl': [true],\r\n    // 如有必要，移除 xml 命名空间\r\n    'rm-xmlns': [true],\r\n    // 缩短动画元素\r\n    'shorten-animate': [true, {\r\n            remove: false,\r\n        }],\r\n    // 缩短 className ，并移除不被引用的 className\r\n    'shorten-class': [true],\r\n    // 缩短颜色\r\n    'shorten-color': [true, {\r\n            opacityDigit: const_1.OPACITY_DIGIT,\r\n            rrggbbaa: false,\r\n            keyOrder: ['rrggbbaa', 'opacityDigit'],\r\n        }],\r\n    // 缩短小数点后位数\r\n    'shorten-decimal-digits': [true, {\r\n            angelDigit: const_1.DEFAULT_ACCURATE_DIGIT,\r\n            sizeDigit: const_1.DEFAULT_SIZE_DIGIT,\r\n            keyOrder: ['sizeDigit', 'angelDigit'],\r\n        }],\r\n    // 合并所有的 defs ，移除无效的 defs 定义\r\n    'shorten-defs': [true],\r\n    // 移除无效的滤镜元素，移除不必要的滤镜元素属性\r\n    'shorten-filter': [true],\r\n    // 缩短 ID ，并移除不被引用的 ID\r\n    'shorten-id': [true],\r\n    // 缩短 shape 类型的节点\r\n    'shorten-shape': [true, {\r\n            thinning: 0,\r\n            keyOrder: ['thinning'],\r\n        }],\r\n    // 缩短 style 属性\r\n    'shorten-style-attr': [true, {\r\n            exchange: false,\r\n            rmDefault: true,\r\n            keyOrder: ['exchange'],\r\n        }],\r\n    // 缩短 style 标签的内容（合并相同规则、移除无效样式）\r\n    // 深度分析，移除无效选择器、合并相同的选择器、合并相同规则\r\n    'shorten-style-tag': [true, {\r\n            deepShorten: true,\r\n            rmDefault: true,\r\n            keyOrder: ['deepShorten'],\r\n        }],\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/config/config.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/config/merge.ts":
-/*!**************************************!*\
-  !*** ./src/slimming/config/merge.ts ***!
-  \**************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst config_1 = __webpack_require__(/*! ./config */ \"./src/slimming/config/config.ts\");\r\nconst mergeUserVal = (v, _v) => {\r\n    if (Array.isArray(v)) {\r\n        // 数组只要字符串项\r\n        if (Array.isArray(_v)) {\r\n            return _v.filter(s => typeof s === 'string');\r\n        }\r\n    }\r\n    else if (typeof v === typeof _v) {\r\n        if (typeof _v === 'number') {\r\n            // 数值项要忽略 NaN、Infinity 和负数，并下取整\r\n            // 数值精度最多保留 8 位\r\n            if (_v >= 0 && _v !== Infinity) {\r\n                return Math.floor(_v);\r\n            }\r\n        }\r\n        else {\r\n            return _v;\r\n        }\r\n    }\r\n    return v;\r\n};\r\nexports.mergeConfig = (userConfig) => {\r\n    const finalConfig = {};\r\n    // 首先把默认规则深拷贝合并过来\r\n    for (const [key, val] of Object.entries(config_1.config)) {\r\n        finalConfig[key] = [val[0]];\r\n        if (val[1]) {\r\n            const option = { keyOrder: val[1].keyOrder };\r\n            for (const [k, v] of Object.entries(val[1])) {\r\n                option[k] = Array.isArray(v) ? v.slice() : v;\r\n            }\r\n            finalConfig[key][1] = option;\r\n        }\r\n    }\r\n    if (typeof userConfig === 'object' && userConfig) {\r\n        for (const [key, val] of Object.entries(userConfig)) {\r\n            // 只合并存在的值\r\n            if (finalConfig.hasOwnProperty(key)) {\r\n                const conf = finalConfig[key];\r\n                // 布尔值直接设置开关位置\r\n                if (typeof val === 'boolean') {\r\n                    conf[0] = val;\r\n                }\r\n                else if (Array.isArray(val) && typeof val[0] === 'boolean') {\r\n                    // 如果开关位置不是布尔值，后续直接抛弃处理\r\n                    conf[0] = val[0];\r\n                    // 默认配置如果没有 option 则不必再验证，如果没有打开配置项，后续也不必再验证\r\n                    if (conf[0] && conf[1]) {\r\n                        if (typeof val[1] === 'object' && val[1] && !Array.isArray(val[1])) {\r\n                            // 如果拿到的是 IConfigOption 类型\r\n                            for (const [k, v] of Object.entries(val[1])) {\r\n                                if (k !== 'keyOrder' && conf[1].hasOwnProperty(k)) {\r\n                                    conf[1][k] = mergeUserVal(conf[1][k], v);\r\n                                }\r\n                            }\r\n                        }\r\n                        else {\r\n                            for (const k of Object.keys(conf[1])) {\r\n                                if (k !== 'keyOrder') {\r\n                                    const index = conf[1].keyOrder.indexOf(k) + 1;\r\n                                    conf[1][k] = mergeUserVal(conf[1][k], val[index]);\r\n                                }\r\n                            }\r\n                        }\r\n                    }\r\n                }\r\n            }\r\n        }\r\n    }\r\n    return finalConfig;\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/config/merge.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/const/definitions.ts":
-/*!*******************************************!*\
-  !*** ./src/slimming/const/definitions.ts ***!
-  \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\n// elements group\r\nexports.animationElements = ['animate', 'animateMotion', 'animateTransform', 'discard', 'set'];\r\nexports.animationAttrElements = ['animate', 'animateTransform', 'set'];\r\nexports.descriptiveElements = ['desc', 'metadata', 'title'];\r\nexports.gradientElements = ['linearGradient', 'radialGradient'];\r\nexports.filterPrimitiveElements = ['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDropShadow', 'feFlood', 'feGaussianBlur', 'feImage', 'feMerge', 'feMorphology', 'feOffset', 'feSpecularLighting', 'feTile', 'feTurbulence'];\r\nexports.transferFunctionElements = ['feFuncR', 'feFuncG', 'feFuncB', 'feFuncA'];\r\nexports.lightSourceElements = ['feDistantLight', 'fePointLight', 'feSpotLight'];\r\nexports.paintServerElements = ['solidcolor', 'linearGradient', 'radialGradient', 'meshgradient', 'pattern', 'hatch'];\r\nexports.shapeElements = ['circle', 'ellipse', 'line', 'path', 'polygon', 'polyline', 'rect'];\r\nexports.structuralElements = ['defs', 'g', 'svg', 'symbol', 'use'];\r\nexports.textContentChildElements = ['tspan', 'textPath'];\r\nexports.textContentElements = ['text'].concat(exports.textContentChildElements);\r\nexports.graphicsElements = ['audio', 'canvas', 'circle', 'ellipse', 'foreignObject', 'iframe', 'image', 'line', 'mesh', 'path', 'polygon', 'polyline', 'rect', 'text', 'textPath', 'tspan', 'video'];\r\nexports.containerElements = ['a', 'clipPath', 'defs', 'g', 'marker', 'mask', 'pattern', 'svg', 'switch', 'symbol', 'unknown'];\r\nexports.newViewportsElements = ['svg', 'symbol', 'foreignObject', 'video', 'audio', 'canvas', 'image', 'iframe'];\r\nexports.unnecessaryElements = ['desc', 'discard', 'foreignObject', 'video', 'audio', 'iframe', 'canvas', 'metadata', 'script', 'style', 'title', 'unknown', 'image'];\r\n// attributes group\r\n// https://www.w3.org/TR/SVG2/interact.html#EventAttributes\r\nexports.eventAttributes = ['onabort', 'onafterprint', 'onbeforeprint', 'onbegin', 'oncancel', 'oncanplay', 'oncanplaythrough', 'onchange', 'onclick', 'onclose', 'oncuechange', 'ondblclick', 'ondrag', 'ondragend', 'ondragenter', 'ondragexit', 'ondragleave', 'ondragover', 'ondragstart', 'ondrop', 'ondurationchange', 'onemptied', 'onend', 'onended', 'onerror', 'onerror', 'onfocus', 'onfocusin', 'onfocusout', 'onhashchange', 'oninput', 'oninvalid', 'onkeydown', 'onkeypress', 'onkeyup', 'onload', 'onloadeddata', 'onloadedmetadata', 'onloadstart', 'onmessage', 'onmousedown', 'onmouseenter', 'onmouseleave', 'onmousemove', 'onmouseout', 'onmouseover', 'onmouseup', 'onmousewheel', 'onoffline', 'ononline', 'onpagehide', 'onpageshow', 'onpause', 'onplay', 'onplaying', 'onpopstate', 'onprogress', 'onratechange', 'onrepeat', 'onreset', 'onresize', 'onresize', 'onscroll', 'onscroll', 'onseeked', 'onseeking', 'onselect', 'onshow', 'onstalled', 'onstorage', 'onsubmit', 'onsuspend', 'ontimeupdate', 'ontoggle', 'onunload', 'onunload', 'onvolumechange', 'onwaiting'];\r\n// https://www.w3.org/TR/wai-aria-1.1/#aria-activedescendant\r\nexports.ariaAttributes = ['aria-activedescendant', 'aria-atomic', 'aria-busy', 'aria-checked', 'aria-colcount', 'aria-colindex', 'aria-colspan', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details', 'aria-disabled', 'aria-dropeffect', 'aria-errormessage', 'aria-expanded', 'aria-flowto', 'aria-grabbed', 'aria-haspopup', 'aria-hidden', 'aria-invalid', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-level', 'aria-live', 'aria-modal', 'aria-multiline', 'aria-multiselectable', 'aria-orientation', 'aria-owns', 'aria-placeholder', 'aria-posinset', 'aria-pressed', 'aria-readonly', 'aria-relevant', 'aria-required', 'aria-roledescription', 'aria-rowcount', 'aria-rowindex', 'aria-rowspan', 'aria-selected', 'aria-setsize', 'aria-sort', 'aria-valuemax', 'aria-valuemin', 'aria-valuenow', 'aria-valuetext', 'role'];\r\nexports.animationAttributes = ['from', 'to', 'by', 'values'];\r\nexports.transformAttributes = ['gradientTransform', 'patternTransform', 'transform'];\r\nexports.cantCollapseAttributes = ['id', 'class', 'mask', 'style'];\r\nexports.conditionalProcessingAttributes = ['requiredExtensions', 'systemLanguage'];\r\nexports.coreAttributes = ['id', 'tabindex', 'lang', 'xml:space', 'class', 'style', 'transform'];\r\nexports.deprecatedXlinkAttributes = ['xlink:href', 'xlink:title'];\r\nexports.animationAdditionAttributes = ['additive', 'accumulate'];\r\nexports.animationTimingAttributes = ['begin', 'dur', 'end', 'min', 'max', 'restart', 'repeatCount', 'repeatDur', 'fill'];\r\nexports.animationValueAttributes = ['calcMode', 'values', 'keyTimes', 'keySplines', 'from', 'to', 'by'];\r\nexports.rectAttributes = ['x', 'y', 'width', 'height'];\r\nexports.transferFunctionElementAttributes = ['type', 'tableValues', 'slope', 'intercept', 'amplitude', 'exponent', 'offset'];\r\nexports.validPseudoClass = ['hover', 'link', 'active', 'visited', 'focus', 'first-child', 'lang', 'not'];\r\nexports.validPseudoElement = ['first-letter', 'first-line'];\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/const/definitions.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/const/enum.ts":
-/*!************************************!*\
-  !*** ./src/slimming/const/enum.ts ***!
-  \************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\n// 用于属性合法性验证的枚举类型（此处存储方便直接转换为正则的字符串形式）\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nexports.calcMode = 'discrete|linear|paced|spline';\r\nexports.units = 'userSpaceOnUse|objectBoundingBox';\r\nexports.crossOrigin = 'anonymous|use-credentials';\r\nexports.dur = 'media|indefinite';\r\nexports.edgeMode = 'duplicate|wrap|none';\r\nexports.inVal = 'SourceGraphic|SourceAlpha|BackgroundImage|BackgroundAlpha|FillPaint|StrokePaint';\r\nexports.lengthAdjust = 'spacing|spacingAndGlyphs';\r\nexports.markerUnit = 'strokeWidth|userSpaceOnUse';\r\nexports.method = 'align|stretch';\r\nexports.blendMode = 'normal|multiply|screen|overlay|darken|lighten|color-dodge|color-burn|hard-light|soft-light|difference|exclusion|hue|saturation|color|luminosity';\r\nexports.operater = 'over|in|out|atop|xor|lighter|arithmetic';\r\nexports.operater1 = 'erode|dilate';\r\nexports.orient = 'auto|auto-start-reverse';\r\nexports.alignX = 'left|center|right';\r\nexports.alignY = 'top|center|bottom';\r\nexports.referrer = 'no-referrer|no-referrer-when-downgrade|same-origin|origin|strict-origin|origin-when-cross-origin|strict-origin-when-cross-origin|unsafe-url';\r\nexports.restart = 'always|whenNotActive|never';\r\nexports.spreadMethod = 'pad|reflect|repeat';\r\nexports.target = '_self|_parent|_top|_blank';\r\nexports.animateTransformType = 'translate|scale|rotate|skewX|skewY';\r\nexports.feColorMatrixType = 'matrix|saturate|hueRotate|luminanceToAlpha';\r\nexports.feFuncType = 'identity|table|discrete|linear|gamma';\r\nexports.feTurbulenceType = 'fractalNoise|turbulence';\r\nexports.channel = 'R|G|B|A';\r\nexports.isolationMode = 'auto|isolate';\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/const/enum.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/const/index.ts":
-/*!*************************************!*\
-  !*** ./src/slimming/const/index.ts ***!
-  \*************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nexports.FF = 255;\r\nexports.Hundred = 100;\r\nexports.Hex = 16;\r\nexports.CIRC = 360;\r\nexports.HALF_CIRC = 180;\r\nexports.GRAD = 400;\r\nexports.RAD = Math.PI * 2;\r\nexports.matrixEPos = 4;\r\nexports.HALF = 0.5;\r\nexports.APOS_RX = 0;\r\nexports.APOS_RY = 1;\r\nexports.APOS_ROTATION = 2;\r\nexports.APOS_LARGE = 3;\r\nexports.APOS_SWEEP = 4;\r\nexports.APOS_X = 5;\r\nexports.APOS_Y = 6;\r\nexports.APOS_LEN = 7;\r\nexports.OPACITY_DIGIT = 3; // 浏览器对于颜色的 alpha 值只处理到小数点后第 3 位\r\nexports.DEFAULT_SIZE_DIGIT = 2;\r\nexports.DEFAULT_ACCURATE_DIGIT = 2;\r\nexports.DEFAULT_MATRIX_DIGIT = 3;\r\n// path 直线指令\r\nexports.LineTypes = 'LlHhVv';\r\nexports.CurveTypes = 'AaCcSsQqTt';\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/const/index.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/const/regs.ts":
-/*!************************************!*\
-  !*** ./src/slimming/const/regs.ts ***!
-  \************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\n// 用于验证的正则表达式\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\n// css 选择器相关字符\r\nexports.idChar = '#[^#\\\\.\\\\[\\\\*:\\\\s]+';\r\nexports.classChar = '\\\\.[^#\\\\.\\\\[\\\\*:\\\\s]+';\r\n// tslint:disable-next-line\r\nexports.attrChar = `\\\\[[a-zA-Z][a-zA-Z0-9\\\\-]*(?:[\\\\|\\\\^\\\\$\\\\*~]?=(?:'[^']*'|\"[^\"]*\"|[^'\"\\\\]]+))?\\\\]`;\r\nexports.pseudoChar = '\\\\:{1,2}[a-zA-Z-]+(?:\\\\((?:[^\\\\)]+|[^\\\\(]+\\\\([^\\\\)]+\\\\))\\\\))?';\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/const/regs.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/const/regular-attr.ts":
-/*!********************************************!*\
-  !*** ./src/slimming/const/regular-attr.ts ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst definitions_1 = __webpack_require__(/*! ./definitions */ \"./src/slimming/const/definitions.ts\");\r\nconst enum_1 = __webpack_require__(/*! ./enum */ \"./src/slimming/const/enum.ts\");\r\nconst syntax_1 = __webpack_require__(/*! ./syntax */ \"./src/slimming/const/syntax.ts\");\r\nconst shapeAndText = definitions_1.shapeElements.concat(definitions_1.textContentElements);\r\nconst viewport = ['pattern', 'marker'].concat(definitions_1.newViewportsElements);\r\nconst useContainerGraphics = ['use'].concat(definitions_1.containerElements, definitions_1.graphicsElements);\r\nconst colorApply = ['animate'].concat(useContainerGraphics, definitions_1.gradientElements);\r\n// tslint:disable:max-file-line-count\r\nconst _regularAttr = {\r\n    'accumulate': {\r\n        name: 'accumulate',\r\n        legalValues: [{\r\n                type: 'string',\r\n                value: 'none',\r\n            }, {\r\n                type: 'string',\r\n                value: 'sum',\r\n            }],\r\n        initValue: 'none',\r\n        applyTo: [],\r\n    },\r\n    'additive': {\r\n        name: 'additive',\r\n        legalValues: [{\r\n                type: 'string',\r\n                value: 'replace',\r\n            }, {\r\n                type: 'string',\r\n                value: 'sum',\r\n            }],\r\n        initValue: 'replace',\r\n        applyTo: [],\r\n    },\r\n    'amplitude': {\r\n        name: 'amplitude',\r\n        animatable: true,\r\n        maybeAccurateNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n            }],\r\n        initValue: '1',\r\n        applyTo: [],\r\n    },\r\n    'attributeName': {\r\n        name: 'attributeName',\r\n        legalValues: [{\r\n                type: 'attr',\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'azimuth': {\r\n        name: 'azimuth',\r\n        animatable: true,\r\n        maybeAccurateNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n            }],\r\n        initValue: '0',\r\n        applyTo: [],\r\n    },\r\n    'baseFrequency': {\r\n        name: 'baseFrequency',\r\n        animatable: true,\r\n        maybeAccurateNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberOptionalFullMatch,\r\n            }],\r\n        initValue: '0',\r\n        applyTo: [],\r\n    },\r\n    'begin': {\r\n        name: 'begin',\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.timeListFullMatch,\r\n            }],\r\n        initValue: '0s',\r\n        applyTo: [],\r\n    },\r\n    'bias': {\r\n        name: 'bias',\r\n        animatable: true,\r\n        maybeAccurateNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n            }],\r\n        initValue: '0',\r\n        applyTo: [],\r\n    },\r\n    'by': {\r\n        name: 'by',\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.lengthPairFullMatch,\r\n                tag: ['animateMotion'],\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'calcMode': {\r\n        name: 'calcMode',\r\n        legalValues: [{\r\n                type: 'enum',\r\n                value: enum_1.calcMode,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'class': {\r\n        name: 'class',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.cssNameSpaceSeparatedFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'clipPathUnits': {\r\n        name: 'clipPathUnits',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'enum',\r\n                value: enum_1.units,\r\n            }],\r\n        initValue: 'userSpaceOnUse',\r\n        applyTo: [],\r\n    },\r\n    'crossorigin': {\r\n        name: 'crossorigin',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'enum',\r\n                value: enum_1.crossOrigin,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'cx': {\r\n        name: 'cx',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.lengthPercentageFullMatch,\r\n            }],\r\n        initValue: [{\r\n                val: '50%',\r\n                tag: ['radialGradient'],\r\n            }, {\r\n                val: '0',\r\n                tag: ['circle', 'ellipse'],\r\n            }],\r\n        applyTo: ['circle', 'ellipse'],\r\n    },\r\n    'cy': {\r\n        name: 'cy',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.lengthPercentageFullMatch,\r\n            }],\r\n        initValue: [{\r\n                val: '50%',\r\n                tag: ['radialGradient'],\r\n            }, {\r\n                val: '0',\r\n                tag: ['circle', 'ellipse'],\r\n            }],\r\n        applyTo: ['circle', 'ellipse'],\r\n    },\r\n    'd': {\r\n        name: 'd',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.pathFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'diffuseConstant': {\r\n        name: 'diffuseConstant',\r\n        animatable: true,\r\n        maybeAccurateNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n            }],\r\n        initValue: '1',\r\n        applyTo: [],\r\n    },\r\n    'divisor': {\r\n        name: 'divisor',\r\n        animatable: true,\r\n        maybeAccurateNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'download': {\r\n        name: 'download',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.nameFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'dur': {\r\n        name: 'dur',\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.clockFullMatch,\r\n            }, {\r\n                type: 'enum',\r\n                value: enum_1.dur,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'dx': {\r\n        name: 'dx',\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n                tag: ['feOffset', 'feDropShadow'],\r\n            }, {\r\n                type: 'reg',\r\n                value: syntax_1.lengthPercentageListFullMatch,\r\n                tag: ['text', 'tspan'],\r\n            }],\r\n        initValue: [{\r\n                val: '2',\r\n                tag: ['feOffset', 'feDropShadow'],\r\n            }, {\r\n                val: '',\r\n                tag: ['tspan', 'text'],\r\n            }],\r\n        applyTo: [],\r\n    },\r\n    'dy': {\r\n        name: 'dy',\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n                tag: ['feOffset', 'feDropShadow'],\r\n            }, {\r\n                type: 'reg',\r\n                value: syntax_1.lengthPercentageListFullMatch,\r\n                tag: ['text', 'tspan'],\r\n            }],\r\n        initValue: [{\r\n                val: '2',\r\n                tag: ['feOffset', 'feDropShadow'],\r\n            }, {\r\n                val: '',\r\n                tag: ['tspan', 'text'],\r\n            }],\r\n        applyTo: [],\r\n    },\r\n    'edgeMode': {\r\n        name: 'edgeMode',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'enum',\r\n                value: enum_1.edgeMode,\r\n            }],\r\n        initValue: [{\r\n                val: 'duplicate',\r\n                tag: ['feConvolveMatrix'],\r\n            }, {\r\n                val: 'none',\r\n                tag: ['feGaussianBlur'],\r\n            }],\r\n        applyTo: [],\r\n    },\r\n    'elevation': {\r\n        name: 'elevation',\r\n        animatable: true,\r\n        maybeAccurateNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n            }],\r\n        initValue: '0',\r\n        applyTo: [],\r\n    },\r\n    'end': {\r\n        name: 'end',\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.timeListFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'exponent': {\r\n        name: 'exponent',\r\n        animatable: true,\r\n        maybeAccurateNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n            }],\r\n        initValue: '1',\r\n        applyTo: [],\r\n    },\r\n    'filterUnits': {\r\n        name: 'filterUnits',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'enum',\r\n                value: enum_1.units,\r\n            }],\r\n        initValue: 'objectBoundingBox',\r\n        applyTo: [],\r\n    },\r\n    'fr': {\r\n        name: 'fr',\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.lengthPercentageFullMatch,\r\n            }],\r\n        initValue: '0%',\r\n        applyTo: [],\r\n    },\r\n    'from': {\r\n        name: 'from',\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.lengthPairFullMatch,\r\n                tag: ['animateMotion'],\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'fx': {\r\n        name: 'fx',\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.lengthPercentageFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'fy': {\r\n        name: 'fy',\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.lengthPercentageFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'gradientTransform': {\r\n        name: 'gradientTransform',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.transformListFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'gradientUnits': {\r\n        name: 'gradientUnits',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'enum',\r\n                value: enum_1.units,\r\n            }],\r\n        initValue: 'objectBoundingBox',\r\n        applyTo: [],\r\n    },\r\n    'height': {\r\n        name: 'height',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.lengthPercentageFullMatch,\r\n            }, {\r\n                type: 'string',\r\n                value: 'auto',\r\n            }],\r\n        initValue: [{\r\n                val: '100%',\r\n                tag: definitions_1.filterPrimitiveElements.concat(['svg']),\r\n            }, {\r\n                val: '120%',\r\n                tag: ['filter', 'mask'],\r\n            }, {\r\n                val: '0',\r\n                tag: ['pattern', 'rect', 'foreignObject'],\r\n            }, {\r\n                val: 'auto',\r\n                tag: ['svg', 'image', 'rect', 'foreignObject'],\r\n            }],\r\n        applyTo: definitions_1.filterPrimitiveElements.concat(['filter', 'mask', 'pattern', 'svg', 'image', 'rect', 'foreignObject']),\r\n    },\r\n    'href': {\r\n        name: 'href',\r\n        animatable: true,\r\n        maybeIRI: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.URIFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'hreflang': {\r\n        name: 'hreflang',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.langFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'id': {\r\n        name: 'id',\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.nameFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'in': {\r\n        name: 'in',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'enum',\r\n                value: enum_1.inVal,\r\n            }, {\r\n                type: 'reg',\r\n                value: syntax_1.indentFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'in2': {\r\n        name: 'in2',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'enum',\r\n                value: enum_1.inVal,\r\n            }, {\r\n                type: 'reg',\r\n                value: syntax_1.indentFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'intercept': {\r\n        name: 'intercept',\r\n        animatable: true,\r\n        maybeAccurateNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n            }],\r\n        initValue: '0',\r\n        applyTo: [],\r\n    },\r\n    'isolation': {\r\n        name: 'isolation',\r\n        legalValues: [{\r\n                type: 'enum',\r\n                value: enum_1.isolationMode,\r\n            }],\r\n        initValue: 'auto',\r\n        applyTo: [],\r\n    },\r\n    'k1': {\r\n        name: 'k1',\r\n        animatable: true,\r\n        maybeAccurateNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n            }],\r\n        initValue: '0',\r\n        applyTo: [],\r\n    },\r\n    'k2': {\r\n        name: 'k2',\r\n        animatable: true,\r\n        maybeAccurateNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n            }],\r\n        initValue: '0',\r\n        applyTo: [],\r\n    },\r\n    'k3': {\r\n        name: 'k3',\r\n        animatable: true,\r\n        maybeAccurateNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n            }],\r\n        initValue: '0',\r\n        applyTo: [],\r\n    },\r\n    'k4': {\r\n        name: 'k4',\r\n        animatable: true,\r\n        maybeAccurateNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n            }],\r\n        initValue: '0',\r\n        applyTo: [],\r\n    },\r\n    'kernelMatrix': {\r\n        name: 'kernelMatrix',\r\n        animatable: true,\r\n        maybeAccurateNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberListFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'kernelUnitLength': {\r\n        name: 'kernelUnitLength',\r\n        animatable: true,\r\n        maybeAccurateNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberOptionalFullMatch,\r\n            }],\r\n        initValue: '2 2',\r\n        applyTo: [],\r\n    },\r\n    'keyPoints': {\r\n        name: 'keyPoints',\r\n        maybeAccurateNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberSemiSepatatedFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'keySplines': {\r\n        name: 'keySplines',\r\n        maybeAccurateNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.controlPointsFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'keyTimes': {\r\n        name: 'keyTimes',\r\n        maybeAccurateNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberSemiSepatatedFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'lang': {\r\n        name: 'lang',\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.langFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'lengthAdjust': {\r\n        name: 'lengthAdjust',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'enum',\r\n                value: enum_1.lengthAdjust,\r\n            }],\r\n        initValue: 'spacing',\r\n        applyTo: [],\r\n    },\r\n    'limitingConeAngle': {\r\n        name: 'limitingConeAngle',\r\n        animatable: true,\r\n        maybeAccurateNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'markerHeight': {\r\n        name: 'markerHeight',\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.lengthPercentageFullMatch,\r\n            }],\r\n        initValue: '3',\r\n        applyTo: [],\r\n    },\r\n    'markerUnits': {\r\n        name: 'markerUnits',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'enum',\r\n                value: enum_1.markerUnit,\r\n            }],\r\n        initValue: 'strokeWidth',\r\n        applyTo: [],\r\n    },\r\n    'markerWidth': {\r\n        name: 'markerWidth',\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.lengthPercentageFullMatch,\r\n            }],\r\n        initValue: '3',\r\n        applyTo: [],\r\n    },\r\n    'maskContentUnits': {\r\n        name: 'maskContentUnits',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'enum',\r\n                value: enum_1.units,\r\n            }],\r\n        initValue: 'userSpaceOnUse',\r\n        applyTo: [],\r\n    },\r\n    'maskUnits': {\r\n        name: 'maskUnits',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'enum',\r\n                value: enum_1.units,\r\n            }],\r\n        initValue: 'objectBoundingBox',\r\n        applyTo: [],\r\n    },\r\n    'max': {\r\n        name: 'max',\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.clockFullMatch,\r\n            }, {\r\n                type: 'string',\r\n                value: 'media',\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'media': {\r\n        name: 'media',\r\n        legalValues: [],\r\n        initValue: [{\r\n                val: 'all',\r\n                tag: ['css'],\r\n            }],\r\n        applyTo: [],\r\n    },\r\n    'method': {\r\n        name: 'method',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'enum',\r\n                value: enum_1.method,\r\n            }],\r\n        initValue: 'align',\r\n        applyTo: [],\r\n    },\r\n    'min': {\r\n        name: 'min',\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.clockFullMatch,\r\n            }, {\r\n                type: 'string',\r\n                value: 'media',\r\n            }],\r\n        initValue: '0',\r\n        applyTo: [],\r\n    },\r\n    'mode': {\r\n        name: 'mode',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'enum',\r\n                value: enum_1.blendMode,\r\n            }],\r\n        initValue: 'normal',\r\n        applyTo: [],\r\n    },\r\n    'numOctaves': {\r\n        name: 'numOctaves',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.integerFullMatch,\r\n            }],\r\n        initValue: '1',\r\n        applyTo: [],\r\n    },\r\n    'offset': {\r\n        name: 'offset',\r\n        animatable: true,\r\n        maybeAccurateNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n            }, {\r\n                type: 'reg',\r\n                value: syntax_1.percentageFullMatch,\r\n                tag: ['stop'],\r\n            }],\r\n        initValue: '0',\r\n        applyTo: [],\r\n    },\r\n    'operator': {\r\n        name: 'operator',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'enum',\r\n                value: enum_1.operater,\r\n                tag: ['feComposite'],\r\n            }, {\r\n                type: 'enum',\r\n                value: enum_1.operater1,\r\n                tag: ['feMorphology'],\r\n            }],\r\n        initValue: [{\r\n                val: 'over',\r\n                tag: ['feComposite'],\r\n            }, {\r\n                val: 'erode',\r\n                tag: ['feMorphology'],\r\n            }],\r\n        applyTo: [],\r\n    },\r\n    'order': {\r\n        name: 'order',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberOptionalFullMatch,\r\n            }],\r\n        initValue: '3',\r\n        applyTo: [],\r\n    },\r\n    'orient': {\r\n        name: 'orient',\r\n        animatable: true,\r\n        maybeAccurateNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n            }, {\r\n                type: 'reg',\r\n                value: syntax_1.angelFullMatch,\r\n            }, {\r\n                type: 'enum',\r\n                value: enum_1.orient,\r\n            }],\r\n        initValue: '0',\r\n        applyTo: [],\r\n    },\r\n    'path': {\r\n        name: 'path',\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.pathFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'pathLength': {\r\n        name: 'pathLength',\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'patternContentUnits': {\r\n        name: 'patternContentUnits',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'enum',\r\n                value: enum_1.units,\r\n            }],\r\n        initValue: 'userSpaceOnUse',\r\n        applyTo: [],\r\n    },\r\n    'patternTransform': {\r\n        name: 'patternTransform',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.transformListFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'patternUnits': {\r\n        name: 'patternUnits',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'enum',\r\n                value: enum_1.units,\r\n            }],\r\n        initValue: 'objectBoundingBox',\r\n        applyTo: [],\r\n    },\r\n    'ping': {\r\n        name: 'ping',\r\n        legalValues: [],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'playbackorder': {\r\n        name: 'playbackorder',\r\n        legalValues: [{\r\n                type: 'string',\r\n                value: 'forwardonly',\r\n            }, {\r\n                type: 'string',\r\n                value: 'all',\r\n            }],\r\n        initValue: 'all',\r\n        applyTo: [],\r\n    },\r\n    'points': {\r\n        name: 'points',\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberListFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'pointsAtX': {\r\n        name: 'pointsAtX',\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n            }],\r\n        initValue: '0',\r\n        applyTo: [],\r\n    },\r\n    'pointsAtY': {\r\n        name: 'pointsAtY',\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n            }],\r\n        initValue: '0',\r\n        applyTo: [],\r\n    },\r\n    'pointsAtZ': {\r\n        name: 'pointsAtZ',\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n            }],\r\n        initValue: '0',\r\n        applyTo: [],\r\n    },\r\n    'preserveAlpha': {\r\n        name: 'preserveAlpha',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'string',\r\n                value: 'false',\r\n            }, {\r\n                type: 'string',\r\n                value: 'true',\r\n            }],\r\n        initValue: 'false',\r\n        applyTo: [],\r\n    },\r\n    'preserveAspectRatio': {\r\n        name: 'preserveAspectRatio',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.preservAspectRatioFullMatch,\r\n            }],\r\n        initValue: [{\r\n                val: 'xMidYMid',\r\n                tag: ['canvas', 'feImage', 'image', 'marker', 'pattern', 'svg', 'symbol', 'view'],\r\n            }, {\r\n                val: 'xMidYMid meet',\r\n                tag: ['canvas', 'feImage', 'image', 'marker', 'pattern', 'svg', 'symbol', 'view'],\r\n            }],\r\n        applyTo: [],\r\n    },\r\n    'primitiveUnits': {\r\n        name: 'primitiveUnits',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'enum',\r\n                value: enum_1.units,\r\n            }],\r\n        initValue: 'userSpaceOnUse.',\r\n        applyTo: [],\r\n    },\r\n    'r': {\r\n        name: 'r',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.lengthPercentageFullMatch,\r\n            }],\r\n        initValue: [{\r\n                val: '50%',\r\n                tag: ['radialGradient'],\r\n            }, {\r\n                val: '0',\r\n                tag: ['circle'],\r\n            }],\r\n        applyTo: ['circle'],\r\n    },\r\n    'radius': {\r\n        name: 'radius',\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberOptionalFullMatch,\r\n            }],\r\n        initValue: '0',\r\n        applyTo: [],\r\n    },\r\n    'refX': {\r\n        name: 'refX',\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.lengthPercentageFullMatch,\r\n            }, {\r\n                type: 'enum',\r\n                value: enum_1.alignX,\r\n            }],\r\n        initValue: [{\r\n                val: '0',\r\n                tag: ['marker'],\r\n            }],\r\n        applyTo: [],\r\n    },\r\n    'refY': {\r\n        name: 'refY',\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.lengthPercentageFullMatch,\r\n            }, {\r\n                type: 'enum',\r\n                value: enum_1.alignY,\r\n            }],\r\n        initValue: [{\r\n                val: '0',\r\n                tag: ['marker'],\r\n            }],\r\n        applyTo: [],\r\n    },\r\n    'referrerpolicy': {\r\n        name: 'referrerpolicy',\r\n        legalValues: [{\r\n                type: 'enum',\r\n                value: enum_1.referrer,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'rel': {\r\n        name: 'rel',\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'repeatCount': {\r\n        name: 'repeatCount',\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n            }, {\r\n                type: 'string',\r\n                value: 'indefinite',\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'repeatDur': {\r\n        name: 'repeatDur',\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.clockFullMatch,\r\n            }, {\r\n                type: 'string',\r\n                value: 'indefinite',\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'requiredExtensions': {\r\n        name: 'requiredExtensions',\r\n        legalValues: [],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'restart': {\r\n        name: 'restart',\r\n        legalValues: [{\r\n                type: 'enum',\r\n                value: enum_1.restart,\r\n            }],\r\n        initValue: 'always',\r\n        applyTo: [],\r\n    },\r\n    'result': {\r\n        name: 'result',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.cssNameFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'rotate': {\r\n        name: 'rotate',\r\n        animatable: true,\r\n        maybeAccurateNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberListFullMatch,\r\n                tag: ['text', 'tspan'],\r\n            }, {\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n                tag: ['animateMotion'],\r\n            }, {\r\n                type: 'string',\r\n                value: 'auto',\r\n                tag: ['animateMotion'],\r\n            }, {\r\n                type: 'string',\r\n                value: 'auto-reverse',\r\n                tag: ['animateMotion'],\r\n            }],\r\n        initValue: '0',\r\n        applyTo: [],\r\n    },\r\n    'rx': {\r\n        name: 'rx',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.lengthPercentageFullMatch,\r\n            }, {\r\n                type: 'string',\r\n                value: 'auto',\r\n            }],\r\n        initValue: 'auto',\r\n        applyTo: ['ellipse', 'rect'],\r\n    },\r\n    'ry': {\r\n        name: 'ry',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.lengthPercentageFullMatch,\r\n            }, {\r\n                type: 'string',\r\n                value: 'auto',\r\n            }],\r\n        initValue: 'auto',\r\n        applyTo: ['ellipse', 'rect'],\r\n    },\r\n    'scale': {\r\n        name: 'scale',\r\n        animatable: true,\r\n        maybeAccurateNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n            }],\r\n        initValue: '0',\r\n        applyTo: [],\r\n    },\r\n    'seed': {\r\n        name: 'seed',\r\n        animatable: true,\r\n        maybeAccurateNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n            }],\r\n        initValue: '0',\r\n        applyTo: [],\r\n    },\r\n    'side': {\r\n        name: 'side',\r\n        animatable: true,\r\n        maybeAccurateNumber: true,\r\n        legalValues: [{\r\n                type: 'string',\r\n                value: 'left',\r\n            }, {\r\n                type: 'string',\r\n                value: 'right',\r\n            }],\r\n        initValue: 'left',\r\n        applyTo: [],\r\n    },\r\n    'slope': {\r\n        name: 'slope',\r\n        animatable: true,\r\n        maybeAccurateNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n            }],\r\n        initValue: '1',\r\n        applyTo: [],\r\n    },\r\n    'spacing': {\r\n        name: 'spacing',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'string',\r\n                value: 'auto',\r\n            }, {\r\n                type: 'string',\r\n                value: 'exact',\r\n            }],\r\n        initValue: 'exact',\r\n        applyTo: [],\r\n    },\r\n    'specularConstant': {\r\n        name: 'specularConstant',\r\n        animatable: true,\r\n        maybeAccurateNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n            }],\r\n        initValue: '1',\r\n        applyTo: [],\r\n    },\r\n    'specularExponent': {\r\n        name: 'specularExponent',\r\n        animatable: true,\r\n        maybeAccurateNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n            }],\r\n        initValue: '1',\r\n        applyTo: [],\r\n    },\r\n    'spreadMethod': {\r\n        name: 'spreadMethod',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'enum',\r\n                value: enum_1.spreadMethod,\r\n            }],\r\n        initValue: 'pad',\r\n        applyTo: [],\r\n    },\r\n    'startOffset': {\r\n        name: 'startOffset',\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.lengthPercentageFullMatch,\r\n            }],\r\n        initValue: '0',\r\n        applyTo: [],\r\n    },\r\n    'stdDeviation': {\r\n        name: 'stdDeviation',\r\n        animatable: true,\r\n        maybeAccurateNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberOptionalFullMatch,\r\n            }],\r\n        initValue: [{\r\n                val: '2',\r\n                tag: ['feDropShadow'],\r\n            }, {\r\n                val: '0',\r\n                tag: ['feGaussianBlur'],\r\n            }],\r\n        applyTo: [],\r\n    },\r\n    'stitchTiles': {\r\n        name: 'stitchTiles',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'string',\r\n                value: 'stitch',\r\n            }, {\r\n                type: 'string',\r\n                value: 'noStitch',\r\n            }],\r\n        initValue: 'noStitch',\r\n        applyTo: [],\r\n    },\r\n    'style': {\r\n        name: 'style',\r\n        legalValues: [],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'surfaceScale': {\r\n        name: 'surfaceScale',\r\n        animatable: true,\r\n        maybeAccurateNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n            }],\r\n        initValue: '1',\r\n        applyTo: [],\r\n    },\r\n    'systemLanguage': {\r\n        name: 'systemLanguage',\r\n        legalValues: [],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'tabindex': {\r\n        name: 'tabindex',\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.integerFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'tableValues': {\r\n        name: 'tableValues',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberListFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'target': {\r\n        name: 'target',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.nameFullMatch,\r\n            }, {\r\n                type: 'enum',\r\n                value: enum_1.target,\r\n            }],\r\n        initValue: '_self',\r\n        applyTo: [],\r\n    },\r\n    'targetX': {\r\n        name: 'targetX',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.integerFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'targetY': {\r\n        name: 'targetY',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.integerFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'textLength': {\r\n        name: 'textLength',\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.lengthPercentageFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'timelinebegin': {\r\n        name: 'timelinebegin',\r\n        legalValues: [{\r\n                type: 'string',\r\n                value: 'loadend',\r\n            }, {\r\n                type: 'string',\r\n                value: 'loadbegin',\r\n            }],\r\n        initValue: 'loadend',\r\n        applyTo: [],\r\n    },\r\n    'title': {\r\n        name: 'title',\r\n        legalValues: [],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'to': {\r\n        name: 'to',\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.lengthPairFullMatch,\r\n                tag: ['animateMotion'],\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'type': {\r\n        name: 'type',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'enum',\r\n                value: enum_1.animateTransformType,\r\n                tag: ['animateTransform'],\r\n            }, {\r\n                type: 'enum',\r\n                value: enum_1.feColorMatrixType,\r\n                tag: ['feColorMatrix'],\r\n            }, {\r\n                type: 'enum',\r\n                value: enum_1.feFuncType,\r\n                tag: ['feFuncA', 'feFuncB', 'feFuncG', 'feFuncR'],\r\n            }, {\r\n                type: 'enum',\r\n                value: enum_1.feTurbulenceType,\r\n                tag: ['feTurbulence'],\r\n            }, {\r\n                type: 'reg',\r\n                value: syntax_1.mediaTypeFullMatch,\r\n                tag: ['script'],\r\n            }, {\r\n                type: 'reg',\r\n                value: syntax_1.mediaTypeFullMatch,\r\n                tag: ['style'],\r\n            }],\r\n        initValue: [{\r\n                val: 'translate',\r\n                tag: ['animateTransform'],\r\n            }, {\r\n                val: 'matrix',\r\n                tag: ['feColorMatrix'],\r\n            }, {\r\n                val: 'identity',\r\n                tag: ['feFuncA', 'feFuncB', 'feFuncG', 'feFuncR'],\r\n            }, {\r\n                val: 'turbulence',\r\n                tag: ['feTurbulence'],\r\n            }, {\r\n                val: 'application/ecmascript',\r\n                tag: ['script'],\r\n            }, {\r\n                val: 'text/css',\r\n                tag: ['style'],\r\n            }],\r\n        applyTo: [],\r\n    },\r\n    'values': {\r\n        name: 'values',\r\n        animatable: true,\r\n        maybeAccurateNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberListFullMatch,\r\n                tag: ['feColorMatrix'],\r\n            }, {\r\n                type: 'reg',\r\n                value: syntax_1.lengthPairListFullMatch,\r\n                tag: ['animateMotion'],\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'viewBox': {\r\n        name: 'viewBox',\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.viewBoxFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'width': {\r\n        name: 'width',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.lengthPercentageFullMatch,\r\n            }, {\r\n                type: 'string',\r\n                value: 'auto',\r\n            }],\r\n        initValue: [{\r\n                val: '100%',\r\n                tag: definitions_1.filterPrimitiveElements.concat(['svg']),\r\n            }, {\r\n                val: '120%',\r\n                tag: ['filter', 'mask'],\r\n            }, {\r\n                val: '0',\r\n                tag: ['pattern', 'rect', 'foreignObject'],\r\n            }, {\r\n                val: 'auto',\r\n                tag: ['svg', 'image', 'rect', 'foreignObject'],\r\n            }],\r\n        applyTo: definitions_1.filterPrimitiveElements.concat(['filter', 'mask', 'pattern', 'svg', 'image', 'rect', 'foreignObject']),\r\n    },\r\n    'x': {\r\n        name: 'x',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.lengthPercentageFullMatch,\r\n                tag: definitions_1.filterPrimitiveElements.concat(['filter', 'mask', 'pattern', 'svg', 'rect', 'image', 'foreignObject']),\r\n            }, {\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n                tag: ['fePointLight', 'feSpotLight'],\r\n            }, {\r\n                type: 'reg',\r\n                value: syntax_1.lengthPercentageListFullMatch,\r\n                tag: ['text', 'tspan'],\r\n            }, {\r\n                type: 'string',\r\n                value: 'auto',\r\n            }],\r\n        initValue: [{\r\n                val: '0%',\r\n                tag: definitions_1.filterPrimitiveElements,\r\n            }, {\r\n                val: '0',\r\n                tag: ['fePointLight', 'feSpotLight', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text'],\r\n            }, {\r\n                val: '-10%',\r\n                tag: ['filter', 'mask'],\r\n            }, {\r\n                val: '',\r\n                tag: ['tspan'],\r\n            }],\r\n        applyTo: definitions_1.filterPrimitiveElements.concat(['fePointLight', 'feSpotLight', 'filter', 'mask', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text']),\r\n    },\r\n    'x1': {\r\n        name: 'x1',\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.lengthPercentageFullMatch,\r\n            }, {\r\n                type: 'string',\r\n                value: 'auto',\r\n            }],\r\n        initValue: [{\r\n                val: '0',\r\n                tag: ['line'],\r\n            }, {\r\n                val: '0%',\r\n                tag: ['linearGradient'],\r\n            }],\r\n        applyTo: [],\r\n    },\r\n    'x2': {\r\n        name: 'x2',\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.lengthPercentageFullMatch,\r\n            }, {\r\n                type: 'string',\r\n                value: 'auto',\r\n            }],\r\n        initValue: [{\r\n                val: '0',\r\n                tag: ['line'],\r\n            }, {\r\n                val: '100%',\r\n                tag: ['linearGradient'],\r\n            }],\r\n        applyTo: [],\r\n    },\r\n    'xChannelSelector': {\r\n        name: 'xChannelSelector',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'enum',\r\n                value: enum_1.channel,\r\n            }],\r\n        initValue: 'A',\r\n        applyTo: [],\r\n    },\r\n    'xlink:href': {\r\n        name: 'xlink:href',\r\n        animatable: true,\r\n        maybeIRI: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.URIFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'xlink:title': {\r\n        name: 'xlink:title',\r\n        legalValues: [],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'xml:space': {\r\n        name: 'xml:space',\r\n        isUndef: true,\r\n        legalValues: [{\r\n                type: 'string',\r\n                value: 'default',\r\n            }, {\r\n                type: 'string',\r\n                value: 'preserve',\r\n            }],\r\n        initValue: 'default',\r\n        applyTo: [],\r\n    },\r\n    'xmlns': {\r\n        name: 'xmlns',\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.URIFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'xmlns:xlink': {\r\n        name: 'xmlns:xlink',\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.URIFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: [],\r\n    },\r\n    'y': {\r\n        name: 'y',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.lengthPercentageFullMatch,\r\n                tag: definitions_1.filterPrimitiveElements.concat(['filter', 'mask', 'pattern', 'svg', 'rect', 'image', 'foreignObject']),\r\n            }, {\r\n                type: 'reg',\r\n                value: syntax_1.lengthPercentageListFullMatch,\r\n                tag: ['text', 'tspan'],\r\n            }, {\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n                tag: ['fePointLight', 'feSpotLight'],\r\n            }, {\r\n                type: 'string',\r\n                value: 'auto',\r\n            }],\r\n        initValue: [{\r\n                val: '0%',\r\n                tag: definitions_1.filterPrimitiveElements,\r\n            }, {\r\n                val: '0',\r\n                tag: ['fePointLight', 'feSpotLight', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text'],\r\n            }, {\r\n                val: '-10%',\r\n                tag: ['filter', 'mask'],\r\n            }, {\r\n                val: '',\r\n                tag: ['tspan'],\r\n            }],\r\n        applyTo: definitions_1.filterPrimitiveElements.concat(['fePointLight', 'feSpotLight', 'filter', 'mask', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text']),\r\n    },\r\n    'y1': {\r\n        name: 'y1',\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.lengthPercentageFullMatch,\r\n            }, {\r\n                type: 'string',\r\n                value: 'auto',\r\n            }],\r\n        initValue: [{\r\n                val: '0',\r\n                tag: ['line'],\r\n            }, {\r\n                val: '0%',\r\n                tag: ['linearGradient'],\r\n            }],\r\n        applyTo: [],\r\n    },\r\n    'y2': {\r\n        name: 'y2',\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.lengthPercentageFullMatch,\r\n            }, {\r\n                type: 'string',\r\n                value: 'auto',\r\n            }],\r\n        initValue: [{\r\n                val: '0',\r\n                tag: ['line'],\r\n            }, {\r\n                val: '0%',\r\n                tag: ['linearGradient'],\r\n            }],\r\n        applyTo: [],\r\n    },\r\n    'yChannelSelector': {\r\n        name: 'yChannelSelector',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'enum',\r\n                value: enum_1.channel,\r\n            }],\r\n        initValue: 'A',\r\n        applyTo: [],\r\n    },\r\n    'z': {\r\n        name: 'z',\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.numberFullMatch,\r\n            }],\r\n        initValue: '0',\r\n        applyTo: [],\r\n    },\r\n    'zoomAndPan': {\r\n        name: 'zoomAndPan',\r\n        animatable: true,\r\n        legalValues: [{\r\n                type: 'string',\r\n                value: 'disable',\r\n            }, {\r\n                type: 'string',\r\n                value: 'magnify',\r\n            }],\r\n        initValue: 'disable',\r\n        applyTo: [],\r\n    },\r\n    // 下面是 property\r\n    'alignment-baseline': {\r\n        name: 'alignment-baseline',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'baseline',\r\n        applyTo: ['tspan', 'textPath'],\r\n    },\r\n    'all': {\r\n        name: 'all',\r\n        couldBeStyle: true,\r\n        cantTrans: true,\r\n        cantBeAttr: true,\r\n        legalValues: [],\r\n        initValue: '',\r\n        applyTo: useContainerGraphics,\r\n    },\r\n    'animation-name': {\r\n        name: 'animation-name',\r\n        couldBeStyle: true,\r\n        cantTrans: true,\r\n        cantBeAttr: true,\r\n        legalValues: [],\r\n        initValue: 'none',\r\n        applyTo: useContainerGraphics,\r\n    },\r\n    'animation-duration': {\r\n        name: 'animation-duration',\r\n        maybeAccurateNumber: true,\r\n        couldBeStyle: true,\r\n        cantTrans: true,\r\n        cantBeAttr: true,\r\n        legalValues: [],\r\n        initValue: '0',\r\n        applyTo: useContainerGraphics,\r\n    },\r\n    'animation-timing-function': {\r\n        name: 'animation-timing-function',\r\n        maybeAccurateNumber: true,\r\n        couldBeStyle: true,\r\n        cantTrans: true,\r\n        cantBeAttr: true,\r\n        legalValues: [],\r\n        initValue: 'ease',\r\n        applyTo: useContainerGraphics,\r\n    },\r\n    'animation-iteration-count': {\r\n        name: 'animation-iteration-count',\r\n        maybeSizeNumber: true,\r\n        couldBeStyle: true,\r\n        cantTrans: true,\r\n        cantBeAttr: true,\r\n        legalValues: [],\r\n        initValue: '1',\r\n        applyTo: useContainerGraphics,\r\n    },\r\n    'animation-direction': {\r\n        name: 'animation-direction',\r\n        couldBeStyle: true,\r\n        cantTrans: true,\r\n        cantBeAttr: true,\r\n        legalValues: [],\r\n        initValue: 'normal',\r\n        applyTo: useContainerGraphics,\r\n    },\r\n    'animation-play-state': {\r\n        name: 'animation-play-state',\r\n        couldBeStyle: true,\r\n        cantTrans: true,\r\n        cantBeAttr: true,\r\n        legalValues: [],\r\n        initValue: 'normal',\r\n        applyTo: useContainerGraphics,\r\n    },\r\n    'animation-delay': {\r\n        name: 'animation-delay',\r\n        maybeAccurateNumber: true,\r\n        couldBeStyle: true,\r\n        cantTrans: true,\r\n        cantBeAttr: true,\r\n        legalValues: [],\r\n        initValue: '0',\r\n        applyTo: useContainerGraphics,\r\n    },\r\n    'animation-fill-mode': {\r\n        name: 'animation-fill-mode',\r\n        couldBeStyle: true,\r\n        cantTrans: true,\r\n        cantBeAttr: true,\r\n        legalValues: [],\r\n        initValue: 'none',\r\n        applyTo: useContainerGraphics,\r\n    },\r\n    'animation': {\r\n        name: 'animation',\r\n        couldBeStyle: true,\r\n        cantTrans: true,\r\n        cantBeAttr: true,\r\n        legalValues: [],\r\n        initValue: '',\r\n        applyTo: useContainerGraphics,\r\n    },\r\n    'baseline-shift': {\r\n        name: 'baseline-shift',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [],\r\n        initValue: '0',\r\n        applyTo: ['tspan', 'textPath'],\r\n    },\r\n    'clip': {\r\n        name: 'clip',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [],\r\n        initValue: 'auto',\r\n        applyTo: viewport,\r\n    },\r\n    'clip-path': {\r\n        name: 'clip-path',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        maybeFuncIRI: true,\r\n        legalValues: [],\r\n        initValue: 'none',\r\n        applyTo: useContainerGraphics,\r\n    },\r\n    'clip-rule': {\r\n        name: 'clip-rule',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'nonzero',\r\n        applyTo: ['use'].concat(definitions_1.graphicsElements),\r\n    },\r\n    'color': {\r\n        name: 'color',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        maybeColor: true,\r\n        legalValues: [],\r\n        initValue: '',\r\n        applyTo: ['feFlood', 'feDiffuseLighting', 'feSpecularLighting', 'stop'].concat(shapeAndText),\r\n    },\r\n    'color-interpolation': {\r\n        name: 'color-interpolation',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'sRGB',\r\n        applyTo: colorApply,\r\n    },\r\n    'color-interpolation-filters': {\r\n        name: 'color-interpolation-filters',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'auto',\r\n        applyTo: ['feSpotLight'].concat(definitions_1.filterPrimitiveElements),\r\n    },\r\n    'color-rendering': {\r\n        name: 'color-rendering',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'auto',\r\n        applyTo: colorApply,\r\n    },\r\n    'cursor': {\r\n        name: 'cursor',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        maybeFuncIRI: true,\r\n        legalValues: [],\r\n        initValue: 'auto',\r\n        applyTo: useContainerGraphics,\r\n    },\r\n    'direction': {\r\n        name: 'direction',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        legalValues: [],\r\n        initValue: 'ltr',\r\n        applyTo: definitions_1.textContentElements,\r\n    },\r\n    'display': {\r\n        name: 'display',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'inline',\r\n        applyTo: ['svg', 'g', 'switch', 'a', 'foreignObject', 'use'].concat(definitions_1.graphicsElements),\r\n    },\r\n    'dominant-baseline': {\r\n        name: 'dominant-baseline',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'auto',\r\n        applyTo: definitions_1.textContentElements,\r\n    },\r\n    'fill': {\r\n        name: 'fill',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        maybeColor: true,\r\n        maybeFuncIRI: true,\r\n        legalValues: [],\r\n        initValue: [{\r\n                val: 'black',\r\n                tag: useContainerGraphics,\r\n            }, {\r\n                val: 'remove',\r\n                tag: ['animate', 'animateMotion', 'animateTransform', 'set'],\r\n            }],\r\n        applyTo: ['animate', 'animateMotion', 'animateTransform', 'set'].concat(shapeAndText),\r\n    },\r\n    'fill-opacity': {\r\n        name: 'fill-opacity',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        maybeAlpha: true,\r\n        legalValues: [],\r\n        initValue: '1',\r\n        applyTo: shapeAndText,\r\n    },\r\n    'fill-rule': {\r\n        name: 'fill-rule',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'nonzero',\r\n        applyTo: shapeAndText,\r\n    },\r\n    'filter': {\r\n        name: 'filter',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        maybeFuncIRI: true,\r\n        legalValues: [],\r\n        initValue: 'none',\r\n        applyTo: useContainerGraphics,\r\n    },\r\n    'flood-color': {\r\n        name: 'flood-color',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        maybeColor: true,\r\n        legalValues: [],\r\n        initValue: 'black',\r\n        applyTo: ['feFlood'],\r\n    },\r\n    'flood-opacity': {\r\n        name: 'flood-opacity',\r\n        couldBeStyle: true,\r\n        maybeAlpha: true,\r\n        legalValues: [],\r\n        initValue: '1',\r\n        applyTo: ['feFlood'],\r\n    },\r\n    'font': {\r\n        name: 'font',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [],\r\n        initValue: '',\r\n        applyTo: definitions_1.textContentElements,\r\n    },\r\n    'font-family': {\r\n        name: 'font-family',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        legalValues: [],\r\n        initValue: '',\r\n        applyTo: definitions_1.textContentElements,\r\n    },\r\n    'font-feature-settings': {\r\n        name: 'font-feature-settings',\r\n        couldBeStyle: true,\r\n        cantTrans: true,\r\n        cantBeAttr: true,\r\n        inherited: true,\r\n        legalValues: [],\r\n        initValue: 'normal',\r\n        applyTo: definitions_1.textContentElements,\r\n    },\r\n    'font-kerning': {\r\n        name: 'font-kerning',\r\n        couldBeStyle: true,\r\n        cantTrans: true,\r\n        cantBeAttr: true,\r\n        inherited: true,\r\n        legalValues: [],\r\n        initValue: 'auto',\r\n        applyTo: definitions_1.textContentElements,\r\n    },\r\n    'font-size': {\r\n        name: 'font-size',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [],\r\n        initValue: 'medium',\r\n        applyTo: definitions_1.textContentElements,\r\n    },\r\n    'font-size-adjust': {\r\n        name: 'font-size-adjust',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [],\r\n        initValue: 'none',\r\n        applyTo: definitions_1.textContentElements,\r\n    },\r\n    'font-stretch': {\r\n        name: 'font-stretch',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'normal',\r\n        applyTo: definitions_1.textContentElements,\r\n    },\r\n    'font-style': {\r\n        name: 'font-style',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        legalValues: [],\r\n        initValue: 'normal',\r\n        applyTo: definitions_1.textContentElements,\r\n    },\r\n    'font-variant': {\r\n        name: 'font-variant',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'normal',\r\n        applyTo: definitions_1.textContentElements,\r\n    },\r\n    'font-variant-ligatures': {\r\n        name: 'font-variant-ligatures',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        legalValues: [],\r\n        initValue: 'normal',\r\n        applyTo: definitions_1.textContentElements,\r\n    },\r\n    'font-variant-position': {\r\n        name: 'font-variant-position',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        legalValues: [],\r\n        initValue: 'normal',\r\n        applyTo: definitions_1.textContentElements,\r\n    },\r\n    'font-variant-caps': {\r\n        name: 'font-variant-caps',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        legalValues: [],\r\n        initValue: 'normal',\r\n        applyTo: definitions_1.textContentElements,\r\n    },\r\n    'font-variant-numeric': {\r\n        name: 'font-variant-numeric',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        legalValues: [],\r\n        initValue: 'normal',\r\n        applyTo: definitions_1.textContentElements,\r\n    },\r\n    'font-variant-east-asian': {\r\n        name: 'font-variant-east-asian',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        legalValues: [],\r\n        initValue: 'normal',\r\n        applyTo: definitions_1.textContentElements,\r\n    },\r\n    'font-weight': {\r\n        name: 'font-weight',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'normal',\r\n        applyTo: definitions_1.textContentElements,\r\n    },\r\n    'image-rendering': {\r\n        name: 'image-rendering',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'auto',\r\n        applyTo: ['image'],\r\n    },\r\n    'inline-size': {\r\n        name: 'inline-size',\r\n        couldBeStyle: true,\r\n        maybeSizeNumber: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: '0',\r\n        applyTo: ['text'],\r\n    },\r\n    'letter-spacing': {\r\n        name: 'letter-spacing',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [],\r\n        initValue: 'normal',\r\n        applyTo: definitions_1.textContentElements,\r\n    },\r\n    'lighting-color': {\r\n        name: 'lighting-color',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        maybeColor: true,\r\n        legalValues: [],\r\n        initValue: 'white',\r\n        applyTo: ['feDiffuseLighting', 'feSpecularLighting'],\r\n    },\r\n    'line-height': {\r\n        name: 'line-height',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        maybeColor: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [],\r\n        initValue: 'normal',\r\n        applyTo: ['text'],\r\n    },\r\n    'marker': {\r\n        name: 'marker',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        maybeFuncIRI: true,\r\n        legalValues: [],\r\n        initValue: 'none',\r\n        applyTo: definitions_1.shapeElements,\r\n    },\r\n    'marker-end': {\r\n        name: 'marker-end',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        maybeFuncIRI: true,\r\n        legalValues: [],\r\n        initValue: 'none',\r\n        applyTo: definitions_1.shapeElements,\r\n    },\r\n    'marker-mid': {\r\n        name: 'marker-mid',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        maybeFuncIRI: true,\r\n        legalValues: [],\r\n        initValue: 'none',\r\n        applyTo: definitions_1.shapeElements,\r\n    },\r\n    'marker-start': {\r\n        name: 'marker-start',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        maybeFuncIRI: true,\r\n        legalValues: [],\r\n        initValue: 'none',\r\n        applyTo: definitions_1.shapeElements,\r\n    },\r\n    'mask': {\r\n        name: 'mask',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        maybeFuncIRI: true,\r\n        legalValues: [],\r\n        initValue: 'none',\r\n        applyTo: useContainerGraphics,\r\n    },\r\n    'mask-image': {\r\n        name: 'mask-image',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        maybeFuncIRI: true,\r\n        legalValues: [],\r\n        initValue: 'none',\r\n        applyTo: useContainerGraphics,\r\n    },\r\n    'mask-mode': {\r\n        name: 'mask-mode',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'match-source',\r\n        applyTo: useContainerGraphics,\r\n    },\r\n    'mask-repeat': {\r\n        name: 'mask-repeat',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'repeat',\r\n        applyTo: useContainerGraphics,\r\n    },\r\n    'mask-position': {\r\n        name: 'mask-position',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: '0% 0%',\r\n        applyTo: useContainerGraphics,\r\n    },\r\n    'mask-clip': {\r\n        name: 'mask-clip',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'border-box',\r\n        applyTo: useContainerGraphics,\r\n    },\r\n    'mask-origin': {\r\n        name: 'mask-origin',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'border-box',\r\n        applyTo: useContainerGraphics,\r\n    },\r\n    'mask-size': {\r\n        name: 'mask-size',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'auto',\r\n        applyTo: useContainerGraphics,\r\n    },\r\n    'mask-composite': {\r\n        name: 'mask-composite',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'add',\r\n        applyTo: useContainerGraphics,\r\n    },\r\n    'mix-blend-mode': {\r\n        name: 'mix-blend-mode',\r\n        couldBeStyle: true,\r\n        cantTrans: true,\r\n        cantBeAttr: true,\r\n        legalValues: [],\r\n        initValue: 'normal',\r\n        applyTo: useContainerGraphics,\r\n    },\r\n    'opacity': {\r\n        name: 'opacity',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        maybeAlpha: true,\r\n        legalValues: [],\r\n        initValue: '1',\r\n        applyTo: ['svg', 'g', 'symbol', 'marker', 'a', 'switch', 'use', 'unknown'].concat(definitions_1.graphicsElements),\r\n    },\r\n    'overflow': {\r\n        name: 'overflow',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'visible',\r\n        applyTo: viewport,\r\n    },\r\n    'paint-order': {\r\n        name: 'paint-order',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'normal',\r\n        applyTo: shapeAndText,\r\n    },\r\n    'pointer-events': {\r\n        name: 'pointer-events',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'visiblePainted',\r\n        applyTo: useContainerGraphics,\r\n    },\r\n    'shape-image-threshold': {\r\n        name: 'shape-image-threshold',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: '0',\r\n        applyTo: ['text'],\r\n    },\r\n    'shape-inside': {\r\n        name: 'shape-inside',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'auto',\r\n        applyTo: ['text'],\r\n    },\r\n    'shape-margin': {\r\n        name: 'shape-margin',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: '0',\r\n        applyTo: ['text'],\r\n    },\r\n    'shape-padding': {\r\n        name: 'shape-padding',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: '',\r\n        applyTo: ['text'],\r\n    },\r\n    'shape-rendering': {\r\n        name: 'shape-rendering',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'auto',\r\n        applyTo: definitions_1.shapeElements,\r\n    },\r\n    'shape-subtract': {\r\n        name: 'shape-subtract',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'none',\r\n        applyTo: ['text'],\r\n    },\r\n    'stop-color': {\r\n        name: 'stop-color',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        maybeColor: true,\r\n        legalValues: [],\r\n        initValue: 'black',\r\n        applyTo: ['stop'],\r\n    },\r\n    'stop-opacity': {\r\n        name: 'stop-opacity',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        maybeAlpha: true,\r\n        legalValues: [],\r\n        initValue: '1',\r\n        applyTo: ['stop'],\r\n    },\r\n    'stroke': {\r\n        name: 'stroke',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        maybeColor: true,\r\n        maybeFuncIRI: true,\r\n        legalValues: [],\r\n        initValue: 'none',\r\n        applyTo: shapeAndText,\r\n    },\r\n    'stroke-dasharray': {\r\n        name: 'stroke-dasharray',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [],\r\n        initValue: 'none',\r\n        applyTo: shapeAndText,\r\n    },\r\n    'stroke-dashoffset': {\r\n        name: 'stroke-dashoffset',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [],\r\n        initValue: '0',\r\n        applyTo: shapeAndText,\r\n    },\r\n    'stroke-linecap': {\r\n        name: 'stroke-linecap',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'butt',\r\n        applyTo: shapeAndText,\r\n    },\r\n    'stroke-linejoin': {\r\n        name: 'stroke-linejoin',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'miter',\r\n        applyTo: shapeAndText,\r\n    },\r\n    'stroke-miterlimit': {\r\n        name: 'stroke-miterlimit',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [],\r\n        initValue: '4',\r\n        applyTo: shapeAndText,\r\n    },\r\n    'stroke-opacity': {\r\n        name: 'stroke-opacity',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        maybeAlpha: true,\r\n        legalValues: [],\r\n        initValue: '1',\r\n        applyTo: shapeAndText,\r\n    },\r\n    'stroke-width': {\r\n        name: 'stroke-width',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [],\r\n        initValue: '1',\r\n        applyTo: shapeAndText,\r\n    },\r\n    'text-anchor': {\r\n        name: 'text-anchor',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'start',\r\n        applyTo: definitions_1.textContentElements,\r\n    },\r\n    'text-decoration': {\r\n        name: 'text-decoration',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: '',\r\n        applyTo: definitions_1.textContentElements,\r\n    },\r\n    'text-decoration-line': {\r\n        name: 'text-decoration-line',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'none',\r\n        applyTo: definitions_1.textContentElements,\r\n    },\r\n    'text-decoration-style': {\r\n        name: 'text-decoration-style',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'solid',\r\n        applyTo: definitions_1.textContentElements,\r\n    },\r\n    'text-decoration-color': {\r\n        name: 'text-decoration-color',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'currentcolor',\r\n        applyTo: definitions_1.textContentElements,\r\n    },\r\n    'text-decoration-fill': {\r\n        name: 'text-decoration-fill',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: '',\r\n        applyTo: definitions_1.textContentElements,\r\n    },\r\n    'text-decoration-stroke': {\r\n        name: 'text-decoration-stroke',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: '',\r\n        applyTo: definitions_1.textContentElements,\r\n    },\r\n    'text-orientation': {\r\n        name: 'text-orientation',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        legalValues: [],\r\n        initValue: 'mixed',\r\n        applyTo: definitions_1.textContentElements,\r\n    },\r\n    'text-overflow': {\r\n        name: 'text-overflow',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'auto',\r\n        applyTo: definitions_1.textContentElements,\r\n    },\r\n    'text-rendering': {\r\n        name: 'text-rendering',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'auto',\r\n        applyTo: ['text'],\r\n    },\r\n    'transform': {\r\n        name: 'transform',\r\n        animatable: true,\r\n        couldBeStyle: true,\r\n        cantTrans: true,\r\n        legalValues: [{\r\n                type: 'reg',\r\n                value: syntax_1.transformListFullMatch,\r\n            }],\r\n        initValue: '',\r\n        applyTo: useContainerGraphics,\r\n    },\r\n    'transform-box': {\r\n        name: 'transform-box',\r\n        couldBeStyle: true,\r\n        cantTrans: true,\r\n        cantBeAttr: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'border-box',\r\n        applyTo: useContainerGraphics,\r\n    },\r\n    'transform-origin': {\r\n        name: 'transform-origin',\r\n        animatable: true,\r\n        couldBeStyle: true,\r\n        cantTrans: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [],\r\n        initValue: '',\r\n        applyTo: useContainerGraphics,\r\n    },\r\n    'unicode-bidi': {\r\n        name: 'unicode-bidi',\r\n        couldBeStyle: true,\r\n        legalValues: [],\r\n        initValue: 'normal',\r\n        applyTo: definitions_1.textContentElements,\r\n    },\r\n    'vector-effect': {\r\n        name: 'vector-effect',\r\n        couldBeStyle: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'none',\r\n        applyTo: ['use'].concat(definitions_1.graphicsElements),\r\n    },\r\n    'visibility': {\r\n        name: 'visibility',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'visible',\r\n        applyTo: ['use', 'a'].concat(definitions_1.graphicsElements),\r\n    },\r\n    'white-space': {\r\n        name: 'white-space',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        legalValues: [],\r\n        initValue: 'normal',\r\n        applyTo: definitions_1.textContentElements,\r\n    },\r\n    'will-change': {\r\n        name: 'will-change',\r\n        couldBeStyle: true,\r\n        legalValues: [],\r\n        initValue: 'auto',\r\n        applyTo: useContainerGraphics,\r\n    },\r\n    'word-spacing': {\r\n        name: 'word-spacing',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        animatable: true,\r\n        maybeSizeNumber: true,\r\n        legalValues: [],\r\n        initValue: 'normal',\r\n        applyTo: definitions_1.textContentElements,\r\n    },\r\n    'writing-mode': {\r\n        name: 'writing-mode',\r\n        couldBeStyle: true,\r\n        inherited: true,\r\n        legalValues: [],\r\n        initValue: [{\r\n                val: 'lr-tb',\r\n                tag: ['text'],\r\n            }, {\r\n                val: 'horizontal-tb',\r\n                tag: ['text'],\r\n            }],\r\n        applyTo: ['text'],\r\n    },\r\n};\r\nconst undefAttr = {\r\n    name: '',\r\n    isUndef: true,\r\n    legalValues: [],\r\n    initValue: '',\r\n    applyTo: [],\r\n};\r\nexports.regularAttr = new Proxy(_regularAttr, {\r\n    get(obj, prop) {\r\n        return prop in obj ? obj[prop] : undefAttr;\r\n    },\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/const/regular-attr.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/const/regular-tag.ts":
-/*!*******************************************!*\
-  !*** ./src/slimming/const/regular-tag.ts ***!
-  \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst definitions_1 = __webpack_require__(/*! ./definitions */ \"./src/slimming/const/definitions.ts\");\r\nconst baseChildren = ['script'].concat(definitions_1.descriptiveElements);\r\nconst shapeChildren = ['clipPath', 'marker', 'mask', 'style'].concat(definitions_1.animationElements, baseChildren, definitions_1.paintServerElements);\r\nconst globalChildren = ['a', 'audio', 'canvas', 'clipPath', 'cursor', 'filter', 'foreignObject', 'iframe', 'image', 'marker', 'mask', 'style', 'switch', 'text', 'video', 'view'].concat(definitions_1.animationElements, baseChildren, definitions_1.paintServerElements, definitions_1.shapeElements, definitions_1.structuralElements);\r\nconst gradientChildren = ['animate', 'animateTransform', 'set', 'stop', 'style'].concat(baseChildren);\r\nconst feChildren = ['animate', 'set'].concat(baseChildren);\r\nconst conditionAndCore = definitions_1.conditionalProcessingAttributes.concat(definitions_1.coreAttributes);\r\nconst shapeAttributes = ['pathLength'].concat(conditionAndCore);\r\nconst animateAttributes = conditionAndCore.concat(definitions_1.animationAdditionAttributes, definitions_1.animationTimingAttributes, definitions_1.animationValueAttributes);\r\nconst feAttributes = ['result'].concat(definitions_1.coreAttributes, definitions_1.rectAttributes);\r\nconst feFuncAttributes = definitions_1.transferFunctionElementAttributes.concat(definitions_1.coreAttributes);\r\n// tag define\r\nconst _regularTag = {\r\n    'a': {\r\n        containTextNode: true,\r\n        legalChildElements: { transparent: true, noself: true, childElements: [] },\r\n        ownAttributes: ['href', 'target', 'download', 'rel', 'hreflang', 'type'].concat(conditionAndCore, definitions_1.deprecatedXlinkAttributes),\r\n    },\r\n    'animate': {\r\n        legalChildElements: { childElements: baseChildren },\r\n        ownAttributes: ['attributeName'].concat(animateAttributes),\r\n        onlyAttr: ['fill'],\r\n    },\r\n    'animateMotion': {\r\n        legalChildElements: { childElements: ['mpath'].concat(baseChildren) },\r\n        ownAttributes: ['path', 'keyPoints', 'rotate', 'origin'].concat(animateAttributes),\r\n        onlyAttr: ['fill'],\r\n    },\r\n    'animateTransform': {\r\n        legalChildElements: { childElements: baseChildren },\r\n        ownAttributes: ['attributeName', 'type'].concat(animateAttributes),\r\n        onlyAttr: ['fill'],\r\n    },\r\n    'audio': {\r\n        legalChildElements: { childElements: [] },\r\n        ownAttributes: [],\r\n    },\r\n    'canvas': {\r\n        legalChildElements: { childElements: [] },\r\n        ownAttributes: [],\r\n    },\r\n    'circle': {\r\n        legalChildElements: { childElements: shapeChildren },\r\n        ownAttributes: ['cx', 'cy', 'r'].concat(shapeAttributes),\r\n    },\r\n    'clipPath': {\r\n        legalChildElements: { childElements: ['text', 'use'].concat(baseChildren, definitions_1.animationElements, definitions_1.shapeElements) },\r\n        ownAttributes: ['externalResourcesRequired', 'transform', 'clipPathUnits'].concat(conditionAndCore),\r\n    },\r\n    'defs': {\r\n        legalChildElements: { childElements: globalChildren },\r\n        ownAttributes: definitions_1.coreAttributes,\r\n    },\r\n    'desc': {\r\n        containTextNode: true,\r\n        legalChildElements: { any: true, childElements: [] },\r\n        ownAttributes: definitions_1.coreAttributes,\r\n    },\r\n    'discard': {\r\n        legalChildElements: { childElements: baseChildren },\r\n        ownAttributes: ['begin', 'href'].concat(conditionAndCore),\r\n    },\r\n    'ellipse': {\r\n        legalChildElements: { childElements: shapeChildren },\r\n        ownAttributes: ['cx', 'cy', 'rx', 'ry'].concat(shapeAttributes),\r\n    },\r\n    'feBlend': {\r\n        legalChildElements: { childElements: feChildren },\r\n        ownAttributes: ['in', 'in2', 'mode'].concat(feAttributes),\r\n    },\r\n    'feColorMatrix': {\r\n        legalChildElements: { childElements: feChildren },\r\n        ownAttributes: ['in', 'type', 'values'].concat(feAttributes),\r\n    },\r\n    'feComponentTransfer': {\r\n        legalChildElements: { childElements: definitions_1.transferFunctionElements.concat(baseChildren) },\r\n        ownAttributes: ['in'].concat(feAttributes),\r\n    },\r\n    'feComposite': {\r\n        legalChildElements: { childElements: feChildren },\r\n        ownAttributes: ['in', 'in2', 'operator', 'k1', 'k2', 'k3', 'k4'].concat(feAttributes),\r\n    },\r\n    'feConvolveMatrix': {\r\n        legalChildElements: { childElements: feChildren },\r\n        ownAttributes: ['in', 'order', 'kernelMatrix', 'divisor', 'bias', 'targetX', 'targetY', 'edgeMode', 'kernelUnitLength', 'preserveAlpha'].concat(feAttributes),\r\n    },\r\n    'feDiffuseLighting': {\r\n        legalChildElements: { childElements: baseChildren.concat(definitions_1.lightSourceElements) },\r\n        ownAttributes: ['in', 'surfaceScale', 'diffuseConstant', 'kernelUnitLength'].concat(feAttributes),\r\n    },\r\n    'feDisplacementMap': {\r\n        legalChildElements: { childElements: feChildren },\r\n        ownAttributes: ['in', 'in2', 'scale', 'xChannelSelector', 'yChannelSelector'].concat(feAttributes),\r\n    },\r\n    'feDistantLight': {\r\n        legalChildElements: { childElements: feChildren },\r\n        ownAttributes: ['azimuth', 'elevation'].concat(definitions_1.coreAttributes),\r\n    },\r\n    'feFlood': {\r\n        legalChildElements: { childElements: feChildren },\r\n        ownAttributes: feAttributes,\r\n    },\r\n    'feFuncA': {\r\n        legalChildElements: { childElements: feChildren },\r\n        ownAttributes: feFuncAttributes,\r\n    },\r\n    'feFuncB': {\r\n        legalChildElements: { childElements: feChildren },\r\n        ownAttributes: feFuncAttributes,\r\n    },\r\n    'feFuncG': {\r\n        legalChildElements: { childElements: feChildren },\r\n        ownAttributes: feFuncAttributes,\r\n    },\r\n    'feFuncR': {\r\n        legalChildElements: { childElements: feChildren },\r\n        ownAttributes: feFuncAttributes,\r\n    },\r\n    'feGaussianBlur': {\r\n        legalChildElements: { childElements: feChildren },\r\n        ownAttributes: ['in', 'stdDeviation', 'edgeMode'].concat(feAttributes),\r\n    },\r\n    'feImage': {\r\n        legalChildElements: { childElements: ['animate', 'animateTransform', 'set'].concat(baseChildren) },\r\n        ownAttributes: ['externalResourcesRequired', 'preserveAspectRatio', 'xlink:href', 'href', 'crossorigin'].concat(feAttributes),\r\n    },\r\n    'feMerge': {\r\n        legalChildElements: { childElements: ['feMergeNode'].concat(baseChildren) },\r\n        ownAttributes: feAttributes,\r\n    },\r\n    'feMergeNode': {\r\n        legalChildElements: { childElements: feChildren },\r\n        ownAttributes: ['in'].concat(definitions_1.coreAttributes),\r\n    },\r\n    'feMorphology': {\r\n        legalChildElements: { childElements: feChildren },\r\n        ownAttributes: ['in', 'operator', 'radius'].concat(feAttributes),\r\n    },\r\n    'feOffset': {\r\n        legalChildElements: { childElements: feChildren },\r\n        ownAttributes: ['in', 'dx', 'dy'].concat(feAttributes),\r\n    },\r\n    'fePointLight': {\r\n        legalChildElements: { childElements: feChildren },\r\n        ownAttributes: ['x', 'y', 'z'].concat(definitions_1.coreAttributes),\r\n    },\r\n    'feSpecularLighting': {\r\n        legalChildElements: { childElements: baseChildren.concat(definitions_1.lightSourceElements) },\r\n        ownAttributes: ['in', 'surfaceScale', 'specularConstant', 'specularExponent', 'kernelUnitLength'].concat(feAttributes),\r\n    },\r\n    'feSpotLight': {\r\n        legalChildElements: { childElements: feChildren },\r\n        ownAttributes: ['x', 'y', 'z'].concat(definitions_1.coreAttributes),\r\n    },\r\n    'feTile': {\r\n        legalChildElements: { childElements: feChildren },\r\n        ownAttributes: ['in'].concat(feAttributes),\r\n    },\r\n    'feTurbulence': {\r\n        legalChildElements: { childElements: feChildren },\r\n        ownAttributes: ['baseFrequency', 'numOctaves', 'seed', 'stitchTiles', 'type'].concat(feAttributes),\r\n    },\r\n    'filter': {\r\n        legalChildElements: { childElements: feChildren.concat(definitions_1.filterPrimitiveElements) },\r\n        ownAttributes: ['externalResourcesRequired', 'filterUnits', 'primitiveUnits'].concat(definitions_1.coreAttributes, definitions_1.rectAttributes),\r\n    },\r\n    'foreignObject': {\r\n        legalChildElements: { any: true, childElements: [] },\r\n        ownAttributes: definitions_1.rectAttributes.concat(conditionAndCore),\r\n    },\r\n    'g': {\r\n        legalChildElements: { childElements: globalChildren },\r\n        ownAttributes: conditionAndCore,\r\n    },\r\n    'iframe': {\r\n        legalChildElements: { childElements: [] },\r\n        ownAttributes: [],\r\n    },\r\n    'image': {\r\n        legalChildElements: { childElements: ['clipPath', 'mask', 'style'].concat(definitions_1.animationElements, baseChildren) },\r\n        ownAttributes: ['preserveAspectRatio', 'href', 'crossorigin'].concat(conditionAndCore, definitions_1.deprecatedXlinkAttributes, definitions_1.rectAttributes),\r\n    },\r\n    'line': {\r\n        legalChildElements: { childElements: shapeChildren },\r\n        ownAttributes: ['x1', 'y1', 'x2', 'y2'].concat(shapeAttributes),\r\n    },\r\n    'linearGradient': {\r\n        legalChildElements: { childElements: gradientChildren },\r\n        ownAttributes: ['x1', 'y1', 'x2', 'y2', 'gradientUnits', 'gradientTransform', 'spreadMethod', 'href'].concat(definitions_1.coreAttributes, definitions_1.deprecatedXlinkAttributes),\r\n    },\r\n    'marker': {\r\n        legalChildElements: { childElements: globalChildren },\r\n        ownAttributes: ['viewBox', 'preserveAspectRatio', 'refX', 'refY', 'markerUnits', 'markerWidth', 'markerHeight', 'orient'].concat(definitions_1.coreAttributes),\r\n    },\r\n    'mask': {\r\n        legalChildElements: { childElements: ['a', 'clipPath', 'cursor', 'filter', 'foreignObject', 'image', 'marker', 'mask', 'pattern', 'style', 'switch', 'view', 'text'].concat(definitions_1.animationElements, baseChildren, definitions_1.shapeElements, definitions_1.structuralElements, definitions_1.gradientElements) },\r\n        ownAttributes: ['maskUnits', 'maskContentUnits'].concat(definitions_1.rectAttributes, conditionAndCore),\r\n    },\r\n    'metadata': {\r\n        containTextNode: true,\r\n        legalChildElements: { any: true, childElements: [] },\r\n        ownAttributes: definitions_1.coreAttributes,\r\n    },\r\n    'mpath': {\r\n        legalChildElements: { childElements: baseChildren },\r\n        ownAttributes: ['href'].concat(definitions_1.coreAttributes),\r\n    },\r\n    'path': {\r\n        legalChildElements: { childElements: shapeChildren },\r\n        ownAttributes: ['d'].concat(shapeAttributes),\r\n    },\r\n    'pattern': {\r\n        legalChildElements: { childElements: globalChildren },\r\n        ownAttributes: ['viewBox', 'preserveAspectRatio', 'patternUnits', 'patternContentUnits', 'patternTransform', 'href'].concat(definitions_1.coreAttributes, definitions_1.deprecatedXlinkAttributes, definitions_1.rectAttributes),\r\n    },\r\n    'polygon': {\r\n        legalChildElements: { childElements: shapeChildren },\r\n        ownAttributes: ['points'].concat(shapeAttributes),\r\n    },\r\n    'polyline': {\r\n        legalChildElements: { childElements: shapeChildren },\r\n        ownAttributes: ['points'].concat(shapeAttributes),\r\n    },\r\n    'radialGradient': {\r\n        legalChildElements: { childElements: gradientChildren },\r\n        ownAttributes: ['cx', 'cy', 'r', 'fx', 'fy', 'fr', 'gradientUnits', 'gradientTransform', 'spreadMethod', 'href'].concat(definitions_1.coreAttributes, definitions_1.deprecatedXlinkAttributes),\r\n        onlyAttr: ['cx', 'cy', 'r'],\r\n    },\r\n    'rect': {\r\n        legalChildElements: { childElements: shapeChildren },\r\n        ownAttributes: ['rx', 'ry'].concat(definitions_1.rectAttributes, shapeAttributes),\r\n    },\r\n    'script': {\r\n        containTextNode: true,\r\n        legalChildElements: { childElements: [] },\r\n        ownAttributes: ['type', 'href', 'crossorigin'].concat(definitions_1.coreAttributes, definitions_1.deprecatedXlinkAttributes),\r\n    },\r\n    'set': {\r\n        legalChildElements: { childElements: baseChildren },\r\n        ownAttributes: ['to', 'attributeName'].concat(conditionAndCore, definitions_1.animationTimingAttributes),\r\n        onlyAttr: ['fill'],\r\n    },\r\n    'stop': {\r\n        legalChildElements: { childElements: ['animate', 'script', 'set', 'style'] },\r\n        ownAttributes: ['path', 'offset'].concat(definitions_1.coreAttributes),\r\n    },\r\n    'style': {\r\n        containTextNode: true,\r\n        legalChildElements: { childElements: [] },\r\n        ownAttributes: ['type', 'media', 'title'].concat(definitions_1.coreAttributes),\r\n    },\r\n    'svg': {\r\n        legalChildElements: { childElements: globalChildren },\r\n        ownAttributes: ['viewBox', 'preserveAspectRatio', 'zoomAndPan', 'transform'].concat(conditionAndCore, definitions_1.rectAttributes),\r\n        onlyAttr: ['width', 'height'],\r\n    },\r\n    'switch': {\r\n        legalChildElements: { childElements: ['a', 'audio', 'canvas', 'foreignObject', 'g', 'iframe', 'image', 'svg', 'switch', 'text', 'use', 'video'].concat(definitions_1.animationElements, definitions_1.shapeElements) },\r\n        ownAttributes: conditionAndCore,\r\n    },\r\n    'symbol': {\r\n        legalChildElements: { childElements: globalChildren },\r\n        ownAttributes: ['preserveAspectRatio', 'viewBox', 'refX', 'refY'].concat(definitions_1.coreAttributes, definitions_1.rectAttributes),\r\n    },\r\n    'text': {\r\n        containTextNode: true,\r\n        legalChildElements: { childElements: ['a', 'clipPath', 'marker', 'mask', 'style'].concat(definitions_1.animationElements, baseChildren, definitions_1.paintServerElements, definitions_1.textContentChildElements) },\r\n        ownAttributes: ['lengthAdjust', 'x', 'y', 'dx', 'dy', 'rotate', 'textLength'].concat(conditionAndCore),\r\n        onlyAttr: ['x', 'y'],\r\n    },\r\n    'textPath': {\r\n        containTextNode: true,\r\n        legalChildElements: { childElements: ['a', 'animate', 'clipPath', 'marker', 'mask', 'set', 'style', 'tspan'].concat(baseChildren, definitions_1.paintServerElements) },\r\n        ownAttributes: ['lengthAdjust', 'textLength', 'path', 'href', 'startOffset', 'method', 'spacing', 'side'].concat(conditionAndCore, definitions_1.deprecatedXlinkAttributes),\r\n    },\r\n    'title': {\r\n        containTextNode: true,\r\n        legalChildElements: { any: true, childElements: ['a', 'animate', 'set', 'style', 'tspan'].concat(baseChildren, definitions_1.paintServerElements) },\r\n        ownAttributes: definitions_1.coreAttributes,\r\n    },\r\n    'tspan': {\r\n        containTextNode: true,\r\n        legalChildElements: { childElements: [] },\r\n        ownAttributes: ['lengthAdjust', 'x', 'y', 'dx', 'dy', 'rotate', 'textLength'].concat(conditionAndCore),\r\n        onlyAttr: ['x', 'y'],\r\n    },\r\n    'unknown': {\r\n        legalChildElements: { any: true, childElements: [] },\r\n        ownAttributes: conditionAndCore,\r\n    },\r\n    'use': {\r\n        legalChildElements: { childElements: ['clipPath', 'mask', 'style'].concat(definitions_1.animationElements, baseChildren) },\r\n        ownAttributes: ['href'].concat(definitions_1.rectAttributes, conditionAndCore, definitions_1.deprecatedXlinkAttributes),\r\n    },\r\n    'video': {\r\n        legalChildElements: { childElements: [] },\r\n        ownAttributes: [],\r\n    },\r\n    'view': {\r\n        legalChildElements: { childElements: ['style'].concat(definitions_1.animationElements, baseChildren) },\r\n        ownAttributes: ['viewBox', 'preserveAspectRatio', 'zoomAndPan'].concat(definitions_1.coreAttributes),\r\n    },\r\n};\r\nconst undefTag = {\r\n    isUndef: true,\r\n    legalChildElements: {},\r\n    ownAttributes: [],\r\n};\r\nexports.regularTag = new Proxy(_regularTag, {\r\n    get(obj, prop) {\r\n        return prop in obj ? obj[prop] : undefTag;\r\n    },\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/const/regular-tag.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/const/syntax.ts":
-/*!**************************************!*\
-  !*** ./src/slimming/const/syntax.ts ***!
-  \**************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst definitions_1 = __webpack_require__(/*! ./definitions */ \"./src/slimming/const/definitions.ts\");\r\n// 符合官方定义的 token\r\n// https://drafts.csswg.org/css-syntax-3\r\n// 是否支持 unicode\r\nlet supportUnicode = true;\r\ntry {\r\n    supportUnicode = /\\u{20BB7}/u.test('𠮷');\r\n}\r\ncatch (e) {\r\n    supportUnicode = false;\r\n}\r\nconst uModifier = supportUnicode ? 'u' : '';\r\n// definition\r\nexports.commaWsp = '(?:\\\\s*,\\\\s*|\\\\s*)';\r\nconst semi = '\\\\s*;\\\\s*';\r\nconst paren = '\\\\s*\\\\(\\\\s*';\r\nconst rParen = '\\\\s*\\\\)';\r\n// name token\r\n// https://www.w3.org/TR/xml/#NT-Name\r\nconst NameStartChar = `:A-Z_a-z\\\\u00C0-\\\\u00D6\\\\u00D8-\\\\u00F6\\\\u00F8-\\\\u02FF\\\\u0370-\\\\u037D\\\\u037F-\\\\u1FFF\\\\u200C-\\\\u200D\\\\u2070-\\\\u218F\\\\u2C00-\\\\u2FEF\\\\u3001-\\\\uD7FF\\\\uF900-\\\\uFDCF\\\\uFDF0-\\\\uFFFD${supportUnicode ? '\\\\u{10000}-\\\\u{EFFFF}' : ''}`;\r\nconst NameChar = `${NameStartChar}\\\\-\\\\.0-9\\\\u00B7\\\\u0300-\\\\u036F\\\\u203F-\\\\u2040`;\r\nconst Name = `[${NameStartChar}][${NameChar}]*`;\r\n// css syntax\r\n// https://drafts.csswg.org/css-syntax-3/#non-ascii-code-point\r\nconst cssNameStartChar = `A-Za-z_\\\\u0080-\\\\uFFFF${supportUnicode ? '\\\\u{10000}-\\\\u{EFFFF}' : ''}`;\r\nconst cssNameChar = `${cssNameStartChar}\\\\-0-9`;\r\nconst cssName = `[${cssNameStartChar}][${cssNameChar}]*`;\r\nexports.nameFullMatch = new RegExp(`^${Name}$`, uModifier);\r\nexports.cssNameFullMatch = new RegExp(`^${cssName}$`, uModifier);\r\nexports.cssNameSpaceSeparatedFullMatch = new RegExp(`^${cssName}(?:\\\\s+${cssName})*$`, uModifier);\r\n// number token\r\n// https://www.w3.org/TR/css3-values/#length-value\r\n// https://www.w3.org/TR/css-syntax-3/#number-token-diagram\r\n// https://www.w3.org/TR/css-syntax-3/#percentage-token-diagram\r\nexports.numberPattern = '[+-]?(?:\\\\d*\\\\.)?\\\\d+(?:[eE][+-]?\\\\d+)?';\r\nexports.numberSequence = `${exports.numberPattern}(?:${exports.commaWsp}${exports.numberPattern})*`;\r\nconst numberPair = `${exports.numberPattern}${exports.commaWsp}${exports.numberPattern}`;\r\nconst numberPairSequence = `${numberPair}(?:${exports.commaWsp}${numberPair})*`;\r\nconst numberPairDouble = `${numberPair}${exports.commaWsp}${numberPair}`;\r\nconst numberPairTriplet = `${numberPair}${exports.commaWsp}${numberPair}${exports.commaWsp}${numberPair}`;\r\nexports.numberGlobal = new RegExp(exports.numberPattern, 'g');\r\nexports.numberFullMatch = new RegExp(`^${exports.numberPattern}$`);\r\nexports.numberOptionalFullMatch = new RegExp(`^${exports.numberPattern}(?:\\\\s*${exports.numberPattern})?$`);\r\nexports.numberListFullMatch = new RegExp(`^${exports.numberSequence}$`);\r\nexports.numberSemiSepatatedFullMatch = new RegExp(`^${exports.numberPattern}(?:${semi}${exports.numberPattern})*(?:${semi})?$`);\r\nexports.integerFullMatch = /^[+-]?(?:\\d+|(?:\\d*\\.)?\\d+[eE][+-]?\\d+)$/;\r\nexports.pureNumOrWithPx = new RegExp(`^${exports.numberPattern}(?:px)?$`);\r\nexports.pureNumOrWithPxList = new RegExp(`^${exports.numberPattern}(?:px)?(?:${exports.commaWsp}${exports.numberPattern}(?:px)?)*$`);\r\n// https://www.w3.org/TR/css-values-3/#angle-value\r\nexports.angel = 'deg|grad|rad|turn';\r\nexports.angelFullMatch = new RegExp(`^${exports.numberPattern}(?:${exports.angel})?$`);\r\nconst controlPoint = `${exports.numberPattern}${exports.commaWsp}${exports.numberPattern}${exports.commaWsp}${exports.numberPattern}${exports.commaWsp}${exports.numberPattern}`;\r\nexports.controlPointsFullMatch = new RegExp(`^${controlPoint}(?:${semi}${controlPoint})*(?:${semi})?$`);\r\nconst Units = '(?:em|ex|ch|rem|vx|vw|vmin|vmax|cm|mm|Q|in|pt|pc|px)';\r\nexports.percentageFullMatch = new RegExp(`^${exports.numberPattern}%$`);\r\nconst length = `${exports.numberPattern}${Units}?`;\r\nconst lengthPercentage = `(?:${length}|${exports.numberPattern}%)`;\r\nconst lengthPair = `${length}${exports.commaWsp}${length}`;\r\nexports.lengthPairFullMatch = new RegExp(`^${lengthPair}$`);\r\nexports.lengthPairListFullMatch = new RegExp(`^${lengthPair}(?:${semi}${lengthPair})*$`);\r\nexports.lengthPercentageFullMatch = new RegExp(`^${lengthPercentage}$`);\r\nexports.lengthPercentageListFullMatch = new RegExp(`^${lengthPercentage}(?:${exports.commaWsp}${lengthPercentage})*$`);\r\nexports.viewBoxFullMatch = new RegExp(`^${controlPoint}$`);\r\n// time token\r\n// https://svgwg.org/specs/animations/#BeginValueListSyntax\r\nconst timeCountValue = '\\\\d+(?:\\\\.\\\\d+)?(?:h|min|s|ms)?';\r\nconst timeValue = '(?:\\\\d+:)?[0-5]\\\\d:[0-5]\\\\d(?:\\\\.\\\\d+)?';\r\nconst clockValue = `(?:${timeCountValue}|${timeValue})`;\r\nconst offsetValue = `(?:\\\\s*[+-]\\\\s*)?${clockValue}`;\r\nconst syncbaseValue = `${Name}\\\\.(?:begin|end)(?:${offsetValue})?`;\r\nconst eventValue = `(?:${Name}\\\\.)?(?:${definitions_1.eventAttributes.join('|')})(?:${offsetValue})?`;\r\nconst repeatValue = `(?:${Name}\\\\.)?repeat\\\\(\\\\d+\\\\)(?:${offsetValue})?`;\r\nconst accessKeyValue = `accessKey\\\\(.\\\\)(?:${offsetValue})?`;\r\nconst wallclockSyncValue = 'wallclock\\\\(\\\\d+\\\\)';\r\nconst timePattern = `(?:${offsetValue}|${syncbaseValue}|${eventValue}|${repeatValue}|${accessKeyValue}|${wallclockSyncValue}|indefinite)`;\r\nexports.clockFullMatch = new RegExp(`^${clockValue}$`);\r\nexports.timeListFullMatch = new RegExp(`^${timePattern}(\\\\s*;\\\\s*${timePattern})*$`, uModifier);\r\n// transform token\r\n// https://drafts.csswg.org/css-transforms/#svg-comma\r\nconst translate = `translate${paren}${exports.numberPattern}(?:${exports.commaWsp}?${exports.numberPattern})?${rParen}`;\r\nconst scale = `scale${paren}${exports.numberPattern}(?:${exports.commaWsp}?${exports.numberPattern})?${rParen}`;\r\nconst rotate = `rotate${paren}${exports.numberPattern}(?:${exports.commaWsp}?${exports.numberPattern}${exports.commaWsp}?${exports.numberPattern})?${rParen}`;\r\nconst skewX = `skewX${paren}${exports.numberPattern}${rParen}`;\r\nconst skewY = `skewY${paren}${exports.numberPattern}${rParen}`;\r\nconst matrix = `matrix${paren}${exports.numberPattern}(?:${exports.commaWsp}?${exports.numberPattern}){5}${rParen}`;\r\nexports.transformListFullMatch = new RegExp(`^(?:\\\\s*(?:${translate}|${scale}|${rotate}|${skewX}|${skewY}|${matrix})\\\\s*)*$`);\r\n// uri token\r\n// http://www.ietf.org/rfc/rfc3986.txt\r\nexports.URIFullMatch = /^(?:[^:/?#]+\\:)?(?:\\/\\/[^/?#]*)?(?:[^?#]*)(?:\\?[^#]*)?(?:#.*)?$/;\r\n// https://tools.ietf.org/html/bcp47#section-2.1\r\nexports.langFullMatch = /^[a-zA-Z]{2,}(?:-[a-zA-Z0-9%]+)*$/;\r\n// https://drafts.csswg.org/css-syntax-3/#typedef-ident-token\r\nconst hexDigit = '0-9a-fA-F';\r\nconst newLine = '\\\\r\\\\n';\r\nconst escape = `\\\\\\\\(?:[^${hexDigit}${newLine}]|[${hexDigit}]{1,6}\\\\s?)`;\r\nconst indentToken = `(?:--|-?(?:[${cssNameStartChar}]|${escape}))(?:[${cssNameChar}]|${escape})*`;\r\nexports.indentFullMatch = new RegExp(`^${indentToken}$`, uModifier);\r\n// https://svgwg.org/svg2-draft/paths.html#PathDataBNF\r\nconst pathZ = '[zZ]';\r\nconst pathMToStrict = `[mM]\\\\s*${numberPairSequence}${pathZ}?`;\r\nconst pathMTo = `[mM]\\\\s*${exports.numberSequence}`;\r\nconst pathTo = `[lLhHvVcCsSqQtTaA]\\\\s*${exports.numberSequence}`;\r\nconst pathLToStrict = `[lL]\\\\s*(?:${numberPairSequence}|${pathZ})`;\r\nconst pathHVToStrict = `[hHvV]\\\\s*${exports.numberSequence}`;\r\nconst pathCToStrict = `[cC]\\\\s*(?:${numberPairTriplet}(?:${exports.commaWsp}${numberPairTriplet})*|(?:${numberPairSequence})?${pathZ})`;\r\nconst pathSQToStrict = `[sSqQ]\\\\s*(?:${numberPairDouble}(?:${exports.commaWsp}${numberPairDouble})*|(?:${numberPairSequence})?${pathZ})`;\r\nconst pathTToStrict = `[tT]\\\\s*(?:${numberPairSequence}|${pathZ})`;\r\nconst pathA = `${exports.numberPattern}${exports.commaWsp}${exports.numberPattern}${exports.commaWsp}${exports.numberPattern}${exports.commaWsp}[01]${exports.commaWsp}[01]${exports.commaWsp}${numberPair}`;\r\nconst pathASequence = `${pathA}(?:${exports.commaWsp}${pathA})*`;\r\nconst pathATo = `[aA]\\\\s*(?:${pathASequence}|(?:${pathASequence})?${pathZ})`;\r\nconst pathPatternStrict = `(?:${pathMToStrict}|${pathZ}|${pathLToStrict}|${pathHVToStrict}|${pathCToStrict}|${pathSQToStrict}|${pathTToStrict}|${pathATo})`;\r\nconst pathPattern = `(?:${pathMTo}|${pathZ}|${pathTo})`;\r\nexports.pathFullMatchStrict = new RegExp(`^${pathMToStrict}(?:${exports.commaWsp}${pathPatternStrict})*$`);\r\nexports.pathFullMatch = new RegExp(`^${pathMTo}(?:${exports.commaWsp}${pathPattern})*$`);\r\nexports.preservAspectRatioFullMatch = /^(?:none|xMinYMin|xMidYMin|xMaxYMin|xMinYMid|xMidYMid|xMaxYMid|xMinYMax|xMidYMax|xMaxYMax)(?:\\s+(?:meet|slice))?$/;\r\n// IRI\r\nexports.funcIRIToID = /^url\\(([\"']?)#(.+)\\1\\)$/;\r\nconst url = 'url\\\\([^\\\\)]+\\\\)';\r\nexports.funcIRIFullMatch = new RegExp(`^${url}$`);\r\nexports.IRIFullMatch = /^#(.+)$/;\r\nexports.mediaTypeFullMatch = /^(?:image|audio|video|application|text|multipart|message)\\/[^\\/]+$/;\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/const/syntax.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/default-rules/combine-script.ts":
-/*!******************************************************!*\
-  !*** ./src/slimming/default-rules/combine-script.ts ***!
-  \******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst index_1 = __webpack_require__(/*! ../../node/index */ \"./src/node/index.ts\");\r\nconst mix_white_space_1 = __webpack_require__(/*! ../utils/mix-white-space */ \"./src/slimming/utils/mix-white-space.ts\");\r\nconst rm_node_1 = __webpack_require__(/*! ../xml/rm-node */ \"./src/slimming/xml/rm-node.ts\");\r\nconst traversal_node_1 = __webpack_require__(/*! ../xml/traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\n// 合并多个 script 标签，并将内容合并为一个子节点\r\nexports.combineScript = async (dom) => new Promise((resolve, reject) => {\r\n    let firstScript;\r\n    let lastChildNode;\r\n    const checkCNode = (node) => {\r\n        for (let i = 0; i < node.childNodes.length; i++) {\r\n            const cNode = node.childNodes[i];\r\n            if (cNode.nodeType !== index_1.NodeType.Text && cNode.nodeType !== index_1.NodeType.CDATA) {\r\n                rm_node_1.rmNode(cNode);\r\n                i--;\r\n            }\r\n            else {\r\n                cNode.textContent = mix_white_space_1.mixWhiteSpace(cNode.textContent.trim());\r\n                if (cNode.nodeType === index_1.NodeType.Text) {\r\n                    cNode.nodeType = index_1.NodeType.CDATA;\r\n                }\r\n                if (!lastChildNode) {\r\n                    lastChildNode = cNode;\r\n                }\r\n                else {\r\n                    if (lastChildNode.textContent.slice(-1) !== ';') {\r\n                        lastChildNode.textContent += ';';\r\n                    }\r\n                    lastChildNode.textContent += cNode.textContent;\r\n                    rm_node_1.rmNode(cNode);\r\n                    i--;\r\n                }\r\n            }\r\n        }\r\n    };\r\n    traversal_node_1.traversalNode(ramda_1.propEq('nodeName', 'script'), node => {\r\n        const type = node.getAttribute('type');\r\n        if (type && !/^(?:application|text)\\/(?:javascript|ecmascript)$/.test(type)) {\r\n            rm_node_1.rmNode(node);\r\n            return;\r\n        }\r\n        if (firstScript) {\r\n            checkCNode(node);\r\n            rm_node_1.rmNode(node);\r\n        }\r\n        else {\r\n            firstScript = node;\r\n            checkCNode(node);\r\n        }\r\n    }, dom);\r\n    if (firstScript) {\r\n        const childNodes = firstScript.childNodes;\r\n        if (childNodes.length === 0 || !childNodes[0].textContent || !childNodes[0].textContent.replace(/\\s/g, '')) {\r\n            // 如果内容为空，则移除 script 节点\r\n            rm_node_1.rmNode(firstScript);\r\n        }\r\n        else {\r\n            const textContent = childNodes[0].textContent;\r\n            if (!textContent.includes('<')) {\r\n                // 如果没有危险代码，则由 CDATA 转为普通文本类型\r\n                childNodes[0].nodeType = index_1.NodeType.Text;\r\n            }\r\n            if (textContent.slice(-1) === ';') {\r\n                // 移除尾分号\r\n                childNodes[0].textContent = childNodes[0].textContent.slice(0, -1);\r\n            }\r\n            // 把 script 标签插入到最后\r\n            traversal_node_1.traversalNode(ramda_1.propEq('nodeName', 'svg'), node => {\r\n                node.appendChild(firstScript);\r\n            }, dom);\r\n        }\r\n    }\r\n    resolve();\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/default-rules/combine-script.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/default-rules/combine-style.ts":
-/*!*****************************************************!*\
-  !*** ./src/slimming/default-rules/combine-style.ts ***!
-  \*****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst css_1 = __webpack_require__(/*! css */ \"css\");\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst index_1 = __webpack_require__(/*! ../../node/index */ \"./src/node/index.ts\");\r\nconst mix_white_space_1 = __webpack_require__(/*! ../utils/mix-white-space */ \"./src/slimming/utils/mix-white-space.ts\");\r\nconst rm_node_1 = __webpack_require__(/*! ../xml/rm-node */ \"./src/slimming/xml/rm-node.ts\");\r\nconst traversal_node_1 = __webpack_require__(/*! ../xml/traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\nconst traversal_obj_1 = __webpack_require__(/*! ../utils/traversal-obj */ \"./src/slimming/utils/traversal-obj.ts\");\r\n// import { legalCss } from '../validate/legal-css';\r\nconst regular_attr_1 = __webpack_require__(/*! ../const/regular-attr */ \"./src/slimming/const/regular-attr.ts\");\r\nconst legal_value_1 = __webpack_require__(/*! ../validate/legal-value */ \"./src/slimming/validate/legal-value.ts\");\r\nconst rmCSSNode = (cssNode, plist) => {\r\n    const index = plist.indexOf(cssNode);\r\n    if (index !== -1) {\r\n        plist.splice(index, 1);\r\n    }\r\n};\r\n// 合并多个 style 标签，并将文本节点合并到一个子节点\r\nexports.combineStyle = async (dom) => new Promise((resolve, reject) => {\r\n    let firstStyle;\r\n    let lastChildNode;\r\n    const checkCNode = (node) => {\r\n        for (let i = 0; i < node.childNodes.length; i++) {\r\n            const cNode = node.childNodes[i];\r\n            if (cNode.nodeType !== index_1.NodeType.Text && cNode.nodeType !== index_1.NodeType.CDATA) {\r\n                rm_node_1.rmNode(cNode);\r\n                i--;\r\n            }\r\n            else {\r\n                cNode.textContent = mix_white_space_1.mixWhiteSpace(cNode.textContent.trim());\r\n                if (cNode.nodeType === index_1.NodeType.Text) {\r\n                    cNode.nodeType = index_1.NodeType.CDATA;\r\n                }\r\n                if (!lastChildNode) {\r\n                    lastChildNode = cNode;\r\n                }\r\n                else {\r\n                    lastChildNode.textContent += cNode.textContent;\r\n                    rm_node_1.rmNode(cNode);\r\n                    i--;\r\n                }\r\n            }\r\n        }\r\n    };\r\n    traversal_node_1.traversalNode(ramda_1.propEq('nodeName', 'style'), node => {\r\n        const type = node.getAttribute('type');\r\n        if (type && type !== 'text/css') {\r\n            rm_node_1.rmNode(node);\r\n            return;\r\n        }\r\n        if (firstStyle) {\r\n            checkCNode(node);\r\n            rm_node_1.rmNode(node);\r\n        }\r\n        else {\r\n            firstStyle = node;\r\n            checkCNode(node);\r\n        }\r\n    }, dom);\r\n    const ruleParents = [];\r\n    if (firstStyle) {\r\n        const childNodes = firstStyle.childNodes;\r\n        if (childNodes.length === 0 || !childNodes[0].textContent || !childNodes[0].textContent.replace(/\\s/g, '')) { // 如果内容为空，则移除style节点\r\n            rm_node_1.rmNode(firstStyle);\r\n        }\r\n        else {\r\n            if (!childNodes[0].textContent.includes('<')) { // 如果没有危险代码，则由 CDATA 转为普通文本类型\r\n                childNodes[0].nodeType = index_1.NodeType.Text;\r\n            }\r\n            // 解析 stylesheet 并缓存\r\n            try {\r\n                const parsedCss = css_1.parse(childNodes[0].textContent);\r\n                if (parsedCss.stylesheet) {\r\n                    dom.stylesheet = parsedCss;\r\n                    dom.styletag = firstStyle;\r\n                    traversal_obj_1.traversalObj(ramda_1.has('type'), (cssNode, parents) => {\r\n                        switch (cssNode.type) {\r\n                            case 'rule':\r\n                            case 'keyframe':\r\n                            case 'font-face':\r\n                            case 'page':\r\n                                const cssRule = cssNode;\r\n                                if (!cssRule.declarations) {\r\n                                    rmCSSNode(cssRule, parents[parents.length - 1]);\r\n                                    return;\r\n                                }\r\n                                const declared = {};\r\n                                for (let i = cssRule.declarations.length; i--;) {\r\n                                    const ruleItem = cssRule.declarations[i];\r\n                                    // 1、移除不存在属性名或属性值的项\r\n                                    // 2、排重\r\n                                    if (!ruleItem.property || !ruleItem.value || declared[ruleItem.property]) {\r\n                                        cssRule.declarations.splice(i, 1);\r\n                                    }\r\n                                    else {\r\n                                        declared[ruleItem.property] = true;\r\n                                    }\r\n                                }\r\n                                if (!cssRule.declarations.length) {\r\n                                    rmCSSNode(cssRule, parents[parents.length - 1]);\r\n                                }\r\n                                else {\r\n                                    ruleParents.push([cssRule, parents[parents.length - 1]]);\r\n                                }\r\n                                break;\r\n                            case 'keyframes':\r\n                                const keyframes = cssNode;\r\n                                if (!keyframes.keyframes || !keyframes.keyframes.length) {\r\n                                    rmCSSNode(cssNode, parents[parents.length - 1]);\r\n                                }\r\n                                break;\r\n                            case 'media':\r\n                            case 'host':\r\n                            case 'supports':\r\n                            case 'document':\r\n                                const ruleParent = cssNode;\r\n                                if (!ruleParent.rules || !ruleParent.rules.length) {\r\n                                    rmCSSNode(cssNode, parents[parents.length - 1]);\r\n                                }\r\n                                break;\r\n                            case 'comment':\r\n                                rmCSSNode(cssNode, parents[parents.length - 1]);\r\n                                break;\r\n                            default:\r\n                                break;\r\n                        }\r\n                    }, parsedCss.stylesheet.rules, true);\r\n                }\r\n                else {\r\n                    rm_node_1.rmNode(firstStyle);\r\n                }\r\n            }\r\n            catch (e) {\r\n                rm_node_1.rmNode(firstStyle);\r\n            }\r\n        }\r\n    }\r\n    if (ruleParents.length) {\r\n        // (async () => { // tslint:disable-line no-floating-promises\r\n        for (const [rule, parent] of ruleParents) {\r\n            // \t\t\t\tif (typeof document === 'undefined') { // tslint:disable-line strict-type-predicates\r\n            // \t\t\t\t\tlet cssString = 'text,rect{';\r\n            // \t\t\t\t\trule.declarations.forEach(d => {\r\n            // \t\t\t\t\t\tcssString += `${d.property}:${d.value};\r\n            // `;\r\n            // \t\t\t\t\t});\r\n            // \t\t\t\t\tcssString += '}';\r\n            // \t\t\t\t\tconst result = await legalCss(cssString);\r\n            // \t\t\t\t\tif (!result.validity) {\r\n            // \t\t\t\t\t\tresult.errors.forEach(err => {\r\n            // \t\t\t\t\t\t\tif (err.type === 'zero') { // 忽略没有单位导致的错误\r\n            // \t\t\t\t\t\t\t\treturn;\r\n            // \t\t\t\t\t\t\t}\r\n            // \t\t\t\t\t\t\tconst styleItem = rule.declarations[err.line - 1] as Declaration | undefined;\r\n            // \t\t\t\t\t\t\tif (styleItem && err.message.includes(styleItem.property as string)) { // cssValidator 有时候会报错行数，需要确保规则对得上\r\n            // \t\t\t\t\t\t\t\tconst styleDefine = regularAttr[styleItem.property as string];\r\n            // \t\t\t\t\t\t\t\t// css 验证失败，还需要进行一次 svg-slimming 的合法性验证，确保没有问题\r\n            // \t\t\t\t\t\t\t\tif (!styleDefine.legalValues.length || !legalValue(styleDefine, {\r\n            // \t\t\t\t\t\t\t\t\tfullname: styleItem.property as string,\r\n            // \t\t\t\t\t\t\t\t\tvalue: styleItem.value as string,\r\n            // \t\t\t\t\t\t\t\t\tname: '',\r\n            // \t\t\t\t\t\t\t\t})) {\r\n            // \t\t\t\t\t\t\t\t\tstyleItem.value = '';\r\n            // \t\t\t\t\t\t\t\t}\r\n            // \t\t\t\t\t\t\t}\r\n            // \t\t\t\t\t\t});\r\n            // \t\t\t\t\t}\r\n            // \t\t\t\t}\r\n            // 只做基本验证\r\n            rule.declarations.forEach(styleItem => {\r\n                const styleDefine = regular_attr_1.regularAttr[styleItem.property];\r\n                if (!legal_value_1.legalValue(styleDefine, {\r\n                    fullname: styleItem.property,\r\n                    value: styleItem.value,\r\n                    name: '',\r\n                })) {\r\n                    styleItem.value = '';\r\n                }\r\n            });\r\n            rule.declarations = rule.declarations.filter(item => !!item.value);\r\n            if (!rule.declarations.length) {\r\n                rmCSSNode(rule, parent);\r\n            }\r\n        }\r\n        // resolve();\r\n        // })();\r\n    }\r\n    // } else {\r\n    resolve();\r\n    // }\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/default-rules/combine-style.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/default-rules/combine-textnode.ts":
-/*!********************************************************!*\
-  !*** ./src/slimming/default-rules/combine-textnode.ts ***!
-  \********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst index_1 = __webpack_require__(/*! ../../node/index */ \"./src/node/index.ts\");\r\nconst regular_tag_1 = __webpack_require__(/*! ../const/regular-tag */ \"./src/slimming/const/regular-tag.ts\");\r\nconst mix_white_space_1 = __webpack_require__(/*! ../utils/mix-white-space */ \"./src/slimming/utils/mix-white-space.ts\");\r\nconst rm_node_1 = __webpack_require__(/*! ../xml/rm-node */ \"./src/slimming/xml/rm-node.ts\");\r\nconst traversal_node_1 = __webpack_require__(/*! ../xml/traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\nexports.combineTextNode = async (dom) => new Promise((resolve, reject) => {\r\n    // 首先移除所有可移除的文本节点，并对文本节点进行冗余空格清理\r\n    traversal_node_1.traversalNode(node => node.nodeType === index_1.NodeType.Text || node.nodeType === index_1.NodeType.CDATA, node => {\r\n        const parentName = node.parentNode && node.parentNode.nodeName;\r\n        if (parentName && (regular_tag_1.regularTag[parentName].isUndef || !regular_tag_1.regularTag[parentName].containTextNode)) {\r\n            rm_node_1.rmNode(node);\r\n        }\r\n        else {\r\n            node.textContent = mix_white_space_1.mixWhiteSpace(node.textContent);\r\n        }\r\n    }, dom);\r\n    // 合并相邻的同类型节点\r\n    traversal_node_1.traversalNode(node => !regular_tag_1.regularTag[node.nodeName].isUndef && regular_tag_1.regularTag[node.nodeName].containTextNode, node => {\r\n        let lastNode;\r\n        for (let i = 0; i < node.childNodes.length; i++) {\r\n            const childNode = node.childNodes[i];\r\n            if (childNode.nodeType === index_1.NodeType.Text || childNode.nodeType === index_1.NodeType.CDATA) {\r\n                if (lastNode) {\r\n                    if (lastNode.nodeType === childNode.nodeType) {\r\n                        lastNode.textContent = mix_white_space_1.mixWhiteSpace(`${lastNode.textContent}${childNode.textContent}`);\r\n                        rm_node_1.rmNode(childNode);\r\n                        i--;\r\n                    }\r\n                    else {\r\n                        lastNode = childNode;\r\n                    }\r\n                }\r\n                else {\r\n                    lastNode = childNode;\r\n                }\r\n            }\r\n        }\r\n    }, dom);\r\n    resolve();\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/default-rules/combine-textnode.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/default-rules/rm-useless.ts":
-/*!**************************************************!*\
-  !*** ./src/slimming/default-rules/rm-useless.ts ***!
-  \**************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\n// 移除其它类型的 xml 定义节点和 xml 片段节点\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst index_1 = __webpack_require__(/*! ../../node/index */ \"./src/node/index.ts\");\r\nconst rm_node_1 = __webpack_require__(/*! ../xml/rm-node */ \"./src/slimming/xml/rm-node.ts\");\r\nconst traversal_node_1 = __webpack_require__(/*! ../xml/traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\nexports.rmUseless = async (dom) => new Promise((resolve, reject) => {\r\n    traversal_node_1.traversalNode(ramda_1.anyPass([ramda_1.propEq('nodeType', index_1.NodeType.OtherSect), ramda_1.propEq('nodeType', index_1.NodeType.OtherDecl)]), rm_node_1.rmNode, dom);\r\n    resolve();\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/default-rules/rm-useless.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/math/decimal.ts":
-/*!**************************************!*\
-  !*** ./src/slimming/math/decimal.ts ***!
-  \**************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\n/*\r\n * 以字符串的形式返回小数部分\r\n */\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nexports.decimal = (a) => {\r\n    const astr = `${a}`;\r\n    return astr.includes('.') ? astr.slice(astr.indexOf('.') + 1) : '';\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/math/decimal.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/math/digit.ts":
-/*!************************************!*\
-  !*** ./src/slimming/math/digit.ts ***!
-  \************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\n/*\r\n * 返回两个小数的最大精度\r\n */\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst decimal_1 = __webpack_require__(/*! ./decimal */ \"./src/slimming/math/decimal.ts\");\r\nexports.digit = ramda_1.curry((a, b) => Math.max(decimal_1.decimal(a).length, decimal_1.decimal(b).length));\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/math/digit.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/math/exec-alpha.ts":
-/*!*****************************************!*\
-  !*** ./src/slimming/math/exec-alpha.ts ***!
-  \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst syntax_1 = __webpack_require__(/*! ../const/syntax */ \"./src/slimming/const/syntax.ts\");\r\nconst valid_1 = __webpack_require__(/*! ./valid */ \"./src/slimming/math/valid.ts\");\r\nconst alphaReg = new RegExp(`^(${syntax_1.numberPattern})(%?)$`);\r\n// 解析 opacity 类型的值，成功解析返回 0~1 之间的数值，无法解析则返回原始字符串\r\nexports.execAlpha = (s) => {\r\n    const alpha = alphaReg.exec(s);\r\n    if (alpha) {\r\n        return valid_1.validOpacity(alpha[2], alpha[1]);\r\n    }\r\n    return s;\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/math/exec-alpha.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/math/minus.ts":
-/*!************************************!*\
-  !*** ./src/slimming/math/minus.ts ***!
-  \************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\n/*\r\n * 保证精度的减法\r\n * 用于解决 双精度浮点数 导致精度变化的问题\r\n */\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst digit_1 = __webpack_require__(/*! ./digit */ \"./src/slimming/math/digit.ts\");\r\nconst tofixed_1 = __webpack_require__(/*! ./tofixed */ \"./src/slimming/math/tofixed.ts\");\r\nexports.minus = ramda_1.curry((a, b) => tofixed_1.toFixed(digit_1.digit(a, b), a - b));\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/math/minus.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/math/multiply.ts":
-/*!***************************************!*\
-  !*** ./src/slimming/math/multiply.ts ***!
-  \***************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\n/*\r\n * 保证精度的乘法\r\n * 用于解决 双精度浮点数 导致精度变化的问题\r\n */\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst decimal_1 = __webpack_require__(/*! ./decimal */ \"./src/slimming/math/decimal.ts\");\r\nconst tofixed_1 = __webpack_require__(/*! ./tofixed */ \"./src/slimming/math/tofixed.ts\");\r\nexports.multiply = ramda_1.curry((a, b) => tofixed_1.toFixed(decimal_1.decimal(a).length + decimal_1.decimal(b).length, a * b));\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/math/multiply.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/math/plus.ts":
-/*!***********************************!*\
-  !*** ./src/slimming/math/plus.ts ***!
-  \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\n/*\r\n * 保证精度的加法\r\n * 用于解决 双精度浮点数 导致精度变化的问题\r\n */\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst digit_1 = __webpack_require__(/*! ./digit */ \"./src/slimming/math/digit.ts\");\r\nconst tofixed_1 = __webpack_require__(/*! ./tofixed */ \"./src/slimming/math/tofixed.ts\");\r\nexports.plus = ramda_1.curry((a, b) => tofixed_1.toFixed(digit_1.digit(a, b), a + b));\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/math/plus.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/math/shorten-alpha.ts":
-/*!********************************************!*\
-  !*** ./src/slimming/math/shorten-alpha.ts ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst tofixed_1 = __webpack_require__(/*! ./tofixed */ \"./src/slimming/math/tofixed.ts\");\r\nconst shorten_pure_decimal_1 = __webpack_require__(/*! ../utils/shorten-pure-decimal */ \"./src/slimming/utils/shorten-pure-decimal.ts\");\r\nconst to_percent_1 = __webpack_require__(/*! ./to-percent */ \"./src/slimming/math/to-percent.ts\");\r\n// 此工具函数用于优化同时可以用小数和百分比表示，并且二者可以互转的值，例如颜色的 alpha 值\r\nexports.shortenAlpha = (digit, s) => {\r\n    const perc = shorten_pure_decimal_1.shortenPureDecimal(to_percent_1.toPercent(digit, s));\r\n    const num = shorten_pure_decimal_1.shortenPureDecimal(`${tofixed_1.toFixed(digit, s)}`);\r\n    return perc.length < num.length ? perc : num;\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/math/shorten-alpha.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/math/symmetry.ts":
-/*!***************************************!*\
-  !*** ./src/slimming/math/symmetry.ts ***!
-  \***************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst plus_1 = __webpack_require__(/*! ./plus */ \"./src/slimming/math/plus.ts\");\r\nconst minus_1 = __webpack_require__(/*! ./minus */ \"./src/slimming/math/minus.ts\");\r\n// 获取 a 相对于 b 的对称值\r\nexports.symmetry = ramda_1.curry((a, b) => plus_1.plus(b, minus_1.minus(b, a)));\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/math/symmetry.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/math/to-percent.ts":
-/*!*****************************************!*\
-  !*** ./src/slimming/math/to-percent.ts ***!
-  \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst const_1 = __webpack_require__(/*! ../const */ \"./src/slimming/const/index.ts\");\r\nconst tofixed_1 = __webpack_require__(/*! ./tofixed */ \"./src/slimming/math/tofixed.ts\");\r\n// 浮点数转百分比\r\nexports.toPercent = (digit, n) => `${tofixed_1.toFixed(Math.max(digit - 2, 0), n * const_1.Hundred)}%`;\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/math/to-percent.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/math/tofixed.ts":
-/*!**************************************!*\
-  !*** ./src/slimming/math/tofixed.ts ***!
-  \**************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nexports.toFixed = ramda_1.curry((digit, a) => (a < 0 ? -1 : 1) * Math.round(Math.abs(a) * Math.pow(10, digit)) / Math.pow(10, digit));\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/math/tofixed.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/math/valid.ts":
-/*!************************************!*\
-  !*** ./src/slimming/math/valid.ts ***!
-  \************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst const_1 = __webpack_require__(/*! ../const */ \"./src/slimming/const/index.ts\");\r\n// 转换百分比格式字符串为数值\r\nexports.validPercent = (max, n) => Math.round(Math.max(Math.min(const_1.Hundred, n), 0) * max / const_1.Hundred);\r\n// 转换非百分比格式字符串为数值\r\nexports.validNum = (max, n) => Math.max(Math.min(max, Math.round(n)), 0);\r\n// 转换字符串为数值\r\nexports.valid = (isPercent, max, n) => isPercent ? exports.validPercent(max, +n) : exports.validNum(max, +n);\r\n// 转换透明度数值\r\nexports.validOpacity = (p, n) => Math.max(Math.min(1, p ? +n / const_1.Hundred : +n), 0);\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/math/valid.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/math/vector.ts":
-/*!*************************************!*\
-  !*** ./src/slimming/math/vector.ts ***!
-  \*************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\n// 2d 向量\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst HALF_CIRC = 180;\r\nconst ACCURACY = 1e6;\r\nclass Vector {\r\n    constructor(x = 0, y = 0) {\r\n        this.x = x;\r\n        this.y = y;\r\n    }\r\n    // 获取未修正的向量长度\r\n    get _modulo() {\r\n        return Math.sqrt(this.x * this.x + this.y * this.y);\r\n    }\r\n    // 获取向量长度\r\n    get modulo() {\r\n        return Vector.Rounding(Math.sqrt(this.x * this.x + this.y * this.y));\r\n    }\r\n    set modulo(m) {\r\n        this.normalize();\r\n        this.x *= m;\r\n        this.y *= m;\r\n    }\r\n    rotate(arc) {\r\n        const _x = this.x;\r\n        const _y = this.y;\r\n        this.x = _x * Math.cos(arc) - _y * Math.sin(arc);\r\n        this.y = _x * Math.sin(arc) + _y * Math.cos(arc);\r\n        return this;\r\n    }\r\n    // value 直接返回长度\r\n    valueOf() {\r\n        return this.modulo;\r\n    }\r\n    // 返回字符串形式\r\n    toString() {\r\n        return `[${this.x},${this.y}]`;\r\n    }\r\n    // 转为单位向量\r\n    normalize() {\r\n        const modulo = this._modulo;\r\n        if (modulo !== 0) {\r\n            this.x /= modulo;\r\n            this.y /= modulo;\r\n        }\r\n        else {\r\n            throw new Error('零向量无法标准化！');\r\n        }\r\n        return this;\r\n    }\r\n    // 转为零向量\r\n    zero() {\r\n        this.x = 0;\r\n        this.y = 0;\r\n        return this;\r\n    }\r\n    // 与另一个向量相加\r\n    add(v) {\r\n        this.x += v.x;\r\n        this.y += v.y;\r\n        return this;\r\n    }\r\n    // 与另一个向量相减\r\n    substract(v) {\r\n        this.x -= v.x;\r\n        this.y -= v.y;\r\n        return this;\r\n    }\r\n    multiplied(n) {\r\n        if (typeof n === 'number') {\r\n            this.x *= n;\r\n            this.y *= n;\r\n            return this;\r\n        }\r\n        else {\r\n            return this.x * n.x + this.y * n.y;\r\n        }\r\n    }\r\n    // 计算两个向量的夹角 - 弧度\r\n    radian(v) {\r\n        return Vector.radian(this, v);\r\n    }\r\n    // 计算两个向量的夹角 - 角度\r\n    angel(v) {\r\n        return Vector.angel(this, v);\r\n    }\r\n    // 自己是不是零向量\r\n    get isZero() {\r\n        return this.x === 0 && this.y === 0;\r\n    }\r\n    // 自己是不是单位向量\r\n    get isNormalize() {\r\n        return this.modulo === 1;\r\n    }\r\n    // 两个向量相加\r\n    static add(v1, v2) {\r\n        return new Vector(v1.x + v2.x, v1.y + v2.y);\r\n    }\r\n    // 两个向量相减\r\n    static substract(v1, v2) {\r\n        return new Vector(v1.x - v2.x, v1.y - v2.y);\r\n    }\r\n    // 两个向量相乘\r\n    static multiplied(v1, n) {\r\n        if (typeof n === 'number') {\r\n            return new Vector(v1.x * n, v1.y * n);\r\n        }\r\n        else {\r\n            return v1.x * n.x + v1.y * n.y;\r\n        }\r\n    }\r\n    // 两个向量的夹角 - 弧度\r\n    static radian(v1, v2) {\r\n        if (v1.isZero || v2.isZero) {\r\n            return NaN;\r\n        }\r\n        return Math.acos(Vector.multiplied(v1, v2) / v1._modulo / v2._modulo);\r\n    }\r\n    // 两个向量的夹角 - 角度\r\n    static angel(v1, v2) {\r\n        if (v1.isZero || v2.isZero) {\r\n            return NaN;\r\n        }\r\n        return Vector.Rounding(HALF_CIRC * Vector.radian(v1, v2) / Math.PI);\r\n    }\r\n    // v1 到 v2 的投影分量\r\n    static projected(v1, v2) {\r\n        if (v1.isZero || v2.isZero) {\r\n            return new Vector(0, 0);\r\n        }\r\n        return Vector.multiplied(v2, Vector.multiplied(v1, v2) / Math.pow(v2._modulo, 2));\r\n    }\r\n    // v1 到 v2 的垂直分量\r\n    static plumb(v1, v2) {\r\n        if (v1.isZero) {\r\n            return new Vector(0, 0);\r\n        }\r\n        if (v2.isZero) {\r\n            return new Vector(v1.x, v1.y);\r\n        }\r\n        return Vector.substract(v1, Vector.projected(v1, v2));\r\n    }\r\n    // 取模，对小数点后6位进行取整，修正双精度浮点数导致无法正常标准化的\r\n    static Rounding(n) {\r\n        return Math.round(n * ACCURACY) / ACCURACY;\r\n    }\r\n    // 求距离\r\n    static distance(v1, v2) {\r\n        return Vector.substract(v1, v2).modulo;\r\n    }\r\n}\r\nexports.Vector = Vector;\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/math/vector.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/matrix/combine.ts":
-/*!****************************************!*\
-  !*** ./src/slimming/matrix/combine.ts ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst const_1 = __webpack_require__(/*! ../const */ \"./src/slimming/const/index.ts\");\r\nconst matrix_1 = __webpack_require__(/*! ./matrix */ \"./src/slimming/matrix/matrix.ts\");\r\nconst shorten_1 = __webpack_require__(/*! ./shorten */ \"./src/slimming/matrix/shorten.ts\");\r\nexports.combineMatrix = (operate, digit1 = const_1.DEFAULT_MATRIX_DIGIT, digit2 = const_1.DEFAULT_SIZE_DIGIT, digit3 = const_1.DEFAULT_ACCURATE_DIGIT) => {\r\n    let matrix = new matrix_1.Matrix();\r\n    for (const item of operate) {\r\n        switch (item.type) {\r\n            case 'translate':\r\n                matrix = matrix.translate(item.val[0], item.val[1]);\r\n                break;\r\n            case 'rotate':\r\n                if (item.val.length === 3) {\r\n                    matrix = matrix.translate(item.val[1], item.val[2]);\r\n                    matrix = matrix.rotate(item.val[0]);\r\n                    matrix = matrix.translate(-item.val[1], -item.val[2]);\r\n                }\r\n                else {\r\n                    matrix = matrix.rotate(item.val[0]);\r\n                }\r\n                break;\r\n            case 'scale':\r\n                matrix = matrix.scale(item.val[0], ...item.val.slice(1));\r\n                break;\r\n            case 'skewX':\r\n                matrix = matrix.skewX(item.val[0]);\r\n                break;\r\n            case 'skewY':\r\n                matrix = matrix.skewY(item.val[0]);\r\n                break;\r\n            default:\r\n                matrix = matrix.multiply(new matrix_1.Matrix(...item.val));\r\n                break;\r\n        }\r\n    }\r\n    return shorten_1.shorten({\r\n        type: 'matrix',\r\n        val: [matrix.a, matrix.b, matrix.c, matrix.d, matrix.e, matrix.f],\r\n    }, digit1, digit2, digit3);\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/matrix/combine.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/matrix/exec.ts":
-/*!*************************************!*\
-  !*** ./src/slimming/matrix/exec.ts ***!
-  \*************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst exec_numberlist_1 = __webpack_require__(/*! ../utils/exec-numberlist */ \"./src/slimming/utils/exec-numberlist.ts\");\r\nconst syntax_1 = __webpack_require__(/*! ../const/syntax */ \"./src/slimming/const/syntax.ts\");\r\nconst matrixSingle = `(translate|scale|rotate|skewX|skewY|matrix)\\\\s*\\\\(\\\\s*(${syntax_1.numberPattern}(?:${syntax_1.commaWsp}${syntax_1.numberPattern})*)\\\\s*\\\\)`;\r\nconst matrixReg = new RegExp(matrixSingle, 'gm');\r\nconst matrixFullReg = new RegExp(`^${matrixSingle}(?:${syntax_1.commaWsp}${matrixSingle})*$`, 'm');\r\nconst matrixValLen = 6;\r\nexports.execMatrix = (str) => {\r\n    const result = [];\r\n    // 首先全字匹配完整的字符串，不匹配的直接退出\r\n    if (matrixFullReg.test(str.trim())) {\r\n        // 重置正则匹配位置\r\n        matrixReg.lastIndex = 0;\r\n        let match = matrixReg.exec(str);\r\n        while (match !== null) {\r\n            const val = exec_numberlist_1.execNumberList(match[2]);\r\n            // 验证参数的个数是否合法，不合法的直接退出\r\n            if (match[1] === 'translate' || match[1] === 'scale') {\r\n                if (val.length > 2) {\r\n                    return [];\r\n                }\r\n            }\r\n            else if (match[1] === 'matrix') {\r\n                if (val.length !== matrixValLen) {\r\n                    return [];\r\n                }\r\n            }\r\n            else if (match[1] === 'rotate') {\r\n                if (val.length !== 1 && val.length !== 3) {\r\n                    return [];\r\n                }\r\n            }\r\n            else {\r\n                if (val.length !== 1) {\r\n                    return [];\r\n                }\r\n            }\r\n            result.push({\r\n                type: match[1],\r\n                val,\r\n            });\r\n            match = matrixReg.exec(str);\r\n        }\r\n    }\r\n    return result;\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/matrix/exec.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/matrix/matrix.ts":
-/*!***************************************!*\
-  !*** ./src/slimming/matrix/matrix.ts ***!
-  \***************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst HALF_CIRC = 180;\r\nclass Matrix {\r\n    constructor(a = 1, b = 0, c = 0, d = 1, e = 0, f = 0) {\r\n        this.a = a;\r\n        this.b = b;\r\n        this.c = c;\r\n        this.d = d;\r\n        this.e = e;\r\n        this.f = f;\r\n    }\r\n    translate(x, y) {\r\n        return this.multiply(new Matrix(1, 0, 0, 1, x, y));\r\n    }\r\n    rotate(corner) {\r\n        const arg = corner * Math.PI / HALF_CIRC;\r\n        return this.multiply(new Matrix(Math.cos(arg), Math.sin(arg), -Math.sin(arg), Math.cos(arg), 0, 0));\r\n    }\r\n    scale(xscale, yscale = null) {\r\n        return this.multiply(new Matrix(xscale, 0, 0, yscale === null ? xscale : yscale, 0, 0));\r\n    }\r\n    skewX(corner) {\r\n        const skew = corner * Math.PI / HALF_CIRC;\r\n        return this.multiply(new Matrix(1, 0, Math.tan(skew), 1, 0, 0));\r\n    }\r\n    skewY(corner) {\r\n        const skew = corner * Math.PI / HALF_CIRC;\r\n        return this.multiply(new Matrix(1, Math.tan(skew), 0, 1, 0, 0));\r\n    }\r\n    multiply(m) {\r\n        const a = this.a * m.a + this.c * m.b;\r\n        const b = this.b * m.a + this.d * m.b;\r\n        const c = this.a * m.c + this.c * m.d;\r\n        const d = this.b * m.c + this.d * m.d;\r\n        const e = this.a * m.e + this.c * m.f + this.e;\r\n        const f = this.b * m.e + this.d * m.f + this.f;\r\n        this.a = a;\r\n        this.b = b;\r\n        this.c = c;\r\n        this.d = d;\r\n        this.e = e;\r\n        this.f = f;\r\n        return this;\r\n    }\r\n}\r\nexports.Matrix = Matrix;\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/matrix/matrix.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/matrix/merge.ts":
-/*!**************************************!*\
-  !*** ./src/slimming/matrix/merge.ts ***!
-  \**************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst const_1 = __webpack_require__(/*! ../const */ \"./src/slimming/const/index.ts\");\r\nconst combine_1 = __webpack_require__(/*! ./combine */ \"./src/slimming/matrix/combine.ts\");\r\nconst shorten_1 = __webpack_require__(/*! ./shorten */ \"./src/slimming/matrix/shorten.ts\");\r\nexports.merge = (func1, func2, digit1 = const_1.DEFAULT_MATRIX_DIGIT, digit2 = const_1.DEFAULT_SIZE_DIGIT, digit3 = const_1.DEFAULT_ACCURATE_DIGIT) => {\r\n    let resFunc = {\r\n        type: func1.type,\r\n        val: [],\r\n    };\r\n    switch (func1.type) {\r\n        case 'translate':\r\n            if (func1.val.length === 1) {\r\n                func1.val[1] = 0;\r\n            }\r\n            if (func2.val.length === 1) {\r\n                func2.val[1] = 0;\r\n            }\r\n            resFunc.val = [func1.val[0] + func2.val[0], func1.val[1] + func2.val[1]];\r\n            break;\r\n        case 'scale':\r\n            if (func1.val.length === 1) {\r\n                func1.val[1] = func1.val[0];\r\n            }\r\n            if (func2.val.length === 1) {\r\n                func2.val[1] = func2.val[0];\r\n            }\r\n            resFunc.val = [func1.val[0] * func2.val[0], func1.val[1] * func2.val[1]];\r\n            break;\r\n        case 'rotate':\r\n            if (func1.val.length === 1 && func2.val.length === 1) {\r\n                resFunc.val[0] = func1.val[0] + func2.val[0];\r\n            }\r\n            else if (func1.val[1] === func2.val[1] && func1.val[2] === func2.val[2]) {\r\n                resFunc.val = [func1.val[0] + func2.val[0], func1.val[1], func1.val[2]];\r\n            }\r\n            else {\r\n                resFunc = combine_1.combineMatrix([func1, func2], digit1, digit2, digit3);\r\n            }\r\n            break;\r\n        case 'skewX':\r\n        case 'skewY':\r\n            resFunc = combine_1.combineMatrix([func1, func2], digit1, digit2, digit3);\r\n            break;\r\n        default:\r\n            return combine_1.combineMatrix([func1, func2], digit1, digit2, digit3);\r\n    }\r\n    return shorten_1.shorten(resFunc, digit1, digit2, digit3);\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/matrix/merge.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/matrix/shorten.ts":
-/*!****************************************!*\
-  !*** ./src/slimming/matrix/shorten.ts ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst const_1 = __webpack_require__(/*! ../const */ \"./src/slimming/const/index.ts\");\r\nconst tofixed_1 = __webpack_require__(/*! ../math/tofixed */ \"./src/slimming/math/tofixed.ts\");\r\nconst simplify_1 = __webpack_require__(/*! ./simplify */ \"./src/slimming/matrix/simplify.ts\");\r\n// 降低 transform 函数的参数精度，移除冗余参数，并对无效函数打上标记\r\nexports.shorten = (m, digit1 = const_1.DEFAULT_MATRIX_DIGIT, digit2 = const_1.DEFAULT_SIZE_DIGIT, digit3 = const_1.DEFAULT_ACCURATE_DIGIT) => {\r\n    const res = {\r\n        type: m.type,\r\n        val: [],\r\n    };\r\n    switch (m.type) {\r\n        case 'translate':\r\n            m.val.forEach((v, i) => {\r\n                res.val[i] = tofixed_1.toFixed(digit2, v);\r\n            });\r\n            if (res.val[1] === 0) {\r\n                res.val.length = 1;\r\n            }\r\n            if (res.val[0] === 0) {\r\n                res.val[0] = 0;\r\n                if (res.val.length === 1) {\r\n                    res.noEffect = true;\r\n                }\r\n            }\r\n            break;\r\n        case 'scale':\r\n            m.val.forEach((v, i) => {\r\n                res.val[i] = tofixed_1.toFixed(digit1, v);\r\n            });\r\n            if (res.val[0] === res.val[1]) {\r\n                res.val.length = 1;\r\n            }\r\n            if (res.val[0] === 1 && res.val.length === 1) {\r\n                res.noEffect = true;\r\n            }\r\n            break;\r\n        case 'rotate':\r\n            res.val[0] = tofixed_1.toFixed(digit3, m.val[0]);\r\n            if (res.val[0] === 0) {\r\n                res.val[0] = 0;\r\n                res.noEffect = true;\r\n            }\r\n            if (m.val.length === 3) {\r\n                res.val[1] = tofixed_1.toFixed(digit2, m.val[1]);\r\n                res.val[2] = tofixed_1.toFixed(digit2, m.val[2]);\r\n                if (res.val[1] === 0 && res.val[2] === 0) {\r\n                    res.val.length = 1;\r\n                }\r\n            }\r\n            break;\r\n        case 'skewX':\r\n        case 'skewY':\r\n            res.val[0] = tofixed_1.toFixed(digit3, m.val[0]);\r\n            if (res.val[0] === 0) {\r\n                res.val[0] = 0;\r\n                res.noEffect = true;\r\n            }\r\n            break;\r\n        default:\r\n            const _res = simplify_1.simplify(m, digit1, digit2);\r\n            if (_res.type === 'matrix') {\r\n                _res.val.forEach((v, i) => {\r\n                    res.val[i] = tofixed_1.toFixed((i < const_1.matrixEPos) ? digit1 : digit2, v);\r\n                });\r\n                break;\r\n            }\r\n            else {\r\n                return exports.shorten(_res, digit1, digit2, digit3);\r\n            }\r\n    }\r\n    return res;\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/matrix/shorten.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/matrix/simplify.ts":
-/*!*****************************************!*\
-  !*** ./src/slimming/matrix/simplify.ts ***!
-  \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst tofixed_1 = __webpack_require__(/*! ../math/tofixed */ \"./src/slimming/math/tofixed.ts\");\r\nconst const_1 = __webpack_require__(/*! ../const */ \"./src/slimming/const/index.ts\");\r\nconst aPos = 0;\r\nconst bPos = 1;\r\nconst cPos = 2;\r\nconst dPos = 3;\r\nconst ePos = 4;\r\nconst fPos = 5;\r\n// 把 matrix 函数反转为简单函数\r\nexports.simplify = (matrix, digit1, digit2) => {\r\n    const mVal = matrix.val.map((v, i) => tofixed_1.toFixed((i < const_1.matrixEPos) ? digit1 : digit2, v)).join(',');\r\n    const fixed1 = tofixed_1.toFixed(digit1);\r\n    const fixed2 = tofixed_1.toFixed(digit2);\r\n    if (/^1,0,0,1/.test(mVal)) {\r\n        return {\r\n            type: 'translate',\r\n            val: fixed2(matrix.val[fPos]) === 0 ? [matrix.val[ePos]] : [matrix.val[ePos], matrix.val[fPos]],\r\n        };\r\n    }\r\n    if (/^[^,]+,0,0,[^,]+,0,0/.test(mVal)) {\r\n        return {\r\n            type: 'scale',\r\n            val: fixed1(matrix.val[aPos]) === fixed1(matrix.val[dPos]) ? [matrix.val[aPos]] : [matrix.val[aPos], matrix.val[dPos]],\r\n        };\r\n    }\r\n    if (/^1,0,[^,]+,1,0,0/.test(mVal)) {\r\n        let corner = (Math.atan(matrix.val[cPos]) * const_1.HALF_CIRC / Math.PI + const_1.CIRC) % const_1.CIRC;\r\n        if (corner > const_1.CIRC - 10) {\r\n            corner -= const_1.CIRC;\r\n        }\r\n        return {\r\n            type: 'skewX',\r\n            val: [corner],\r\n        };\r\n    }\r\n    if (/^1,[^,]+,0,1,0,0/.test(mVal)) {\r\n        let corner = (Math.atan(matrix.val[bPos]) * const_1.HALF_CIRC / Math.PI + const_1.CIRC) % const_1.CIRC;\r\n        if (corner > const_1.CIRC - 10) {\r\n            corner -= const_1.CIRC;\r\n        }\r\n        return {\r\n            type: 'skewY',\r\n            val: [corner],\r\n        };\r\n    }\r\n    if (fixed1(matrix.val[aPos]) === fixed1(matrix.val[dPos])\r\n        &&\r\n            fixed1(matrix.val[bPos]) === -fixed1(matrix.val[cPos])\r\n        &&\r\n            fixed1(Math.pow(matrix.val[aPos], 2) + Math.pow(matrix.val[bPos], 2)) === 1) {\r\n        let arc;\r\n        if (matrix.val[aPos] >= 0) {\r\n            arc = Math.asin(matrix.val[bPos]);\r\n        }\r\n        else {\r\n            if (matrix.val[bPos] >= 0) {\r\n                arc = Math.acos(matrix.val[aPos]);\r\n            }\r\n            else {\r\n                arc = -Math.acos(matrix.val[aPos]);\r\n            }\r\n        }\r\n        let corner = (arc * const_1.HALF_CIRC / Math.PI + const_1.CIRC) % const_1.CIRC;\r\n        if (corner > const_1.CIRC - 10) {\r\n            corner -= const_1.CIRC;\r\n        }\r\n        // [1,0,0,1,x,y].[a,b,c,d,0,0].[1,0,0,1,-x,-y] = [a,b,c,d,e,f]，根据该公式反解\r\n        const cx = (matrix.val[ePos] * (1 - matrix.val[aPos]) - matrix.val[bPos] * matrix.val[fPos]) / (2 - matrix.val[aPos] * 2);\r\n        const cy = (cx * matrix.val[bPos] + matrix.val[fPos]) / (1 - matrix.val[dPos]);\r\n        return {\r\n            type: 'rotate',\r\n            val: [corner, cx, cy],\r\n        };\r\n    }\r\n    return matrix;\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/matrix/simplify.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/matrix/stringify.ts":
-/*!******************************************!*\
-  !*** ./src/slimming/matrix/stringify.ts ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst const_1 = __webpack_require__(/*! ../const */ \"./src/slimming/const/index.ts\");\r\nconst stringify_funcval_1 = __webpack_require__(/*! ../utils/stringify-funcval */ \"./src/slimming/utils/stringify-funcval.ts\");\r\nconst shorten_1 = __webpack_require__(/*! ./shorten */ \"./src/slimming/matrix/shorten.ts\");\r\nexports.stringify = (m, digit1 = const_1.DEFAULT_MATRIX_DIGIT, digit2 = const_1.DEFAULT_SIZE_DIGIT, digit3 = const_1.DEFAULT_ACCURATE_DIGIT) => {\r\n    let result = '';\r\n    m.forEach((v, i) => {\r\n        const _v = shorten_1.shorten(v, digit1, digit2, digit3);\r\n        if (!_v.noEffect) {\r\n            result += `${_v.type}(${stringify_funcval_1.stringifyFuncVal(_v.val)})`;\r\n        }\r\n    });\r\n    return result;\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/matrix/stringify.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/path/check-sub-paths.ts":
-/*!**********************************************!*\
-  !*** ./src/slimming/path/check-sub-paths.ts ***!
-  \**********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\n// tslint:disable:no-require-imports\r\nconst contours = __webpack_require__(/*! svg-path-contours */ \"svg-path-contours\");\r\nconst triangle = __webpack_require__(/*! triangulate-contours */ \"triangulate-contours\");\r\nconst combine_1 = __webpack_require__(/*! ./combine */ \"./src/slimming/path/combine.ts\");\r\nconst complex_1 = __webpack_require__(/*! ./complex */ \"./src/slimming/path/complex.ts\");\r\nconst translate_1 = __webpack_require__(/*! ./translate */ \"./src/slimming/path/translate.ts\");\r\n// 当前子路径中除了起始点和自己之外，还有其它任意指令\r\nconst hasBrother = (subPath, index) => {\r\n    return index > 1 || index < subPath.length - 1;\r\n};\r\n// 移除 0 长度的平移指令，规则是没有 stroke-cap 或具有兄弟，反之可以转为 z 指令\r\nconst checkHV = (subPath, index, hasStrokeCap) => {\r\n    if (!hasStrokeCap || hasBrother(subPath, index)) {\r\n        subPath.splice(index, 1);\r\n    }\r\n    else {\r\n        subPath[index].type = 'z';\r\n    }\r\n};\r\n// 如果控制点位于起始点和终点的连线中间位置，则 q 指令可以转 l 指令\r\nconst checkQ = (pathItem, subPath, index, hasStrokeCap) => {\r\n    // 简单指令转复杂指令\r\n    const complexItem = complex_1.complex(pathItem, subPath[index - 1]);\r\n    const relVal = translate_1.getRel(complexItem);\r\n    const sameLine = (relVal[0] * relVal[3] === relVal[1] * relVal[2]) && (relVal[0] * (relVal[2] - relVal[0]) >= 0);\r\n    if (sameLine) {\r\n        if (relVal.every(s => s === 0)) {\r\n            // 控制点及指令的相对值全部为 0 ，可以视情况移除或转 z 指令\r\n            if (!hasStrokeCap || hasBrother(subPath, index)) {\r\n                subPath.splice(index, 1);\r\n            }\r\n            else {\r\n                pathItem.type = 'z';\r\n            }\r\n            return;\r\n        }\r\n        // 如果前后都不是 q/t 节点，则可以转直线指令\r\n        if (subPath[index - 1].type.toLowerCase() !== 'q' && subPath[index - 1].type.toLowerCase() !== 't' && (index === subPath.length - 1 || subPath[index + 1].type.toLowerCase() !== 't')) {\r\n            pathItem.type = complexItem.type === 'q' ? 'l' : 'L';\r\n            pathItem.val = complexItem.val.slice(2);\r\n        }\r\n    }\r\n};\r\n// 如果控制点位于起始点和终点的连线中间位置，则 c 指令可以转 l 指令\r\nconst checkC = (pathItem, subPath, index, hasStrokeCap) => {\r\n    const complexItem = complex_1.complex(pathItem, subPath[index - 1]);\r\n    const relVal = translate_1.getRel(complexItem);\r\n    const sameLine = (relVal[0] * relVal[5] === relVal[1] * relVal[4])\r\n        && (relVal[0] * (relVal[4] - relVal[0]) >= 0)\r\n        && (relVal[2] * relVal[5] === relVal[3] * relVal[4])\r\n        && (relVal[2] * (relVal[4] - relVal[2]) >= 0);\r\n    if (sameLine) {\r\n        if (relVal.every(s => s === 0)) {\r\n            // 控制点及指令的相对值全部为 0 ，可以视情况移除或转 z 指令\r\n            if (!hasStrokeCap || hasBrother(subPath, index)) {\r\n                subPath.splice(index, 1);\r\n            }\r\n            else {\r\n                pathItem.type = 'z';\r\n            }\r\n            return;\r\n        }\r\n        // 可以直接转直线指令\r\n        pathItem.type = complexItem.type === 'c' ? 'l' : 'L';\r\n        pathItem.val = complexItem.val.slice(4);\r\n    }\r\n};\r\nexports.checkSubPath = (pathResult, hasStroke, hasStrokeCap, sizeDigit, angelDigit) => {\r\n    const result = [];\r\n    // 首先过一遍子路径，移除所有的空节点\r\n    pathResult.forEach(subPath => {\r\n        for (let j = subPath.length; j--;) {\r\n            const pathItem = subPath[j];\r\n            switch (pathItem.type) {\r\n                case 'm':\r\n                    // 所有子路径起始位置改为绝对坐标\r\n                    pathItem.type = 'M';\r\n                    pathItem.val[0] += subPath[0].from[0];\r\n                    pathItem.val[1] += subPath[0].from[1];\r\n                    break;\r\n                case 'z':\r\n                    // 没有 cap，可以移除紧跟 m 指令的 z 指令\r\n                    if (!hasStrokeCap && subPath[j - 1].type.toLowerCase() === 'm') {\r\n                        subPath.splice(j, 1);\r\n                    }\r\n                    break;\r\n                // 移除长度为 0 的直线指令\r\n                case 'h':\r\n                case 'v':\r\n                    if (pathItem.val[0] === 0) {\r\n                        checkHV(subPath, j, hasStrokeCap);\r\n                    }\r\n                    break;\r\n                case 't':\r\n                case 'T':\r\n                    // 移除 0 长度指令，曲线转直线\r\n                    checkQ(pathItem, subPath, j, hasStrokeCap);\r\n                    break;\r\n                case 'q':\r\n                case 'Q':\r\n                    // 移除 0 长度指令，曲线转直线\r\n                    checkQ(pathItem, subPath, j, hasStrokeCap);\r\n                    break;\r\n                case 's':\r\n                case 'S':\r\n                    // 移除 0 长度指令，曲线转直线\r\n                    checkC(pathItem, subPath, j, hasStrokeCap);\r\n                    break;\r\n                case 'c':\r\n                case 'C':\r\n                    // 移除 0 长度指令，曲线转直线\r\n                    checkC(pathItem, subPath, j, hasStrokeCap);\r\n                    break;\r\n                default:\r\n                    break;\r\n            }\r\n        }\r\n    });\r\n    for (let i = pathResult.length; i--;) {\r\n        const subPath = pathResult[i];\r\n        // 没有 stroke 直接移除空的子路径\r\n        if (!hasStroke) {\r\n            // triangle 存在 badcase，可能导致崩溃，所以必须 try\r\n            try {\r\n                const shapes = triangle(contours(subPath.map(item => [item.type, ...item.val])));\r\n                if (!shapes.cells.length) {\r\n                    continue;\r\n                }\r\n            }\r\n            catch (e) { }\r\n        }\r\n        // 同向路径合并\r\n        for (let j = subPath.length; j--;) {\r\n            const pathItem = subPath[j];\r\n            switch (pathItem.type.toLowerCase()) {\r\n                case 'h':\r\n                case 'v':\r\n                    combine_1.combineHV(subPath, pathItem, j);\r\n                    break;\r\n                case 'l':\r\n                    combine_1.combineL(subPath, pathItem, j, angelDigit);\r\n                    break;\r\n                case 'a':\r\n                    combine_1.combineA(subPath, pathItem, j, angelDigit);\r\n                    break;\r\n                default:\r\n                    break;\r\n            }\r\n        }\r\n        // 如果没有 marker，则空的 m 指令没有意义 https://www.w3.org/TR/SVG/paths.html#ZeroLengthSegments\r\n        // 直接移除子路径即可，因为所有子路径起始点已经改为绝对地址，所以不会有副作用\r\n        if (subPath.length > 1) {\r\n            result.unshift(subPath);\r\n        }\r\n    }\r\n    return result;\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/path/check-sub-paths.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/path/combine.ts":
-/*!**************************************!*\
-  !*** ./src/slimming/path/combine.ts ***!
-  \**************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst const_1 = __webpack_require__(/*! ../const */ \"./src/slimming/const/index.ts\");\r\nconst plus_1 = __webpack_require__(/*! ../math/plus */ \"./src/slimming/math/plus.ts\");\r\nconst tofixed_1 = __webpack_require__(/*! ../math/tofixed */ \"./src/slimming/math/tofixed.ts\");\r\nconst vector_1 = __webpack_require__(/*! ../math/vector */ \"./src/slimming/math/vector.ts\");\r\nconst translate_1 = __webpack_require__(/*! ./translate */ \"./src/slimming/path/translate.ts\");\r\nexports.combineHV = (subPath, pathItem, index) => {\r\n    const relVal = translate_1.getRelHV(pathItem);\r\n    // 如果前一个函数也是水平/垂直移动，判断是否可以合并\r\n    // 判断的依据是：相对值的积为正数（即同向移动）\r\n    if (subPath[index - 1].type.toLowerCase() === pathItem.type.toLowerCase()) {\r\n        const lastItem = subPath[index - 1];\r\n        if (translate_1.getRelHV(lastItem) * relVal >= 0) {\r\n            // 合并时直接转绝对坐标\r\n            lastItem.val[0] = translate_1.getAbsHV(pathItem);\r\n            lastItem.type = lastItem.type.toUpperCase();\r\n            subPath.splice(index, 1);\r\n        }\r\n    }\r\n};\r\n// 同方向的直线直接合并\r\nexports.combineL = (subPath, pathItem, index, digit) => {\r\n    const fixed = tofixed_1.toFixed(digit);\r\n    if (subPath[index - 1].type.toLowerCase() === 'l') {\r\n        const lastItem = subPath[index - 1];\r\n        const relVal = translate_1.getRel(pathItem);\r\n        const lastRelVal = translate_1.getRel(lastItem);\r\n        if (fixed(Math.atan2(lastRelVal[0], lastRelVal[1])) === fixed(Math.atan2(relVal[0], relVal[1]))) {\r\n            lastItem.val = [plus_1.plus(lastItem.val[0], relVal[0]), plus_1.plus(lastItem.val[1], relVal[1])];\r\n            lastItem.type = 'l';\r\n            subPath.splice(index, 1);\r\n        }\r\n    }\r\n};\r\nconst getCenter = (pathItem, digit) => {\r\n    const rotation = pathItem.val[const_1.APOS_ROTATION];\r\n    const rx = pathItem.val[const_1.APOS_RX];\r\n    const ry = pathItem.val[const_1.APOS_RY];\r\n    const ccw = pathItem.val[const_1.APOS_LARGE] === pathItem.val[const_1.APOS_SWEEP];\r\n    const abs = translate_1.getAbs({\r\n        type: pathItem.type,\r\n        val: pathItem.val.slice(const_1.APOS_X),\r\n        from: pathItem.from,\r\n    });\r\n    const v1 = new vector_1.Vector(pathItem.from[0], pathItem.from[1]);\r\n    const v2 = new vector_1.Vector(abs[0], abs[1]);\r\n    // 先旋转一下\r\n    if (rotation) {\r\n        v1.rotate(-rotation * Math.PI * 2 / const_1.CIRC);\r\n        v2.rotate(-rotation * Math.PI * 2 / const_1.CIRC);\r\n    }\r\n    // 从椭圆变成正圆\r\n    if (rx !== ry) {\r\n        v1.y *= rx / ry;\r\n        v2.y *= rx / ry;\r\n    }\r\n    // 获取起点到终点的向量\r\n    const v = new vector_1.Vector(v2.x - v1.x, v2.y - v1.y);\r\n    // r 不一定是够长，需要扩大到指定的大小 https://www.w3.org/TR/SVG/paths.html#ArcOutOfRangeParameters\r\n    let r = rx;\r\n    if (r < v.modulo / 2) {\r\n        r = v.modulo / 2;\r\n    }\r\n    // 向量长度为另一条直角边\r\n    v.modulo = Math.sqrt(r * r - Math.pow(v.modulo / 2, 2));\r\n    // 根据方向选择 90 度\r\n    const arc = ccw ? -Math.PI / 2 : Math.PI / 2;\r\n    v.rotate(arc);\r\n    // 把起始点挪到线段中心\r\n    v.x += (v1.x + v2.x) / 2;\r\n    v.y += (v1.y + v2.y) / 2;\r\n    if (rx !== ry) {\r\n        v.y *= ry / rx;\r\n    }\r\n    if (rotation) {\r\n        v.rotate(rotation * Math.PI * 2 / const_1.CIRC);\r\n    }\r\n    return [tofixed_1.toFixed(digit, v.x), tofixed_1.toFixed(digit, v.y)];\r\n};\r\nexports.combineA = (subPath, pathItem, index, digit) => {\r\n    const lastItem = subPath[index - 1];\r\n    if (lastItem.type.toLowerCase() === 'a') {\r\n        // rx ry 转角 旋转方向相等，并且圆心重合，才能进行合并\r\n        const _eqProps = (prop) => ramda_1.eqProps(`${prop}`, lastItem.val, pathItem.val);\r\n        if (ramda_1.all(_eqProps, [const_1.APOS_RX, const_1.APOS_RY, const_1.APOS_ROTATION, const_1.APOS_SWEEP])) {\r\n            const center = getCenter(pathItem, digit);\r\n            const lastCenter = getCenter(lastItem, digit);\r\n            // equals 存在 0 !== -0 的问题\r\n            if (center[0] === lastCenter[0] && center[1] === lastCenter[1]) {\r\n                // 前一个指令的起始弧线\r\n                const vbase = new vector_1.Vector(lastItem.from[0] - center[0], lastItem.from[1] - center[1]);\r\n                const lastAbs = translate_1.getAbs({\r\n                    type: lastItem.type,\r\n                    val: lastItem.val.slice(const_1.APOS_X),\r\n                    from: lastItem.from,\r\n                });\r\n                const v1 = new vector_1.Vector(lastAbs[0] - center[0], lastAbs[1] - center[1]);\r\n                const abs = translate_1.getAbs({\r\n                    type: pathItem.type,\r\n                    val: pathItem.val.slice(const_1.APOS_X),\r\n                    from: pathItem.from,\r\n                });\r\n                const v2 = new vector_1.Vector(abs[0] - center[0], abs[1] - center[1]);\r\n                let radian1 = vector_1.Vector.radian(vbase, v1);\r\n                if (lastItem.val[const_1.APOS_LARGE] === 1) {\r\n                    radian1 = Math.PI * 2 - radian1;\r\n                }\r\n                let radian2 = vector_1.Vector.radian(v1, v2);\r\n                if (pathItem.val[const_1.APOS_LARGE] === 1) {\r\n                    radian2 = Math.PI * 2 - radian2;\r\n                }\r\n                // 大于等于 360 度不能合并，等于 360 度会造成 a 指令被忽略\r\n                if (radian1 + radian2 >= Math.PI * 2) {\r\n                    return;\r\n                }\r\n                // 下面是进行合并的算法\r\n                // 首先判断是否要改为大转角\r\n                if (radian1 + radian2 > Math.PI && lastItem.val[const_1.APOS_LARGE] === 0) {\r\n                    lastItem.val[const_1.APOS_LARGE] = 1;\r\n                }\r\n                // 直接强制改为绝对坐标\r\n                lastItem.type = 'A';\r\n                lastItem.val[const_1.APOS_X] = abs[0];\r\n                lastItem.val[const_1.APOS_Y] = abs[1];\r\n                // 移除当前节点\r\n                subPath.splice(index, 1);\r\n            }\r\n        }\r\n    }\r\n    return;\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/path/combine.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/path/complex.ts":
-/*!**************************************!*\
-  !*** ./src/slimming/path/complex.ts ***!
-  \**************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst symmetry_1 = __webpack_require__(/*! ../math/symmetry */ \"./src/slimming/math/symmetry.ts\");\r\nconst plus_1 = __webpack_require__(/*! ../math/plus */ \"./src/slimming/math/plus.ts\");\r\nconst minus_1 = __webpack_require__(/*! ../math/minus */ \"./src/slimming/math/minus.ts\");\r\n// 把简单路径指令转回复杂指令\r\nexports.complex = (item, lastItem) => {\r\n    const complexItem = {\r\n        type: item.type,\r\n        from: item.from.slice(),\r\n        val: item.val.slice(),\r\n    };\r\n    if (item.type.toLowerCase() === 's') {\r\n        let [x, y] = item.from;\r\n        if (lastItem.type === 'C') {\r\n            x = symmetry_1.symmetry(lastItem.val[2], item.from[0]);\r\n            y = symmetry_1.symmetry(lastItem.val[3], item.from[1]);\r\n        }\r\n        else if (lastItem.type === 'c') {\r\n            x = symmetry_1.symmetry(plus_1.plus(lastItem.val[2], lastItem.from[0]), item.from[0]);\r\n            y = symmetry_1.symmetry(plus_1.plus(lastItem.val[3], lastItem.from[1]), item.from[1]);\r\n        }\r\n        if (item.type === 'S') {\r\n            complexItem.type = 'C';\r\n            complexItem.val.unshift(x, y);\r\n        }\r\n        else {\r\n            complexItem.type = 'c';\r\n            complexItem.val.unshift(minus_1.minus(x, item.from[0]), minus_1.minus(y, item.from[1]));\r\n        }\r\n    }\r\n    else if (item.type.toLowerCase() === 't') {\r\n        let [x, y] = item.from;\r\n        if (lastItem.type === 'Q') {\r\n            x = symmetry_1.symmetry(lastItem.val[0], item.from[0]);\r\n            y = symmetry_1.symmetry(lastItem.val[1], item.from[1]);\r\n        }\r\n        else if (lastItem.type === 'q') {\r\n            x = symmetry_1.symmetry(plus_1.plus(lastItem.val[0], lastItem.from[0]), item.from[0]);\r\n            y = symmetry_1.symmetry(plus_1.plus(lastItem.val[1], lastItem.from[1]), item.from[1]);\r\n        }\r\n        if (item.type === 'T') {\r\n            complexItem.type = 'Q';\r\n            complexItem.val.unshift(x, y);\r\n        }\r\n        else {\r\n            complexItem.type = 'q';\r\n            complexItem.val.unshift(minus_1.minus(x, item.from[0]), minus_1.minus(y, item.from[1]));\r\n        }\r\n    }\r\n    return complexItem;\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/path/complex.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/path/compute-a.ts":
-/*!****************************************!*\
-  !*** ./src/slimming/path/compute-a.ts ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst const_1 = __webpack_require__(/*! ../const */ \"./src/slimming/const/index.ts\");\r\nconst number_length_1 = __webpack_require__(/*! ../utils/number-length */ \"./src/slimming/utils/number-length.ts\");\r\nconst compute_l_1 = __webpack_require__(/*! ./compute-l */ \"./src/slimming/path/compute-l.ts\");\r\nexports.computeA = (absolute, relative, pathResult, pos) => {\r\n    // https://www.w3.org/TR/SVG/paths.html#ArcOutOfRangeParameters\r\n    // 起始点和目标点重合，或者有一个半径为 0，可以转直线指令\r\n    if ((absolute[const_1.APOS_X] === pos[0] && absolute[const_1.APOS_Y] === pos[1]) || absolute[const_1.APOS_RX] === 0 || absolute[const_1.APOS_RY] === 0) {\r\n        return compute_l_1.computeL([absolute[const_1.APOS_X], absolute[const_1.APOS_Y]], [relative[const_1.APOS_X], relative[const_1.APOS_Y]], pathResult, pos);\r\n    }\r\n    // 负数半径取绝对值\r\n    if (absolute[const_1.APOS_RX] < 0) {\r\n        absolute[const_1.APOS_RX] = Math.abs(absolute[const_1.APOS_RX]);\r\n    }\r\n    if (absolute[const_1.APOS_RY] < 0) {\r\n        absolute[const_1.APOS_RY] = Math.abs(absolute[const_1.APOS_RY]);\r\n    }\r\n    const rLen = pathResult.length;\r\n    const relLen = number_length_1.numberLength(relative);\r\n    const absLen = number_length_1.numberLength(absolute);\r\n    if (relLen === absLen) { // 如果相等则参照前一个指令\r\n        if (pathResult[rLen - 1].type === 'A') {\r\n            pathResult.push({\r\n                type: 'A',\r\n                from: pos.slice(),\r\n                val: absolute,\r\n            });\r\n        }\r\n        else {\r\n            pathResult.push({\r\n                type: 'a',\r\n                from: pos.slice(),\r\n                val: relative,\r\n            });\r\n        }\r\n    }\r\n    else if (relLen < absLen) {\r\n        pathResult.push({\r\n            type: 'a',\r\n            from: pos.slice(),\r\n            val: relative,\r\n        });\r\n    }\r\n    else {\r\n        pathResult.push({\r\n            type: 'A',\r\n            from: pos.slice(),\r\n            val: absolute,\r\n        });\r\n    }\r\n    return [absolute[const_1.APOS_X], absolute[const_1.APOS_Y]];\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/path/compute-a.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/path/compute-c.ts":
-/*!****************************************!*\
-  !*** ./src/slimming/path/compute-c.ts ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst plus_1 = __webpack_require__(/*! ../math/plus */ \"./src/slimming/math/plus.ts\");\r\nconst number_length_1 = __webpack_require__(/*! ../utils/number-length */ \"./src/slimming/utils/number-length.ts\");\r\nconst compute_s_1 = __webpack_require__(/*! ./compute-s */ \"./src/slimming/path/compute-s.ts\");\r\nconst match_control_1 = __webpack_require__(/*! ./match-control */ \"./src/slimming/path/match-control.ts\");\r\nconst canTransformS = (pathResult, ctrlX, ctrlY, from) => {\r\n    const lastItem = pathResult[pathResult.length - 1];\r\n    const type = lastItem.type;\r\n    switch (type) {\r\n        case 'C':\r\n            return match_control_1.matchControl(lastItem.val[2], lastItem.val[3], from[0], from[1], ctrlX, ctrlY);\r\n        case 'c':\r\n            return match_control_1.matchControl(plus_1.plus(lastItem.val[2], lastItem.from[0]), plus_1.plus(lastItem.val[3], lastItem.from[1]), from[0], from[1], ctrlX, ctrlY);\r\n        case 'S':\r\n            return match_control_1.matchControl(lastItem.val[0], lastItem.val[1], from[0], from[1], ctrlX, ctrlY);\r\n        case 's':\r\n            return match_control_1.matchControl(plus_1.plus(lastItem.val[0], lastItem.from[0]), plus_1.plus(lastItem.val[1], lastItem.from[1]), from[0], from[1], ctrlX, ctrlY);\r\n        default:\r\n            // 前置不是 c/s 指令，则可以根据控制点和 from 是否重合来决定是否可以转为 s\r\n            return ctrlX === from[0] && ctrlY === from[1];\r\n    }\r\n};\r\nexports.computeC = (absolute, relative, pathResult, pos) => {\r\n    if (canTransformS(pathResult, absolute[0], absolute[1], pos)) {\r\n        return compute_s_1.computeS(absolute.slice(2), relative.slice(2), pathResult, pos);\r\n    }\r\n    else {\r\n        // 普通情况\r\n        const relLen = number_length_1.numberLength(relative);\r\n        const absLen = number_length_1.numberLength(absolute);\r\n        if (relLen === absLen) { // 如果相等则参照前一个指令\r\n            if (pathResult[pathResult.length - 1].type === 'C') {\r\n                pathResult.push({\r\n                    type: 'C',\r\n                    from: pos.slice(),\r\n                    val: absolute.slice(),\r\n                });\r\n            }\r\n            else {\r\n                pathResult.push({\r\n                    type: 'c',\r\n                    from: pos.slice(),\r\n                    val: relative.slice(),\r\n                });\r\n            }\r\n        }\r\n        else if (relLen < absLen) {\r\n            pathResult.push({\r\n                type: 'c',\r\n                from: pos.slice(),\r\n                val: relative.slice(),\r\n            });\r\n        }\r\n        else {\r\n            pathResult.push({\r\n                type: 'C',\r\n                from: pos.slice(),\r\n                val: absolute.slice(),\r\n            });\r\n        }\r\n        return [absolute[4], absolute[5]];\r\n    }\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/path/compute-c.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/path/compute-h.ts":
-/*!****************************************!*\
-  !*** ./src/slimming/path/compute-h.ts ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst number_length_1 = __webpack_require__(/*! ../utils/number-length */ \"./src/slimming/utils/number-length.ts\");\r\nexports.computeH = (absolute, relative, pathResult, pos) => {\r\n    const relLen = number_length_1.numberLength([relative]);\r\n    const absLen = number_length_1.numberLength([absolute]);\r\n    if (relLen === absLen) { // 如果相等则参照前一个指令\r\n        if (pathResult[pathResult.length - 1].type === 'H') {\r\n            pathResult.push({\r\n                type: 'H',\r\n                from: pos.slice(),\r\n                val: [absolute],\r\n            });\r\n        }\r\n        else {\r\n            pathResult.push({\r\n                type: 'h',\r\n                from: pos.slice(),\r\n                val: [relative],\r\n            });\r\n        }\r\n    }\r\n    else if (relLen < absLen) {\r\n        pathResult.push({\r\n            type: 'h',\r\n            from: pos.slice(),\r\n            val: [relative],\r\n        });\r\n    }\r\n    else {\r\n        pathResult.push({\r\n            type: 'H',\r\n            from: pos.slice(),\r\n            val: [absolute],\r\n        });\r\n    }\r\n    return [absolute, pos[1]];\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/path/compute-h.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/path/compute-l.ts":
-/*!****************************************!*\
-  !*** ./src/slimming/path/compute-l.ts ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst number_length_1 = __webpack_require__(/*! ../utils/number-length */ \"./src/slimming/utils/number-length.ts\");\r\nconst compute_h_1 = __webpack_require__(/*! ./compute-h */ \"./src/slimming/path/compute-h.ts\");\r\nconst compute_v_1 = __webpack_require__(/*! ./compute-v */ \"./src/slimming/path/compute-v.ts\");\r\nexports.computeL = (absolute, relative, pathResult, pos) => {\r\n    // 需要转为水平或垂直的情况\r\n    // 注意，0 长度的线段不能省略，它可能也是有意义的 @by wangfeng-pd @v1.5.0\r\n    // https://www.w3.org/TR/SVG/paths.html#ZeroLengthSegments\r\n    if (relative[1] === 0) {\r\n        return compute_h_1.computeH(absolute[0], relative[0], pathResult, pos);\r\n    }\r\n    else if (relative[0] === 0) {\r\n        return compute_v_1.computeV(absolute[1], relative[1], pathResult, pos);\r\n    }\r\n    // 普通情况\r\n    const relLen = number_length_1.numberLength(relative);\r\n    const absLen = number_length_1.numberLength(absolute);\r\n    if (relLen === absLen) { // 如果相等则参照前一个指令\r\n        if (pathResult[pathResult.length - 1].type === 'L') {\r\n            pathResult.push({\r\n                type: 'L',\r\n                from: pos.slice(),\r\n                val: absolute.slice(),\r\n            });\r\n        }\r\n        else {\r\n            pathResult.push({\r\n                type: 'l',\r\n                from: pos.slice(),\r\n                val: relative.slice(),\r\n            });\r\n        }\r\n    }\r\n    else if (relLen < absLen) {\r\n        pathResult.push({\r\n            type: 'l',\r\n            from: pos.slice(),\r\n            val: relative.slice(),\r\n        });\r\n    }\r\n    else {\r\n        pathResult.push({\r\n            type: 'L',\r\n            from: pos.slice(),\r\n            val: absolute.slice(),\r\n        });\r\n    }\r\n    return absolute.slice();\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/path/compute-l.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/path/compute-m.ts":
-/*!****************************************!*\
-  !*** ./src/slimming/path/compute-m.ts ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst number_length_1 = __webpack_require__(/*! ../utils/number-length */ \"./src/slimming/utils/number-length.ts\");\r\nexports.computeM = (absolute, relative, pathResult, pos) => {\r\n    if (ramda_1.lt(number_length_1.numberLength(absolute), number_length_1.numberLength(relative))) {\r\n        pathResult.push({\r\n            type: 'M',\r\n            from: pos.slice(),\r\n            val: absolute.slice(),\r\n        });\r\n    }\r\n    else {\r\n        pathResult.push({\r\n            type: 'm',\r\n            from: pos.slice(),\r\n            val: relative.slice(),\r\n        });\r\n    }\r\n    return absolute.slice();\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/path/compute-m.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/path/compute-q.ts":
-/*!****************************************!*\
-  !*** ./src/slimming/path/compute-q.ts ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst plus_1 = __webpack_require__(/*! ../math/plus */ \"./src/slimming/math/plus.ts\");\r\nconst number_length_1 = __webpack_require__(/*! ../utils/number-length */ \"./src/slimming/utils/number-length.ts\");\r\nconst compute_t_1 = __webpack_require__(/*! ./compute-t */ \"./src/slimming/path/compute-t.ts\");\r\nconst match_control_1 = __webpack_require__(/*! ./match-control */ \"./src/slimming/path/match-control.ts\");\r\nconst canTransformT = (pathResult, ctrlX, ctrlY, from) => {\r\n    const lastItem = pathResult[pathResult.length - 1];\r\n    const type = lastItem.type;\r\n    switch (type) {\r\n        case 'Q':\r\n            return match_control_1.matchControl(lastItem.val[0], lastItem.val[1], from[0], from[1], ctrlX, ctrlY);\r\n        case 'q':\r\n            return match_control_1.matchControl(plus_1.plus(lastItem.val[0], lastItem.from[0]), plus_1.plus(lastItem.val[1], lastItem.from[1]), from[0], from[1], ctrlX, ctrlY);\r\n        case 'T':\r\n        case 't':\r\n            return match_control_1.matchControl(lastItem.from[2], lastItem.from[3], from[0], from[1], ctrlX, ctrlY);\r\n        default:\r\n            // 前置不是 q/t 指令，则可以根据控制点和 from 是否重合来决定是否可以转为 t\r\n            return ramda_1.equals([ctrlX, ctrlY], from);\r\n    }\r\n};\r\nexports.computeQ = (absolute, relative, pathResult, pos) => {\r\n    if (canTransformT(pathResult, absolute[0], absolute[1], pos)) {\r\n        return compute_t_1.computeT(absolute.slice(2), relative.slice(2), pathResult, pos);\r\n    }\r\n    else {\r\n        // 普通情况\r\n        const relLen = number_length_1.numberLength(relative);\r\n        const absLen = number_length_1.numberLength(absolute);\r\n        if (relLen === absLen) { // 如果相等则参照前一个指令\r\n            if (pathResult[pathResult.length - 1].type === 'Q') {\r\n                pathResult.push({\r\n                    type: 'Q',\r\n                    from: pos.slice(),\r\n                    val: absolute.slice(),\r\n                });\r\n            }\r\n            else {\r\n                pathResult.push({\r\n                    type: 'q',\r\n                    from: pos.slice(),\r\n                    val: relative.slice(),\r\n                });\r\n            }\r\n        }\r\n        else if (relLen < absLen) {\r\n            pathResult.push({\r\n                type: 'q',\r\n                from: pos.slice(),\r\n                val: relative.slice(),\r\n            });\r\n        }\r\n        else {\r\n            pathResult.push({\r\n                type: 'Q',\r\n                from: pos.slice(),\r\n                val: absolute.slice(),\r\n            });\r\n        }\r\n        return [absolute[2], absolute[3]];\r\n    }\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/path/compute-q.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/path/compute-s.ts":
-/*!****************************************!*\
-  !*** ./src/slimming/path/compute-s.ts ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst number_length_1 = __webpack_require__(/*! ../utils/number-length */ \"./src/slimming/utils/number-length.ts\");\r\nexports.SPOS_X2 = 0;\r\nexports.SPOS_Y2 = 1;\r\nexports.SPOS_X = 2;\r\nexports.SPOS_Y = 3;\r\nexports.computeS = (absolute, relative, pathResult, pos) => {\r\n    const relLen = number_length_1.numberLength(relative);\r\n    const absLen = number_length_1.numberLength(absolute);\r\n    if (relLen === absLen) { // 如果相等则参照前一个指令\r\n        if (pathResult[pathResult.length - 1].type === 'S') {\r\n            pathResult.push({\r\n                type: 'S',\r\n                from: pos.slice(),\r\n                val: absolute.slice(),\r\n            });\r\n        }\r\n        else {\r\n            pathResult.push({\r\n                type: 's',\r\n                from: pos.slice(),\r\n                val: relative.slice(),\r\n            });\r\n        }\r\n    }\r\n    else if (relLen < absLen) {\r\n        pathResult.push({\r\n            type: 's',\r\n            from: pos.slice(),\r\n            val: relative.slice(),\r\n        });\r\n    }\r\n    else {\r\n        pathResult.push({\r\n            type: 'S',\r\n            from: pos.slice(),\r\n            val: absolute.slice(),\r\n        });\r\n    }\r\n    return [absolute[exports.SPOS_X], absolute[exports.SPOS_Y]];\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/path/compute-s.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/path/compute-t.ts":
-/*!****************************************!*\
-  !*** ./src/slimming/path/compute-t.ts ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst plus_1 = __webpack_require__(/*! ../math/plus */ \"./src/slimming/math/plus.ts\");\r\nconst symmetry_1 = __webpack_require__(/*! ../math/symmetry */ \"./src/slimming/math/symmetry.ts\");\r\nconst number_length_1 = __webpack_require__(/*! ../utils/number-length */ \"./src/slimming/utils/number-length.ts\");\r\nexports.computeT = (absolute, relative, pathResult, pos) => {\r\n    // t 类型的 from 会存储 4 个值，前 2 个为前一个指令的 absolute，后 2 个存储本指令未记录的控制点的绝对坐标\r\n    const from = pos.slice();\r\n    const lastItem = pathResult[pathResult.length - 1];\r\n    switch (lastItem.type) {\r\n        case 'T':\r\n        case 't':\r\n            from.push(symmetry_1.symmetry(lastItem.from[2], from[0]), symmetry_1.symmetry(lastItem.from[3], from[1]));\r\n            break;\r\n        case 'Q':\r\n            from.push(symmetry_1.symmetry(lastItem.val[0], from[0]), symmetry_1.symmetry(lastItem.val[1], from[1]));\r\n            break;\r\n        case 'q':\r\n            from.push(symmetry_1.symmetry(plus_1.plus(lastItem.val[0], lastItem.from[0]), from[0]), symmetry_1.symmetry(plus_1.plus(lastItem.val[1], lastItem.from[1]), from[1]));\r\n            break;\r\n        default:\r\n            // 前置不是 q/t 指令，则控制点与 from 相同\r\n            from.push(from[0], from[1]);\r\n            break;\r\n    }\r\n    const relLen = number_length_1.numberLength(relative);\r\n    const absLen = number_length_1.numberLength(absolute);\r\n    if (relLen === absLen) { // 如果相等则参照前一个指令\r\n        if (pathResult[pathResult.length - 1].type === 'T') {\r\n            pathResult.push({\r\n                type: 'T',\r\n                from,\r\n                val: absolute.slice(),\r\n            });\r\n        }\r\n        else {\r\n            pathResult.push({\r\n                type: 't',\r\n                from,\r\n                val: relative.slice(),\r\n            });\r\n        }\r\n    }\r\n    else if (relLen < absLen) {\r\n        pathResult.push({\r\n            type: 't',\r\n            from,\r\n            val: relative.slice(),\r\n        });\r\n    }\r\n    else {\r\n        pathResult.push({\r\n            type: 'T',\r\n            from,\r\n            val: absolute.slice(),\r\n        });\r\n    }\r\n    return absolute.slice();\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/path/compute-t.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/path/compute-v.ts":
-/*!****************************************!*\
-  !*** ./src/slimming/path/compute-v.ts ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst number_length_1 = __webpack_require__(/*! ../utils/number-length */ \"./src/slimming/utils/number-length.ts\");\r\nexports.computeV = (absolute, relative, pathResult, pos) => {\r\n    const relLen = number_length_1.numberLength([relative]);\r\n    const absLen = number_length_1.numberLength([absolute]);\r\n    if (relLen === absLen) { // 如果相等则参照前一个指令\r\n        if (pathResult[pathResult.length - 1].type === 'V') {\r\n            pathResult.push({\r\n                type: 'V',\r\n                from: pos.slice(),\r\n                val: [absolute],\r\n            });\r\n        }\r\n        else {\r\n            pathResult.push({\r\n                type: 'v',\r\n                from: pos.slice(),\r\n                val: [relative],\r\n            });\r\n        }\r\n    }\r\n    else if (relLen < absLen) {\r\n        pathResult.push({\r\n            type: 'v',\r\n            from: pos.slice(),\r\n            val: [relative],\r\n        });\r\n    }\r\n    else {\r\n        pathResult.push({\r\n            type: 'V',\r\n            from: pos.slice(),\r\n            val: [absolute],\r\n        });\r\n    }\r\n    return [pos[0], absolute];\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/path/compute-v.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/path/compute-z.ts":
-/*!****************************************!*\
-  !*** ./src/slimming/path/compute-z.ts ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst plus_1 = __webpack_require__(/*! ../math/plus */ \"./src/slimming/math/plus.ts\");\r\nexports.computeZ = (pathResult, pos) => {\r\n    const rLen = pathResult.length;\r\n    const lastItem = pathResult[rLen - 1];\r\n    // 如果 z 指令紧跟着 z 指令，直接抛弃\r\n    if (lastItem.type.toLowerCase() === 'z') {\r\n        return pos;\r\n    }\r\n    const zpos = (pathResult[0].type === 'm') ? [plus_1.plus(pathResult[0].val[0], pathResult[0].from[0]), plus_1.plus(pathResult[0].val[1], pathResult[0].from[1])] : [pathResult[0].val[0], pathResult[0].val[1]];\r\n    pathResult.push({\r\n        type: 'z',\r\n        from: pos.slice(),\r\n        val: [],\r\n    });\r\n    return zpos;\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/path/compute-z.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/path/do-compute.ts":
-/*!*****************************************!*\
-  !*** ./src/slimming/path/do-compute.ts ***!
-  \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst const_1 = __webpack_require__(/*! ../const */ \"./src/slimming/const/index.ts\");\r\nconst minus_1 = __webpack_require__(/*! ../math/minus */ \"./src/slimming/math/minus.ts\");\r\nconst plus_1 = __webpack_require__(/*! ../math/plus */ \"./src/slimming/math/plus.ts\");\r\nconst compute_a_1 = __webpack_require__(/*! ./compute-a */ \"./src/slimming/path/compute-a.ts\");\r\nconst compute_c_1 = __webpack_require__(/*! ./compute-c */ \"./src/slimming/path/compute-c.ts\");\r\nconst compute_h_1 = __webpack_require__(/*! ./compute-h */ \"./src/slimming/path/compute-h.ts\");\r\nconst compute_l_1 = __webpack_require__(/*! ./compute-l */ \"./src/slimming/path/compute-l.ts\");\r\nconst compute_m_1 = __webpack_require__(/*! ./compute-m */ \"./src/slimming/path/compute-m.ts\");\r\nconst compute_q_1 = __webpack_require__(/*! ./compute-q */ \"./src/slimming/path/compute-q.ts\");\r\nconst compute_s_1 = __webpack_require__(/*! ./compute-s */ \"./src/slimming/path/compute-s.ts\");\r\nconst compute_t_1 = __webpack_require__(/*! ./compute-t */ \"./src/slimming/path/compute-t.ts\");\r\nconst compute_v_1 = __webpack_require__(/*! ./compute-v */ \"./src/slimming/path/compute-v.ts\");\r\nconst compute_z_1 = __webpack_require__(/*! ./compute-z */ \"./src/slimming/path/compute-z.ts\");\r\nconst translate_1 = __webpack_require__(/*! ./translate */ \"./src/slimming/path/translate.ts\");\r\nconst cArgLen = 6;\r\nconst sArgLen = 4;\r\nconst qArgLen = 4;\r\nexports.doCompute = (pathArr) => {\r\n    const result = [];\r\n    let pos = [0, 0];\r\n    // tslint:disable-next-line:cyclomatic-complexity\r\n    for (const subPath of pathArr) {\r\n        const pathResult = [];\r\n        for (const pathItem of subPath) {\r\n            switch (pathItem.type) {\r\n                // 平移 - 绝对\r\n                case 'M':\r\n                    // 当移动指令超过 2 个时，后续指令按平移处理 - fixed@v1.4.2\r\n                    for (let i = 0, l = pathItem.val.length; i < l; i += 2) {\r\n                        const handler = (i === 0) ? compute_m_1.computeM : compute_l_1.computeL;\r\n                        pos = handler([pathItem.val[i], pathItem.val[i + 1]], translate_1.abs2rel([pathItem.val[i], pathItem.val[i + 1]], pos), pathResult, pos);\r\n                    }\r\n                    break;\r\n                // 平移 - 相对\r\n                case 'm':\r\n                    // 当移动指令超过 2 个时，后续指令按平移处理 - fixed@v1.4.2\r\n                    for (let i = 0, l = pathItem.val.length; i < l; i += 2) {\r\n                        const handler = (i === 0) ? compute_m_1.computeM : compute_l_1.computeL;\r\n                        pos = handler(translate_1.rel2abs([pathItem.val[i], pathItem.val[i + 1]], pos), [pathItem.val[i], pathItem.val[i + 1]], pathResult, pos);\r\n                    }\r\n                    break;\r\n                // 水平直线 - 绝对\r\n                case 'H':\r\n                    for (let i = 0, l = pathItem.val.length; i < l; i++) {\r\n                        pos = compute_h_1.computeH(pathItem.val[i], minus_1.minus(pathItem.val[i], pos[0]), pathResult, pos);\r\n                    }\r\n                    break;\r\n                // 水平直线 - 相对\r\n                case 'h':\r\n                    for (let i = 0, l = pathItem.val.length; i < l; i++) {\r\n                        pos = compute_h_1.computeH(plus_1.plus(pathItem.val[i], pos[0]), pathItem.val[i], pathResult, pos);\r\n                    }\r\n                    break;\r\n                // 垂直直线 - 绝对\r\n                case 'V':\r\n                    for (let i = 0, l = pathItem.val.length; i < l; i++) {\r\n                        pos = compute_v_1.computeV(pathItem.val[i], minus_1.minus(pathItem.val[i], pos[1]), pathResult, pos);\r\n                    }\r\n                    break;\r\n                // 垂直直线 - 相对\r\n                case 'v':\r\n                    for (let i = 0, l = pathItem.val.length; i < l; i++) {\r\n                        pos = compute_v_1.computeV(plus_1.plus(pathItem.val[i], pos[1]), pathItem.val[i], pathResult, pos);\r\n                    }\r\n                    break;\r\n                // 直线 - 绝对\r\n                case 'L':\r\n                    for (let i = 0, l = pathItem.val.length; i < l; i += 2) {\r\n                        pos = compute_l_1.computeL([pathItem.val[i], pathItem.val[i + 1]], translate_1.abs2rel([pathItem.val[i], pathItem.val[i + 1]], pos), pathResult, pos);\r\n                    }\r\n                    break;\r\n                // 直线 - 相对\r\n                case 'l':\r\n                    for (let i = 0, l = pathItem.val.length; i < l; i += 2) {\r\n                        pos = compute_l_1.computeL(translate_1.rel2abs([pathItem.val[i], pathItem.val[i + 1]], pos), [pathItem.val[i], pathItem.val[i + 1]], pathResult, pos);\r\n                    }\r\n                    break;\r\n                // 三次贝塞尔曲线 - 绝对\r\n                case 'C':\r\n                    for (let i = 0, l = pathItem.val.length; i < l; i += cArgLen) {\r\n                        const CArgs = pathItem.val.slice(i, i + cArgLen);\r\n                        pos = compute_c_1.computeC(CArgs, translate_1.abs2rel(CArgs, pos), pathResult, pos);\r\n                    }\r\n                    break;\r\n                // 三次贝塞尔曲线 - 相对\r\n                case 'c':\r\n                    for (let i = 0, l = pathItem.val.length; i < l; i += cArgLen) {\r\n                        const cArgs = pathItem.val.slice(i, i + cArgLen);\r\n                        pos = compute_c_1.computeC(translate_1.rel2abs(cArgs, pos), cArgs, pathResult, pos);\r\n                    }\r\n                    break;\r\n                // 三次连续贝塞尔曲线 - 绝对\r\n                case 'S':\r\n                    for (let i = 0, l = pathItem.val.length; i < l; i += sArgLen) {\r\n                        const SArgs = pathItem.val.slice(i, i + sArgLen);\r\n                        pos = compute_s_1.computeS(SArgs, translate_1.abs2rel(SArgs, pos), pathResult, pos);\r\n                    }\r\n                    break;\r\n                // 三次连续贝塞尔曲线 - 相对\r\n                case 's':\r\n                    for (let i = 0, l = pathItem.val.length; i < l; i += sArgLen) {\r\n                        const sArgs = pathItem.val.slice(i, i + sArgLen);\r\n                        pos = compute_s_1.computeS(translate_1.rel2abs(sArgs, pos), sArgs, pathResult, pos);\r\n                    }\r\n                    break;\r\n                // 二次贝塞尔曲线 - 绝对\r\n                case 'Q':\r\n                    for (let i = 0, l = pathItem.val.length; i < l; i += qArgLen) {\r\n                        const QArgs = pathItem.val.slice(i, i + qArgLen);\r\n                        pos = compute_q_1.computeQ(QArgs, translate_1.abs2rel(QArgs, pos), pathResult, pos);\r\n                    }\r\n                    break;\r\n                // 二次贝塞尔曲线 - 相对\r\n                case 'q':\r\n                    for (let i = 0, l = pathItem.val.length; i < l; i += qArgLen) {\r\n                        const qArgs = pathItem.val.slice(i, i + qArgLen);\r\n                        pos = compute_q_1.computeQ(translate_1.rel2abs(qArgs, pos), qArgs, pathResult, pos);\r\n                    }\r\n                    break;\r\n                // 二次连续贝塞尔曲线 - 绝对\r\n                case 'T':\r\n                    for (let i = 0, l = pathItem.val.length; i < l; i += 2) {\r\n                        const TArgs = pathItem.val.slice(i, i + 2);\r\n                        pos = compute_t_1.computeT(TArgs, translate_1.abs2rel(TArgs, pos), pathResult, pos);\r\n                    }\r\n                    break;\r\n                // 二次连续贝塞尔曲线 - 相对\r\n                case 't':\r\n                    for (let i = 0, l = pathItem.val.length; i < l; i += 2) {\r\n                        const tArgs = pathItem.val.slice(i, i + 2);\r\n                        pos = compute_t_1.computeT(translate_1.rel2abs(tArgs, pos), tArgs, pathResult, pos);\r\n                    }\r\n                    break;\r\n                // 圆弧 - 绝对\r\n                case 'A':\r\n                    for (let i = 0, l = pathItem.val.length; i < l; i += const_1.APOS_LEN) {\r\n                        const AArgs = pathItem.val.slice(i, i + const_1.APOS_LEN);\r\n                        pos = compute_a_1.computeA(AArgs, AArgs.slice(0, const_1.APOS_X).concat(translate_1.abs2rel(AArgs.slice(const_1.APOS_X), pos)), pathResult, pos);\r\n                    }\r\n                    break;\r\n                // 圆弧 - 相对\r\n                case 'a':\r\n                    for (let i = 0, l = pathItem.val.length; i < l; i += const_1.APOS_LEN) {\r\n                        const aArgs = pathItem.val.slice(i, i + const_1.APOS_LEN);\r\n                        pos = compute_a_1.computeA(aArgs.slice(0, const_1.APOS_X).concat(translate_1.rel2abs(aArgs.slice(const_1.APOS_X), pos)), aArgs, pathResult, pos);\r\n                    }\r\n                    break;\r\n                default:\r\n                    pos = compute_z_1.computeZ(pathResult, pos);\r\n                    break;\r\n            }\r\n        }\r\n        if (pathResult.length) {\r\n            result.push(pathResult);\r\n        }\r\n    }\r\n    return result;\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/path/do-compute.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/path/exec-arc.ts":
-/*!***************************************!*\
-  !*** ./src/slimming/path/exec-arc.ts ***!
-  \***************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst syntax_1 = __webpack_require__(/*! ../const/syntax */ \"./src/slimming/const/syntax.ts\");\r\nconst FLAG_POS1 = 3;\r\nconst FLAG_POS2 = 4;\r\nconst LOOP_LEN = 7;\r\nexports.execArc = (s) => {\r\n    const result = [];\r\n    // 重要！含有 g 修饰符的正则表达式 exec 时要先重置！\r\n    syntax_1.numberGlobal.lastIndex = 0;\r\n    let matches = syntax_1.numberGlobal.exec(s);\r\n    let pos = 0;\r\n    while (matches) {\r\n        if (pos % LOOP_LEN === FLAG_POS1 || pos % LOOP_LEN === FLAG_POS2) {\r\n            if (matches[0][0] === '0' || matches[0][0] === '1') {\r\n                result.push(+matches[0][0]);\r\n                matches[0] = matches[0].slice(1);\r\n                if (matches[0].length) {\r\n                    pos++;\r\n                    continue;\r\n                }\r\n            }\r\n        }\r\n        else {\r\n            result.push(+matches[0]);\r\n        }\r\n        pos++;\r\n        matches = syntax_1.numberGlobal.exec(s);\r\n    }\r\n    return result;\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/path/exec-arc.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/path/exec.ts":
-/*!***********************************!*\
-  !*** ./src/slimming/path/exec.ts ***!
-  \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst const_1 = __webpack_require__(/*! ../const */ \"./src/slimming/const/index.ts\");\r\nconst syntax_1 = __webpack_require__(/*! ../const/syntax */ \"./src/slimming/const/syntax.ts\");\r\nconst exec_numberlist_1 = __webpack_require__(/*! ../utils/exec-numberlist */ \"./src/slimming/utils/exec-numberlist.ts\");\r\nconst exec_arc_1 = __webpack_require__(/*! ./exec-arc */ \"./src/slimming/path/exec-arc.ts\");\r\nconst pathReg = new RegExp(`([mzlhvcsqta])\\\\s*((?:${syntax_1.numberSequence})?)(.*?)(?=[mzlhvcsqta]|$)`, 'gim');\r\nexports.execPath = (str) => {\r\n    const result = [];\r\n    let temp = [];\r\n    // 重置正则匹配位置\r\n    pathReg.lastIndex = 0;\r\n    let match = pathReg.exec(str);\r\n    outer: while (match !== null) {\r\n        // 所有路径必须从 mM 开始\r\n        const type = match[1].toLowerCase();\r\n        if (!temp.length && type !== 'm') {\r\n            return result;\r\n        }\r\n        let val = [];\r\n        if (match[2]) {\r\n            val = type === 'a' ? exec_arc_1.execArc(match[2]) : exec_numberlist_1.execNumberList(match[2]);\r\n        }\r\n        switch (type) {\r\n            // 平移的参数必须为偶数\r\n            case 'm':\r\n                if (temp.length) {\r\n                    result.push(temp);\r\n                    temp = [];\r\n                }\r\n                if (val.length % 2 !== 0) {\r\n                    if (val.length > 2) {\r\n                        temp.push({\r\n                            type: match[1],\r\n                            val: val.slice(0, val.length - 1),\r\n                        });\r\n                    }\r\n                    break outer;\r\n                }\r\n                break;\r\n            case 'l':\r\n            case 't':\r\n                // l 和 t 的参数必须为偶数\r\n                if (val.length % 2 !== 0) {\r\n                    if (val.length > 2) {\r\n                        temp.push({\r\n                            type: match[1],\r\n                            val: val.slice(0, val.length - 1),\r\n                        });\r\n                    }\r\n                    break outer;\r\n                }\r\n                break;\r\n            case 'z':\r\n                // z 不允许有参数\r\n                if (val.length) {\r\n                    temp.push({\r\n                        type: match[1],\r\n                        val: [],\r\n                    });\r\n                    break outer;\r\n                }\r\n                break;\r\n            case 's':\r\n            case 'q':\r\n                // s 和 q 的参数必须是 4 的整倍数\r\n                if (val.length % 4 !== 0) {\r\n                    if (val.length > 4) {\r\n                        temp.push({\r\n                            type: match[1],\r\n                            val: val.slice(0, val.length - val.length % 4),\r\n                        });\r\n                    }\r\n                    break outer;\r\n                }\r\n                break;\r\n            case 'c':\r\n                // c 的参数必须是 6 的整倍数\r\n                if (val.length % 6 !== 0) {\r\n                    if (val.length > 6) {\r\n                        temp.push({\r\n                            type: match[1],\r\n                            val: val.slice(0, val.length - val.length % 6),\r\n                        });\r\n                    }\r\n                    break outer;\r\n                }\r\n                break;\r\n            case 'a':\r\n                // a 的参数第 3、4 位必须是 0 或 1\r\n                const _val = [];\r\n                val.every((v, i) => {\r\n                    if ((i % const_1.APOS_LEN === const_1.APOS_LARGE || i % const_1.APOS_LEN === const_1.APOS_SWEEP) && v !== 0 && v !== 1) {\r\n                        return false;\r\n                    }\r\n                    _val.push(v);\r\n                    return true;\r\n                });\r\n                // a 的参数必须是 7 的整倍数\r\n                if (_val.length % const_1.APOS_LEN !== 0) {\r\n                    if (_val.length > const_1.APOS_LEN) {\r\n                        temp.push({\r\n                            type: match[1],\r\n                            val: _val.slice(0, _val.length - _val.length % const_1.APOS_LEN),\r\n                        });\r\n                    }\r\n                    break outer;\r\n                }\r\n                break;\r\n            default:\r\n                break;\r\n        }\r\n        // 只有 z 指令不能没有参数\r\n        if (type !== 'z' && !val.length) {\r\n            break outer;\r\n        }\r\n        temp.push({\r\n            type: match[1],\r\n            val,\r\n        });\r\n        if (match[3] && !/^\\s*,?\\s*$/.test(match[3])) {\r\n            break;\r\n        }\r\n        match = pathReg.exec(str);\r\n    }\r\n    result.push(temp);\r\n    return result;\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/path/exec.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/path/match-control.ts":
-/*!********************************************!*\
-  !*** ./src/slimming/path/match-control.ts ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\n// 匹配贝塞尔曲线的控制点\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst symmetry_1 = __webpack_require__(/*! ../math/symmetry */ \"./src/slimming/math/symmetry.ts\");\r\nexports.matchControl = (ctrl1X, ctrl1Y, centerX, centerY, ctrl2X, ctrl2Y) => symmetry_1.symmetry(ctrl1X, centerX) === ctrl2X && symmetry_1.symmetry(ctrl1Y, centerY) === ctrl2Y;\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/path/match-control.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/path/shorten-digit.ts":
-/*!********************************************!*\
-  !*** ./src/slimming/path/shorten-digit.ts ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst tofixed_1 = __webpack_require__(/*! ../math/tofixed */ \"./src/slimming/math/tofixed.ts\");\r\nconst const_1 = __webpack_require__(/*! ../const */ \"./src/slimming/const/index.ts\");\r\nexports.shortenDigit = (pathItem, digit1, digit2) => {\r\n    if (pathItem.type.toLowerCase() === 'a') {\r\n        return pathItem.val.map((val, index) => {\r\n            const i = index % const_1.APOS_LEN;\r\n            switch (i) {\r\n                case const_1.APOS_RX:\r\n                case const_1.APOS_RY:\r\n                case const_1.APOS_X:\r\n                case const_1.APOS_Y:\r\n                    return tofixed_1.toFixed(digit1, val);\r\n                case const_1.APOS_ROTATION:\r\n                    return tofixed_1.toFixed(digit2, val);\r\n                default:\r\n                    return val;\r\n            }\r\n        });\r\n    }\r\n    else {\r\n        return pathItem.val.map(val => tofixed_1.toFixed(digit1, val));\r\n    }\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/path/shorten-digit.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/path/straighten.ts":
-/*!*****************************************!*\
-  !*** ./src/slimming/path/straighten.ts ***!
-  \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst vector_1 = __webpack_require__(/*! ../math/vector */ \"./src/slimming/math/vector.ts\");\r\nconst complex_1 = __webpack_require__(/*! ./complex */ \"./src/slimming/path/complex.ts\");\r\nconst minus_1 = __webpack_require__(/*! ../math/minus */ \"./src/slimming/math/minus.ts\");\r\n// 曲线指令转直线指令\r\nexports.straighten = (threshold, pathArr) => {\r\n    // 必须逆序执行\r\n    outer: for (let pi = pathArr.length; pi--;) {\r\n        const pathItem = pathArr[pi];\r\n        if (pathItem.type.toLowerCase() === 'a') {\r\n            let [x, y] = [pathItem.val[5], pathItem.val[6]];\r\n            if (pathItem.type === 'A') {\r\n                x = minus_1.minus(x, pathItem.from[0]);\r\n                y = minus_1.minus(y, pathItem.from[1]);\r\n            }\r\n            const v = new vector_1.Vector(x, y);\r\n            if (pathItem.val[0] * 2 < threshold && pathItem.val[1] * 2 < threshold && v.modulo < threshold) {\r\n                pathItem.type = 'l';\r\n                pathItem.val = [x, y];\r\n            }\r\n        }\r\n        else if (\r\n        // c/s 指令可以直接直线化\r\n        pathItem.type.toLowerCase() === 'c' || pathItem.type.toLowerCase() === 's'\r\n            ||\r\n                // q 指令必须保证后续指令不是 t 指令\r\n                (pathItem.type.toLowerCase() === 'q' && (pi === pathArr.length - 1 || pathArr[pi + 1].type.toLowerCase() !== 't'))) {\r\n            const complexItem = complex_1.complex(pathItem, pathArr[pi - 1]);\r\n            if (complexItem.type.toLowerCase() === complexItem.type) {\r\n                for (let i = 0; i < complexItem.val.length; i += 2) {\r\n                    const v = new vector_1.Vector(complexItem.val[i], complexItem.val[i + 1]);\r\n                    if (v.modulo >= threshold) {\r\n                        continue outer;\r\n                    }\r\n                }\r\n                pathItem.type = 'l';\r\n                // 忽略所有的控制点，直接移动到目标点\r\n                pathItem.val = pathItem.val.slice(pathItem.val.length - 2);\r\n            }\r\n            else {\r\n                for (let i = 0; i < complexItem.val.length; i += 2) {\r\n                    const v = new vector_1.Vector(minus_1.minus(complexItem.val[i], complexItem.from[0]), minus_1.minus(complexItem.val[i + 1], complexItem.from[1]));\r\n                    if (v.modulo >= threshold) {\r\n                        continue outer;\r\n                    }\r\n                }\r\n                pathItem.type = 'L';\r\n                // 忽略所有的控制点，直接移动到目标点\r\n                pathItem.val = pathItem.val.slice(pathItem.val.length - 2);\r\n            }\r\n        }\r\n    }\r\n    return pathArr;\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/path/straighten.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/path/stringify-arc.ts":
-/*!********************************************!*\
-  !*** ./src/slimming/path/stringify-arc.ts ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst shorten_number_1 = __webpack_require__(/*! ../utils/shorten-number */ \"./src/slimming/utils/shorten-number.ts\");\r\nconst shorten_number_list_1 = __webpack_require__(/*! ../utils/shorten-number-list */ \"./src/slimming/utils/shorten-number-list.ts\");\r\nconst FLAG_POS1 = 3;\r\nconst FLAG_POS2 = 4;\r\nconst LOOP_LEN = 7;\r\n// 将函数类参数转为字符串，并优化（转科学计数法，移除掉正、负号前面的逗号，移除掉0.前面的0，移除掉.1,.1或e1,.1这种case中间的逗号）\r\n// 特殊，针对 arc 类 path 指令，flag 位后面不需要跟逗号\r\nexports.stringifyArc = (s) => shorten_number_list_1.shortenNumberList(s.reduce((prev, curr, index) => {\r\n    if (index % LOOP_LEN === FLAG_POS1 || index % LOOP_LEN === FLAG_POS2 || index === s.length - 1) {\r\n        return `${prev}${shorten_number_1.shortenNumber(curr)}`;\r\n    }\r\n    else {\r\n        return `${prev}${shorten_number_1.shortenNumber(curr)},`;\r\n    }\r\n}, ''));\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/path/stringify-arc.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/path/stringify.ts":
-/*!****************************************!*\
-  !*** ./src/slimming/path/stringify.ts ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst const_1 = __webpack_require__(/*! ../const */ \"./src/slimming/const/index.ts\");\r\nconst shorten_number_list_1 = __webpack_require__(/*! ../utils/shorten-number-list */ \"./src/slimming/utils/shorten-number-list.ts\");\r\nconst stringify_funcval_1 = __webpack_require__(/*! ../utils/stringify-funcval */ \"./src/slimming/utils/stringify-funcval.ts\");\r\nconst shorten_digit_1 = __webpack_require__(/*! ./shorten-digit */ \"./src/slimming/path/shorten-digit.ts\");\r\nconst stringify_arc_1 = __webpack_require__(/*! ./stringify-arc */ \"./src/slimming/path/stringify-arc.ts\");\r\n// 路径字符串化\r\nexports.stringifyPath = (pathResult, digit1 = const_1.DEFAULT_SIZE_DIGIT, digit2 = const_1.DEFAULT_ACCURATE_DIGIT) => {\r\n    let d = '';\r\n    let lastType = '';\r\n    for (const subPath of pathResult) {\r\n        for (const pathItem of subPath) {\r\n            const stringifyFunc = pathItem.type === 'a' || pathItem.type === 'A' ? stringify_arc_1.stringifyArc : stringify_funcval_1.stringifyFuncVal;\r\n            if (\r\n            // 注意：连续的 m 指令不能进行合并\r\n            (pathItem.type === lastType && lastType.toLowerCase() !== 'm')\r\n                ||\r\n                    // 字符串化的时候，紧跟 m 指令的 l 指令，且大小写一致，可以直接向前合并\r\n                    (pathItem.type === 'l' && lastType === 'm')\r\n                ||\r\n                    (pathItem.type === 'L' && lastType === 'M')) {\r\n                d = shorten_number_list_1.shortenNumberList(`${d},${stringifyFunc(shorten_digit_1.shortenDigit(pathItem, digit1, digit2))}`);\r\n            }\r\n            else {\r\n                lastType = pathItem.type;\r\n                d += `${pathItem.type}${stringifyFunc(shorten_digit_1.shortenDigit(pathItem, digit1, digit2))}`;\r\n            }\r\n        }\r\n    }\r\n    return d;\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/path/stringify.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/path/translate.ts":
-/*!****************************************!*\
-  !*** ./src/slimming/path/translate.ts ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst minus_1 = __webpack_require__(/*! ../math/minus */ \"./src/slimming/math/minus.ts\");\r\nconst plus_1 = __webpack_require__(/*! ../math/plus */ \"./src/slimming/math/plus.ts\");\r\nexports.rel2abs = (val, pos) => val.map((s, index) => plus_1.plus(s, pos[index % 2]));\r\nexports.abs2rel = (val, pos) => val.map((s, index) => minus_1.minus(s, pos[index % 2]));\r\nexports.getRelHV = (pathItem) => {\r\n    const isRel = pathItem.type === pathItem.type.toLowerCase();\r\n    if (isRel)\r\n        return pathItem.val[0];\r\n    const isH = pathItem.type.toLowerCase() === 'h';\r\n    return minus_1.minus(pathItem.val[0], pathItem.from[isH ? 0 : 1]);\r\n};\r\nexports.getAbsHV = (pathItem) => {\r\n    const isAbs = pathItem.type === pathItem.type.toUpperCase();\r\n    if (isAbs)\r\n        return pathItem.val[0];\r\n    const isH = pathItem.type.toLowerCase() === 'h';\r\n    return plus_1.plus(pathItem.val[0], pathItem.from[isH ? 0 : 1]);\r\n};\r\nexports.getRel = (pathItem) => pathItem.type === pathItem.type.toLowerCase() ? pathItem.val.slice() : exports.abs2rel(pathItem.val, pathItem.from);\r\nexports.getAbs = (pathItem) => pathItem.type === pathItem.type.toUpperCase() ? pathItem.val.slice() : exports.rel2abs(pathItem.val, pathItem.from);\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/path/translate.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/rules/collapse-g.ts":
-/*!******************************************!*\
-  !*** ./src/slimming/rules/collapse-g.ts ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst definitions_1 = __webpack_require__(/*! ../const/definitions */ \"./src/slimming/const/definitions.ts\");\r\nconst is_tag_1 = __webpack_require__(/*! ../xml/is-tag */ \"./src/slimming/xml/is-tag.ts\");\r\nconst rm_node_1 = __webpack_require__(/*! ../xml/rm-node */ \"./src/slimming/xml/rm-node.ts\");\r\nconst traversal_node_1 = __webpack_require__(/*! ../xml/traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\nconst collapseAttributes = (node1, node2) => {\r\n    const attrObj = {};\r\n    node1.attributes.forEach(attr => {\r\n        attrObj[attr.fullname] = attr;\r\n    });\r\n    node2.attributes.forEach(attr => {\r\n        if (attrObj.hasOwnProperty(attr.fullname)) {\r\n            if (definitions_1.transformAttributes.includes(attr.fullname)) {\r\n                attrObj[attr.fullname].value = `${attr.value} ${attrObj[attr.fullname].value}`;\r\n            }\r\n        }\r\n        else {\r\n            node1.setAttribute(attr.name, attr.value, attr.namespace);\r\n            attrObj[attr.fullname] = attr;\r\n        }\r\n    });\r\n};\r\n// 包含某些特定属性，不允许进行塌陷\r\nconst cantCollapse = (node) => node.attributes.filter(attr => definitions_1.cantCollapseAttributes.includes(attr.fullname)).length;\r\nconst doCollapse = (dom) => {\r\n    traversal_node_1.traversalNode(ramda_1.propEq('nodeName', 'g'), node => {\r\n        const childNodes = node.childNodes;\r\n        const childTags = childNodes.filter(is_tag_1.isTag);\r\n        if (!childTags.length) {\r\n            rm_node_1.rmNode(node);\r\n        }\r\n        else if (!cantCollapse(node)) {\r\n            if (childTags.length === 1) { // 只有一个子节点\r\n                const childNode = childTags[0];\r\n                collapseAttributes(childNode, node);\r\n                node.parentNode.replaceChild(node, ...childNodes);\r\n            }\r\n            else if (!node.attributes.length) { // 没有属性\r\n                node.parentNode.replaceChild(node, ...childNodes);\r\n            }\r\n        }\r\n    }, dom);\r\n};\r\nexports.collapseG = async (rule, dom) => new Promise((resolve, reject) => {\r\n    if (rule[0]) {\r\n        doCollapse(dom);\r\n    }\r\n    resolve();\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/rules/collapse-g.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/rules/collapse-textwrap.ts":
-/*!*************************************************!*\
-  !*** ./src/slimming/rules/collapse-textwrap.ts ***!
-  \*************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst regular_tag_1 = __webpack_require__(/*! ../const/regular-tag */ \"./src/slimming/const/regular-tag.ts\");\r\nconst is_tag_1 = __webpack_require__(/*! ../xml/is-tag */ \"./src/slimming/xml/is-tag.ts\");\r\nconst traversal_node_1 = __webpack_require__(/*! ../xml/traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\nexports.collapseTextwrap = async (rule, dom) => new Promise((resolve, reject) => {\r\n    if (rule[0]) {\r\n        traversal_node_1.traversalNode(is_tag_1.isTag, node => {\r\n            const tagDefine = regular_tag_1.regularTag[node.nodeName];\r\n            // 规则执行的前提：文本容器嵌套关系\r\n            if (tagDefine.containTextNode && node.parentNode && regular_tag_1.regularTag[node.parentNode.nodeName].containTextNode) {\r\n                for (let i = node.attributes.length; i--;) {\r\n                    // 只要有一个非空属性，就不执行塌陷\r\n                    if (node.attributes[i].value.trim()) {\r\n                        return;\r\n                    }\r\n                }\r\n                node.parentNode.replaceChild(node, ...node.childNodes);\r\n            }\r\n        }, dom);\r\n    }\r\n    resolve();\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/rules/collapse-textwrap.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/rules/combine-path.ts":
-/*!********************************************!*\
-  !*** ./src/slimming/rules/combine-path.ts ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\n// 合并属性和样式完全相同的路径\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst exec_1 = __webpack_require__(/*! ../color/exec */ \"./src/slimming/color/exec.ts\");\r\nconst exec_alpha_1 = __webpack_require__(/*! ../math/exec-alpha */ \"./src/slimming/math/exec-alpha.ts\");\r\n// import { doCompute } from '../path/do-compute';\r\n// import { execPath } from '../path/exec';\r\nconst exec_style_tree_1 = __webpack_require__(/*! ../xml/exec-style-tree */ \"./src/slimming/xml/exec-style-tree.ts\");\r\nconst get_attr_1 = __webpack_require__(/*! ../xml/get-attr */ \"./src/slimming/xml/get-attr.ts\");\r\nconst is_tag_1 = __webpack_require__(/*! ../xml/is-tag */ \"./src/slimming/xml/is-tag.ts\");\r\nconst rm_node_1 = __webpack_require__(/*! ../xml/rm-node */ \"./src/slimming/xml/rm-node.ts\");\r\nconst traversal_node_1 = __webpack_require__(/*! ../xml/traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\n// // TODO 验证路径是否相交\r\n// const checkPath = (str: string) => {\r\n// \tconst paths: number[][] = [];\r\n// \tconst pathItems = doCompute(execPath(str));\r\n// \tlet verify = true;\r\n// \tlet currentPath: number[] = [];\r\n// \tpathItems.every(item => {\r\n// \t\tswitch (item.type) {\r\n// \t\t\t// 平移 - 绝对\r\n// \t\t\tcase 'M':\r\n// \t\t\t\tcurrentPath = [item.val[0], item.val[1]];\r\n// \t\t\t\tpaths.push(currentPath);\r\n// \t\t\t\treturn true;\r\n// \t\t\tcase 'm':\r\n// \t\t\t\tcurrentPath = [plus(item.from[0], item.val[0]), plus(item.from[1], item.val[1])];\r\n// \t\t\t\tpaths.push(currentPath);\r\n// \t\t\t\treturn true;\r\n// \t\t\tcase 'Z':\r\n// \t\t\tcase 'z':\r\n// \t\t\t\tcurrentPath.push(currentPath[0], currentPath[1]);\r\n// \t\t\t\treturn true;\r\n// \t\t\t// 水平直线 - 绝对\r\n// \t\t\tcase 'H':\r\n// \t\t\t\titem.val.forEach(val => {\r\n// \t\t\t\t\tcurrentPath.push(val, item.from[1]);\r\n// \t\t\t\t});\r\n// \t\t\t\treturn true;\r\n// \t\t\t// 水平直线 - 相对\r\n// \t\t\tcase 'h':\r\n// \t\t\t\titem.val.reduce((accumulator, val) => {\r\n// \t\t\t\t\tcurrentPath.push(plus(val, accumulator), item.from[1]);\r\n// \t\t\t\t\treturn plus(val, accumulator);\r\n// \t\t\t\t}, item.from[0]);\r\n// \t\t\t\treturn true;\r\n// \t\t\t// 垂直直线 - 绝对\r\n// \t\t\tcase 'V':\r\n// \t\t\t\titem.val.forEach(val => {\r\n// \t\t\t\t\tcurrentPath.push(item.from[0], val);\r\n// \t\t\t\t});\r\n// \t\t\t\treturn true;\r\n// \t\t\t// 垂直直线 - 相对\r\n// \t\t\tcase 'v':\r\n// \t\t\t\titem.val.reduce((accumulator, val) => {\r\n// \t\t\t\t\tcurrentPath.push(item.from[0], plus(val, accumulator));\r\n// \t\t\t\t\treturn plus(val, accumulator);\r\n// \t\t\t\t}, item.from[1]);\r\n// \t\t\t\treturn true;\r\n// \t\t\t// 直线 - 绝对\r\n// \t\t\tcase 'L':\r\n// \t\t\t\tcurrentPath.push(...item.val);\r\n// \t\t\t\treturn true;\r\n// \t\t\t// 直线 - 相对\r\n// \t\t\tcase 'l':\r\n// \t\t\t\tcurrentPath.reduce((accumulator, val, index) => {\r\n// \t\t\t\t\tcurrentPath.push(plus(accumulator[index % 2], val));\r\n// \t\t\t\t\treturn [plus(accumulator[0], val * (1 - (index % 2))), plus(accumulator[1], val * (index % 2))];\r\n// \t\t\t\t}, item.from);\r\n// \t\t\t\treturn true;\r\n// \t\t\tdefault:\r\n// \t\t\t\tverify = false;\r\n// \t\t\t\treturn false;\r\n// \t\t}\r\n// \t});\r\n// \treturn {\r\n// \t\tverify,\r\n// \t\tpaths\r\n// \t};\r\n// }\r\n// const noJoin = (attr1: string, attr2: string): boolean => {\r\n// \tconst checkResult1 = checkPath(attr1);\r\n// \tconst checkResult2 = checkPath(attr2);\r\n// \tif (checkResult1.verify && checkResult2.verify) {\r\n// \t\t// TODO： 验证碰撞\r\n// \t}\r\n// \treturn true;\r\n// }\r\nconst canbeCombine = (node1, node2, attr, combineFill, combineOpacity) => {\r\n    // 不能存在任何子节点\r\n    if (node1.childNodes.length || node2.childNodes.length) {\r\n        return false;\r\n    }\r\n    // 有 marker 引用不能进行合并\r\n    const hasMarker = get_attr_1.getAttr(node1, 'marker-start', 'none') !== 'none' || get_attr_1.getAttr(node1, 'marker-mid', 'none') !== 'none' || get_attr_1.getAttr(node1, 'marker-end', 'none') !== 'none';\r\n    if (hasMarker) {\r\n        return false;\r\n    }\r\n    const styles = node1.styles;\r\n    const noOpacity = !styles.hasOwnProperty('opacity') || exec_alpha_1.execAlpha(styles.opacity.value) === 1;\r\n    const noStrokeOpacity = exec_1.execColor(styles.hasOwnProperty('stroke') ? styles.stroke.value : '').a === 1 && (!styles.hasOwnProperty('stroke-opacity') || exec_alpha_1.execAlpha(styles['stroke-opacity'].value) === 1);\r\n    const noFillOpacity = exec_1.execColor(styles.hasOwnProperty('fill') ? styles.fill.value : '').a === 1 && (!styles.hasOwnProperty('fill-opacity') || exec_alpha_1.execAlpha(styles['fill-opacity'].value) === 1);\r\n    // fill 为空\r\n    const noFill = styles.hasOwnProperty('fill') && styles.fill.value === 'none' && (combineOpacity || (noOpacity && noStrokeOpacity));\r\n    // 填充规则不能是 evenodd 必须是 nonzero\r\n    const noEvenOdd = !styles.hasOwnProperty('fill-rule') || styles['fill-rule'].value !== 'evenodd';\r\n    // stroke 为空\r\n    const noStroke = (!styles.hasOwnProperty('stroke') || styles.stroke.value === 'none') && (combineOpacity || (noOpacity && noFillOpacity));\r\n    return noFill || (combineFill && noStroke && noEvenOdd) /* || noJoin(attr.value, node2.getAttribute('d'))*/;\r\n};\r\nconst getKey = (node) => {\r\n    const keyObj = {\r\n        attr: '',\r\n        inline: '',\r\n        styletag: '',\r\n        inherit: '',\r\n    };\r\n    const styles = node.styles;\r\n    Object.keys(styles).forEach(key => {\r\n        const define = styles[key];\r\n        keyObj[define.from] += `${key}=${define.value}&`;\r\n    });\r\n    return `attr:${keyObj.attr}|inline:${keyObj.inline}|styletag:${keyObj.styletag}|inherit:${keyObj.inherit}`;\r\n};\r\nexports.combinePath = async (rule, dom) => new Promise((resolve, reject) => {\r\n    if (rule[0]) {\r\n        const { disregardFill, disregardOpacity, } = rule[1];\r\n        exec_style_tree_1.execStyleTree(dom);\r\n        traversal_node_1.traversalNode(is_tag_1.isTag, node => {\r\n            const pathChildren = {};\r\n            let tagIndex = 0;\r\n            for (let i = 0; i < node.childNodes.length; i++) {\r\n                const childNode = node.childNodes[i];\r\n                if (childNode.nodeName === 'path') {\r\n                    let d;\r\n                    let k = '';\r\n                    childNode.attributes.forEach(attr => {\r\n                        if (attr.fullname === 'd') {\r\n                            d = attr;\r\n                        }\r\n                        else if (attr.fullname !== 'style') {\r\n                            k += `${attr.fullname}=${attr.value}&`;\r\n                        }\r\n                    });\r\n                    if (d) {\r\n                        const key = `${k}|${getKey(childNode)}`;\r\n                        if (ramda_1.has(key, pathChildren)) {\r\n                            // 允许路径合并的条件：\r\n                            // 1、所有属性和样式（包括继承样式）相同\r\n                            // 2、相邻\r\n                            // 3、没有 fill 或 stroke\r\n                            // 4、所有可见透明度 ≥ 1\r\n                            // TODO 路径没有相交或包含\r\n                            if (pathChildren[key].index === tagIndex - 1 && canbeCombine(childNode, pathChildren[key].node, d, disregardFill, disregardOpacity)) {\r\n                                // 路径拼合时，第一个 m 要转为绝对，否则会有 bug\r\n                                pathChildren[key].attr.value += d.value.replace(/^m/, 'M');\r\n                                rm_node_1.rmNode(childNode);\r\n                                tagIndex--;\r\n                                i--;\r\n                            }\r\n                            else {\r\n                                pathChildren[key] = {\r\n                                    attr: d,\r\n                                    index: tagIndex,\r\n                                    node: childNode,\r\n                                };\r\n                            }\r\n                        }\r\n                        else {\r\n                            pathChildren[key] = {\r\n                                attr: d,\r\n                                index: tagIndex,\r\n                                node: childNode,\r\n                            };\r\n                        }\r\n                    }\r\n                }\r\n                if (is_tag_1.isTag(childNode)) {\r\n                    tagIndex++;\r\n                }\r\n            }\r\n        }, dom);\r\n    }\r\n    resolve();\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/rules/combine-path.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/rules/combine-transform.ts":
-/*!*************************************************!*\
-  !*** ./src/slimming/rules/combine-transform.ts ***!
-  \*************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\n// tslint:disable max-file-line-count\r\nconst const_1 = __webpack_require__(/*! ../const */ \"./src/slimming/const/index.ts\");\r\nconst definitions_1 = __webpack_require__(/*! ../const/definitions */ \"./src/slimming/const/definitions.ts\");\r\nconst regular_attr_1 = __webpack_require__(/*! ../const/regular-attr */ \"./src/slimming/const/regular-attr.ts\");\r\nconst syntax_1 = __webpack_require__(/*! ../const/syntax */ \"./src/slimming/const/syntax.ts\");\r\nconst multiply_1 = __webpack_require__(/*! ../math/multiply */ \"./src/slimming/math/multiply.ts\");\r\nconst plus_1 = __webpack_require__(/*! ../math/plus */ \"./src/slimming/math/plus.ts\");\r\nconst tofixed_1 = __webpack_require__(/*! ../math/tofixed */ \"./src/slimming/math/tofixed.ts\");\r\nconst combine_1 = __webpack_require__(/*! ../matrix/combine */ \"./src/slimming/matrix/combine.ts\");\r\nconst exec_1 = __webpack_require__(/*! ../matrix/exec */ \"./src/slimming/matrix/exec.ts\");\r\nconst matrix_1 = __webpack_require__(/*! ../matrix/matrix */ \"./src/slimming/matrix/matrix.ts\");\r\nconst merge_1 = __webpack_require__(/*! ../matrix/merge */ \"./src/slimming/matrix/merge.ts\");\r\nconst stringify_1 = __webpack_require__(/*! ../matrix/stringify */ \"./src/slimming/matrix/stringify.ts\");\r\nconst do_compute_1 = __webpack_require__(/*! ../path/do-compute */ \"./src/slimming/path/do-compute.ts\");\r\nconst exec_2 = __webpack_require__(/*! ../path/exec */ \"./src/slimming/path/exec.ts\");\r\nconst stringify_2 = __webpack_require__(/*! ../path/stringify */ \"./src/slimming/path/stringify.ts\");\r\nconst exec_3 = __webpack_require__(/*! ../style/exec */ \"./src/slimming/style/exec.ts\");\r\nconst stringify_3 = __webpack_require__(/*! ../style/stringify */ \"./src/slimming/style/stringify.ts\");\r\nconst exec_numberlist_1 = __webpack_require__(/*! ../utils/exec-numberlist */ \"./src/slimming/utils/exec-numberlist.ts\");\r\nconst shorten_number_1 = __webpack_require__(/*! ../utils/shorten-number */ \"./src/slimming/utils/shorten-number.ts\");\r\nconst shorten_number_list_1 = __webpack_require__(/*! ../utils/shorten-number-list */ \"./src/slimming/utils/shorten-number-list.ts\");\r\nconst exec_style_tree_1 = __webpack_require__(/*! ../xml/exec-style-tree */ \"./src/slimming/xml/exec-style-tree.ts\");\r\nconst get_animate_attr_1 = __webpack_require__(/*! ../xml/get-animate-attr */ \"./src/slimming/xml/get-animate-attr.ts\");\r\nconst get_attr_1 = __webpack_require__(/*! ../xml/get-attr */ \"./src/slimming/xml/get-attr.ts\");\r\nconst is_tag_1 = __webpack_require__(/*! ../xml/is-tag */ \"./src/slimming/xml/is-tag.ts\");\r\nconst rm_attrs_1 = __webpack_require__(/*! ../xml/rm-attrs */ \"./src/slimming/xml/rm-attrs.ts\");\r\nconst traversal_node_1 = __webpack_require__(/*! ../xml/traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\nconst SAFE_ROTATE_CORNER = 90;\r\nconst fixedMVal = tofixed_1.toFixed(const_1.DEFAULT_MATRIX_DIGIT);\r\nconst applyNumber = (fn, s, ex) => shorten_number_1.shortenNumber(fn(parseFloat(s), ex));\r\nconst applyNumberList = (fn, numlist, ex) => {\r\n    numlist.forEach((val, index) => {\r\n        numlist[index] = fn(val, ex);\r\n    });\r\n    return shorten_number_list_1.shortenNumberList(numlist.map(shorten_number_1.shortenNumber).join(','));\r\n};\r\nconst applyNumberPairs = (fn, numlist) => {\r\n    for (let i = 0; i < numlist.length; i += 2) {\r\n        [numlist[i], numlist[i + 1]] = fn(numlist[i], numlist[i + 1]);\r\n    }\r\n    return shorten_number_list_1.shortenNumberList(numlist.map(shorten_number_1.shortenNumber).join(','));\r\n};\r\nconst checkAttr = (node, attrname, val) => {\r\n    if (val === '0') {\r\n        rm_attrs_1.rmAttrs(node, [attrname]);\r\n    }\r\n    else {\r\n        node.removeAttribute(attrname);\r\n        const attrDefine = regular_attr_1.regularAttr[attrname];\r\n        if (attrDefine.couldBeStyle && node.hasAttribute('style')) {\r\n            const styleAttr = exec_3.execStyle(node.getAttribute('style'));\r\n            styleAttr.some(sAttr => {\r\n                if (sAttr.fullname === attrname) {\r\n                    sAttr.value = val;\r\n                    return true;\r\n                }\r\n                return false;\r\n            });\r\n            node.setAttribute('style', stringify_3.stringifyStyle(styleAttr));\r\n        }\r\n        else {\r\n            node.setAttribute(attrname, val);\r\n        }\r\n    }\r\n};\r\n// 应用\r\nconst applyTextTransform = (node, matrix, animateAttrs) => {\r\n    // todo 暂不支持 animate\r\n    if (matrix.type !== 'translate' || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'dx') || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'dy')) {\r\n        return false;\r\n    }\r\n    const dx = node.getAttribute('dx') || '0';\r\n    const dy = node.getAttribute('dy') || '0';\r\n    // 必须是纯数值列表\r\n    if (syntax_1.pureNumOrWithPxList.test(dx) && syntax_1.pureNumOrWithPxList.test(dy)) {\r\n        const dxs = exec_numberlist_1.execNumberList(dx);\r\n        checkAttr(node, 'dx', applyNumberList(plus_1.plus, dxs, matrix.val[0]));\r\n        if (matrix.val[1]) {\r\n            const dys = exec_numberlist_1.execNumberList(dy);\r\n            checkAttr(node, 'dy', applyNumberList(plus_1.plus, dys, matrix.val[1]));\r\n        }\r\n        node.removeAttribute('transform');\r\n        return true;\r\n    }\r\n    return false;\r\n};\r\nconst applyRectTransform = (node, matrix, animateAttrs, hasStroke, hasMarker) => {\r\n    const x = get_attr_1.getAttr(node, 'x', '0');\r\n    const y = get_attr_1.getAttr(node, 'y', '0');\r\n    const width = get_attr_1.getAttr(node, 'width', '0');\r\n    const height = get_attr_1.getAttr(node, 'height', '0');\r\n    let rx = get_attr_1.getAttr(node, 'rx', 'auto');\r\n    let ry = get_attr_1.getAttr(node, 'ry', 'auto');\r\n    if (rx === 'auto') {\r\n        rx = ry;\r\n    }\r\n    else if (ry === 'auto') {\r\n        ry = rx;\r\n    }\r\n    if (rx === 'auto') {\r\n        rx = '0';\r\n        ry = '0';\r\n    }\r\n    // todo 暂不支持 animate\r\n    if (!syntax_1.pureNumOrWithPx.test(x) || !syntax_1.pureNumOrWithPx.test(y) || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'x') || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'y')) {\r\n        return false;\r\n    }\r\n    if (matrix.type !== 'translate') {\r\n        if (hasMarker) {\r\n            return false;\r\n        }\r\n        if (matrix.type !== 'rotate' && hasStroke) {\r\n            return false;\r\n        }\r\n        if (get_animate_attr_1.checkAnimateAttr(animateAttrs, 'width') || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'height') || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'rx') || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'ry')) {\r\n            return false;\r\n        }\r\n        if (!syntax_1.pureNumOrWithPx.test(width) || !syntax_1.pureNumOrWithPx.test(height) || !syntax_1.pureNumOrWithPx.test(rx) || !syntax_1.pureNumOrWithPx.test(ry)) {\r\n            return false;\r\n        }\r\n    }\r\n    switch (matrix.type) {\r\n        case 'translate':\r\n            checkAttr(node, 'x', applyNumber(plus_1.plus, x, matrix.val[0]));\r\n            checkAttr(node, 'y', applyNumber(plus_1.plus, y, matrix.val[1] || 0));\r\n            node.removeAttribute('transform');\r\n            return true;\r\n        case 'rotate':\r\n            // 1、没有 marker\r\n            // 2、仅限直角旋转\r\n            if (matrix.val[0] % SAFE_ROTATE_CORNER === 0) {\r\n                let mx = new matrix_1.Matrix();\r\n                if (matrix.val.length === 3) {\r\n                    mx = mx.translate(matrix.val[1], matrix.val[2]);\r\n                    mx = mx.rotate(matrix.val[0]);\r\n                    mx = mx.translate(-matrix.val[1], -matrix.val[2]);\r\n                }\r\n                else {\r\n                    mx = mx.rotate(matrix.val[0]);\r\n                }\r\n                // 获取两个对角坐标\r\n                let _x1 = parseFloat(x);\r\n                let _y1 = parseFloat(y);\r\n                let _x2 = plus_1.plus(_x1, parseFloat(width));\r\n                let _y2 = plus_1.plus(_y1, parseFloat(height));\r\n                // 运算\r\n                [_x1, _y1] = [mx.a * _x1 + mx.c * _y1 + mx.e, mx.b * _x1 + mx.d * _y1 + mx.f];\r\n                [_x2, _y2] = [mx.a * _x2 + mx.c * _y2 + mx.e, mx.b * _x2 + mx.d * _y2 + mx.f];\r\n                // 重新生成 x 和 y\r\n                checkAttr(node, 'x', `${fixedMVal(Math.min(_x1, _x2))}`);\r\n                checkAttr(node, 'y', `${fixedMVal(Math.min(_y1, _y2))}`);\r\n                if (Math.abs(matrix.val[0] % (SAFE_ROTATE_CORNER * 2)) === SAFE_ROTATE_CORNER) {\r\n                    checkAttr(node, 'width', height);\r\n                    checkAttr(node, 'height', width);\r\n                    checkAttr(node, 'rx', ry);\r\n                    if (rx === ry) {\r\n                        rm_attrs_1.rmAttrs(node, ['ry']);\r\n                    }\r\n                    else {\r\n                        checkAttr(node, 'ry', rx);\r\n                    }\r\n                }\r\n                node.removeAttribute('transform');\r\n                return true;\r\n            }\r\n            return false;\r\n        case 'scale':\r\n            // 1. 没有描边\r\n            // 2. 属性不存在，或者没有百分比的值\r\n            const sx = matrix.val[0];\r\n            const sy = matrix.val.length === 2 ? matrix.val[1] : matrix.val[0];\r\n            checkAttr(node, 'x', applyNumber(multiply_1.multiply, x, sx));\r\n            checkAttr(node, 'y', applyNumber(multiply_1.multiply, y, sy));\r\n            checkAttr(node, 'width', applyNumber(multiply_1.multiply, width, sx));\r\n            checkAttr(node, 'height', applyNumber(multiply_1.multiply, height, sy));\r\n            rx = applyNumber(multiply_1.multiply, rx, sx);\r\n            ry = applyNumber(multiply_1.multiply, ry, sy);\r\n            checkAttr(node, 'rx', rx);\r\n            if (rx === ry) {\r\n                rm_attrs_1.rmAttrs(node, ['ry']);\r\n            }\r\n            else {\r\n                checkAttr(node, 'ry', ry);\r\n            }\r\n            node.removeAttribute('transform');\r\n            return true;\r\n        case 'matrix':\r\n            if (matrix.val[1] === 0 && matrix.val[2] === 0) {\r\n                // 仅验证缩放 + 平移的情况\r\n                const msx = matrix.val[0];\r\n                const msy = matrix.val[3];\r\n                checkAttr(node, 'x', applyNumber(plus_1.plus, applyNumber(multiply_1.multiply, x, msx), matrix.val[4]));\r\n                checkAttr(node, 'y', applyNumber(plus_1.plus, applyNumber(multiply_1.multiply, y, msy), matrix.val[5]));\r\n                checkAttr(node, 'width', applyNumber(multiply_1.multiply, width, msx));\r\n                checkAttr(node, 'height', applyNumber(multiply_1.multiply, height, msy));\r\n                rx = applyNumber(multiply_1.multiply, rx, msx);\r\n                ry = applyNumber(multiply_1.multiply, ry, msy);\r\n                checkAttr(node, 'rx', rx);\r\n                if (rx === ry) {\r\n                    rm_attrs_1.rmAttrs(node, ['ry']);\r\n                }\r\n                else {\r\n                    checkAttr(node, 'ry', ry);\r\n                }\r\n                node.removeAttribute('transform');\r\n                return true;\r\n            }\r\n            return false;\r\n        default:\r\n            return false;\r\n    }\r\n};\r\nconst applyLineTransform = (node, matrix, animateAttrs, hasMarker) => {\r\n    if (get_animate_attr_1.checkAnimateAttr(animateAttrs, 'x1') || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'y1') || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'x2') || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'y2')) {\r\n        return false;\r\n    }\r\n    const x1 = node.getAttribute('x1') || '0';\r\n    const y1 = node.getAttribute('y1') || '0';\r\n    const x2 = node.getAttribute('x2') || '0';\r\n    const y2 = node.getAttribute('y2') || '0';\r\n    if (!syntax_1.pureNumOrWithPx.test(x1) || !syntax_1.pureNumOrWithPx.test(y1) || !syntax_1.pureNumOrWithPx.test(x2) || !syntax_1.pureNumOrWithPx.test(y2)) {\r\n        return false;\r\n    }\r\n    switch (matrix.type) {\r\n        case 'translate':\r\n            const tx = matrix.val[0];\r\n            const ty = matrix.val[1] || 0;\r\n            checkAttr(node, 'x1', applyNumber(plus_1.plus, x1, tx));\r\n            checkAttr(node, 'y1', applyNumber(plus_1.plus, y1, ty));\r\n            checkAttr(node, 'x2', applyNumber(plus_1.plus, x2, tx));\r\n            checkAttr(node, 'y2', applyNumber(plus_1.plus, y2, ty));\r\n            node.removeAttribute('transform');\r\n            return true;\r\n        case 'rotate':\r\n            if (hasMarker) {\r\n                return false;\r\n            }\r\n            let mx = new matrix_1.Matrix();\r\n            if (matrix.val.length === 3) {\r\n                mx = mx.translate(matrix.val[1], matrix.val[2]);\r\n                mx = mx.rotate(matrix.val[0]);\r\n                mx = mx.translate(-matrix.val[1], -matrix.val[2]);\r\n            }\r\n            else {\r\n                mx = mx.rotate(matrix.val[0]);\r\n            }\r\n            const _x1 = parseFloat(x1);\r\n            const _y1 = parseFloat(y1);\r\n            const _x2 = parseFloat(x2);\r\n            const _y2 = parseFloat(y2);\r\n            checkAttr(node, 'x1', `${fixedMVal(mx.a * _x1 + mx.c * _y1 + mx.e)}`);\r\n            checkAttr(node, 'y1', `${fixedMVal(mx.b * _x1 + mx.d * _y1 + mx.f)}`);\r\n            checkAttr(node, 'x2', `${fixedMVal(mx.a * _x2 + mx.c * _y2 + mx.e)}`);\r\n            checkAttr(node, 'y2', `${fixedMVal(mx.b * _x2 + mx.d * _y2 + mx.f)}`);\r\n            node.removeAttribute('transform');\r\n            return true;\r\n        default:\r\n            return false;\r\n    }\r\n};\r\nconst applyCircleTransform = (node, matrix, animateAttrs, hasStroke, hasMarker) => {\r\n    if (get_animate_attr_1.checkAnimateAttr(animateAttrs, 'cx') || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'cy')) {\r\n        return false;\r\n    }\r\n    const cx = get_attr_1.getAttr(node, 'cx', '0');\r\n    const cy = get_attr_1.getAttr(node, 'cy', '0');\r\n    const r = get_attr_1.getAttr(node, 'r', '0');\r\n    if (!syntax_1.pureNumOrWithPx.test(cx) || !syntax_1.pureNumOrWithPx.test(cy)) {\r\n        return false;\r\n    }\r\n    if (matrix.type !== 'translate' && hasMarker) {\r\n        return false;\r\n    }\r\n    switch (matrix.type) {\r\n        case 'translate':\r\n            const tx = matrix.val[0];\r\n            const ty = matrix.val[1] || 0;\r\n            checkAttr(node, 'cx', applyNumber(plus_1.plus, cx, tx));\r\n            checkAttr(node, 'cy', applyNumber(plus_1.plus, cy, ty));\r\n            node.removeAttribute('transform');\r\n            return true;\r\n        case 'rotate':\r\n            let mx = new matrix_1.Matrix();\r\n            if (matrix.val.length === 3) {\r\n                mx = mx.translate(matrix.val[1], matrix.val[2]);\r\n                mx = mx.rotate(matrix.val[0]);\r\n                mx = mx.translate(-matrix.val[1], -matrix.val[2]);\r\n            }\r\n            else {\r\n                mx = mx.rotate(matrix.val[0]);\r\n            }\r\n            const _cx = parseFloat(cx);\r\n            const _cy = parseFloat(cy);\r\n            checkAttr(node, 'cx', `${fixedMVal(mx.a * _cx + mx.c * _cy + mx.e)}`);\r\n            checkAttr(node, 'cy', `${fixedMVal(mx.b * _cx + mx.d * _cy + mx.f)}`);\r\n            node.removeAttribute('transform');\r\n            return true;\r\n        case 'scale':\r\n            if (hasStroke || !syntax_1.pureNumOrWithPx.test(r) || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'r')) {\r\n                return false;\r\n            }\r\n            const sx = matrix.val[0];\r\n            const sy = matrix.val.length === 2 ? matrix.val[1] : matrix.val[0];\r\n            checkAttr(node, 'cx', applyNumber(multiply_1.multiply, cx, sx));\r\n            checkAttr(node, 'cy', applyNumber(multiply_1.multiply, cy, sy));\r\n            if (sx === sy) {\r\n                checkAttr(node, 'r', applyNumber(multiply_1.multiply, r, sx));\r\n            }\r\n            else {\r\n                // 转成椭圆\r\n                node.nodeName = 'ellipse';\r\n                checkAttr(node, 'rx', applyNumber(multiply_1.multiply, r, sx));\r\n                checkAttr(node, 'ry', applyNumber(multiply_1.multiply, r, sy));\r\n                rm_attrs_1.rmAttrs(node, ['r']);\r\n            }\r\n            node.removeAttribute('transform');\r\n            return true;\r\n        case 'matrix':\r\n            if (matrix.val[1] === 0 && matrix.val[2] === 0) {\r\n                if (hasStroke || !syntax_1.pureNumOrWithPx.test(r) || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'r')) {\r\n                    return false;\r\n                }\r\n                // 仅验证缩放 + 平移的情况\r\n                const msx = matrix.val[0];\r\n                const msy = matrix.val[3];\r\n                checkAttr(node, 'cx', applyNumber(plus_1.plus, applyNumber(multiply_1.multiply, cx, msx), matrix.val[4]));\r\n                checkAttr(node, 'cy', applyNumber(plus_1.plus, applyNumber(multiply_1.multiply, cy, msy), matrix.val[5]));\r\n                if (msx === msy) {\r\n                    checkAttr(node, 'r', applyNumber(multiply_1.multiply, r, msx));\r\n                }\r\n                else {\r\n                    // 转成椭圆\r\n                    node.nodeName = 'ellipse';\r\n                    checkAttr(node, 'rx', applyNumber(multiply_1.multiply, r, msx));\r\n                    checkAttr(node, 'ry', applyNumber(multiply_1.multiply, r, msy));\r\n                    rm_attrs_1.rmAttrs(node, ['r']);\r\n                }\r\n                node.removeAttribute('transform');\r\n                return true;\r\n            }\r\n            return false;\r\n        default:\r\n            return false;\r\n    }\r\n};\r\nconst applyEllipseTransform = (node, matrix, animateAttrs, hasStroke, hasMarker) => {\r\n    const cx = get_attr_1.getAttr(node, 'cx', '0');\r\n    const cy = get_attr_1.getAttr(node, 'cy', '0');\r\n    let rx = get_attr_1.getAttr(node, 'rx', 'auto');\r\n    let ry = get_attr_1.getAttr(node, 'ry', 'auto');\r\n    if (rx === 'auto') {\r\n        rx = ry;\r\n    }\r\n    else if (ry === 'auto') {\r\n        ry = rx;\r\n    }\r\n    if (rx === 'auto') {\r\n        rx = '0';\r\n        ry = '0';\r\n    }\r\n    if (!syntax_1.pureNumOrWithPx.test(cx) || !syntax_1.pureNumOrWithPx.test(cy) || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'cx') || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'cy')) {\r\n        return false;\r\n    }\r\n    if (matrix.type !== 'translate' && hasMarker) {\r\n        return false;\r\n    }\r\n    if (rx === ry && !get_animate_attr_1.checkAnimateAttr(animateAttrs, 'rx') && !get_animate_attr_1.checkAnimateAttr(animateAttrs, 'ry')) {\r\n        node.nodeName = 'circle';\r\n        rm_attrs_1.rmAttrs(node, ['rx', 'ry']);\r\n        checkAttr(node, 'r', rx);\r\n        return applyCircleTransform(node, matrix, animateAttrs, hasStroke, hasMarker);\r\n    }\r\n    switch (matrix.type) {\r\n        case 'translate':\r\n            const tx = matrix.val[0];\r\n            const ty = matrix.val[1] || 0;\r\n            checkAttr(node, 'cx', applyNumber(plus_1.plus, cx, tx));\r\n            checkAttr(node, 'cy', applyNumber(plus_1.plus, cy, ty));\r\n            node.removeAttribute('transform');\r\n            return true;\r\n        case 'rotate':\r\n            // 仅限直角旋转\r\n            if (matrix.val[0] % SAFE_ROTATE_CORNER !== 0) {\r\n                return false;\r\n            }\r\n            let mx = new matrix_1.Matrix();\r\n            if (matrix.val.length === 3) {\r\n                mx = mx.translate(matrix.val[1], matrix.val[2]);\r\n                mx = mx.rotate(matrix.val[0]);\r\n                mx = mx.translate(-matrix.val[1], -matrix.val[2]);\r\n            }\r\n            else {\r\n                mx = mx.rotate(matrix.val[0]);\r\n            }\r\n            const _cx = parseFloat(cx);\r\n            const _cy = parseFloat(cy);\r\n            // 垂直的情况要交换 rx 和 ry\r\n            if (Math.abs(matrix.val[0] % (SAFE_ROTATE_CORNER * 2)) === SAFE_ROTATE_CORNER) {\r\n                // 如果存在百分比的尺寸，不能交换 rx 和 ry\r\n                // TODO：如果存在动画，暂时不做处理\r\n                if (rx.includes('%') || ry.includes('%') || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'rx') || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'ry')) {\r\n                    return false;\r\n                }\r\n                checkAttr(node, 'rx', ry);\r\n                checkAttr(node, 'ry', rx);\r\n            }\r\n            checkAttr(node, 'cx', `${fixedMVal(mx.a * _cx + mx.c * _cy + mx.e)}`);\r\n            checkAttr(node, 'cy', `${fixedMVal(mx.b * _cx + mx.d * _cy + mx.f)}`);\r\n            node.removeAttribute('transform');\r\n            return true;\r\n        case 'scale':\r\n            if (hasStroke || !syntax_1.pureNumOrWithPx.test(rx) || !syntax_1.pureNumOrWithPx.test(ry) || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'rx') || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'ry')) {\r\n                return false;\r\n            }\r\n            const sx = matrix.val[0];\r\n            const sy = matrix.val.length === 2 ? matrix.val[1] : matrix.val[0];\r\n            checkAttr(node, 'cx', applyNumber(multiply_1.multiply, cx, sx));\r\n            checkAttr(node, 'cy', applyNumber(multiply_1.multiply, cy, sy));\r\n            rx = applyNumber(multiply_1.multiply, rx, sx);\r\n            ry = applyNumber(multiply_1.multiply, ry, sy);\r\n            if (rx === ry) {\r\n                // 转成正圆\r\n                node.nodeName = 'circle';\r\n                rm_attrs_1.rmAttrs(node, ['rx', 'ry']);\r\n                checkAttr(node, 'r', rx);\r\n            }\r\n            else {\r\n                checkAttr(node, 'rx', rx);\r\n                checkAttr(node, 'ry', ry);\r\n            }\r\n            node.removeAttribute('transform');\r\n            return true;\r\n        case 'matrix':\r\n            if (matrix.val[1] === 0 && matrix.val[2] === 0) {\r\n                if (hasStroke || !syntax_1.pureNumOrWithPx.test(rx) || !syntax_1.pureNumOrWithPx.test(ry) || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'rx') || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'ry')) {\r\n                    return false;\r\n                }\r\n                // 仅验证缩放 + 平移的情况\r\n                const msx = matrix.val[0];\r\n                const msy = matrix.val[3];\r\n                checkAttr(node, 'cx', applyNumber(plus_1.plus, applyNumber(multiply_1.multiply, cx, msx), matrix.val[4]));\r\n                checkAttr(node, 'cy', applyNumber(plus_1.plus, applyNumber(multiply_1.multiply, cy, msy), matrix.val[5]));\r\n                rx = applyNumber(multiply_1.multiply, rx, msx);\r\n                ry = applyNumber(multiply_1.multiply, ry, msy);\r\n                if (rx === ry) {\r\n                    // 转成正圆\r\n                    node.nodeName = 'circle';\r\n                    rm_attrs_1.rmAttrs(node, ['rx', 'ry']);\r\n                    checkAttr(node, 'r', rx);\r\n                }\r\n                else {\r\n                    checkAttr(node, 'rx', rx);\r\n                    checkAttr(node, 'ry', ry);\r\n                }\r\n                node.removeAttribute('transform');\r\n                return true;\r\n            }\r\n            return false;\r\n        default:\r\n            return false;\r\n    }\r\n};\r\nconst applyPolyTransform = (node, matrix, animateAttrs, hasStroke, hasMarker, minStr) => {\r\n    if (get_animate_attr_1.checkAnimateAttr(animateAttrs, 'points')) {\r\n        return false;\r\n    }\r\n    let pointVal = node.getAttribute('points') || '';\r\n    const points = exec_numberlist_1.execNumberList(pointVal);\r\n    // points 数量必须是偶数\r\n    if (points.length % 2 === 1) {\r\n        points.pop();\r\n        pointVal = shorten_number_list_1.shortenNumberList(points.map(shorten_number_1.shortenNumber).join(','));\r\n        node.setAttribute('points', pointVal);\r\n    }\r\n    if (matrix.type === 'translate') {\r\n        const tx = matrix.val[0];\r\n        const ty = matrix.val[1] || 0;\r\n        const _points = applyNumberPairs((x, y) => [plus_1.plus(x, tx), plus_1.plus(y, ty)], points);\r\n        if (_points.length < pointVal.length + minStr.length) {\r\n            node.setAttribute('points', _points);\r\n            node.removeAttribute('transform');\r\n            return true;\r\n        }\r\n        else {\r\n            return false;\r\n        }\r\n    }\r\n    if (hasMarker || (matrix.type !== 'rotate' && hasStroke)) {\r\n        return false;\r\n    }\r\n    let mx = new matrix_1.Matrix();\r\n    switch (matrix.type) {\r\n        case 'rotate':\r\n            if (matrix.val.length === 3) {\r\n                mx = mx.translate(matrix.val[1], matrix.val[2]);\r\n                mx = mx.rotate(matrix.val[0]);\r\n                mx = mx.translate(-matrix.val[1], -matrix.val[2]);\r\n            }\r\n            else {\r\n                mx = mx.rotate(matrix.val[0]);\r\n            }\r\n            break;\r\n        case 'scale':\r\n        case 'skewX':\r\n        case 'skewY':\r\n            mx = mx[matrix.type](...matrix.val);\r\n            break;\r\n        default:\r\n            mx = new matrix_1.Matrix(...matrix.val);\r\n            break;\r\n    }\r\n    const newPoints = applyNumberPairs((n1, n2) => [\r\n        fixedMVal(mx.a * n1 + mx.c * n2 + mx.e),\r\n        fixedMVal(mx.b * n1 + mx.d * n2 + mx.f),\r\n    ], points);\r\n    if (newPoints.length < pointVal.length + minStr.length) {\r\n        node.setAttribute('points', newPoints);\r\n        node.removeAttribute('transform');\r\n        return true;\r\n    }\r\n    else {\r\n        return false;\r\n    }\r\n};\r\nconst applyPathTransform = (node, matrix, animateAttrs, hasStroke, hasMarker, minStr) => {\r\n    if (get_animate_attr_1.checkAnimateAttr(animateAttrs, 'd')) {\r\n        return false;\r\n    }\r\n    const d = node.getAttribute('d') || '';\r\n    const pathResult = do_compute_1.doCompute(exec_2.execPath(d));\r\n    if (matrix.type === 'translate') {\r\n        const tx = matrix.val[0];\r\n        const ty = matrix.val[1] || 0;\r\n        pathResult.forEach((subPath, index) => {\r\n            subPath.forEach(pathItem => {\r\n                switch (pathItem.type) {\r\n                    case 'm':\r\n                        // 第一个移动指令也要执行平移变换\r\n                        if (index === 0) {\r\n                            pathItem.val[0] = plus_1.plus(pathItem.val[0], tx);\r\n                            pathItem.val[1] = plus_1.plus(pathItem.val[1], ty);\r\n                        }\r\n                        break;\r\n                    case 'M':\r\n                    case 'L':\r\n                    case 'C':\r\n                    case 'S':\r\n                    case 'Q':\r\n                    case 'T':\r\n                        for (let i = 0; i < pathItem.val.length; i += 2) {\r\n                            pathItem.val[i] = plus_1.plus(pathItem.val[i], tx);\r\n                            pathItem.val[i + 1] = plus_1.plus(pathItem.val[i + 1], ty);\r\n                        }\r\n                        break;\r\n                    case 'H':\r\n                        for (let i = 0; i < pathItem.val.length; i++) {\r\n                            pathItem.val[i] = plus_1.plus(pathItem.val[i], tx);\r\n                        }\r\n                        break;\r\n                    case 'V':\r\n                        for (let i = 0; i < pathItem.val.length; i++) {\r\n                            pathItem.val[i] = plus_1.plus(pathItem.val[i], ty);\r\n                        }\r\n                        break;\r\n                    case 'A':\r\n                        for (let i = 0; i < pathItem.val.length; i += const_1.APOS_LEN) {\r\n                            pathItem.val[i + const_1.APOS_X] = plus_1.plus(pathItem.val[i + const_1.APOS_X], tx);\r\n                            pathItem.val[i + const_1.APOS_Y] = plus_1.plus(pathItem.val[i + const_1.APOS_Y], ty);\r\n                        }\r\n                        break;\r\n                    default:\r\n                        break;\r\n                }\r\n            });\r\n        });\r\n        const _d = stringify_2.stringifyPath(do_compute_1.doCompute(pathResult));\r\n        if (_d.length < d.length + minStr.length) {\r\n            node.setAttribute('d', _d);\r\n            node.removeAttribute('transform');\r\n            return true;\r\n        }\r\n        else {\r\n            return false;\r\n        }\r\n    }\r\n    // 不能有 marker\r\n    if (hasMarker) {\r\n        return false;\r\n    }\r\n    else if (matrix.type !== 'rotate') {\r\n        // rotate 之外不能有 stroke\r\n        // rotate 和 scale 之外遇到 a 指令会有问题\r\n        if (hasStroke || (matrix.type !== 'scale' && d.toLowerCase().includes('a'))) {\r\n            return false;\r\n        }\r\n    }\r\n    if (matrix.type === 'scale') {\r\n        const sx = matrix.val[0];\r\n        const sy = matrix.val.length === 2 ? matrix.val[1] : matrix.val[0];\r\n        pathResult.forEach(subPath => {\r\n            subPath.forEach(pathItem => {\r\n                switch (pathItem.type.toLowerCase()) {\r\n                    case 'm':\r\n                    case 'l':\r\n                    case 'c':\r\n                    case 's':\r\n                    case 'q':\r\n                    case 't':\r\n                        for (let i = 0; i < pathItem.val.length; i += 2) {\r\n                            pathItem.val[i] = multiply_1.multiply(pathItem.val[i], sx);\r\n                            pathItem.val[i + 1] = multiply_1.multiply(pathItem.val[i + 1], sy);\r\n                        }\r\n                        break;\r\n                    case 'h':\r\n                        for (let i = 0; i < pathItem.val.length; i++) {\r\n                            pathItem.val[i] = multiply_1.multiply(pathItem.val[i], sx);\r\n                        }\r\n                        break;\r\n                    case 'v':\r\n                        for (let i = 0; i < pathItem.val.length; i++) {\r\n                            pathItem.val[i] = multiply_1.multiply(pathItem.val[i], sy);\r\n                        }\r\n                        break;\r\n                    case 'a':\r\n                        for (let i = 0; i < pathItem.val.length; i += const_1.APOS_LEN) {\r\n                            pathItem.val[i + const_1.APOS_RX] = multiply_1.multiply(pathItem.val[i + const_1.APOS_RX], sx);\r\n                            pathItem.val[i + const_1.APOS_RY] = multiply_1.multiply(pathItem.val[i + const_1.APOS_RY], sy);\r\n                            pathItem.val[i + const_1.APOS_X] = multiply_1.multiply(pathItem.val[i + const_1.APOS_X], sx);\r\n                            pathItem.val[i + const_1.APOS_Y] = multiply_1.multiply(pathItem.val[i + const_1.APOS_Y], sy);\r\n                        }\r\n                        break;\r\n                    default:\r\n                        break;\r\n                }\r\n            });\r\n        });\r\n        const _d = stringify_2.stringifyPath(do_compute_1.doCompute(pathResult));\r\n        if (_d.length < d.length + minStr.length) {\r\n            node.setAttribute('d', _d);\r\n            node.removeAttribute('transform');\r\n            return true;\r\n        }\r\n        else {\r\n            return false;\r\n        }\r\n    }\r\n    let mx = new matrix_1.Matrix();\r\n    switch (matrix.type) {\r\n        case 'rotate':\r\n            if (matrix.val.length === 3) {\r\n                mx = mx.translate(matrix.val[1], matrix.val[2]);\r\n                mx = mx.rotate(matrix.val[0]);\r\n                mx = mx.translate(-matrix.val[1], -matrix.val[2]);\r\n            }\r\n            else {\r\n                mx = mx.rotate(matrix.val[0]);\r\n            }\r\n            break;\r\n        case 'skewX':\r\n        case 'skewY':\r\n            mx = mx[matrix.type](matrix.val[0]);\r\n            break;\r\n        default:\r\n            mx = new matrix_1.Matrix(...matrix.val);\r\n            break;\r\n    }\r\n    pathResult.forEach((subPath, index) => {\r\n        subPath.forEach(pathItem => {\r\n            switch (pathItem.type) {\r\n                case 'M':\r\n                case 'L':\r\n                case 'C':\r\n                case 'S':\r\n                case 'Q':\r\n                case 'T':\r\n                    for (let i = 0; i < pathItem.val.length; i += 2) {\r\n                        [pathItem.val[i], pathItem.val[i + 1]] = [\r\n                            fixedMVal(mx.a * pathItem.val[i] + mx.c * pathItem.val[i + 1] + mx.e),\r\n                            fixedMVal(mx.b * pathItem.val[i] + mx.d * pathItem.val[i + 1] + mx.f),\r\n                        ];\r\n                    }\r\n                    break;\r\n                case 'm':\r\n                case 'l':\r\n                case 'c':\r\n                case 's':\r\n                case 'q':\r\n                case 't':\r\n                    for (let i = 0; i < pathItem.val.length; i += 2) {\r\n                        [pathItem.val[i], pathItem.val[i + 1]] = [\r\n                            fixedMVal(mx.a * pathItem.val[i] + mx.c * pathItem.val[i + 1]),\r\n                            fixedMVal(mx.b * pathItem.val[i] + mx.d * pathItem.val[i + 1]),\r\n                        ];\r\n                    }\r\n                    // 第一个移动指令也要执行平移变换\r\n                    if (pathItem.type === 'm' && index === 0) {\r\n                        pathItem.val[0] = fixedMVal(pathItem.val[0] + mx.e);\r\n                        pathItem.val[1] = fixedMVal(pathItem.val[1] + mx.f);\r\n                    }\r\n                    break;\r\n                case 'H':\r\n                    pathItem.type = 'L';\r\n                    const HVal = pathItem.val.slice();\r\n                    const Hy = pathItem.from[1];\r\n                    for (let i = 0; i < HVal.length; i++) {\r\n                        pathItem.val[i * 2] = fixedMVal(mx.a * HVal[i] + mx.c * Hy + mx.e);\r\n                        pathItem.val[i * 2 + 1] = fixedMVal(mx.b * HVal[i] + mx.d * Hy + mx.f);\r\n                    }\r\n                    break;\r\n                case 'h':\r\n                    pathItem.type = 'l';\r\n                    const hVal = pathItem.val.slice();\r\n                    const hy = 0;\r\n                    for (let i = 0; i < hVal.length; i++) {\r\n                        pathItem.val[i * 2] = fixedMVal(mx.a * hVal[i] + mx.c * hy);\r\n                        pathItem.val[i * 2 + 1] = fixedMVal(mx.b * hVal[i] + mx.d * hy);\r\n                    }\r\n                    break;\r\n                case 'V':\r\n                    pathItem.type = 'L';\r\n                    const VVal = pathItem.val.slice();\r\n                    const Vx = pathItem.from[0];\r\n                    for (let i = 0; i < VVal.length; i++) {\r\n                        pathItem.val[i * 2] = fixedMVal(mx.a * Vx + mx.c * VVal[i] + mx.e);\r\n                        pathItem.val[i * 2 + 1] = fixedMVal(mx.b * Vx + mx.d * VVal[i] + mx.f);\r\n                    }\r\n                    break;\r\n                case 'v':\r\n                    pathItem.type = 'l';\r\n                    const vVal = pathItem.val.slice();\r\n                    const vx = 0;\r\n                    for (let i = 0; i < vVal.length; i++) {\r\n                        pathItem.val[i * 2] = fixedMVal(mx.a * vx + mx.c * vVal[i]);\r\n                        pathItem.val[i * 2 + 1] = fixedMVal(mx.b * vx + mx.d * vVal[i]);\r\n                    }\r\n                    break;\r\n                default:\r\n                    break;\r\n            }\r\n        });\r\n    });\r\n    const newD = stringify_2.stringifyPath(do_compute_1.doCompute(pathResult));\r\n    if (newD.length < d.length + minStr.length) {\r\n        node.setAttribute('d', newD);\r\n        node.removeAttribute('transform');\r\n        return true;\r\n    }\r\n    else {\r\n        return false;\r\n    }\r\n};\r\nconst applyTransform = (node, matrix, minStr) => {\r\n    const animateAttrs = get_animate_attr_1.getAnimateAttr(node);\r\n    // 平移可以直接应用，旋转要判断节点类型，其它变形函数只能在没有描边的时候应用\r\n    const hasStroke = (get_attr_1.getAttr(node, 'stroke', 'none') !== 'none' || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'stroke', val => val !== 'none')) && (get_attr_1.getAttr(node, 'stroke-width', '1') !== '0' || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'stroke-width', val => val !== '0'));\r\n    // 存在 marker 引用的对象只能进行平移变换\r\n    const hasMarker = get_attr_1.getAttr(node, 'marker-start', 'none') !== 'none'\r\n        || get_attr_1.getAttr(node, 'marker-mid', 'none') !== 'none'\r\n        || get_attr_1.getAttr(node, 'marker-end', 'none') !== 'none'\r\n        || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'marker-start', val => val !== 'none')\r\n        || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'marker-mid', val => val !== 'none')\r\n        || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'marker-end', val => val !== 'none');\r\n    switch (node.nodeName) {\r\n        case 'text':\r\n        case 'tspan':\r\n            return applyTextTransform(node, matrix, animateAttrs);\r\n        case 'rect':\r\n            return applyRectTransform(node, matrix, animateAttrs, hasStroke, hasMarker);\r\n        case 'line':\r\n            return applyLineTransform(node, matrix, animateAttrs, hasMarker);\r\n        case 'circle':\r\n            return applyCircleTransform(node, matrix, animateAttrs, hasStroke, hasMarker);\r\n        case 'ellipse':\r\n            return applyEllipseTransform(node, matrix, animateAttrs, hasStroke, hasMarker);\r\n        case 'polyline':\r\n        case 'polygon':\r\n            return applyPolyTransform(node, matrix, animateAttrs, hasStroke, hasMarker, minStr);\r\n        case 'path':\r\n            return applyPathTransform(node, matrix, animateAttrs, hasStroke, hasMarker, minStr);\r\n        default:\r\n            return false;\r\n    }\r\n};\r\nexports.combineTransform = async (rule, dom) => new Promise((resolve, reject) => {\r\n    if (rule[0]) {\r\n        exec_style_tree_1.execStyleTree(dom);\r\n        // digit1 = 矩阵前 4 位的精度，digit2 = 矩阵后 2 位的精度\r\n        const { trigDigit, sizeDigit, angelDigit, } = rule[1];\r\n        traversal_node_1.traversalNode(is_tag_1.isTag, node => {\r\n            for (let i = node.attributes.length; i--;) {\r\n                const attr = node.attributes[i];\r\n                if (definitions_1.transformAttributes.includes(attr.name)) {\r\n                    const transform = [];\r\n                    exec_1.execMatrix(attr.value.trim()).forEach(mFunc => {\r\n                        const lastFunc = transform[transform.length - 1];\r\n                        if (transform.length && lastFunc.type === mFunc.type) {\r\n                            const mergeFunc = merge_1.merge(lastFunc, mFunc, trigDigit, sizeDigit, angelDigit);\r\n                            // 如果合并后为无效变化，则出栈，否则更新合并后的函数\r\n                            if (mergeFunc.noEffect) {\r\n                                transform.pop();\r\n                            }\r\n                            else {\r\n                                transform[transform.length - 1] = mergeFunc;\r\n                            }\r\n                        }\r\n                        else {\r\n                            transform.push(mFunc);\r\n                        }\r\n                    });\r\n                    if (transform.length) {\r\n                        const matrix = combine_1.combineMatrix(transform, trigDigit, sizeDigit, angelDigit);\r\n                        const transformStr = stringify_1.stringify(transform, trigDigit, sizeDigit, angelDigit);\r\n                        const matrixStr = stringify_1.stringify([matrix], trigDigit, sizeDigit, angelDigit);\r\n                        const minStr = (matrixStr.length < transformStr.length) ? matrixStr : transformStr;\r\n                        if (matrix.noEffect) {\r\n                            node.removeAttribute(attr.fullname);\r\n                            return;\r\n                        }\r\n                        if (attr.fullname === 'transform') {\r\n                            // TODO：进一步分析子元素\r\n                            // TODO：暂时只应用 transform 属性\r\n                            if (applyTransform(node, matrix, ` ${attr.fullname}=\"${minStr}\"`)) {\r\n                                return;\r\n                            }\r\n                        }\r\n                        attr.value = minStr;\r\n                    }\r\n                    else {\r\n                        node.removeAttribute(attr.fullname);\r\n                    }\r\n                }\r\n            }\r\n        }, dom);\r\n    }\r\n    resolve();\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/rules/combine-transform.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/rules/compute-path.ts":
-/*!********************************************!*\
-  !*** ./src/slimming/rules/compute-path.ts ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst douglas_peucker_1 = __webpack_require__(/*! ../algorithm/douglas-peucker */ \"./src/slimming/algorithm/douglas-peucker.ts\");\r\nconst const_1 = __webpack_require__(/*! ../const */ \"./src/slimming/const/index.ts\");\r\nconst plus_1 = __webpack_require__(/*! ../math/plus */ \"./src/slimming/math/plus.ts\");\r\nconst check_sub_paths_1 = __webpack_require__(/*! ../path/check-sub-paths */ \"./src/slimming/path/check-sub-paths.ts\");\r\nconst do_compute_1 = __webpack_require__(/*! ../path/do-compute */ \"./src/slimming/path/do-compute.ts\");\r\nconst exec_1 = __webpack_require__(/*! ../path/exec */ \"./src/slimming/path/exec.ts\");\r\nconst straighten_1 = __webpack_require__(/*! ../path/straighten */ \"./src/slimming/path/straighten.ts\");\r\nconst stringify_1 = __webpack_require__(/*! ../path/stringify */ \"./src/slimming/path/stringify.ts\");\r\nconst exec_style_tree_1 = __webpack_require__(/*! ../xml/exec-style-tree */ \"./src/slimming/xml/exec-style-tree.ts\");\r\nconst get_attr_1 = __webpack_require__(/*! ../xml/get-attr */ \"./src/slimming/xml/get-attr.ts\");\r\nconst rm_node_1 = __webpack_require__(/*! ../xml/rm-node */ \"./src/slimming/xml/rm-node.ts\");\r\nconst traversal_node_1 = __webpack_require__(/*! ../xml/traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\nconst get_animate_attr_1 = __webpack_require__(/*! ../xml/get-animate-attr */ \"./src/slimming/xml/get-animate-attr.ts\");\r\nconst DPItemNormalize = (pathItem) => {\r\n    switch (pathItem.type) {\r\n        case 'l':\r\n            pathItem.val[0] = plus_1.plus(pathItem.val[0], pathItem.from[0]);\r\n            pathItem.val[1] = plus_1.plus(pathItem.val[1], pathItem.from[1]);\r\n            break;\r\n        case 'H':\r\n            pathItem.val.push(pathItem.from[1]);\r\n            break;\r\n        case 'h':\r\n            pathItem.val[0] = plus_1.plus(pathItem.val[0], pathItem.from[0]);\r\n            pathItem.val.push(pathItem.from[1]);\r\n            break;\r\n        case 'V':\r\n            pathItem.val.unshift(pathItem.from[0]);\r\n            break;\r\n        case 'v':\r\n            pathItem.val.unshift(pathItem.from[0]);\r\n            pathItem.val[1] = plus_1.plus(pathItem.val[1], pathItem.from[1]);\r\n            break;\r\n        default:\r\n            break;\r\n    }\r\n    pathItem.type = 'L';\r\n    return pathItem;\r\n};\r\nconst DPItemMerge = (lastItem, pathItem) => {\r\n    lastItem.val = lastItem.val.concat(DPItemNormalize(pathItem).val);\r\n};\r\nconst DPInit = (threshold, pathArr) => {\r\n    const pathResult = [];\r\n    let len = 0;\r\n    for (const pathItem of pathArr) {\r\n        if (const_1.LineTypes.includes(pathItem.type)) {\r\n            const lastItem = pathResult[len - 1];\r\n            if (lastItem.type === 'L') {\r\n                DPItemMerge(lastItem, pathItem);\r\n            }\r\n            else {\r\n                pathResult.push(DPItemNormalize(pathItem));\r\n                len++;\r\n            }\r\n        }\r\n        else {\r\n            const lastItem = pathResult[len - 1];\r\n            if (len > 0 && lastItem.type === 'L') {\r\n                lastItem.val = douglas_peucker_1.douglasPeucker(threshold, lastItem.from.concat(lastItem.val)).slice(2);\r\n            }\r\n            pathResult.push(pathItem);\r\n            len++;\r\n        }\r\n    }\r\n    if (pathResult[len - 1].type === 'L') {\r\n        const lastItem = pathResult[len - 1];\r\n        lastItem.val = douglas_peucker_1.douglasPeucker(threshold, lastItem.from.concat(lastItem.val)).slice(2);\r\n    }\r\n    return pathResult;\r\n};\r\nconst processPath = (dVal, hasMarker, hasStroke, hasStrokeCap, { thinning, sizeDigit, angelDigit, straighten, }) => {\r\n    // 先运算一次 doCompute，拿到每条指令的 from 坐标\r\n    let pathResult = do_compute_1.doCompute(exec_1.execPath(dVal));\r\n    // 如果存在 marker 引用，多余的优化都不能做\r\n    if (!hasMarker) {\r\n        // 存在小尺寸曲线转直线的规则\r\n        if (straighten) {\r\n            // doCompute 必须执行\r\n            pathResult = do_compute_1.doCompute(pathResult.map(p => straighten_1.straighten(straighten, p)));\r\n        }\r\n        // 存在路径抽稀规则\r\n        if (thinning) {\r\n            // doCompute 必须执行\r\n            pathResult = do_compute_1.doCompute(pathResult.map(p => DPInit(thinning, p)));\r\n        }\r\n        // 进行合并、指令转换等运算\r\n        pathResult = do_compute_1.doCompute(check_sub_paths_1.checkSubPath(pathResult, hasStroke, hasStrokeCap, sizeDigit, angelDigit));\r\n    }\r\n    if (pathResult.length) {\r\n        return stringify_1.stringifyPath(pathResult, sizeDigit, angelDigit);\r\n    }\r\n    else {\r\n        return '';\r\n    }\r\n};\r\nexports.computePath = async (rule, dom) => new Promise((resolve, reject) => {\r\n    if (rule[0]) {\r\n        exec_style_tree_1.execStyleTree(dom);\r\n        traversal_node_1.traversalNode(ramda_1.anyPass([ramda_1.propEq('nodeName', 'path'), ramda_1.propEq('nodeName', 'animateMotion'), ramda_1.propEq('nodeName', 'textPath')]), node => {\r\n            const option = rule[1];\r\n            const attrName = node.nodeName === 'path' ? 'd' : 'path';\r\n            const attrD = node.getAttribute(attrName);\r\n            const animateAttrs = get_animate_attr_1.getAnimateAttr(node);\r\n            // 是否存在 marker 引用，没有 marker 可以移除所有空移动指令\r\n            const hasMarker = get_attr_1.getAttr(node, 'marker-start', 'none') !== 'none' || get_attr_1.getAttr(node, 'marker-mid', 'none') !== 'none' || get_attr_1.getAttr(node, 'marker-end', 'none') !== 'none';\r\n            // 是否存在 stroke，没有 stroke 可以移除面积为 0 的子路径\r\n            const hasStroke = get_attr_1.getAttr(node, 'stroke', 'none') !== 'none' && get_attr_1.getAttr(node, 'stroke-width', '1') !== '0';\r\n            // 是否存在 stroke-linecap，没有 stroke-linecap 可以移除长度为 0 的指令\r\n            const hasStrokeCap = get_attr_1.getAttr(node, 'stroke-linecap', 'butt') !== 'butt';\r\n            let noAttrD = true;\r\n            let noAnimateD = true;\r\n            if (attrD) {\r\n                const pathResult = processPath(attrD, hasMarker, hasStroke, hasStrokeCap, option);\r\n                if (!pathResult) {\r\n                    node.removeAttribute(attrName);\r\n                }\r\n                else {\r\n                    noAttrD = false;\r\n                    node.setAttribute(attrName, pathResult);\r\n                }\r\n            }\r\n            // animateMotion 的 path 属性不能再次被动画元素修改\r\n            if (node.nodeName !== 'animateMotion' && get_animate_attr_1.checkAnimateAttr(animateAttrs, attrName)) {\r\n                const animateD = get_animate_attr_1.findAnimateAttr(animateAttrs, attrName);\r\n                animateD.forEach(item => {\r\n                    const value = item.values.map(val => processPath(val, hasMarker, hasStroke, hasStrokeCap, option));\r\n                    item.keys.forEach((key, index) => {\r\n                        if (key === 'values') {\r\n                            const values = value.slice(index).filter(v => !!v).join(';');\r\n                            if (values) {\r\n                                item.node.setAttribute(key, values);\r\n                            }\r\n                            else {\r\n                                item.node.removeAttribute(key);\r\n                            }\r\n                        }\r\n                        else {\r\n                            if (value[index]) {\r\n                                item.node.setAttribute(key, value[index]);\r\n                            }\r\n                            else {\r\n                                item.node.removeAttribute(key);\r\n                            }\r\n                        }\r\n                    });\r\n                });\r\n                // 再次更新动画属性再进行判断\r\n                if (node.nodeName === 'path' && get_animate_attr_1.checkAnimateAttr(get_animate_attr_1.getAnimateAttr(node), attrName)) {\r\n                    noAnimateD = false;\r\n                }\r\n            }\r\n            // 既没有 d 属性也没有动画 d 属性的 path 元素可以移除\r\n            // textPath 不适用，还需要判断 href 和 xlink:href 且 href 指向了正确的目标\r\n            // animateMotion 不适用，还需要判断是否有 mpath 子元素，且 mpath 指向了正确的目标\r\n            if (noAttrD && noAnimateD && node.nodeName === 'path') {\r\n                rm_node_1.rmNode(node);\r\n            }\r\n        }, dom);\r\n    }\r\n    resolve();\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/rules/compute-path.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/rules/index.ts":
-/*!*************************************!*\
-  !*** ./src/slimming/rules/index.ts ***!
-  \*************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\n// default rules\r\nconst combine_script_1 = __webpack_require__(/*! ../default-rules/combine-script */ \"./src/slimming/default-rules/combine-script.ts\");\r\nconst combine_style_1 = __webpack_require__(/*! ../default-rules/combine-style */ \"./src/slimming/default-rules/combine-style.ts\");\r\nconst combine_textnode_1 = __webpack_require__(/*! ../default-rules/combine-textnode */ \"./src/slimming/default-rules/combine-textnode.ts\");\r\nconst rm_useless_1 = __webpack_require__(/*! ../default-rules/rm-useless */ \"./src/slimming/default-rules/rm-useless.ts\");\r\n// rules\r\nconst collapse_g_1 = __webpack_require__(/*! ./collapse-g */ \"./src/slimming/rules/collapse-g.ts\");\r\nconst collapse_textwrap_1 = __webpack_require__(/*! ./collapse-textwrap */ \"./src/slimming/rules/collapse-textwrap.ts\");\r\nconst combine_path_1 = __webpack_require__(/*! ./combine-path */ \"./src/slimming/rules/combine-path.ts\");\r\nconst combine_transform_1 = __webpack_require__(/*! ./combine-transform */ \"./src/slimming/rules/combine-transform.ts\");\r\nconst compute_path_1 = __webpack_require__(/*! ./compute-path */ \"./src/slimming/rules/compute-path.ts\");\r\nconst rm_attribute_1 = __webpack_require__(/*! ./rm-attribute */ \"./src/slimming/rules/rm-attribute.ts\");\r\nconst rm_comments_1 = __webpack_require__(/*! ./rm-comments */ \"./src/slimming/rules/rm-comments.ts\");\r\nconst rm_doctype_1 = __webpack_require__(/*! ./rm-doctype */ \"./src/slimming/rules/rm-doctype.ts\");\r\nconst rm_hidden_1 = __webpack_require__(/*! ./rm-hidden */ \"./src/slimming/rules/rm-hidden.ts\");\r\nconst rm_irregular_nesting_1 = __webpack_require__(/*! ./rm-irregular-nesting */ \"./src/slimming/rules/rm-irregular-nesting.ts\");\r\nconst rm_irregular_tag_1 = __webpack_require__(/*! ./rm-irregular-tag */ \"./src/slimming/rules/rm-irregular-tag.ts\");\r\nconst rm_px_1 = __webpack_require__(/*! ./rm-px */ \"./src/slimming/rules/rm-px.ts\");\r\nconst rm_unnecessary_1 = __webpack_require__(/*! ./rm-unnecessary */ \"./src/slimming/rules/rm-unnecessary.ts\");\r\nconst rm_version_1 = __webpack_require__(/*! ./rm-version */ \"./src/slimming/rules/rm-version.ts\");\r\nconst rm_viewbox_1 = __webpack_require__(/*! ./rm-viewbox */ \"./src/slimming/rules/rm-viewbox.ts\");\r\nconst rm_xml_decl_1 = __webpack_require__(/*! ./rm-xml-decl */ \"./src/slimming/rules/rm-xml-decl.ts\");\r\nconst rm_xmlns_1 = __webpack_require__(/*! ./rm-xmlns */ \"./src/slimming/rules/rm-xmlns.ts\");\r\nconst shorten_animate_1 = __webpack_require__(/*! ./shorten-animate */ \"./src/slimming/rules/shorten-animate.ts\");\r\nconst shorten_class_1 = __webpack_require__(/*! ./shorten-class */ \"./src/slimming/rules/shorten-class.ts\");\r\nconst shorten_color_1 = __webpack_require__(/*! ./shorten-color */ \"./src/slimming/rules/shorten-color.ts\");\r\nconst shorten_decimal_digits_1 = __webpack_require__(/*! ./shorten-decimal-digits */ \"./src/slimming/rules/shorten-decimal-digits.ts\");\r\nconst shorten_defs_1 = __webpack_require__(/*! ./shorten-defs */ \"./src/slimming/rules/shorten-defs.ts\");\r\nconst shorten_filter_1 = __webpack_require__(/*! ./shorten-filter */ \"./src/slimming/rules/shorten-filter.ts\");\r\nconst shorten_id_1 = __webpack_require__(/*! ./shorten-id */ \"./src/slimming/rules/shorten-id.ts\");\r\nconst shorten_shape_1 = __webpack_require__(/*! ./shorten-shape */ \"./src/slimming/rules/shorten-shape.ts\");\r\nconst shorten_style_attr_1 = __webpack_require__(/*! ./shorten-style-attr */ \"./src/slimming/rules/shorten-style-attr.ts\");\r\nconst shorten_style_tag_1 = __webpack_require__(/*! ./shorten-style-tag */ \"./src/slimming/rules/shorten-style-tag.ts\");\r\nexports.rules = [\r\n    [true, rm_useless_1.rmUseless],\r\n    [true, combine_style_1.combineStyle],\r\n    [true, combine_script_1.combineScript],\r\n    [false, rm_xml_decl_1.rmXMLDecl, 'rm-xml-decl'],\r\n    [false, rm_version_1.rmVersion, 'rm-version'],\r\n    [false, rm_doctype_1.rmDocType, 'rm-doctype'],\r\n    [false, rm_comments_1.rmComments, 'rm-comments'],\r\n    [false, rm_irregular_tag_1.rmIrregularTag, 'rm-irregular-tag'],\r\n    [false, rm_irregular_nesting_1.rmIrregularNesting, 'rm-irregular-nesting'],\r\n    [false, rm_unnecessary_1.rmUnnecessary, 'rm-unnecessary'],\r\n    [false, rm_viewbox_1.rmViewBox, 'rm-viewbox'],\r\n    [false, shorten_animate_1.shortenAnimate, 'shorten-animate'],\r\n    [false, shorten_filter_1.shortenFilter, 'shorten-filter'],\r\n    [false, shorten_class_1.shortenClass, 'shorten-class'],\r\n    [false, collapse_textwrap_1.collapseTextwrap, 'collapse-textwrap'],\r\n    [false, rm_hidden_1.rmHidden, 'rm-hidden'],\r\n    [false, shorten_style_attr_1.shortenStyleAttr, 'shorten-style-attr'],\r\n    [false, rm_px_1.rmPx, 'rm-px'],\r\n    [false, rm_attribute_1.rmAttribute, 'rm-attribute'],\r\n    [false, shorten_defs_1.shortenDefs, 'shorten-defs'],\r\n    [false, shorten_id_1.shortenID, 'shorten-id'],\r\n    [false, shorten_shape_1.shortenShape, 'shorten-shape'],\r\n    [false, combine_path_1.combinePath, 'combine-path'],\r\n    [false, compute_path_1.computePath, 'compute-path'],\r\n    [false, collapse_g_1.collapseG, 'collapse-g'],\r\n    [false, combine_transform_1.combineTransform, 'combine-transform'],\r\n    [false, shorten_decimal_digits_1.shortenDecimalDigits, 'shorten-decimal-digits'],\r\n    [false, shorten_color_1.shortenColor, 'shorten-color'],\r\n    [false, shorten_style_tag_1.shortenStyleTag, 'shorten-style-tag'],\r\n    [true, combine_textnode_1.combineTextNode],\r\n    [false, rm_xmlns_1.rmXMLNS, 'rm-xmlns'],\r\n];\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/rules/index.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/rules/rm-attribute.ts":
-/*!********************************************!*\
-  !*** ./src/slimming/rules/rm-attribute.ts ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst definitions_1 = __webpack_require__(/*! ../const/definitions */ \"./src/slimming/const/definitions.ts\");\r\nconst regular_attr_1 = __webpack_require__(/*! ../const/regular-attr */ \"./src/slimming/const/regular-attr.ts\");\r\nconst regular_tag_1 = __webpack_require__(/*! ../const/regular-tag */ \"./src/slimming/const/regular-tag.ts\");\r\nconst legal_value_1 = __webpack_require__(/*! ../validate/legal-value */ \"./src/slimming/validate/legal-value.ts\");\r\nconst attr_is_equal_1 = __webpack_require__(/*! ../xml/attr-is-equal */ \"./src/slimming/xml/attr-is-equal.ts\");\r\nconst exec_style_tree_1 = __webpack_require__(/*! ../xml/exec-style-tree */ \"./src/slimming/xml/exec-style-tree.ts\");\r\nconst is_tag_1 = __webpack_require__(/*! ../xml/is-tag */ \"./src/slimming/xml/is-tag.ts\");\r\nconst traversal_node_1 = __webpack_require__(/*! ../xml/traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\n// rm-attirbute 不再验证 css 类的属性，只关注该 css 属性是否是 svg 所支持的\r\nexports.rmAttribute = async (rule, dom) => new Promise((resolve, reject) => {\r\n    if (rule[0]) {\r\n        const { rmDefault, keepEvent, keepAria, } = rule[1];\r\n        traversal_node_1.traversalNode(is_tag_1.isTag, node => {\r\n            if (rmDefault) {\r\n                exec_style_tree_1.execStyleTree(dom);\r\n            }\r\n            const tagDefine = regular_tag_1.regularTag[node.nodeName];\r\n            // href 和 xlink:href 不能并存，如果并存，应该移除后者\r\n            if (node.hasAttribute('href') && node.hasAttribute('xlink:href')) {\r\n                node.removeAttribute('xlink:href');\r\n            }\r\n            for (let i = node.attributes.length; i--;) {\r\n                const attr = node.attributes[i];\r\n                const attrDefine = regular_attr_1.regularAttr[attr.fullname];\r\n                const value = attr.value.trim();\r\n                if (attrDefine.isUndef) { // 非标准属性\r\n                    let isUndef = true;\r\n                    if ((keepEvent && definitions_1.eventAttributes.includes(attr.fullname)) // 事件属性是否保留\r\n                        ||\r\n                            (keepAria && definitions_1.ariaAttributes.includes(attr.fullname)) // aria 属性是否保留\r\n                    ) {\r\n                        isUndef = false;\r\n                    }\r\n                    if (isUndef) {\r\n                        node.removeAttribute(attr.fullname);\r\n                        continue;\r\n                    }\r\n                }\r\n                else {\r\n                    if (!value // 空属性\r\n                        ||\r\n                            (!attrDefine.couldBeStyle && !attr.fullname.includes('xmlns') && !tagDefine.ownAttributes.includes(attr.fullname)) // 属性和元素不匹配\r\n                        ||\r\n                            !legal_value_1.legalValue(attrDefine, attr, node.nodeName) // 不合法的值\r\n                    ) {\r\n                        node.removeAttribute(attr.fullname);\r\n                        continue;\r\n                    }\r\n                }\r\n                if (rmDefault) {\r\n                    // 如果父元素上有同名的样式类属性，则不能移除和默认值相同的属性\r\n                    const parentStyle = node.parentNode.styles;\r\n                    if (attrDefine.inherited && parentStyle && parentStyle.hasOwnProperty(attr.fullname)) {\r\n                        continue;\r\n                    }\r\n                    if (attr_is_equal_1.attrIsEqual(attrDefine, value, node.nodeName)) {\r\n                        node.removeAttribute(attr.fullname);\r\n                    }\r\n                }\r\n                // use 元素的宽高不能为负\r\n                if (node.nodeName === 'use') {\r\n                    if (attr.fullname === 'width' || attr.fullname === 'height') {\r\n                        if (+value < 0) {\r\n                            node.removeAttribute(attr.fullname);\r\n                        }\r\n                    }\r\n                }\r\n            }\r\n        }, dom);\r\n    }\r\n    resolve();\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/rules/rm-attribute.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/rules/rm-comments.ts":
-/*!*******************************************!*\
-  !*** ./src/slimming/rules/rm-comments.ts ***!
-  \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst index_1 = __webpack_require__(/*! ../../node/index */ \"./src/node/index.ts\");\r\nconst rm_node_1 = __webpack_require__(/*! ../xml/rm-node */ \"./src/slimming/xml/rm-node.ts\");\r\nconst traversal_node_1 = __webpack_require__(/*! ../xml/traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\nexports.rmComments = async (rule, dom) => new Promise((resolve, reject) => {\r\n    if (rule[0]) {\r\n        traversal_node_1.traversalNode(ramda_1.propEq('nodeType', index_1.NodeType.Comments), rm_node_1.rmNode, dom);\r\n    }\r\n    resolve();\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/rules/rm-comments.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/rules/rm-doctype.ts":
-/*!******************************************!*\
-  !*** ./src/slimming/rules/rm-doctype.ts ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst index_1 = __webpack_require__(/*! ../../node/index */ \"./src/node/index.ts\");\r\nconst rm_node_1 = __webpack_require__(/*! ../xml/rm-node */ \"./src/slimming/xml/rm-node.ts\");\r\nconst traversal_node_1 = __webpack_require__(/*! ../xml/traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\nexports.rmDocType = async (rule, dom) => new Promise((resolve, reject) => {\r\n    if (rule[0]) {\r\n        traversal_node_1.traversalNode(ramda_1.propEq('nodeType', index_1.NodeType.DocType), rm_node_1.rmNode, dom);\r\n    }\r\n    resolve();\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/rules/rm-doctype.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/rules/rm-hidden.ts":
-/*!*****************************************!*\
-  !*** ./src/slimming/rules/rm-hidden.ts ***!
-  \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst definitions_1 = __webpack_require__(/*! ../const/definitions */ \"./src/slimming/const/definitions.ts\");\r\nconst regular_tag_1 = __webpack_require__(/*! ../const/regular-tag */ \"./src/slimming/const/regular-tag.ts\");\r\nconst syntax_1 = __webpack_require__(/*! ../const/syntax */ \"./src/slimming/const/syntax.ts\");\r\nconst exec_style_tree_1 = __webpack_require__(/*! ../xml/exec-style-tree */ \"./src/slimming/xml/exec-style-tree.ts\");\r\nconst get_ancestor_1 = __webpack_require__(/*! ../xml/get-ancestor */ \"./src/slimming/xml/get-ancestor.ts\");\r\nconst get_animate_attr_1 = __webpack_require__(/*! ../xml/get-animate-attr */ \"./src/slimming/xml/get-animate-attr.ts\");\r\nconst get_attr_1 = __webpack_require__(/*! ../xml/get-attr */ \"./src/slimming/xml/get-attr.ts\");\r\nconst get_by_id_1 = __webpack_require__(/*! ../xml/get-by-id */ \"./src/slimming/xml/get-by-id.ts\");\r\nconst is_tag_1 = __webpack_require__(/*! ../xml/is-tag */ \"./src/slimming/xml/is-tag.ts\");\r\nconst rm_node_1 = __webpack_require__(/*! ../xml/rm-node */ \"./src/slimming/xml/rm-node.ts\");\r\nconst traversal_node_1 = __webpack_require__(/*! ../xml/traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\n// 检测数值类属性\r\nconst checkNumberAttr = (node, key, allowEmpty, allowAuto, allowZero, animateAttrs) => {\r\n    const val = get_attr_1.getAttr(node, key, '');\r\n    // 是否允许为空\r\n    if (!val)\r\n        return allowEmpty;\r\n    // 是否允许 auto\r\n    if (val === 'auto')\r\n        return allowAuto;\r\n    // 是否必须大于 0\r\n    const compare = allowZero ? ramda_1.gte : ramda_1.gt;\r\n    if (compare(parseFloat(val), 0) || get_animate_attr_1.checkAnimateAttr(animateAttrs, key, v => compare(parseFloat(val), 0))) {\r\n        return true;\r\n    }\r\n    return false;\r\n};\r\nconst checkUse = (node, dom) => {\r\n    if (!node.hasAttribute('href') && !node.hasAttribute('xlink:href')) {\r\n        rm_node_1.rmNode(node);\r\n    }\r\n    else {\r\n        const value = (node.getAttribute('href') || node.getAttribute('xlink:href'));\r\n        const iri = syntax_1.IRIFullMatch.exec(value);\r\n        if (iri) {\r\n            const id = iri[1];\r\n            // 不允许引用自身或祖先元素\r\n            if (get_ancestor_1.getAncestor(node, (n) => n.getAttribute('id') === id)) {\r\n                rm_node_1.rmNode(node);\r\n                return;\r\n            }\r\n            // 引用了不存在的元素\r\n            if (!get_by_id_1.getById(value, dom)) {\r\n                rm_node_1.rmNode(node);\r\n            }\r\n        }\r\n        else {\r\n            rm_node_1.rmNode(node);\r\n        }\r\n    }\r\n};\r\nconst numberMap = {\r\n    pattern: {\r\n        attrs: ['width', 'height'],\r\n        allowEmpty: false,\r\n        allowAuto: false,\r\n        allowZero: false,\r\n    },\r\n    mask: {\r\n        attrs: ['width', 'height'],\r\n        allowEmpty: true,\r\n        allowAuto: true,\r\n        allowZero: false,\r\n    },\r\n    marker: {\r\n        attrs: ['markerWidth', 'markerHeight'],\r\n        allowEmpty: true,\r\n        allowAuto: true,\r\n        allowZero: false,\r\n    },\r\n    image: {\r\n        attrs: ['width', 'height'],\r\n        allowEmpty: true,\r\n        allowAuto: true,\r\n        allowZero: false,\r\n    },\r\n};\r\nexports.rmHidden = async (rule, dom) => new Promise((resolve, reject) => {\r\n    if (rule[0]) {\r\n        exec_style_tree_1.execStyleTree(dom);\r\n        // tslint:disable-next-line: cyclomatic-complexity\r\n        traversal_node_1.traversalNode(is_tag_1.isTag, node => {\r\n            // 未包含子节点的文本容器视为隐藏节点\r\n            if (!node.childNodes.length && regular_tag_1.regularTag[node.nodeName].containTextNode) {\r\n                rm_node_1.rmNode(node);\r\n                return;\r\n            }\r\n            // textPath 如果没有 path 属性，则 href 和 xlink:href 必须指向 path 或 shape 元素\r\n            if (node.nodeName === 'textPath') {\r\n                if (!node.hasAttribute('path')) {\r\n                    const id = node.getAttribute('href') || node.getAttribute('xlink:href');\r\n                    if (!id) {\r\n                        rm_node_1.rmNode(node);\r\n                        return;\r\n                    }\r\n                    const target = get_by_id_1.getById(id, dom);\r\n                    if (!target) {\r\n                        rm_node_1.rmNode(node);\r\n                        return;\r\n                    }\r\n                    if (!definitions_1.shapeElements.includes(target.nodeName)) {\r\n                        rm_node_1.rmNode(node);\r\n                        return;\r\n                    }\r\n                }\r\n            }\r\n            const styles = node.styles;\r\n            const animateAttrs = get_animate_attr_1.getAnimateAttr(node);\r\n            const notNone = ramda_1.complement(ramda_1.equals('none'));\r\n            if (styles.hasOwnProperty('display')\r\n                &&\r\n                    styles.display.value === 'none'\r\n                &&\r\n                    !['script', 'style', 'mpath'].concat(definitions_1.filterPrimitiveElements, definitions_1.animationElements).includes(node.nodeName)\r\n                &&\r\n                    // 增加对动画的验证，对那些 display 为 none，但是动画会修改 display 的元素也不会进行移除\r\n                    !get_animate_attr_1.checkAnimateAttr(animateAttrs, 'display', notNone)) {\r\n                rm_node_1.rmNode(node);\r\n                return;\r\n            }\r\n            // 没有填充和描边的形状，不一定可以被移除，要再判断一下自身或父元素是否有 id\r\n            if (definitions_1.shapeElements.includes(node.nodeName)) {\r\n                const noFill = styles.hasOwnProperty('fill') && styles.fill.value === 'none' && !get_animate_attr_1.checkAnimateAttr(animateAttrs, 'fill', notNone);\r\n                const noStroke = (!styles.hasOwnProperty('stroke') || styles.stroke.value === 'none') && !get_animate_attr_1.checkAnimateAttr(animateAttrs, 'stroke', notNone);\r\n                if (noFill && noStroke && !get_ancestor_1.getAncestor(node, (n) => n.hasAttribute('id'))) {\r\n                    rm_node_1.rmNode(node);\r\n                    return;\r\n                }\r\n            }\r\n            if (numberMap.hasOwnProperty(node.nodeName)) {\r\n                const nubmerItem = numberMap[node.nodeName];\r\n                for (let i = nubmerItem.attrs.length; i--;) {\r\n                    if (!checkNumberAttr(node, nubmerItem.attrs[i], nubmerItem.allowEmpty, nubmerItem.allowAuto, nubmerItem.allowZero, animateAttrs)) {\r\n                        rm_node_1.rmNode(node);\r\n                        return;\r\n                    }\r\n                }\r\n            }\r\n            if (node.nodeName === 'use') {\r\n                checkUse(node, dom);\r\n            }\r\n        }, dom);\r\n    }\r\n    resolve();\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/rules/rm-hidden.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/rules/rm-irregular-nesting.ts":
-/*!****************************************************!*\
-  !*** ./src/slimming/rules/rm-irregular-nesting.ts ***!
-  \****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst regular_tag_1 = __webpack_require__(/*! ../const/regular-tag */ \"./src/slimming/const/regular-tag.ts\");\r\nconst get_ancestor_1 = __webpack_require__(/*! ../xml/get-ancestor */ \"./src/slimming/xml/get-ancestor.ts\");\r\nconst is_tag_1 = __webpack_require__(/*! ../xml/is-tag */ \"./src/slimming/xml/is-tag.ts\");\r\nconst rm_node_1 = __webpack_require__(/*! ../xml/rm-node */ \"./src/slimming/xml/rm-node.ts\");\r\nconst traversal_node_1 = __webpack_require__(/*! ../xml/traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\nexports.rmIrregularNesting = async (rule, dom) => new Promise((resolve, reject) => {\r\n    if (rule[0]) {\r\n        const { ignore } = rule[1];\r\n        const notIgnore = (node) => ramda_1.not(ramda_1.any(ramda_1.equals(ramda_1.prop('nodeName', node)), ignore));\r\n        traversal_node_1.traversalNode(ramda_1.both(is_tag_1.isTag, notIgnore), node => {\r\n            let legalRule = regular_tag_1.regularTag[node.nodeName].legalChildElements;\r\n            // noself 表示不允许嵌套自身\r\n            const noself = legalRule.noself;\r\n            // transparent 表示参照最近的非 switch 上级元素的规则\r\n            if (legalRule.transparent) {\r\n                const parent = get_ancestor_1.getAncestor(node.parentNode, (n) => n.nodeName !== 'switch');\r\n                legalRule = regular_tag_1.regularTag[parent.nodeName].legalChildElements;\r\n            }\r\n            for (let i = node.childNodes.length; i--;) {\r\n                const childNode = node.childNodes[i];\r\n                // 只针对 tag 类的子节点作处理\r\n                if (!is_tag_1.isTag(childNode)) {\r\n                    continue;\r\n                }\r\n                if (noself && childNode.nodeName === node.nodeName) { // 不允许嵌套自身\r\n                    rm_node_1.rmNode(childNode);\r\n                }\r\n                else if (legalRule.any) {\r\n                    // any 表示可以任意嵌套\r\n                    continue;\r\n                }\r\n                else if (legalRule.childElements && !legalRule.childElements.includes(childNode.nodeName)) { // 不在嵌套列表中的情况\r\n                    rm_node_1.rmNode(childNode);\r\n                }\r\n            }\r\n        }, dom, true);\r\n    }\r\n    resolve();\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/rules/rm-irregular-nesting.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/rules/rm-irregular-tag.ts":
-/*!************************************************!*\
-  !*** ./src/slimming/rules/rm-irregular-tag.ts ***!
-  \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst regular_tag_1 = __webpack_require__(/*! ../const/regular-tag */ \"./src/slimming/const/regular-tag.ts\");\r\nconst is_tag_1 = __webpack_require__(/*! ../xml/is-tag */ \"./src/slimming/xml/is-tag.ts\");\r\nconst rm_node_1 = __webpack_require__(/*! ../xml/rm-node */ \"./src/slimming/xml/rm-node.ts\");\r\nconst traversal_node_1 = __webpack_require__(/*! ../xml/traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\nexports.rmIrregularTag = async (rule, dom) => new Promise((resolve, reject) => {\r\n    if (rule[0]) {\r\n        const { ignore } = rule[1];\r\n        const notIgnore = (node) => ramda_1.not(ramda_1.any(ramda_1.equals(ramda_1.prop('nodeName', node)), ignore));\r\n        traversal_node_1.traversalNode(ramda_1.both(is_tag_1.isTag, notIgnore), node => {\r\n            if (regular_tag_1.regularTag[node.nodeName].isUndef) {\r\n                rm_node_1.rmNode(node);\r\n            }\r\n        }, dom);\r\n    }\r\n    resolve();\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/rules/rm-irregular-tag.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/rules/rm-px.ts":
-/*!*************************************!*\
-  !*** ./src/slimming/rules/rm-px.ts ***!
-  \*************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst regular_attr_1 = __webpack_require__(/*! ../const/regular-attr */ \"./src/slimming/const/regular-attr.ts\");\r\nconst syntax_1 = __webpack_require__(/*! ../const/syntax */ \"./src/slimming/const/syntax.ts\");\r\nconst exec_1 = __webpack_require__(/*! ../style/exec */ \"./src/slimming/style/exec.ts\");\r\nconst stringify_1 = __webpack_require__(/*! ../style/stringify */ \"./src/slimming/style/stringify.ts\");\r\nconst traversal_obj_1 = __webpack_require__(/*! ../utils/traversal-obj */ \"./src/slimming/utils/traversal-obj.ts\");\r\nconst is_tag_1 = __webpack_require__(/*! ../xml/is-tag */ \"./src/slimming/xml/is-tag.ts\");\r\nconst traversal_node_1 = __webpack_require__(/*! ../xml/traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\nconst pxReg = new RegExp(`(^|\\\\(|\\\\s|,|{|;|:)(${syntax_1.numberPattern})px(?=$|\\\\)|\\\\s|,|;|})`, 'gi');\r\nexports.rmPx = async (rule, dom) => new Promise((resolve, reject) => {\r\n    if (rule[0]) {\r\n        traversal_node_1.traversalNode(is_tag_1.isTag, node => {\r\n            node.attributes.forEach(attr => {\r\n                if (attr.fullname === 'style') {\r\n                    const style = exec_1.execStyle(attr.value);\r\n                    style.forEach(s => {\r\n                        if (regular_attr_1.regularAttr[s.fullname].maybeSizeNumber || regular_attr_1.regularAttr[s.fullname].maybeAccurateNumber) {\r\n                            pxReg.lastIndex = 0;\r\n                            // 移除 px ，同时移除 0 值的单位\r\n                            s.value = s.value.replace(pxReg, '$1$2').replace(/(^|\\D)0[a-z]+/gi, '$10');\r\n                        }\r\n                    });\r\n                    attr.value = stringify_1.stringifyStyle(style);\r\n                }\r\n                else {\r\n                    if (regular_attr_1.regularAttr[attr.fullname].maybeSizeNumber || regular_attr_1.regularAttr[attr.fullname].maybeAccurateNumber) {\r\n                        pxReg.lastIndex = 0;\r\n                        // 移除 px ，同时移除 0 值的单位\r\n                        attr.value = attr.value.replace(pxReg, '$1$2').replace(/(^|\\D)0[a-z]+/gi, '$10');\r\n                    }\r\n                }\r\n            });\r\n        }, dom);\r\n        if (dom.stylesheet) {\r\n            // 缩短 style 标签内的数值\r\n            const parsedCss = dom.stylesheet.stylesheet;\r\n            traversal_obj_1.traversalObj(ramda_1.both(ramda_1.has('property'), ramda_1.has('value')), (cssRule) => {\r\n                cssRule.value = cssRule.value.replace(pxReg, '$1$2');\r\n            }, parsedCss.rules);\r\n        }\r\n    }\r\n    resolve();\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/rules/rm-px.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/rules/rm-unnecessary.ts":
-/*!**********************************************!*\
-  !*** ./src/slimming/rules/rm-unnecessary.ts ***!
-  \**********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst definitions_1 = __webpack_require__(/*! ../const/definitions */ \"./src/slimming/const/definitions.ts\");\r\nconst rm_node_1 = __webpack_require__(/*! ../xml/rm-node */ \"./src/slimming/xml/rm-node.ts\");\r\nconst traversal_node_1 = __webpack_require__(/*! ../xml/traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\nexports.rmUnnecessary = async (rule, dom) => new Promise((resolve, reject) => {\r\n    if (rule[0]) {\r\n        const { tags } = rule[1];\r\n        if (tags.length) {\r\n            traversal_node_1.traversalNode(node => tags.includes(node.nodeName) && definitions_1.unnecessaryElements.includes(node.nodeName), rm_node_1.rmNode, dom);\r\n        }\r\n    }\r\n    resolve();\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/rules/rm-unnecessary.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/rules/rm-version.ts":
-/*!******************************************!*\
-  !*** ./src/slimming/rules/rm-version.ts ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst traversal_node_1 = __webpack_require__(/*! ../xml/traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\nexports.rmVersion = async (rule, dom) => new Promise((resolve, reject) => {\r\n    if (rule[0]) {\r\n        traversal_node_1.traversalNode(ramda_1.propEq('nodeName', 'svg'), node => {\r\n            node.removeAttribute('version');\r\n        }, dom);\r\n    }\r\n    resolve();\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/rules/rm-version.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/rules/rm-viewbox.ts":
-/*!******************************************!*\
-  !*** ./src/slimming/rules/rm-viewbox.ts ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst exec_numberlist_1 = __webpack_require__(/*! ../utils/exec-numberlist */ \"./src/slimming/utils/exec-numberlist.ts\");\r\nconst traversal_node_1 = __webpack_require__(/*! ../xml/traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\nexports.rmViewBox = async (rule, dom) => new Promise((resolve, reject) => {\r\n    if (rule[0]) {\r\n        traversal_node_1.traversalNode(node => node.hasAttribute('viewBox'), node => {\r\n            const size = ['0', '0', '0', '0'];\r\n            const viewBox = exec_numberlist_1.execNumberList(node.getAttribute('viewBox'));\r\n            // viewBox 属性的长度必须为 4，且 width 和 height 不能为负\r\n            if (viewBox.length !== 4 || viewBox[2] < 0 || viewBox[3] < 0) {\r\n                node.removeAttribute('viewBox');\r\n                return;\r\n            }\r\n            node.attributes.forEach(attr => {\r\n                if (node.nodeName === 'marker') {\r\n                    if (attr.fullname === 'markerWidth') {\r\n                        size[2] = attr.value.replace(/px$/, '');\r\n                    }\r\n                    else if (attr.fullname === 'markerHeight') {\r\n                        size[3] = attr.value.replace(/px$/, '');\r\n                    }\r\n                }\r\n                else {\r\n                    switch (attr.fullname) {\r\n                        case 'x':\r\n                            size[0] = attr.value.replace(/px$/, '');\r\n                            break;\r\n                        case 'y':\r\n                            size[1] = attr.value.replace(/px$/, '');\r\n                            break;\r\n                        case 'width':\r\n                            size[2] = attr.value.replace(/px$/, '');\r\n                            break;\r\n                        case 'height':\r\n                            size[3] = attr.value.replace(/px$/, '');\r\n                            break;\r\n                        default:\r\n                            break;\r\n                    }\r\n                }\r\n            });\r\n            // x、y、width、height 可以是不同的单位，只有当单位是 px 且和 viewBox 各个位置相等时，才可以移除 viewBox\r\n            if (ramda_1.equals(size, viewBox.map(s => `${s}`))) {\r\n                node.removeAttribute('viewBox');\r\n            }\r\n        }, dom);\r\n    }\r\n    resolve();\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/rules/rm-viewbox.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/rules/rm-xml-decl.ts":
-/*!*******************************************!*\
-  !*** ./src/slimming/rules/rm-xml-decl.ts ***!
-  \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst index_1 = __webpack_require__(/*! ../../node/index */ \"./src/node/index.ts\");\r\nconst rm_node_1 = __webpack_require__(/*! ../xml/rm-node */ \"./src/slimming/xml/rm-node.ts\");\r\nconst traversal_node_1 = __webpack_require__(/*! ../xml/traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\nexports.rmXMLDecl = async (rule, dom) => new Promise((resolve, reject) => {\r\n    if (rule[0]) {\r\n        traversal_node_1.traversalNode(ramda_1.propEq('nodeType', index_1.NodeType.XMLDecl), rm_node_1.rmNode, dom);\r\n    }\r\n    resolve();\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/rules/rm-xml-decl.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/rules/rm-xmlns.ts":
-/*!****************************************!*\
-  !*** ./src/slimming/rules/rm-xmlns.ts ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst is_tag_1 = __webpack_require__(/*! ../xml/is-tag */ \"./src/slimming/xml/is-tag.ts\");\r\nconst rm_node_1 = __webpack_require__(/*! ../xml/rm-node */ \"./src/slimming/xml/rm-node.ts\");\r\nexports.rmXMLNS = async (rule, dom) => new Promise((resolve, reject) => {\r\n    if (rule[0]) {\r\n        const traversalNode = (node, nsStack) => {\r\n            if (is_tag_1.isTag(node)) {\r\n                const xmlnsObj = {};\r\n                Object.assign(xmlnsObj, nsStack[nsStack.length - 1]);\r\n                // 首先判断节点是否存在命名空间\r\n                if (node.namespace) {\r\n                    if (xmlnsObj.hasOwnProperty(node.namespace)) {\r\n                        xmlnsObj[node.namespace].count++;\r\n                    }\r\n                    else {\r\n                        rm_node_1.rmNode(node);\r\n                        return;\r\n                    }\r\n                }\r\n                // 遍历节点属性的命名空间\r\n                for (let i = node.attributes.length; i--;) {\r\n                    const attr = node.attributes[i];\r\n                    if (attr.namespace === 'xmlns') {\r\n                        xmlnsObj[attr.name] = {\r\n                            target: node,\r\n                            count: 0,\r\n                        };\r\n                    }\r\n                    else if (attr.namespace) {\r\n                        if (xmlnsObj.hasOwnProperty(attr.namespace)) {\r\n                            xmlnsObj[attr.namespace].count++;\r\n                        }\r\n                        else {\r\n                            node.removeAttribute(attr.fullname);\r\n                        }\r\n                    }\r\n                }\r\n                // 压栈，并遍历子节点\r\n                nsStack.push(xmlnsObj);\r\n                node.childNodes.forEach(childNode => {\r\n                    traversalNode(childNode, nsStack);\r\n                });\r\n                Object.keys(xmlnsObj).forEach(ns => {\r\n                    if (xmlnsObj[ns].count === 0 && xmlnsObj[ns].target === node) {\r\n                        node.removeAttribute(`xmlns:${ns}`);\r\n                    }\r\n                });\r\n                nsStack.pop();\r\n            }\r\n        };\r\n        dom.childNodes.forEach(node => {\r\n            traversalNode(node, [{}]);\r\n        });\r\n    }\r\n    resolve();\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/rules/rm-xmlns.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/rules/shorten-animate.ts":
-/*!***********************************************!*\
-  !*** ./src/slimming/rules/shorten-animate.ts ***!
-  \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst definitions_1 = __webpack_require__(/*! ../const/definitions */ \"./src/slimming/const/definitions.ts\");\r\nconst rm_node_1 = __webpack_require__(/*! ../xml/rm-node */ \"./src/slimming/xml/rm-node.ts\");\r\nconst traversal_node_1 = __webpack_require__(/*! ../xml/traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\nconst get_by_id_1 = __webpack_require__(/*! ../xml/get-by-id */ \"./src/slimming/xml/get-by-id.ts\");\r\nconst regular_attr_1 = __webpack_require__(/*! ../const/regular-attr */ \"./src/slimming/const/regular-attr.ts\");\r\nconst legal_value_1 = __webpack_require__(/*! ../validate/legal-value */ \"./src/slimming/validate/legal-value.ts\");\r\nconst regular_tag_1 = __webpack_require__(/*! ../const/regular-tag */ \"./src/slimming/const/regular-tag.ts\");\r\nconst check_animate_motion_1 = __webpack_require__(/*! ../animate/check-animate-motion */ \"./src/slimming/animate/check-animate-motion.ts\");\r\nexports.shortenAnimate = async (rule, dom) => new Promise((resolve, reject) => {\r\n    if (rule[0]) {\r\n        const { remove } = rule[1];\r\n        // tslint:disable-next-line: cyclomatic-complexity\r\n        traversal_node_1.traversalNode(node => definitions_1.animationElements.includes(node.nodeName), (node) => {\r\n            if (remove) {\r\n                rm_node_1.rmNode(node);\r\n                return;\r\n            }\r\n            // 不管 href 能不能找到目标，都移除该属性，改为设置成 target 的子元素\r\n            const href = node.hasAttribute('href') ? node.getAttribute('href') : node.getAttribute('xlink:href');\r\n            if (href) {\r\n                const target = get_by_id_1.getById(href, dom);\r\n                if (target) {\r\n                    target.appendChild(node);\r\n                }\r\n            }\r\n            node.removeAttribute('href');\r\n            node.removeAttribute('xlink:href');\r\n            // 处理 attributeName 属性\r\n            if (definitions_1.animationAttrElements.includes(node.nodeName)) {\r\n                // 先取出来 attributeName 属性\r\n                const attributeName = node.getAttribute('attributeName') || '';\r\n                if (!attributeName || !regular_attr_1.regularAttr[attributeName].animatable) {\r\n                    // attributeName 指定了不能实现动画的属性，视为无效\r\n                    rm_node_1.rmNode(node);\r\n                    return;\r\n                }\r\n                // attributeName 和父元素不匹配\r\n                const parentName = node.parentNode.nodeName;\r\n                if (!regular_attr_1.regularAttr[attributeName].applyTo.includes(parentName) && !regular_tag_1.regularTag[parentName].ownAttributes.includes(attributeName)) {\r\n                    rm_node_1.rmNode(node);\r\n                    return;\r\n                }\r\n                // animateTransform 只能修改 tranform 类型的属性\r\n                // https://svgwg.org/specs/animations/#SVGExtensionsToSMILAnimation\r\n                if (node.nodeName === 'animateTransform' && attributeName !== 'transform' && attributeName !== 'patternTransform') {\r\n                    rm_node_1.rmNode(node);\r\n                    return;\r\n                }\r\n                for (const attr of node.attributes) {\r\n                    // 对动画属性 from、to、by、values 的值进行合法性验证\r\n                    if (definitions_1.animationAttributes.includes(attr.fullname)) {\r\n                        // 动画属性不合法\r\n                        if ((attr.fullname !== 'values' && !legal_value_1.legalValue(regular_attr_1.regularAttr[attributeName], attr))) {\r\n                            node.removeAttribute(attr.fullname);\r\n                            continue;\r\n                        }\r\n                        // values 是以分号分隔的，需要分隔后对每一项进行合法性验证\r\n                        const values = attr.value.split(';');\r\n                        if (values.every(val => !legal_value_1.legalValue(regular_attr_1.regularAttr[attributeName], {\r\n                            name: 'values',\r\n                            fullname: 'values',\r\n                            namespace: '',\r\n                            value: val.trim(),\r\n                        }))) {\r\n                            node.removeAttribute(attr.fullname);\r\n                        }\r\n                    }\r\n                }\r\n                if (node.nodeName === 'set' && !node.getAttribute('to')) {\r\n                    rm_node_1.rmNode(node);\r\n                    return;\r\n                }\r\n                if (!definitions_1.animationAttributes.some(key => node.hasAttribute(key))) {\r\n                    rm_node_1.rmNode(node);\r\n                    return;\r\n                }\r\n            }\r\n            // animateMotion 如果没有 path 属性，则必须包含有效的 mpath ，规则是 href 或 xlink:href 指向 path 或 shape 元素\r\n            if (node.nodeName === 'animateMotion') {\r\n                if (!check_animate_motion_1.checkAnimateMotion(node, dom)) {\r\n                    rm_node_1.rmNode(node);\r\n                    return;\r\n                }\r\n            }\r\n        }, dom);\r\n    }\r\n    resolve();\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/rules/shorten-animate.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/rules/shorten-class.ts":
-/*!*********************************************!*\
-  !*** ./src/slimming/rules/shorten-class.ts ***!
-  \*********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst create_shorten_id_1 = __webpack_require__(/*! ../algorithm/create-shorten-id */ \"./src/slimming/algorithm/create-shorten-id.ts\");\r\nconst mix_white_space_1 = __webpack_require__(/*! ../utils/mix-white-space */ \"./src/slimming/utils/mix-white-space.ts\");\r\nconst traversal_obj_1 = __webpack_require__(/*! ../utils/traversal-obj */ \"./src/slimming/utils/traversal-obj.ts\");\r\nconst is_tag_1 = __webpack_require__(/*! ../xml/is-tag */ \"./src/slimming/xml/is-tag.ts\");\r\nconst traversal_node_1 = __webpack_require__(/*! ../xml/traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\nconst classSelectorReg = /\\.([^,\\*#>+~:{\\s\\[\\.]+)/gi;\r\nexports.shortenClass = async (rule, dom) => new Promise((resolve, reject) => {\r\n    if (rule[0]) {\r\n        const parsedCss = dom.stylesheet;\r\n        if (parsedCss) {\r\n            let si = 0;\r\n            const classList = {};\r\n            const shorten = (key) => {\r\n                if (classList.hasOwnProperty(key)) {\r\n                    return classList[key][0];\r\n                }\r\n                const sid = create_shorten_id_1.createShortenID(si++);\r\n                classList[key] = [sid, false];\r\n                return sid;\r\n            };\r\n            // 取出所有被引用的 class ，并缩短\r\n            const cssRules = parsedCss.stylesheet;\r\n            traversal_obj_1.traversalObj(ramda_1.has('selectors'), (ruleItem) => {\r\n                const selectors = ruleItem.selectors;\r\n                if (selectors) {\r\n                    selectors.forEach((selector, selectorIndex) => {\r\n                        selectors[selectorIndex] = selector.replace(classSelectorReg, (m, p) => `.${shorten(p)}`);\r\n                    });\r\n                }\r\n            }, cssRules.rules);\r\n            // 查找 dom 树，找到被引用的 class ，替换为缩短后的值\r\n            traversal_node_1.traversalNode(is_tag_1.isTag, node => {\r\n                const classAttr = node.getAttribute('class');\r\n                if (classAttr !== null) {\r\n                    const className = mix_white_space_1.mixWhiteSpace(classAttr.trim()).split(/\\s+/);\r\n                    for (let ci = className.length; ci--;) {\r\n                        if (classList.hasOwnProperty(className[ci])) {\r\n                            const cName = classList[className[ci]][0];\r\n                            classList[className[ci]][1] = true;\r\n                            className[ci] = cName;\r\n                        }\r\n                        else {\r\n                            className.splice(ci, 1);\r\n                        }\r\n                    }\r\n                    if (className.length) {\r\n                        node.setAttribute('class', className.join(' '));\r\n                    }\r\n                    else {\r\n                        node.removeAttribute('class');\r\n                    }\r\n                }\r\n            }, dom);\r\n            // 最后移除不存在的 class 引用\r\n            Object.values(classList).forEach(item => {\r\n                if (item[1]) {\r\n                    return;\r\n                }\r\n                const reg = new RegExp(`\\\\.${item[0]}(?=[,\\\\*#>+~:{\\\\s\\\\[\\\\.]|$)`);\r\n                traversal_obj_1.traversalObj(ramda_1.has('selectors'), (ruleItem, path) => {\r\n                    const selectors = ruleItem.selectors;\r\n                    if (selectors) {\r\n                        for (let i = selectors.length; i--;) {\r\n                            if (reg.test(selectors[i])) {\r\n                                selectors.splice(i, 1);\r\n                            }\r\n                        }\r\n                        if (!selectors.length) {\r\n                            const parent = path[path.length - 1];\r\n                            parent.splice(parent.indexOf(ruleItem), 1);\r\n                        }\r\n                    }\r\n                }, cssRules.rules);\r\n            });\r\n        }\r\n        else {\r\n            // 如果不存在样式表，则直接移除所有的 class 属性\r\n            traversal_node_1.traversalNode(is_tag_1.isTag, node => {\r\n                node.removeAttribute('class');\r\n            }, dom);\r\n        }\r\n    }\r\n    resolve();\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/rules/shorten-class.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/rules/shorten-color.ts":
-/*!*********************************************!*\
-  !*** ./src/slimming/rules/shorten-color.ts ***!
-  \*********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst exec_1 = __webpack_require__(/*! ../color/exec */ \"./src/slimming/color/exec.ts\");\r\nconst rgb2hsl_1 = __webpack_require__(/*! ../color/rgb2hsl */ \"./src/slimming/color/rgb2hsl.ts\");\r\nconst const_1 = __webpack_require__(/*! ../const */ \"./src/slimming/const/index.ts\");\r\nconst regular_attr_1 = __webpack_require__(/*! ../const/regular-attr */ \"./src/slimming/const/regular-attr.ts\");\r\nconst shorten_alpha_1 = __webpack_require__(/*! ../math/shorten-alpha */ \"./src/slimming/math/shorten-alpha.ts\");\r\nconst exec_2 = __webpack_require__(/*! ../style/exec */ \"./src/slimming/style/exec.ts\");\r\nconst stringify_1 = __webpack_require__(/*! ../style/stringify */ \"./src/slimming/style/stringify.ts\");\r\nconst fillin_1 = __webpack_require__(/*! ../utils/fillin */ \"./src/slimming/utils/fillin.ts\");\r\nconst tohex_1 = __webpack_require__(/*! ../utils/tohex */ \"./src/slimming/utils/tohex.ts\");\r\nconst traversal_obj_1 = __webpack_require__(/*! ../utils/traversal-obj */ \"./src/slimming/utils/traversal-obj.ts\");\r\nconst is_tag_1 = __webpack_require__(/*! ../xml/is-tag */ \"./src/slimming/xml/is-tag.ts\");\r\nconst traversal_node_1 = __webpack_require__(/*! ../xml/traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\nconst operateHex = ramda_1.pipe(tohex_1.toHex, ramda_1.toLower, fillin_1.fillIn(2));\r\nconst alphaMap = {\r\n    '100': 255,\r\n    '99': 252,\r\n    '98': 250,\r\n    '97': 247,\r\n    '96': 245,\r\n    '95': 242,\r\n    '94': 240,\r\n    '93': 237,\r\n    '92': 235,\r\n    '91': 232,\r\n    '90': 230,\r\n    '89': 227,\r\n    '88': 224,\r\n    '87': 222,\r\n    '86': 219,\r\n    '85': 217,\r\n    '84': 214,\r\n    '83': 212,\r\n    '82': 209,\r\n    '81': 207,\r\n    '80': 204,\r\n    '79': 201,\r\n    '78': 199,\r\n    '77': 196,\r\n    '76': 194,\r\n    '75': 191,\r\n    '74': 189,\r\n    '73': 186,\r\n    '72': 184,\r\n    '71': 181,\r\n    '70': 179,\r\n    '69': 176,\r\n    '68': 173,\r\n    '67': 171,\r\n    '66': 168,\r\n    '65': 166,\r\n    '64': 163,\r\n    '63': 161,\r\n    '62': 158,\r\n    '61': 156,\r\n    '60': 153,\r\n    '59': 150,\r\n    '58': 148,\r\n    '57': 145,\r\n    '56': 143,\r\n    '55': 140,\r\n    '54': 138,\r\n    '53': 135,\r\n    '52': 133,\r\n    '51': 130,\r\n    '50': 128,\r\n    '49': 125,\r\n    '48': 122,\r\n    '47': 120,\r\n    '46': 117,\r\n    '45': 115,\r\n    '44': 112,\r\n    '43': 110,\r\n    '42': 107,\r\n    '41': 105,\r\n    '40': 102,\r\n    '39': 99,\r\n    '38': 97,\r\n    '37': 94,\r\n    '36': 92,\r\n    '35': 89,\r\n    '34': 87,\r\n    '33': 84,\r\n    '32': 82,\r\n    '31': 79,\r\n    '30': 77,\r\n    '29': 74,\r\n    '28': 71,\r\n    '27': 69,\r\n    '26': 66,\r\n    '25': 64,\r\n    '24': 61,\r\n    '23': 59,\r\n    '22': 56,\r\n    '21': 54,\r\n    '20': 51,\r\n    '19': 48,\r\n    '18': 46,\r\n    '17': 43,\r\n    '16': 41,\r\n    '15': 38,\r\n    '14': 36,\r\n    '13': 33,\r\n    '12': 31,\r\n    '11': 28,\r\n    '10': 26,\r\n    '9': 23,\r\n    '8': 20,\r\n    '7': 18,\r\n    '6': 15,\r\n    '5': 13,\r\n    '4': 10,\r\n    '3': 8,\r\n    '2': 5,\r\n    '1': 3,\r\n    '0': 0,\r\n};\r\nconst shortenMap = {\r\n    '#f0ffff': 'azure',\r\n    '#f5f5dc': 'beige',\r\n    '#ffe4c4': 'bisque',\r\n    '#a52a2a': 'brown',\r\n    '#ff7f50': 'coral',\r\n    '#ffd700': 'gold',\r\n    '#808080': 'gray',\r\n    '#008000': 'green',\r\n    '#4b0082': 'indigo',\r\n    '#fffff0': 'ivory',\r\n    '#f0e68c': 'khaki',\r\n    '#faf0e6': 'linen',\r\n    '#800000': 'maroon',\r\n    '#000080': 'navy',\r\n    '#808000': 'olive',\r\n    '#ffa500': 'orange',\r\n    '#da70d6': 'orchid',\r\n    '#cd853f': 'peru',\r\n    '#ffc0cb': 'pink',\r\n    '#dda0dd': 'plum',\r\n    '#800080': 'purple',\r\n    '#f00': 'red',\r\n    '#fa8072': 'salmon',\r\n    '#a0522d': 'sienna',\r\n    '#c0c0c0': 'silver',\r\n    '#fffafa': 'snow',\r\n    '#d2b48c': 'tan',\r\n    '#008080': 'teal',\r\n    '#ff6347': 'tomato',\r\n    '#ee82ee': 'violet',\r\n    '#f5deb3': 'wheat',\r\n};\r\nconst shortenReg = new RegExp(`(?:${Object.keys(shortenMap).join('|')})(?=[^0-9a-f]|$)`, 'gi');\r\nconst formatColor = (rgba, str, digit) => {\r\n    const color = exec_1.execColor(str, digit);\r\n    let s = color.origin;\r\n    if (color.valid) {\r\n        if (color.a < 1) {\r\n            // tslint:disable:prefer-conditional-expression\r\n            if (rgba) {\r\n                s = `#${operateHex(color.r)}${operateHex(color.g)}${operateHex(color.b)}${ramda_1.has(`${color.a * const_1.Hundred}`, alphaMap) ? operateHex(alphaMap[`${color.a * const_1.Hundred}`]) : operateHex(Math.round(color.a * const_1.FF))}`;\r\n            }\r\n            else {\r\n                if (color.r === 0 && color.g === 0 && color.b === 0 && color.a === 0) {\r\n                    s = 'transparent';\r\n                }\r\n                else {\r\n                    const hslColor = rgb2hsl_1.rgb2hsl(color);\r\n                    const alpha = shorten_alpha_1.shortenAlpha(digit, color.a);\r\n                    const rgb = `rgb(${color.r},${color.g},${color.b},${alpha})`;\r\n                    const hsl = `hsl(${hslColor.h},${hslColor.s}%,${hslColor.l}%,${alpha})`;\r\n                    s = hsl.length < rgb.length ? hsl : rgb;\r\n                }\r\n            }\r\n        }\r\n        else {\r\n            s = `#${operateHex(color.r)}${operateHex(color.g)}${operateHex(color.b)}`;\r\n        }\r\n        s = s.replace(/#([0-9a-f])\\1([0-9a-f])\\2([0-9a-f])\\3(?=[^0-9a-f]|$)/gi, '#$1$2$3');\r\n        s = s.replace(shortenReg, $0 => `${shortenMap[$0]}`);\r\n        if (rgba) {\r\n            s = s.replace(/#([0-9a-f])\\1([0-9a-f])\\2([0-9a-f])\\3([0-9a-f])\\4(?=[^0-9a-f]|$)/gi, '#$1$2$3$4');\r\n            s = s.replace(/^transparent$/i, '#0000');\r\n        }\r\n    }\r\n    // 如果处理后结果不理想，还返回原始字符串\r\n    if (s.length > color.origin.length) {\r\n        return color.origin;\r\n    }\r\n    return s;\r\n};\r\nexports.shortenColor = async (rule, dom) => new Promise((resolve, reject) => {\r\n    if (rule[0]) {\r\n        const { rrggbbaa, opacityDigit } = rule[1];\r\n        const digit = Math.min(opacityDigit, const_1.OPACITY_DIGIT);\r\n        traversal_node_1.traversalNode(is_tag_1.isTag, node => {\r\n            node.attributes.forEach(attr => {\r\n                if (regular_attr_1.regularAttr[attr.fullname].maybeColor) {\r\n                    attr.value = formatColor(rrggbbaa, attr.value, digit);\r\n                }\r\n                else if (attr.fullname === 'style') {\r\n                    const style = exec_2.execStyle(attr.value);\r\n                    style.forEach(s => {\r\n                        if (regular_attr_1.regularAttr[s.fullname].maybeColor) {\r\n                            s.value = formatColor(rrggbbaa, s.value, digit);\r\n                        }\r\n                    });\r\n                    attr.value = stringify_1.stringifyStyle(style);\r\n                }\r\n            });\r\n        }, dom);\r\n        if (dom.stylesheet) {\r\n            // 缩短 style 标签内的颜色\r\n            const parsedCss = dom.stylesheet.stylesheet;\r\n            traversal_obj_1.traversalObj(ramda_1.both(ramda_1.has('property'), ramda_1.has('value')), (cssRule) => {\r\n                if (regular_attr_1.regularAttr[cssRule.property].maybeColor) { // 可能为颜色的属性\r\n                    cssRule.value = formatColor(rrggbbaa, cssRule.value, digit);\r\n                }\r\n            }, parsedCss.rules);\r\n        }\r\n    }\r\n    resolve();\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/rules/shorten-color.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/rules/shorten-decimal-digits.ts":
-/*!******************************************************!*\
-  !*** ./src/slimming/rules/shorten-decimal-digits.ts ***!
-  \******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst definitions_1 = __webpack_require__(/*! ../const/definitions */ \"./src/slimming/const/definitions.ts\");\r\nconst regular_attr_1 = __webpack_require__(/*! ../const/regular-attr */ \"./src/slimming/const/regular-attr.ts\");\r\nconst syntax_1 = __webpack_require__(/*! ../const/syntax */ \"./src/slimming/const/syntax.ts\");\r\nconst exec_alpha_1 = __webpack_require__(/*! ../math/exec-alpha */ \"./src/slimming/math/exec-alpha.ts\");\r\nconst shorten_alpha_1 = __webpack_require__(/*! ../math/shorten-alpha */ \"./src/slimming/math/shorten-alpha.ts\");\r\nconst tofixed_1 = __webpack_require__(/*! ../math/tofixed */ \"./src/slimming/math/tofixed.ts\");\r\nconst exec_1 = __webpack_require__(/*! ../style/exec */ \"./src/slimming/style/exec.ts\");\r\nconst stringify_1 = __webpack_require__(/*! ../style/stringify */ \"./src/slimming/style/stringify.ts\");\r\nconst shorten_number_1 = __webpack_require__(/*! ../utils/shorten-number */ \"./src/slimming/utils/shorten-number.ts\");\r\nconst shorten_number_list_1 = __webpack_require__(/*! ../utils/shorten-number-list */ \"./src/slimming/utils/shorten-number-list.ts\");\r\nconst traversal_obj_1 = __webpack_require__(/*! ../utils/traversal-obj */ \"./src/slimming/utils/traversal-obj.ts\");\r\nconst is_tag_1 = __webpack_require__(/*! ../xml/is-tag */ \"./src/slimming/xml/is-tag.ts\");\r\nconst traversal_node_1 = __webpack_require__(/*! ../xml/traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\n// 移除掉正、负号前面的逗号，移除掉0.前面的0，移除掉.1,.1或e1,.1这种case中间的逗号\r\nconst doShorten = ramda_1.curry((digit, val) => shorten_number_list_1.shortenNumberList(val.replace(syntax_1.numberGlobal, s => `${shorten_number_1.shortenNumber(tofixed_1.toFixed(digit, parseFloat(s)))}`)));\r\nexports.shortenDecimalDigits = async (rule, dom) => new Promise((resolve, reject) => {\r\n    if (rule[0]) {\r\n        const { sizeDigit, angelDigit } = rule[1];\r\n        const fuzzyDigit = doShorten(sizeDigit);\r\n        const accurateDigit = doShorten(angelDigit);\r\n        const shortenValue = (key, value) => {\r\n            const define = regular_attr_1.regularAttr[key];\r\n            if (define.maybeAlpha) { // alpha 值采用特殊处理逻辑\r\n                const alpha = exec_alpha_1.execAlpha(value);\r\n                if (typeof alpha === 'number') {\r\n                    return shorten_alpha_1.shortenAlpha(angelDigit, alpha);\r\n                }\r\n            }\r\n            else if (define.maybeSizeNumber) { // 可以模糊处理的数字\r\n                return fuzzyDigit(value);\r\n            }\r\n            else if (define.maybeAccurateNumber) { // 需要较精确的数字\r\n                return accurateDigit(value);\r\n            }\r\n            return value;\r\n        };\r\n        if (dom.stylesheet) {\r\n            // 缩短 style 标签内的数值\r\n            const parsedCss = dom.stylesheet.stylesheet;\r\n            traversal_obj_1.traversalObj(ramda_1.both(ramda_1.has('property'), ramda_1.has('value')), (cssRule) => {\r\n                cssRule.value = shortenValue(cssRule.property, cssRule.value);\r\n            }, parsedCss.rules);\r\n        }\r\n        traversal_node_1.traversalNode(is_tag_1.isTag, node => {\r\n            // 先取出来 attributeName 属性\r\n            const attributeName = node.getAttribute('attributeName');\r\n            // 缩短节点属性的数值\r\n            node.attributes.forEach(attr => {\r\n                syntax_1.numberGlobal.lastIndex = 0;\r\n                if (definitions_1.animationAttributes.includes(attr.fullname) && definitions_1.animationAttrElements.includes(node.nodeName)) { // 动画处理的属性，需要根据 attributeName 属性判断\r\n                    if (attributeName) {\r\n                        attr.value = shortenValue(attributeName, attr.value);\r\n                    }\r\n                }\r\n                else if (attr.fullname === 'style') { // css 样式处理，和属性类似\r\n                    const style = exec_1.execStyle(attr.value);\r\n                    style.forEach(s => {\r\n                        syntax_1.numberGlobal.lastIndex = 0;\r\n                        s.value = shortenValue(s.fullname, s.value);\r\n                    });\r\n                    attr.value = stringify_1.stringifyStyle(style);\r\n                }\r\n                else {\r\n                    attr.value = shortenValue(attr.fullname, attr.value);\r\n                }\r\n            });\r\n        }, dom);\r\n    }\r\n    resolve();\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/rules/shorten-decimal-digits.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/rules/shorten-defs.ts":
-/*!********************************************!*\
-  !*** ./src/slimming/rules/shorten-defs.ts ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst regular_attr_1 = __webpack_require__(/*! ../const/regular-attr */ \"./src/slimming/const/regular-attr.ts\");\r\nconst syntax_1 = __webpack_require__(/*! ../const/syntax */ \"./src/slimming/const/syntax.ts\");\r\nconst is_tag_1 = __webpack_require__(/*! ../xml/is-tag */ \"./src/slimming/xml/is-tag.ts\");\r\nconst rm_node_1 = __webpack_require__(/*! ../xml/rm-node */ \"./src/slimming/xml/rm-node.ts\");\r\nconst traversal_node_1 = __webpack_require__(/*! ../xml/traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\nconst get_ancestor_1 = __webpack_require__(/*! ../xml/get-ancestor */ \"./src/slimming/xml/get-ancestor.ts\");\r\nconst exec_style_tree_1 = __webpack_require__(/*! ../xml/exec-style-tree */ \"./src/slimming/xml/exec-style-tree.ts\");\r\nconst exec_1 = __webpack_require__(/*! ../style/exec */ \"./src/slimming/style/exec.ts\");\r\nconst stringify_1 = __webpack_require__(/*! ../style/stringify */ \"./src/slimming/style/stringify.ts\");\r\nconst definitions_1 = __webpack_require__(/*! ../const/definitions */ \"./src/slimming/const/definitions.ts\");\r\nconst check_animate_motion_1 = __webpack_require__(/*! ../animate/check-animate-motion */ \"./src/slimming/animate/check-animate-motion.ts\");\r\nconst checkSub = (node, IDList, isDefs = false) => {\r\n    let hasId = false;\r\n    if (!isDefs) {\r\n        const id = node.getAttribute('id');\r\n        if (id) {\r\n            if (IDList[id]) {\r\n                hasId = true;\r\n                IDList[id].tag = node;\r\n            }\r\n        }\r\n    }\r\n    if (!hasId) {\r\n        for (let ci = node.childNodes.length; ci--;) {\r\n            const childNode = node.childNodes[ci];\r\n            if (is_tag_1.isTag(childNode)) {\r\n                checkSub(childNode, IDList);\r\n            }\r\n            else {\r\n                rm_node_1.rmNode(childNode);\r\n            }\r\n        }\r\n        if (!node.childNodes.length) {\r\n            rm_node_1.rmNode(node);\r\n        }\r\n        else if (!isDefs) {\r\n            node.parentNode.replaceChild(node, ...node.childNodes);\r\n        }\r\n    }\r\n};\r\nconst checkDefsApply = (item, dom) => {\r\n    const [node, attrName] = item.iri[0];\r\n    // 只有 href 和 xlink:href 才能应用\r\n    if (attrName !== 'href' && attrName !== 'xlink:href') {\r\n        return;\r\n    }\r\n    switch (node.nodeName) {\r\n        case 'use':\r\n            // TODO 有 x 和 y 的暂不做应用（实际效果应该相当于 translate，待验证）\r\n            if (node.hasAttribute('x') || node.hasAttribute('y')) {\r\n                return;\r\n            }\r\n            // 具有 viewport ，且 use 定义了宽高，不进行应用\r\n            if (['svg', 'symbol'].includes(item.tag.nodeName) && (node.hasAttribute('width') || node.hasAttribute('height'))) {\r\n                return;\r\n            }\r\n            const originStyle = {};\r\n            const originAttr = {};\r\n            for (const [key, val] of Object.entries(node.styles)) {\r\n                // 如果 use 元素被 style 命中，不能进行应用\r\n                if (val.from === 'styletag') {\r\n                    return;\r\n                }\r\n                if (val.from === 'attr') {\r\n                    originAttr[key] = val.value;\r\n                }\r\n                if (val.from === 'inline') {\r\n                    originStyle[key] = val.value;\r\n                }\r\n            }\r\n            const useTag = item.tag;\r\n            node.parentNode.replaceChild(node, useTag);\r\n            const styleArray = useTag.hasAttribute('style') ? exec_1.execStyle(useTag.getAttribute('style')) : [];\r\n            for (const [key, val] of Object.entries(originAttr)) {\r\n                if (!useTag.hasAttribute(key) && !styleArray.some(sItem => sItem.fullname === key)) {\r\n                    useTag.setAttribute(key, val);\r\n                }\r\n            }\r\n            for (const [key, val] of Object.entries(originStyle)) {\r\n                if (!useTag.hasAttribute(key) && !styleArray.some(sItem => sItem.fullname === key)) {\r\n                    styleArray.push({\r\n                        name: key,\r\n                        fullname: key,\r\n                        value: val,\r\n                    });\r\n                }\r\n            }\r\n            if (styleArray.length) {\r\n                useTag.setAttribute('style', stringify_1.stringifyStyle(styleArray));\r\n            }\r\n            return;\r\n        case 'mpath':\r\n            const pathTag = item.tag;\r\n            const mpathParent = node.parentNode;\r\n            if (!definitions_1.shapeElements.includes(pathTag.nodeName)) {\r\n                rm_node_1.rmNode(node);\r\n                rm_node_1.rmNode(pathTag);\r\n                if (!check_animate_motion_1.checkAnimateMotion(mpathParent, dom)) {\r\n                    rm_node_1.rmNode(mpathParent);\r\n                }\r\n                return;\r\n            }\r\n            // 只针对路径元素进行应用\r\n            if (pathTag.nodeName === 'path') {\r\n                const d = pathTag.getAttribute('d');\r\n                if (d) {\r\n                    mpathParent.setAttribute('path', d);\r\n                    rm_node_1.rmNode(node);\r\n                    rm_node_1.rmNode(pathTag);\r\n                }\r\n            }\r\n            return;\r\n        default:\r\n            break;\r\n    }\r\n};\r\nexports.shortenDefs = async (rule, dom) => new Promise((resolve, reject) => {\r\n    if (rule[0]) {\r\n        let firstDefs;\r\n        // 首先合并 defs 标签\r\n        traversal_node_1.traversalNode(ramda_1.propEq('nodeName', 'defs'), node => {\r\n            if (firstDefs) {\r\n                for (const childNode of node.childNodes) {\r\n                    // 合并时只把标签类元素挪过去\r\n                    if (is_tag_1.isTag(childNode)) {\r\n                        firstDefs.appendChild(childNode);\r\n                    }\r\n                }\r\n                rm_node_1.rmNode(node);\r\n            }\r\n            else {\r\n                firstDefs = node;\r\n                for (let ci = node.childNodes.length; ci--;) {\r\n                    const childNode = node.childNodes[ci];\r\n                    // 只保留标签类的子元素\r\n                    if (!is_tag_1.isTag(childNode)) {\r\n                        rm_node_1.rmNode(childNode);\r\n                    }\r\n                }\r\n            }\r\n        }, dom);\r\n        if (firstDefs) {\r\n            // 取出所有被引用的 ID\r\n            const IDList = {};\r\n            traversal_node_1.traversalNode(is_tag_1.isTag, node => {\r\n                node.attributes.forEach(attr => {\r\n                    if (regular_attr_1.regularAttr[attr.fullname].maybeFuncIRI) {\r\n                        const firi = syntax_1.funcIRIToID.exec(attr.value);\r\n                        if (firi) {\r\n                            if (!IDList[firi[2]]) {\r\n                                IDList[firi[2]] = {\r\n                                    iri: [],\r\n                                };\r\n                            }\r\n                            IDList[firi[2]].iri.push([node, attr.fullname]);\r\n                        }\r\n                    }\r\n                    else if (regular_attr_1.regularAttr[attr.fullname].maybeIRI) {\r\n                        const iri = syntax_1.IRIFullMatch.exec(attr.value);\r\n                        if (iri) {\r\n                            if (!IDList[iri[1]]) {\r\n                                IDList[iri[1]] = {\r\n                                    iri: [],\r\n                                };\r\n                            }\r\n                            IDList[iri[1]].iri.push([node, attr.fullname]);\r\n                        }\r\n                    }\r\n                });\r\n            }, dom);\r\n            checkSub(firstDefs, IDList, true);\r\n            exec_style_tree_1.execStyleTree(dom);\r\n            Object.values(IDList).forEach(item => {\r\n                if (item.tag) {\r\n                    // 有可能引用对象存在于 defs 内部，并且已被移除\r\n                    for (let i = item.iri.length; i--;) {\r\n                        const [tag] = item.iri[i];\r\n                        // 判断是否已从文档中移除\r\n                        if (!get_ancestor_1.getAncestor(tag, (node) => node.nodeName === '#document')) {\r\n                            item.iri.splice(i, 1);\r\n                        }\r\n                    }\r\n                    if (!item.iri.length) {\r\n                        rm_node_1.rmNode(item.tag);\r\n                    }\r\n                    if (item.iri.length === 1) {\r\n                        checkDefsApply(item, dom);\r\n                    }\r\n                }\r\n            });\r\n        }\r\n    }\r\n    resolve();\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/rules/shorten-defs.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/rules/shorten-filter.ts":
-/*!**********************************************!*\
-  !*** ./src/slimming/rules/shorten-filter.ts ***!
-  \**********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst traversal_node_1 = __webpack_require__(/*! ../xml/traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\nconst is_tag_1 = __webpack_require__(/*! ../xml/is-tag */ \"./src/slimming/xml/is-tag.ts\");\r\nconst definitions_1 = __webpack_require__(/*! ../const/definitions */ \"./src/slimming/const/definitions.ts\");\r\nconst rm_node_1 = __webpack_require__(/*! ../xml/rm-node */ \"./src/slimming/xml/rm-node.ts\");\r\nconst get_animate_attr_1 = __webpack_require__(/*! ../xml/get-animate-attr */ \"./src/slimming/xml/get-animate-attr.ts\");\r\nconst feFuncAttr = ['tableValues', 'slope', 'intercept', 'amplitude', 'exponent', 'offset'];\r\nconst feTypeNeed = {\r\n    identity: [],\r\n    table: ['tableValues'],\r\n    discrete: ['tableValues'],\r\n    linear: ['slope', 'intercept'],\r\n    gamma: ['amplitude', 'exponent', 'offset'],\r\n};\r\nconst checkFeAttrs = (type, rmAttrs) => {\r\n    if (feTypeNeed.hasOwnProperty(type)) {\r\n        feTypeNeed[type].forEach(val => {\r\n            const index = rmAttrs.indexOf(val);\r\n            if (index !== -1) {\r\n                rmAttrs.splice(index, 1);\r\n            }\r\n        });\r\n    }\r\n};\r\nexports.shortenFilter = async (rule, dom) => new Promise((resolve, reject) => {\r\n    if (rule[0]) {\r\n        traversal_node_1.traversalNode(is_tag_1.isTag, (node) => {\r\n            if (definitions_1.filterPrimitiveElements.includes(node.nodeName) || node.nodeName === 'filter') {\r\n                const width = node.getAttribute('width');\r\n                const height = node.getAttribute('height');\r\n                // 滤镜元素的 region 尺寸必须合法\r\n                if ((width && parseFloat(width) <= 0) || (height && parseFloat(height) <= 0)) {\r\n                    rm_node_1.rmNode(node);\r\n                    return;\r\n                }\r\n            }\r\n            // filter 没有子元素没有意义\r\n            if (node.nodeName === 'filter') {\r\n                let hasFilterSub = false;\r\n                node.childNodes.forEach(subNode => {\r\n                    if (definitions_1.filterPrimitiveElements.includes(subNode.nodeName)) {\r\n                        hasFilterSub = true;\r\n                    }\r\n                });\r\n                if (!hasFilterSub) {\r\n                    rm_node_1.rmNode(node);\r\n                    return;\r\n                }\r\n            }\r\n            // feComponentTransfer 的同一个类型的 transferFunctionElement 子元素不允许多次出现\r\n            if (node.nodeName === 'feComponentTransfer') {\r\n                const funcUnique = {};\r\n                for (let i = node.childNodes.length; i--;) {\r\n                    const childNode = node.childNodes[i];\r\n                    if (funcUnique[childNode.nodeName]) {\r\n                        rm_node_1.rmNode(childNode);\r\n                        continue;\r\n                    }\r\n                    if (definitions_1.transferFunctionElements.includes(childNode.nodeName)) {\r\n                        funcUnique[childNode.nodeName] = true;\r\n                    }\r\n                }\r\n            }\r\n            // transferFunctionElement 不同的 type 所需的属性不一样，其它不必要的属性都可以删掉\r\n            // https://drafts.fxtf.org/filter-effects/#element-attrdef-fecomponenttransfer-type\r\n            if (definitions_1.transferFunctionElements.includes(node.nodeName)) {\r\n                const type = node.getAttribute('type') || '';\r\n                const animateAttrs = get_animate_attr_1.getAnimateAttr(node).filter(item => item.attributeName === 'type');\r\n                if (!type && !animateAttrs.length) {\r\n                    rm_node_1.rmNode(node);\r\n                    return;\r\n                }\r\n                const rmAttrs = feFuncAttr.slice();\r\n                // 保留当前 type 必备的属性\r\n                checkFeAttrs(type, rmAttrs);\r\n                // 遍历并保留每一个 animate type 的必备属性\r\n                animateAttrs.forEach(item => {\r\n                    item.values.forEach(val => {\r\n                        checkFeAttrs(val, rmAttrs);\r\n                    });\r\n                });\r\n                // 最后移除掉不必要的属性\r\n                rmAttrs.forEach(attr => {\r\n                    node.removeAttribute(attr);\r\n                });\r\n            }\r\n        }, dom);\r\n    }\r\n    resolve();\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/rules/shorten-filter.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/rules/shorten-id.ts":
-/*!******************************************!*\
-  !*** ./src/slimming/rules/shorten-id.ts ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst create_shorten_id_1 = __webpack_require__(/*! ../algorithm/create-shorten-id */ \"./src/slimming/algorithm/create-shorten-id.ts\");\r\nconst regular_attr_1 = __webpack_require__(/*! ../const/regular-attr */ \"./src/slimming/const/regular-attr.ts\");\r\nconst syntax_1 = __webpack_require__(/*! ../const/syntax */ \"./src/slimming/const/syntax.ts\");\r\nconst traversal_obj_1 = __webpack_require__(/*! ../utils/traversal-obj */ \"./src/slimming/utils/traversal-obj.ts\");\r\nconst is_tag_1 = __webpack_require__(/*! ../xml/is-tag */ \"./src/slimming/xml/is-tag.ts\");\r\nconst traversal_node_1 = __webpack_require__(/*! ../xml/traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\nconst exec_1 = __webpack_require__(/*! ../style/exec */ \"./src/slimming/style/exec.ts\");\r\nconst stringify_1 = __webpack_require__(/*! ../style/stringify */ \"./src/slimming/style/stringify.ts\");\r\nconst shorten_1 = __webpack_require__(/*! ../style/shorten */ \"./src/slimming/style/shorten.ts\");\r\nconst idSelectorReg = /#([^,\\*#>+~:{\\s\\[\\.]+)/gi;\r\nconst style2value = ramda_1.pipe(stringify_1.stringifyStyle, shorten_1.shortenStyle);\r\nexports.shortenID = async (rule, dom) => new Promise((resolve, reject) => {\r\n    if (rule[0]) {\r\n        let si = 0;\r\n        const IDList = {};\r\n        const shorten = (node, attrname, key) => {\r\n            if (IDList.hasOwnProperty(key)) {\r\n                return IDList[key][0];\r\n            }\r\n            const sid = create_shorten_id_1.createShortenID(si++);\r\n            IDList[key] = [sid, node, attrname];\r\n            return sid;\r\n        };\r\n        let cssRules;\r\n        // 取出 ID 选择器，并缩短\r\n        if (dom.stylesheet) {\r\n            cssRules = dom.stylesheet.stylesheet;\r\n            traversal_obj_1.traversalObj(ramda_1.has('selectors'), (ruleItem) => {\r\n                const selectors = ruleItem.selectors;\r\n                if (selectors) {\r\n                    selectors.forEach((selector, selectorIndex) => {\r\n                        selectors[selectorIndex] = selector.replace(idSelectorReg, (m, p) => `#${shorten(dom.styletag, null, p)}`);\r\n                    });\r\n                }\r\n            }, cssRules.rules);\r\n        }\r\n        // 取出所有被属性引用的 ID ，并缩短\r\n        traversal_node_1.traversalNode(is_tag_1.isTag, node => {\r\n            node.attributes.forEach(attr => {\r\n                if (regular_attr_1.regularAttr[attr.fullname].maybeFuncIRI) {\r\n                    const firi = syntax_1.funcIRIToID.exec(attr.value);\r\n                    if (firi) {\r\n                        attr.value = `url(#${shorten(node, attr.fullname, firi[2])})`;\r\n                    }\r\n                }\r\n                else if (regular_attr_1.regularAttr[attr.fullname].maybeIRI) {\r\n                    const iri = syntax_1.IRIFullMatch.exec(attr.value);\r\n                    if (iri) {\r\n                        attr.value = `#${shorten(node, attr.fullname, iri[1])}`;\r\n                    }\r\n                }\r\n                else if (attr.fullname === 'style') {\r\n                    const styleObj = exec_1.execStyle(attr.value);\r\n                    styleObj.forEach(styleItem => {\r\n                        if (regular_attr_1.regularAttr[styleItem.fullname].maybeFuncIRI) {\r\n                            const firi = syntax_1.funcIRIToID.exec(styleItem.value);\r\n                            if (firi) {\r\n                                styleItem.value = `url(#${shorten(node, `style|${styleItem.fullname}`, firi[2])})`;\r\n                            }\r\n                        }\r\n                    });\r\n                    attr.value = style2value(styleObj);\r\n                }\r\n            });\r\n        }, dom);\r\n        // 查找 dom 树，找到被引用的 ID ，替换为缩短后的值\r\n        traversal_node_1.traversalNode(is_tag_1.isTag, (node) => {\r\n            const ID = node.getAttribute('id');\r\n            if (ID !== null) {\r\n                if (IDList.hasOwnProperty(ID)) {\r\n                    const id = IDList[ID][0];\r\n                    // tslint:disable-next-line:no-dynamic-delete\r\n                    delete IDList[ID];\r\n                    node.setAttribute('id', id);\r\n                }\r\n                else {\r\n                    node.removeAttribute('id');\r\n                }\r\n            }\r\n        }, dom);\r\n        // 最后移除不存在的 ID 引用\r\n        Object.values(IDList).forEach(item => {\r\n            const attrName = item[2];\r\n            if (typeof attrName === 'string') {\r\n                if (attrName.startsWith('style|')) {\r\n                    const styleObj = exec_1.execStyle(item[1].getAttribute('style')).filter(styleItem => styleItem.fullname !== attrName.slice(6));\r\n                    if (styleObj.length) {\r\n                        item[1].setAttribute('style', style2value(styleObj));\r\n                    }\r\n                    else {\r\n                        item[1].removeAttribute('style');\r\n                    }\r\n                }\r\n                else {\r\n                    item[1].removeAttribute(attrName);\r\n                }\r\n            }\r\n            else {\r\n                const reg = new RegExp(`#${item[0]}(?=[,\\\\*#>+~:{\\\\s\\\\[\\\\.]|$)`);\r\n                traversal_obj_1.traversalObj(ramda_1.has('selectors'), (ruleItem, path) => {\r\n                    const selectors = ruleItem.selectors;\r\n                    if (selectors) {\r\n                        for (let i = selectors.length; i--;) {\r\n                            if (reg.test(selectors[i])) {\r\n                                selectors.splice(i, 1);\r\n                            }\r\n                        }\r\n                        if (!selectors.length) {\r\n                            const parent = path[path.length - 1];\r\n                            parent.splice(parent.indexOf(ruleItem), 1);\r\n                        }\r\n                    }\r\n                }, cssRules.rules);\r\n            }\r\n        });\r\n    }\r\n    resolve();\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/rules/shorten-id.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/rules/shorten-shape.ts":
-/*!*********************************************!*\
-  !*** ./src/slimming/rules/shorten-shape.ts ***!
-  \*********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst douglas_peucker_1 = __webpack_require__(/*! ../algorithm/douglas-peucker */ \"./src/slimming/algorithm/douglas-peucker.ts\");\r\nconst definitions_1 = __webpack_require__(/*! ../const/definitions */ \"./src/slimming/const/definitions.ts\");\r\nconst syntax_1 = __webpack_require__(/*! ../const/syntax */ \"./src/slimming/const/syntax.ts\");\r\nconst exec_numberlist_1 = __webpack_require__(/*! ../utils/exec-numberlist */ \"./src/slimming/utils/exec-numberlist.ts\");\r\nconst shorten_number_1 = __webpack_require__(/*! ../utils/shorten-number */ \"./src/slimming/utils/shorten-number.ts\");\r\nconst shorten_number_list_1 = __webpack_require__(/*! ../utils/shorten-number-list */ \"./src/slimming/utils/shorten-number-list.ts\");\r\nconst create_1 = __webpack_require__(/*! ../xml/create */ \"./src/slimming/xml/create.ts\");\r\nconst exec_style_tree_1 = __webpack_require__(/*! ../xml/exec-style-tree */ \"./src/slimming/xml/exec-style-tree.ts\");\r\nconst get_animate_attr_1 = __webpack_require__(/*! ../xml/get-animate-attr */ \"./src/slimming/xml/get-animate-attr.ts\");\r\nconst get_attr_1 = __webpack_require__(/*! ../xml/get-attr */ \"./src/slimming/xml/get-attr.ts\");\r\nconst rm_attrs_1 = __webpack_require__(/*! ../xml/rm-attrs */ \"./src/slimming/xml/rm-attrs.ts\");\r\nconst rm_node_1 = __webpack_require__(/*! ../xml/rm-node */ \"./src/slimming/xml/rm-node.ts\");\r\nconst traversal_node_1 = __webpack_require__(/*! ../xml/traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\nconst startWithNumber = new RegExp(`^(${syntax_1.numberPattern})`);\r\nconst notNone = ramda_1.complement(ramda_1.equals('none'));\r\nconst formatRect = (node) => {\r\n    let width = get_attr_1.getAttr(node, 'width', '0');\r\n    let height = get_attr_1.getAttr(node, 'height', '0');\r\n    const widthExec = startWithNumber.exec(width);\r\n    const heightExec = startWithNumber.exec(height);\r\n    // 如果 width 或 height 不合规范，直接移除\r\n    if (!widthExec || !heightExec || +widthExec[1] <= 0 || +heightExec[1] <= 0) {\r\n        node.nodeName = 'remove';\r\n        return;\r\n    }\r\n    // 如果 rx 或 ry 存在，不能转换为 path\r\n    const rx = get_attr_1.getAttr(node, 'rx', 'auto');\r\n    const ry = get_attr_1.getAttr(node, 'ry', 'auto');\r\n    // rx 和 ry 相同，移除 ry\r\n    if (rx === ry || ry === 'auto') {\r\n        rm_attrs_1.rmAttrs(node, ['ry']);\r\n    }\r\n    if (rx === 'auto') {\r\n        rm_attrs_1.rmAttrs(node, ['rx']);\r\n    }\r\n    const rxExec = startWithNumber.exec(rx);\r\n    const ryExec = startWithNumber.exec(ry);\r\n    if (rxExec && +rxExec[1] > 0 && (!ryExec || +ryExec[1] !== 0)) {\r\n        return;\r\n    }\r\n    if (ryExec && +ryExec[1] > 0 && (!rxExec || +rxExec[1] !== 0)) {\r\n        return;\r\n    }\r\n    let x = get_attr_1.getAttr(node, 'x', '0');\r\n    let y = get_attr_1.getAttr(node, 'y', '0');\r\n    // 如果不是 px 单位，不能转换为 path\r\n    if (!syntax_1.pureNumOrWithPx.test(width) || !syntax_1.pureNumOrWithPx.test(height) || !syntax_1.pureNumOrWithPx.test(x) || !syntax_1.pureNumOrWithPx.test(y)) {\r\n        return;\r\n    }\r\n    rm_attrs_1.rmAttrs(node, ['x', 'y', 'width', 'height', 'rx', 'ry']);\r\n    width = shorten_number_1.shortenNumber(+widthExec[1]);\r\n    height = shorten_number_1.shortenNumber(+heightExec[1]);\r\n    x = shorten_number_1.shortenNumber(+x.replace('px', ''));\r\n    y = shorten_number_1.shortenNumber(+y.replace('px', ''));\r\n    node.nodeName = 'path';\r\n    // 此处考虑到宽和高的字节数差异，应该取较小的那种\r\n    const hvh = shorten_number_list_1.shortenNumberList(`M${x},${y}h${width}v${height}h-${width}z`);\r\n    const vhv = shorten_number_list_1.shortenNumberList(`M${x},${y}v${height}h${width}v-${height}z`);\r\n    node.setAttribute('d', vhv.length < hvh.length ? vhv : hvh);\r\n};\r\nconst formatLine = (node) => {\r\n    const strokeWidth = get_attr_1.getAttr(node, 'stroke-width', '1');\r\n    const swExec = startWithNumber.exec(strokeWidth);\r\n    const animateAttrs = get_animate_attr_1.getAnimateAttr(node);\r\n    // 是否存在 marker 引用\r\n    const hasMarker = get_attr_1.getAttr(node, 'marker-start', 'none') !== 'none'\r\n        || get_attr_1.getAttr(node, 'marker-mid', 'none') !== 'none'\r\n        || get_attr_1.getAttr(node, 'marker-end', 'none') !== 'none'\r\n        || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'marker-start', notNone)\r\n        || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'marker-mid', notNone)\r\n        || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'marker-end', notNone);\r\n    // 是否存在 stroke\r\n    const hasStroke = (get_attr_1.getAttr(node, 'stroke', 'none') !== 'none' || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'stroke', notNone)) && (strokeWidth !== '0' || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'stroke-width', ramda_1.complement(ramda_1.equals('0'))));\r\n    // 如果 stroke 或 stroke-width 不合规范，直接移除\r\n    if (!hasMarker && (!hasStroke || !swExec || +swExec[1] <= 0)) {\r\n        node.nodeName = 'remove';\r\n        return;\r\n    }\r\n    const shapeAttr = {\r\n        x1: '0',\r\n        y1: '0',\r\n        x2: '0',\r\n        y2: '0',\r\n    };\r\n    Object.keys(shapeAttr).forEach(key => {\r\n        const value = node.getAttribute(key);\r\n        if (value && startWithNumber.test(value)) {\r\n            shapeAttr[key] = value;\r\n        }\r\n        node.removeAttribute(key);\r\n    });\r\n    // 是否存在 stroke-linecap\r\n    const hasStrokeCap = get_attr_1.getAttr(node, 'stroke-linecap', 'butt') !== 'butt' || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'stroke-linecap', ramda_1.complement(ramda_1.equals('butt')));\r\n    // 如果没有发生移动，直接移除\r\n    if (shapeAttr.x1 === shapeAttr.x2 && shapeAttr.y1 === shapeAttr.y2 && !hasMarker && (!hasStroke || !hasStrokeCap)) {\r\n        node.nodeName = 'remove';\r\n        return;\r\n    }\r\n    // 如果不是 px 单位，不能转换为 path\r\n    if (syntax_1.pureNumOrWithPx.test(shapeAttr.x1) && syntax_1.pureNumOrWithPx.test(shapeAttr.y1) && syntax_1.pureNumOrWithPx.test(shapeAttr.x2) && syntax_1.pureNumOrWithPx.test(shapeAttr.y2)) {\r\n        node.nodeName = 'path';\r\n        node.setAttribute('d', shorten_number_list_1.shortenNumberList(`M${+shapeAttr.x1},${+shapeAttr.y1},${+shapeAttr.x2},${+shapeAttr.y2}`));\r\n    }\r\n};\r\nconst formatPoly = (thinning, node, addZ) => {\r\n    node.nodeName = 'path';\r\n    let d = '';\r\n    if (node.hasAttribute('points')) {\r\n        let points = exec_numberlist_1.execNumberList(node.getAttribute('points'));\r\n        const animateAttrs = get_animate_attr_1.getAnimateAttr(node);\r\n        // 是否存在 marker 引用\r\n        const hasMarker = get_attr_1.getAttr(node, 'marker-start', 'none') !== 'none'\r\n            || get_attr_1.getAttr(node, 'marker-mid', 'none') !== 'none'\r\n            || get_attr_1.getAttr(node, 'marker-end', 'none') !== 'none'\r\n            || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'marker-start', notNone)\r\n            || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'marker-mid', notNone)\r\n            || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'marker-end', notNone);\r\n        // 是否存在 stroke\r\n        const hasStroke = (get_attr_1.getAttr(node, 'stroke', 'none') !== 'none' || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'stroke', notNone)) && (get_attr_1.getAttr(node, 'stroke-width', '1') !== '0' || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'stroke-width', ramda_1.complement(ramda_1.equals('0'))));\r\n        // 是否存在 stroke-linecap\r\n        const hasStrokeCap = get_attr_1.getAttr(node, 'stroke-linecap', 'butt') !== 'butt' || get_animate_attr_1.checkAnimateAttr(animateAttrs, 'stroke-linecap', ramda_1.complement(ramda_1.equals('butt')));\r\n        if (points.length % 2 === 1) {\r\n            points.pop();\r\n        }\r\n        if (thinning) {\r\n            points = douglas_peucker_1.douglasPeucker(thinning, points);\r\n        }\r\n        node.removeAttribute('points');\r\n        // 有两个以上节点，或者具有 marker 或者是具有 stroke-linecap 的 polygon\r\n        if (points.length > 2 || hasMarker || (hasStroke && hasStrokeCap && addZ)) {\r\n            d = shorten_number_list_1.shortenNumberList(`M${points.map(shorten_number_1.shortenNumber).join(',')}`);\r\n            if (addZ) {\r\n                d += 'z';\r\n            }\r\n        }\r\n    }\r\n    if (d) {\r\n        node.setAttribute('d', d);\r\n    }\r\n    else {\r\n        // 没有节点或者没有 points 属性，直接移除当前 node\r\n        node.nodeName = 'remove';\r\n    }\r\n};\r\nconst ellipseToCircle = (node, r) => {\r\n    node.nodeName = 'circle';\r\n    node.setAttribute('r', r.replace(syntax_1.numberGlobal, s => shorten_number_1.shortenNumber(+s)));\r\n    rm_attrs_1.rmAttrs(node, ['rx', 'ry']);\r\n};\r\nconst formatEllipse = (node, originNode) => {\r\n    let rx = get_attr_1.getAttr(node, 'rx', 'auto');\r\n    let ry = get_attr_1.getAttr(node, 'ry', 'auto');\r\n    if (rx === 'auto') {\r\n        rx = ry;\r\n    }\r\n    if (ry === 'auto') {\r\n        ry = rx;\r\n    }\r\n    const rxExec = startWithNumber.exec(rx);\r\n    const ryExec = startWithNumber.exec(ry);\r\n    // 如果 rx 或 ry 不合规范，直接移除\r\n    if (!rxExec || !ryExec || +rxExec[1] <= 0 || +ryExec[1] <= 0) {\r\n        node.nodeName = 'remove';\r\n        return;\r\n    }\r\n    if (rx === ry) {\r\n        ellipseToCircle(node, rx);\r\n    }\r\n};\r\nconst formatCircle = (node, originNode) => {\r\n    const r = get_attr_1.getAttr(node, 'r', '');\r\n    const rExec = startWithNumber.exec(r);\r\n    if (!rExec || +rExec[1] <= 0) {\r\n        node.nodeName = 'remove';\r\n    }\r\n};\r\nexports.shortenShape = async (rule, dom) => new Promise((resolve, reject) => {\r\n    if (rule[0]) {\r\n        exec_style_tree_1.execStyleTree(dom);\r\n        const { thinning, } = rule[1];\r\n        traversal_node_1.traversalNode(node => definitions_1.shapeElements.includes(node.nodeName), (node) => {\r\n            const cloneNode = node.cloneNode();\r\n            cloneNode.styles = node.styles;\r\n            switch (node.nodeName) {\r\n                case 'rect':\r\n                    formatRect(cloneNode);\r\n                    break;\r\n                case 'line':\r\n                    formatLine(cloneNode);\r\n                    break;\r\n                case 'polyline':\r\n                    formatPoly(thinning, cloneNode, false);\r\n                    break;\r\n                case 'polygon':\r\n                    formatPoly(thinning, cloneNode, true);\r\n                    break;\r\n                case 'ellipse':\r\n                    formatEllipse(cloneNode, node);\r\n                    break;\r\n                case 'circle':\r\n                    formatCircle(cloneNode, node);\r\n                    break;\r\n                default:\r\n                    // 路径只要判断 d 属性是否存在即可\r\n                    cloneNode.nodeName = node.getAttribute('d') ? 'notneed' : 'remove';\r\n                    break;\r\n            }\r\n            if (cloneNode.nodeName === 'remove') {\r\n                rm_node_1.rmNode(node);\r\n            }\r\n            else if (cloneNode.nodeName !== node.nodeName && create_1.createTag(cloneNode).length <= create_1.createTag(node).length) {\r\n                Object.assign(node, cloneNode);\r\n            }\r\n        }, dom);\r\n    }\r\n    resolve();\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/rules/shorten-shape.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/rules/shorten-style-attr.ts":
-/*!**************************************************!*\
-  !*** ./src/slimming/rules/shorten-style-attr.ts ***!
-  \**************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst regular_attr_1 = __webpack_require__(/*! ../const/regular-attr */ \"./src/slimming/const/regular-attr.ts\");\r\nconst regular_tag_1 = __webpack_require__(/*! ../const/regular-tag */ \"./src/slimming/const/regular-tag.ts\");\r\nconst check_apply_1 = __webpack_require__(/*! ../style/check-apply */ \"./src/slimming/style/check-apply.ts\");\r\nconst exec_1 = __webpack_require__(/*! ../style/exec */ \"./src/slimming/style/exec.ts\");\r\nconst shorten_1 = __webpack_require__(/*! ../style/shorten */ \"./src/slimming/style/shorten.ts\");\r\nconst stringify_1 = __webpack_require__(/*! ../style/stringify */ \"./src/slimming/style/stringify.ts\");\r\n// import { legalCss } from '../validate/legal-css';\r\nconst legal_value_1 = __webpack_require__(/*! ../validate/legal-value */ \"./src/slimming/validate/legal-value.ts\");\r\nconst attr_is_equal_1 = __webpack_require__(/*! ../xml/attr-is-equal */ \"./src/slimming/xml/attr-is-equal.ts\");\r\nconst exec_style_tree_1 = __webpack_require__(/*! ../xml/exec-style-tree */ \"./src/slimming/xml/exec-style-tree.ts\");\r\nconst is_tag_1 = __webpack_require__(/*! ../xml/is-tag */ \"./src/slimming/xml/is-tag.ts\");\r\nconst traversal_node_async_1 = __webpack_require__(/*! ../xml/traversal-node-async */ \"./src/slimming/xml/traversal-node-async.ts\");\r\nconst definitions_1 = __webpack_require__(/*! ../const/definitions */ \"./src/slimming/const/definitions.ts\");\r\n// 属性转 style 的临界值\r\nconst styleThreshold = 4;\r\nconst style2value = ramda_1.pipe(stringify_1.stringifyStyle, shorten_1.shortenStyle);\r\n// 一些元素的某些属性不能被转为 style\r\nconst cantTrans = (define, attrName) => define.onlyAttr && define.onlyAttr.includes(attrName);\r\nconst checkAttr = async (node, dom, rmDefault) => new Promise(resolve => {\r\n    exec_style_tree_1.execStyleTree(dom);\r\n    const attrObj = {}; // 存储所有样式和可以转为样式的属性\r\n    const tagDefine = regular_tag_1.regularTag[node.nodeName];\r\n    // 逆序循环，并从后向前移除属性\r\n    for (let i = node.attributes.length; i--;) {\r\n        const attr = node.attributes[i];\r\n        const attrDefine = regular_attr_1.regularAttr[attr.fullname];\r\n        if (attr.fullname === 'style') {\r\n            const styleObj = exec_1.execStyle(attr.value);\r\n            const styleUnique = {};\r\n            // 逆序循环，因为 CSS 的优先级是从后往前覆盖的\r\n            for (let si = styleObj.length; si--;) {\r\n                const styleItem = styleObj[si];\r\n                const styleDefine = regular_attr_1.regularAttr[styleItem.fullname];\r\n                if (!styleDefine.couldBeStyle // 不能做样式\r\n                    ||\r\n                        styleUnique[styleItem.fullname] // 排重\r\n                    ||\r\n                        !check_apply_1.checkApply(styleDefine, node, dom) // 样式继承链上不存在可应用对象\r\n                ) {\r\n                    styleObj.slice(si, 1);\r\n                    continue;\r\n                }\r\n                // 标记一下是否存在不能和属性互转的样式\r\n                const onlyCss = styleDefine.cantTrans || cantTrans(tagDefine, styleItem.fullname);\r\n                // 如果存在同名属性，要把被覆盖的属性移除掉\r\n                // 之所以要判断 attrObj 是否存在 key，是为了保证只移除已遍历过的属性（此处不考虑同名属性，同名属性无法通过 xml-parser 的解析规则）\r\n                if (!onlyCss && ramda_1.has(styleItem.fullname, attrObj)) {\r\n                    node.removeAttribute(styleItem.fullname);\r\n                }\r\n                if (rmDefault) {\r\n                    // 如果父元素上有同名的样式类属性，则不能移除和默认值相同的属性\r\n                    const parentStyle = node.parentNode.styles;\r\n                    if (!styleDefine.inherited || !parentStyle || !parentStyle.hasOwnProperty(styleItem.fullname)) {\r\n                        if (attr_is_equal_1.attrIsEqual(styleDefine, styleItem.value, node.nodeName)) {\r\n                            styleObj.slice(si, 1);\r\n                            continue;\r\n                        }\r\n                    }\r\n                }\r\n                styleUnique[styleItem.fullname] = true;\r\n                attrObj[styleItem.fullname] = {\r\n                    value: styleItem.value,\r\n                    fromStyle: true,\r\n                    onlyCss,\r\n                };\r\n            }\r\n            if (styleObj.length) {\r\n                attr.value = style2value(styleObj);\r\n            }\r\n            else {\r\n                node.removeAttribute(attr.fullname);\r\n            }\r\n        }\r\n        else if (attrDefine.couldBeStyle) {\r\n            if (attrDefine.cantBeAttr // 有一些样式不能被设置为属性\r\n            ) {\r\n                node.removeAttribute(attr.fullname);\r\n                continue;\r\n            }\r\n            if (attrDefine.cantTrans || cantTrans(tagDefine, attr.fullname)) { // 有一些元素的某些属性不能被转为 style，此类属性也不宜再按照 css 属性来验证\r\n                continue;\r\n            }\r\n            if (rmDefault) {\r\n                // 如果父元素上有同名的样式类属性，则不能移除和默认值相同的属性\r\n                const parentStyle = node.parentNode.styles;\r\n                if (!attrDefine.inherited || !parentStyle || !parentStyle.hasOwnProperty(attr.fullname)) {\r\n                    if (attr_is_equal_1.attrIsEqual(attrDefine, attr.value, node.nodeName)) {\r\n                        node.removeAttribute(attr.fullname);\r\n                        continue;\r\n                    }\r\n                }\r\n            }\r\n            // 如果样式无法应用到当前元素，且所有子元素都无法应用或已覆盖，则可以移除\r\n            if (!attrDefine.applyTo.includes(node.nodeName) && attrDefine.inherited) {\r\n                const subTags = node.childNodes.filter(subNode => is_tag_1.isTag(subNode) && subNode.styles);\r\n                if (subTags.length && subTags.every(subTag => subTag.styles[attr.fullname].from !== 'inherit' || !check_apply_1.checkApply(attrDefine, subTag, dom))) {\r\n                    node.removeAttribute(attr.fullname);\r\n                    continue;\r\n                }\r\n            }\r\n            if (attrObj.hasOwnProperty(attr.fullname) // 已被 style 属性覆盖\r\n                ||\r\n                    !check_apply_1.checkApply(attrDefine, node, dom) // 样式继承链上不存在可应用对象\r\n            ) {\r\n                node.removeAttribute(attr.fullname);\r\n            }\r\n            else {\r\n                attrObj[attr.fullname] = {\r\n                    value: attr.value,\r\n                };\r\n            }\r\n        }\r\n        else {\r\n            const attributeName = node.getAttribute('attributeName') || '';\r\n            if (definitions_1.animationAttributes.includes(attr.fullname) // 动画属性 from、to、by、values\r\n                &&\r\n                    definitions_1.animationAttrElements.includes(node.nodeName) // 存在于动画元素上\r\n                &&\r\n                    attr.fullname !== 'values'\r\n                &&\r\n                    attributeName) {\r\n                const animateDefine = regular_attr_1.regularAttr[attributeName];\r\n                if (animateDefine.couldBeStyle) {\r\n                    attrObj[attributeName] = {\r\n                        value: attr.value,\r\n                        animateAttr: attr.fullname,\r\n                    };\r\n                }\r\n            }\r\n        }\r\n    }\r\n    // \t// 在此处进行样式合法性验证\r\n    // \tlet cssString = 'g{';\r\n    // \tObject.entries(attrObj).forEach(([key, { value }]) => {\r\n    // \t\tcssString += `${key}:${value};\r\n    // `;\r\n    // \t});\r\n    // \tcssString += '}';\r\n    // \t// 双重合法性验证\r\n    // const result = await legalCss(cssString);\r\n    // if (!result.validity) {\r\n    // \tresult.errors.forEach(err => {\r\n    // \t\tif (err.type === 'zero') {\r\n    // \t\t\treturn;\r\n    // \t\t}\r\n    // \t\tconst key = Object.keys(attrObj)[err.line - 1] as string | undefined;\r\n    // \t\tif (key && err.message.includes(key)) { // cssValidator 有时候会报错行数，需要确保规则对得上\r\n    // \t\t\tconst styleItem = attrObj[key];\r\n    // \t\t\tconst styleDefine = regularAttr[key];\r\n    // \t\t\t// css 验证失败，还需要进行一次 svg-slimming 的合法性验证，确保没有问题\r\n    // \t\t\tif (!styleDefine.legalValues.length || !legalValue(styleDefine, {\r\n    // \t\t\t\tfullname: key,\r\n    // \t\t\t\tvalue: styleItem.value,\r\n    // \t\t\t\tname: '',\r\n    // \t\t\t})) {\r\n    // \t\t\t\tstyleItem.value = '';\r\n    // \t\t\t}\r\n    // \t\t}\r\n    // \t});\r\n    // }\r\n    // 只做基本验证\r\n    Object.keys(attrObj).forEach(key => {\r\n        const styleItem = attrObj[key];\r\n        const styleDefine = regular_attr_1.regularAttr[key];\r\n        if (!styleDefine.cantTrans && !legal_value_1.legalValue(styleDefine, {\r\n            fullname: key,\r\n            value: styleItem.value,\r\n            name: '',\r\n        })) {\r\n            styleItem.value = '';\r\n        }\r\n    });\r\n    Object.entries(attrObj).forEach(([key, attrItem]) => {\r\n        if (attrItem.animateAttr) { // 对于动画属性，验证完合法性后就应该移除缓存\r\n            if (!attrItem.value) {\r\n                node.removeAttribute(attrItem.animateAttr);\r\n            }\r\n            delete attrObj[key]; // tslint:disable-line no-dynamic-delete\r\n        }\r\n        else {\r\n            if (!attrItem.value) {\r\n                delete attrObj[key]; // tslint:disable-line no-dynamic-delete\r\n                node.removeAttribute(key);\r\n            }\r\n        }\r\n    });\r\n    if (!Object.values(attrObj).some(val => val.fromStyle)) {\r\n        node.removeAttribute('style');\r\n    }\r\n    // 进行动画属性的合法性验证\r\n    resolve({\r\n        attrObj,\r\n        tagDefine,\r\n    });\r\n});\r\nexports.shortenStyleAttr = async (rule, dom) => new Promise((resolve, reject) => {\r\n    if (rule[0]) {\r\n        const { exchange, rmDefault } = rule[1];\r\n        const hasStyleTag = !!dom.styletag;\r\n        traversal_node_async_1.traversalNodeAsync(is_tag_1.isTag, async (node) => checkAttr(node, dom, rmDefault).then(({ attrObj, }) => {\r\n            // TODO css all 属性命中后要清空样式\r\n            // TODO 连锁属性的判断\r\n            if (!hasStyleTag || exchange) {\r\n                // [warning] svg 的样式覆盖规则是 style 属性 > style 标签 > 属性，所以以下代码可能导致不正确的样式覆盖！\r\n                // 如果存在只能放在 css 中的属性，则强制属性转 style @v1.5.0+\r\n                if (Object.values(attrObj).some(val => val.onlyCss) || Object.keys(attrObj).length > styleThreshold) {\r\n                    // 属性转 style\r\n                    Object.entries(attrObj).forEach(([key, val]) => {\r\n                        if (!val.onlyCss) {\r\n                            node.removeAttribute(key);\r\n                        }\r\n                    });\r\n                    // 执行一次 reverse 把顺序反转过来\r\n                    node.setAttribute('style', style2value(Object.keys(attrObj).reverse().map(key => {\r\n                        return {\r\n                            name: key,\r\n                            fullname: key,\r\n                            value: attrObj[key].value,\r\n                        };\r\n                    })));\r\n                }\r\n                else {\r\n                    // style 转属性\r\n                    node.removeAttribute('style');\r\n                    // 执行一次 reverse 把顺序反转过来\r\n                    Object.keys(attrObj).reverse().forEach(name => {\r\n                        node.setAttribute(name, attrObj[name].value);\r\n                    });\r\n                }\r\n            }\r\n        }), dom).then(() => {\r\n            resolve();\r\n        });\r\n    }\r\n    else {\r\n        resolve();\r\n    }\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/rules/shorten-style-attr.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/rules/shorten-style-tag.ts":
-/*!*************************************************!*\
-  !*** ./src/slimming/rules/shorten-style-tag.ts ***!
-  \*************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst regular_attr_1 = __webpack_require__(/*! ../const/regular-attr */ \"./src/slimming/const/regular-attr.ts\");\r\nconst check_apply_1 = __webpack_require__(/*! ../style/check-apply */ \"./src/slimming/style/check-apply.ts\");\r\nconst exec_selector_1 = __webpack_require__(/*! ../style/exec-selector */ \"./src/slimming/style/exec-selector.ts\");\r\nconst mix_white_space_1 = __webpack_require__(/*! ../utils/mix-white-space */ \"./src/slimming/utils/mix-white-space.ts\");\r\nconst attr_is_equal_1 = __webpack_require__(/*! ../xml/attr-is-equal */ \"./src/slimming/xml/attr-is-equal.ts\");\r\nconst get_by_selector_1 = __webpack_require__(/*! ../xml/get-by-selector */ \"./src/slimming/xml/get-by-selector.ts\");\r\nconst traversal_obj_1 = __webpack_require__(/*! ../utils/traversal-obj */ \"./src/slimming/utils/traversal-obj.ts\");\r\nconst rmCSSNode = (cssNode, plist) => {\r\n    const index = plist.indexOf(cssNode);\r\n    if (index !== -1) {\r\n        plist.splice(index, 1);\r\n    }\r\n};\r\nexports.shortenStyleTag = async (rule, dom) => new Promise((resolve, reject) => {\r\n    if (rule[0] && dom.stylesheet) {\r\n        const { deepShorten, rmDefault } = rule[1];\r\n        const cssRules = dom.stylesheet.stylesheet;\r\n        // 遍历 style 解析对象，取得包含 css 定义的值\r\n        traversal_obj_1.traversalObj(ramda_1.propEq('type', 'declaration'), (cssNode, parents) => {\r\n            const attrDefine = regular_attr_1.regularAttr[cssNode.property];\r\n            if (!attrDefine.couldBeStyle) {\r\n                rmCSSNode(cssNode, parents[parents.length - 1]);\r\n            }\r\n            else if (rmDefault) {\r\n                // 仅验证只有一种默认值的情况\r\n                if (typeof attrDefine.initValue === 'string' && attr_is_equal_1.valueIsEqual(attrDefine, cssNode.value, attrDefine.initValue)) {\r\n                    rmCSSNode(cssNode, parents[parents.length - 1]);\r\n                }\r\n            }\r\n        }, cssRules.rules, true);\r\n        // TODO css all 属性命中后要清空样式\r\n        // TODO 连锁属性的判断\r\n        // TODO 直接把 style 应用到元素\r\n        // 深度优化\r\n        if (deepShorten) {\r\n            const selectorUnique = {};\r\n            const declareUnique = {};\r\n            for (let i = 0, l = cssRules.rules.length; i < l; i++) {\r\n                const styleRule = cssRules.rules[i];\r\n                // TODO 目前只针对顶层的规则类，其实还可以进一步优化\r\n                if (styleRule.type === 'rule') {\r\n                    const theSelectors = styleRule.selectors;\r\n                    const declarations = styleRule.declarations;\r\n                    // 记录命中对象但存在无效属性的情况\r\n                    const usedRule = {};\r\n                    // 移除无效的选择器\r\n                    for (let si = theSelectors.length; si--;) {\r\n                        const matchNodes = get_by_selector_1.getBySelector(dom, exec_selector_1.execSelector(theSelectors[si]));\r\n                        if (!matchNodes.length) {\r\n                            theSelectors.splice(si, 1);\r\n                        }\r\n                        else {\r\n                            let anyMatch = false;\r\n                            for (let mi = declarations.length; mi--;) {\r\n                                const ruleItem = declarations[mi];\r\n                                const property = ruleItem.property;\r\n                                // 判断每一条属性与每一个命中元素的匹配情况\r\n                                if (matchNodes.some(matchNode => check_apply_1.checkApply(regular_attr_1.regularAttr[property], matchNode, dom, true))) {\r\n                                    // 只要有一条匹配存在，就证明该选择器有效\r\n                                    anyMatch = true;\r\n                                    // 同时标记该属性有效\r\n                                    usedRule[property] = true;\r\n                                }\r\n                            }\r\n                            if (!anyMatch) {\r\n                                theSelectors.splice(si, 1);\r\n                            }\r\n                        }\r\n                    }\r\n                    // 验证属性的有效性，移除无效的属性\r\n                    for (let ci = declarations.length; ci--;) {\r\n                        if (!usedRule[declarations[ci].property]) {\r\n                            declarations.splice(ci, 1);\r\n                        }\r\n                    }\r\n                    // 如果选择器列表经过筛选后为空，则移除该条规则\r\n                    if (!theSelectors.length) {\r\n                        cssRules.rules.splice(i, 1);\r\n                        i--;\r\n                        l--;\r\n                        continue;\r\n                    }\r\n                    // 合并相同选择器\r\n                    theSelectors.sort((a, b) => a < b ? -1 : 1);\r\n                    styleRule.selectors = theSelectors.map(s => mix_white_space_1.mixWhiteSpace(s.trim()));\r\n                    const selectorKey = styleRule.selectors.join(',');\r\n                    if (selectorUnique.hasOwnProperty(selectorKey)) {\r\n                        const uDeclarations = selectorUnique[selectorKey].declarations.concat(styleRule.declarations);\r\n                        // 合并之后依然要排重\r\n                        const declared = {};\r\n                        for (let j = uDeclarations.length; j--;) {\r\n                            if (declared[uDeclarations[j].property]) {\r\n                                uDeclarations.splice(j, 1);\r\n                            }\r\n                            else {\r\n                                declared[uDeclarations[j].property] = true;\r\n                            }\r\n                        }\r\n                        selectorUnique[selectorKey].declarations = uDeclarations;\r\n                        cssRules.rules.splice(i, 1);\r\n                        i--;\r\n                        l--;\r\n                        continue;\r\n                    }\r\n                    else {\r\n                        selectorUnique[selectorKey] = styleRule;\r\n                    }\r\n                    // 合并相同规则\r\n                    styleRule.declarations.sort((a, b) => a.property < b.property ? -1 : 1);\r\n                    const declareKey = styleRule.declarations.map((d) => `${d.property}:${d.value}`).join(';');\r\n                    if (declareUnique.hasOwnProperty(declareKey)) {\r\n                        const selectors = declareUnique[declareKey].selectors.concat(styleRule.selectors);\r\n                        const selected = {};\r\n                        for (let j = selectors.length; j--;) {\r\n                            if (selected[selectors[j]]) {\r\n                                selectors.splice(j, 1);\r\n                            }\r\n                            else {\r\n                                selected[selectors[j]] = true;\r\n                            }\r\n                        }\r\n                        declareUnique[declareKey].selectors = selectors;\r\n                        cssRules.rules.splice(i, 1);\r\n                        i--;\r\n                        l--;\r\n                        continue;\r\n                    }\r\n                    else {\r\n                        declareUnique[declareKey] = styleRule;\r\n                    }\r\n                }\r\n            }\r\n        }\r\n    }\r\n    resolve();\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/rules/shorten-style-tag.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/style/check-apply.ts":
-/*!*******************************************!*\
-  !*** ./src/slimming/style/check-apply.ts ***!
-  \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst get_by_id_1 = __webpack_require__(/*! ../xml/get-by-id */ \"./src/slimming/xml/get-by-id.ts\");\r\nconst is_tag_1 = __webpack_require__(/*! ../xml/is-tag */ \"./src/slimming/xml/is-tag.ts\");\r\nconst exec_1 = __webpack_require__(/*! ./exec */ \"./src/slimming/style/exec.ts\");\r\n// TODO：目前只验证了 href 和 xlink:href，其它 IRI 或 funcIRI 属性是否也需要验证？\r\n// 遇到引用属性，还需要递归验证被引用对象是否可应用样式\r\nconst getXlink = (styleDefine, idStr, dom, unique, fromStyleTag) => check(styleDefine, get_by_id_1.getById(idStr, dom), dom, unique, fromStyleTag);\r\n// 定义一个特殊的遍历方法，只接收一个 condition 方法，只有该方法返回 true 才继续遍历子元素\r\nconst traversal = (condition, node) => {\r\n    // 此处不能用 forEach ，for 循环可以避免当前节点被移除导致下一个节点不会被遍历到的问题\r\n    for (const childNode of node.childNodes) {\r\n        if (condition(childNode) && childNode.childNodes && childNode.childNodes.length) {\r\n            traversal(condition, childNode);\r\n        }\r\n    }\r\n};\r\nconst check = (styleDefine, node, dom, unique, fromStyleTag) => {\r\n    if (!node)\r\n        return false;\r\n    // 如果是检测 style 标签的样式，则只要遇到同名的 style 属性就返回 false\r\n    if (fromStyleTag) {\r\n        for (let i = node.attributes.length; i--;) {\r\n            const attr = node.attributes[i];\r\n            if (attr.fullname === 'style') {\r\n                const childStyle = exec_1.execStyle(attr.value);\r\n                if (childStyle.some(style => style.fullname === styleDefine.name)) {\r\n                    return false;\r\n                }\r\n            }\r\n        }\r\n    }\r\n    if (styleDefine.applyTo.includes(node.nodeName))\r\n        return true;\r\n    // 因为递归可能存在循环引用，所以需要排重\r\n    if (unique.includes(node)) {\r\n        return false;\r\n    }\r\n    unique.push(node);\r\n    let result = false;\r\n    if (node.hasAttribute('href')) {\r\n        result = getXlink(styleDefine, node.getAttribute('href'), dom, unique, false);\r\n    }\r\n    else if (node.hasAttribute('xlink:href')) {\r\n        result = getXlink(styleDefine, node.getAttribute('xlink:href'), dom, unique, false);\r\n    }\r\n    // 已经命中就不需要再继续了\r\n    if (result)\r\n        return true;\r\n    // 逻辑在判断函数里做，不在回调函数里做\r\n    traversal((childNode) => {\r\n        // 已经命中就不再继续\r\n        if (result)\r\n            return false;\r\n        // 只验证元素节点\r\n        if (!is_tag_1.isTag(childNode))\r\n            return false;\r\n        // 因为递归可能存在循环引用，所以需要排重\r\n        if (unique.includes(childNode))\r\n            return false;\r\n        unique.push(childNode);\r\n        // 检查属性看是否被覆盖，是就不再继续\r\n        for (let i = childNode.attributes.length; i--;) {\r\n            const attr = childNode.attributes[i];\r\n            if (attr.fullname === 'style') {\r\n                const childStyle = exec_1.execStyle(attr.value);\r\n                if (childStyle.some(style => style.fullname === styleDefine.name)) {\r\n                    return false;\r\n                }\r\n            }\r\n            else if (attr.fullname === styleDefine.name) {\r\n                return false;\r\n            }\r\n        }\r\n        // 通过前面的验证，并符合样式应用条件，就找到了命中的结果\r\n        if (styleDefine.applyTo.includes(childNode.nodeName)) {\r\n            result = true;\r\n            return false; // 已经有命中的结果就不必再遍历了\r\n        }\r\n        else { // 否则继续遍历子元素\r\n            // 没有命中，但具有 IRI 引用，则继续\r\n            if (childNode.hasAttribute('href')) {\r\n                if (getXlink(styleDefine, childNode.getAttribute('href'), dom, unique, fromStyleTag)) {\r\n                    result = true;\r\n                    return false;\r\n                }\r\n            }\r\n            else if (childNode.hasAttribute('xlink:href')) {\r\n                if (getXlink(styleDefine, childNode.getAttribute('xlink:href'), dom, unique, fromStyleTag)) {\r\n                    result = true;\r\n                    return false;\r\n                }\r\n            }\r\n            return true;\r\n        }\r\n    }, node);\r\n    return result;\r\n};\r\n// 深度分析，判断样式继承链上是否存在可应用对象\r\nexports.checkApply = (styleDefine, node, dom, fromStyleTag = false) => check(styleDefine, node, dom, [], fromStyleTag);\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/style/check-apply.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/style/define.ts":
-/*!**************************************!*\
-  !*** ./src/slimming/style/define.ts ***!
-  \**************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\n// 选择器混合字符，不含后代选择器（空格）\r\nvar selectorUnitCombinator;\r\n(function (selectorUnitCombinator) {\r\n    selectorUnitCombinator[selectorUnitCombinator[\">\"] = 1] = \">\";\r\n    selectorUnitCombinator[selectorUnitCombinator[\"+\"] = 2] = \"+\";\r\n    selectorUnitCombinator[selectorUnitCombinator[\"~\"] = 3] = \"~\";\r\n})(selectorUnitCombinator = exports.selectorUnitCombinator || (exports.selectorUnitCombinator = {}));\r\n// 属性选择器等号修饰符\r\nvar attrModifier;\r\n(function (attrModifier) {\r\n    attrModifier[attrModifier[\"^\"] = 1] = \"^\";\r\n    attrModifier[attrModifier[\"$\"] = 2] = \"$\";\r\n    attrModifier[attrModifier[\"~\"] = 3] = \"~\";\r\n    attrModifier[attrModifier[\"|\"] = 4] = \"|\";\r\n    attrModifier[attrModifier[\"*\"] = 5] = \"*\";\r\n})(attrModifier = exports.attrModifier || (exports.attrModifier = {}));\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/style/define.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/style/exec-selector.ts":
-/*!*********************************************!*\
-  !*** ./src/slimming/style/exec-selector.ts ***!
-  \*********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst regs_1 = __webpack_require__(/*! ../const/regs */ \"./src/slimming/const/regs.ts\");\r\nconst define_1 = __webpack_require__(/*! ./define */ \"./src/slimming/style/define.ts\");\r\nexports.execSelector = (selector) => {\r\n    const selectors = [];\r\n    const selectorUnitReg = new RegExp(`^([^\\\\s>+~#\\\\.\\\\[:]+|\\\\*)?((?:${regs_1.idChar}|${regs_1.classChar}|${regs_1.attrChar}|${regs_1.pseudoChar})*)([\\\\s>+~]+|$)`);\r\n    let selectorStr = selector;\r\n    let selectorExec = selectorUnitReg.exec(selectorStr);\r\n    while (selectorExec && selectorExec[0].length) {\r\n        const selectorUnit = { id: [], class: [], attr: [], pseudo: [] };\r\n        if (selectorExec[1]) {\r\n            if (selectorExec[1] === '*') {\r\n                selectorUnit.universal = true;\r\n            }\r\n            else {\r\n                selectorUnit.type = selectorExec[1];\r\n            }\r\n        }\r\n        if (selectorExec[2]) {\r\n            let specialStr = selectorExec[2];\r\n            const specialReg = new RegExp(`^(?:${regs_1.idChar}|${regs_1.classChar}|${regs_1.attrChar}|${regs_1.pseudoChar})`);\r\n            let specialExec = specialReg.exec(specialStr);\r\n            while (specialExec) {\r\n                switch (specialExec[0][0]) {\r\n                    case '.': // class 选择器\r\n                        selectorUnit.class.push(specialExec[0].slice(1));\r\n                        break;\r\n                    case '[': // 属性选择器\r\n                        const attrStr = specialExec[0].slice(1, -1);\r\n                        const eqIndex = attrStr.indexOf('=');\r\n                        if (eqIndex === -1) {\r\n                            // 没有等号的情况\r\n                            selectorUnit.attr.push({\r\n                                key: attrStr,\r\n                            });\r\n                        }\r\n                        else {\r\n                            // 取出等号修饰符\r\n                            // tslint:disable-next-line strict-type-predicates\r\n                            if (typeof define_1.attrModifier[attrStr[eqIndex - 1]] === 'number') {\r\n                                selectorUnit.attr.push({\r\n                                    key: attrStr.slice(0, eqIndex - 1),\r\n                                    modifier: define_1.attrModifier[attrStr[eqIndex - 1]],\r\n                                    value: attrStr.slice(eqIndex + 1),\r\n                                });\r\n                            }\r\n                            else {\r\n                                selectorUnit.attr.push({\r\n                                    key: attrStr.slice(0, eqIndex),\r\n                                    value: attrStr.slice(eqIndex + 1),\r\n                                });\r\n                            }\r\n                        }\r\n                        break;\r\n                    case ':': // 伪类，伪元素\r\n                        const isClass = specialExec[0][1] !== ':';\r\n                        const pseudoStr = specialExec[0].replace(/^:+/, '');\r\n                        const parenIndex = pseudoStr.indexOf('(');\r\n                        if (parenIndex === -1) {\r\n                            // 不是函数型伪类\r\n                            selectorUnit.pseudo.push({\r\n                                func: pseudoStr,\r\n                                isClass,\r\n                            });\r\n                        }\r\n                        else {\r\n                            selectorUnit.pseudo.push({\r\n                                func: pseudoStr.slice(0, parenIndex),\r\n                                value: pseudoStr.slice(parenIndex + 1, -1),\r\n                                isClass,\r\n                            });\r\n                        }\r\n                        break;\r\n                    default: // id 选择器\r\n                        selectorUnit.id.push(specialExec[0].slice(1));\r\n                        break;\r\n                }\r\n                specialStr = specialStr.slice(specialExec[0].length);\r\n                specialExec = specialReg.exec(specialStr);\r\n            }\r\n        }\r\n        if (selectorExec[3]) {\r\n            const combinator = selectorExec[3].trim();\r\n            // tslint:disable-next-line strict-type-predicates\r\n            if (typeof define_1.selectorUnitCombinator[combinator] === 'number') {\r\n                selectorUnit.combinator = define_1.selectorUnitCombinator[combinator];\r\n            }\r\n        }\r\n        selectors.push(selectorUnit);\r\n        selectorStr = selectorStr.slice(selectorExec[0].length);\r\n        selectorExec = selectorUnitReg.exec(selectorStr);\r\n    }\r\n    return selectors;\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/style/exec-selector.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/style/exec.ts":
-/*!************************************!*\
-  !*** ./src/slimming/style/exec.ts ***!
-  \************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst he_1 = __webpack_require__(/*! he */ \"he\");\r\nconst cssReg = /([^:;]+):((?:[^;'\"]*?(?:(?:'[^']*?'|\"[^\"]*?\"|\\/\\*.*?\\*\\/))*[^;'\"]*?)*)(?=;|$)/gim;\r\nexports.execStyle = (styleStr) => {\r\n    // 此处使用数组，因为不能在解析器中排重，排重的工作要交给优化工具\r\n    const style = [];\r\n    const str = he_1.decode(styleStr, {\r\n        isAttributeValue: true,\r\n    });\r\n    // 重置正则\r\n    cssReg.lastIndex = 0;\r\n    let match = cssReg.exec(str);\r\n    while (match !== null) {\r\n        // 去除前导注释和空格\r\n        const name = match[1].replace(/^(?:\\s*\\/\\*.+?\\*\\/\\s*)*/g, '').trim().replace(/\\s/g, '');\r\n        // 去除两端注释和冗余空格\r\n        const value = match[2].replace(/^(?:\\s*\\/\\*.+?\\*\\/\\s*)*|(?:\\s*\\/\\*.+?\\*\\/\\s*)*$/g, '').trim().replace(/\\s+/, ' ');\r\n        // 只保留非空\r\n        if (name && value) {\r\n            style.push({\r\n                fullname: name,\r\n                name,\r\n                value,\r\n            });\r\n        }\r\n        match = cssReg.exec(str);\r\n    }\r\n    return style;\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/style/exec.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/style/match-selector.ts":
-/*!**********************************************!*\
-  !*** ./src/slimming/style/match-selector.ts ***!
-  \**********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst definitions_1 = __webpack_require__(/*! ../const/definitions */ \"./src/slimming/const/definitions.ts\");\r\nconst is_tag_1 = __webpack_require__(/*! ../xml/is-tag */ \"./src/slimming/xml/is-tag.ts\");\r\nconst traversal_node_1 = __webpack_require__(/*! ../xml/traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\nconst define_1 = __webpack_require__(/*! ./define */ \"./src/slimming/style/define.ts\");\r\n// 验证 className\r\nconst checkClass = (node, selector) => {\r\n    const className = node.getAttribute('class');\r\n    let classNames = [];\r\n    if (className) {\r\n        classNames = className.trim().split(/\\s+/);\r\n    }\r\n    for (let ci = selector.class.length; ci--;) {\r\n        if (!classNames.includes(selector.class[ci])) {\r\n            return false;\r\n        }\r\n    }\r\n    return true;\r\n};\r\n// 验证 ID\r\nconst checkID = (node, selector) => {\r\n    let id = node.getAttribute('id');\r\n    if (id) {\r\n        id = id.trim();\r\n    }\r\n    for (let i = selector.id.length; i--;) {\r\n        if (id !== selector.id[i]) {\r\n            return false;\r\n        }\r\n    }\r\n    return true;\r\n};\r\n// 验证属性\r\nconst checkAttr = (node, selector) => {\r\n    for (let ai = selector.attr.length; ai--;) {\r\n        const attrSelector = selector.attr[ai];\r\n        let attr = node.getAttribute(attrSelector.key);\r\n        if (attr === null) {\r\n            return false;\r\n        }\r\n        else if (attrSelector.value) {\r\n            // 属性值大小写不敏感\r\n            attr = attr.trim().toLowerCase();\r\n            switch (attrSelector.modifier) {\r\n                // 开始字符匹配\r\n                case define_1.attrModifier['^']:\r\n                    if (attr.indexOf(attrSelector.value) !== 0) {\r\n                        return false;\r\n                    }\r\n                    break;\r\n                // 结尾字符匹配\r\n                // tslint:disable-next-line:no-string-literal\r\n                case define_1.attrModifier['$']:\r\n                    if (attr.lastIndexOf(attrSelector.value) !== attr.length - attrSelector.value.length) {\r\n                        return false;\r\n                    }\r\n                    break;\r\n                // 空格分组字符匹配\r\n                case define_1.attrModifier['~']:\r\n                    if (!attr.split(/\\s+/).includes(attrSelector.value)) {\r\n                        return false;\r\n                    }\r\n                    break;\r\n                // 前缀字符匹配\r\n                case define_1.attrModifier['|']:\r\n                    if (attr !== attrSelector.value && attr.indexOf(`${attrSelector.value}-`) !== 0) {\r\n                        return false;\r\n                    }\r\n                    break;\r\n                // 模糊匹配\r\n                case define_1.attrModifier['*']:\r\n                    if (!attr.includes(attrSelector.value)) {\r\n                        return false;\r\n                    }\r\n                    break;\r\n                // 默认全字匹配\r\n                default:\r\n                    if (attr !== attrSelector.value) {\r\n                        return false;\r\n                    }\r\n                    break;\r\n            }\r\n        }\r\n    }\r\n    return true;\r\n};\r\n// 验证伪类和伪元素\r\n// 根据 SVG 标准只验证 CSS 2.1 规范的伪类和伪元素\r\n// https://www.w3.org/TR/SVG2/styling.html#RequiredCSSFeatures\r\nconst checkPseudo = (node, selector) => {\r\n    for (let pi = selector.pseudo.length; pi--;) {\r\n        const pseudoSelector = selector.pseudo[pi];\r\n        if (!definitions_1.validPseudoClass.includes(pseudoSelector.func) && !definitions_1.validPseudoElement.includes(pseudoSelector.func)) {\r\n            return false;\r\n        }\r\n        // 命中伪元素，需要验证作用域链上是否存在文本节点 text\r\n        if (definitions_1.validPseudoElement.includes(pseudoSelector.func)) {\r\n            let hasText = false;\r\n            if (node.nodeName === 'text') {\r\n                hasText = true;\r\n            }\r\n            else {\r\n                traversal_node_1.traversalNode(is_tag_1.isTag, (n) => {\r\n                    if (n.nodeName === 'text') {\r\n                        hasText = true;\r\n                    }\r\n                }, node);\r\n            }\r\n            if (!hasText) {\r\n                return false;\r\n            }\r\n        }\r\n    }\r\n    return true;\r\n};\r\n// 验证 selector 和 node 是否匹配\r\nexports.matchSelector = (selector) => (node) => {\r\n    if (!selector || !node) {\r\n        return false;\r\n    }\r\n    // 如果存在标签，则标签必须符合\r\n    if (selector.type && selector.type !== node.nodeName) {\r\n        return false;\r\n    }\r\n    // 如果存在 class 选择器，则每个 class 都要匹配\r\n    if (selector.class.length) {\r\n        if (!checkClass(node, selector)) {\r\n            return false;\r\n        }\r\n    }\r\n    // 如果存在 id 选择器，则每个 id 都要匹配\r\n    if (selector.id.length) {\r\n        if (!checkID(node, selector)) {\r\n            return false;\r\n        }\r\n    }\r\n    if (selector.attr.length) {\r\n        if (!checkAttr(node, selector)) {\r\n            return false;\r\n        }\r\n    }\r\n    if (selector.pseudo.length) {\r\n        if (!checkPseudo(node, selector)) {\r\n            return false;\r\n        }\r\n    }\r\n    return true;\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/style/match-selector.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/style/seletor-priority.ts":
-/*!************************************************!*\
-  !*** ./src/slimming/style/seletor-priority.ts ***!
-  \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nexports.getSelectorPriority = (seletors) => {\r\n    const priority = {\r\n        id: 0,\r\n        class: 0,\r\n        tag: 0,\r\n    };\r\n    seletors.forEach(seletor => {\r\n        priority.id += seletor.id.length;\r\n        priority.class += seletor.class.length + seletor.pseudo.length + seletor.attr.length;\r\n        priority.tag += seletor.type ? 1 : 0;\r\n    });\r\n    return priority;\r\n};\r\nexports.overrideAble = (priority1, priority2) => {\r\n    if (priority1.id !== priority2.id) {\r\n        return priority1.id > priority2.id;\r\n    }\r\n    else if (priority1.class !== priority2.class) {\r\n        return priority1.class > priority2.class;\r\n    }\r\n    else if (priority1.tag !== priority2.tag) {\r\n        return priority1.tag > priority2.tag;\r\n    }\r\n    return true;\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/style/seletor-priority.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/style/shorten-tag.ts":
-/*!*******************************************!*\
-  !*** ./src/slimming/style/shorten-tag.ts ***!
-  \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\n// 去除 style 标签最后的分号\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nexports.shortenTag = (s) => s.replace(/;}/g, '}');\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/style/shorten-tag.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/style/shorten.ts":
-/*!***************************************!*\
-  !*** ./src/slimming/style/shorten.ts ***!
-  \***************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst mix_white_space_1 = __webpack_require__(/*! ../utils/mix-white-space */ \"./src/slimming/utils/mix-white-space.ts\");\r\nexports.shortenStyle = (s) => mix_white_space_1.mixWhiteSpace(s.trim()).replace(/\\s*([@='\"#\\.\\*+>~\\[\\]\\(\\){}:,;])\\s*/g, '$1').replace(/;$/, '');\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/style/shorten.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/style/stringify.ts":
-/*!*****************************************!*\
-  !*** ./src/slimming/style/stringify.ts ***!
-  \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nexports.stringifyStyle = (style) => style.map(attr => `${attr.name}:${attr.value}`).join(';');\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/style/stringify.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/utils/exec-numberlist.ts":
-/*!***********************************************!*\
-  !*** ./src/slimming/utils/exec-numberlist.ts ***!
-  \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst syntax_1 = __webpack_require__(/*! ../const/syntax */ \"./src/slimming/const/syntax.ts\");\r\nexports.execNumberList = (s) => {\r\n    const result = [];\r\n    // 首先全字匹配字符串，不符合的直接退出\r\n    if (syntax_1.numberListFullMatch.test(s)) {\r\n        // 重要！含有 g 修饰符的正则表达式 exec 时要先重置！\r\n        syntax_1.numberGlobal.lastIndex = 0;\r\n        let matches = syntax_1.numberGlobal.exec(s);\r\n        while (matches) {\r\n            result.push(+matches[0]);\r\n            matches = syntax_1.numberGlobal.exec(s);\r\n        }\r\n    }\r\n    return result;\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/utils/exec-numberlist.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/utils/fillin.ts":
-/*!**************************************!*\
-  !*** ./src/slimming/utils/fillin.ts ***!
-  \**************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nexports.fillIn = ramda_1.curry((digit, s) => s.length >= digit ? s : exports.fillIn(digit, `0${s}`));\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/utils/fillin.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/utils/mix-white-space.ts":
-/*!***********************************************!*\
-  !*** ./src/slimming/utils/mix-white-space.ts ***!
-  \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nexports.mixWhiteSpace = (str) => str.replace(/\\s+/g, ' ');\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/utils/mix-white-space.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/utils/number-length.ts":
-/*!*********************************************!*\
-  !*** ./src/slimming/utils/number-length.ts ***!
-  \*********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst shorten_number_list_1 = __webpack_require__(/*! ./shorten-number-list */ \"./src/slimming/utils/shorten-number-list.ts\");\r\nconst shorten_number_1 = __webpack_require__(/*! ./shorten-number */ \"./src/slimming/utils/shorten-number.ts\");\r\nexports.numberLength = (num) => shorten_number_list_1.shortenNumberList(num.map(shorten_number_1.shortenNumber).join(',')).length;\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/utils/number-length.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/utils/shorten-func.ts":
-/*!********************************************!*\
-  !*** ./src/slimming/utils/shorten-func.ts ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\n// 缩短函数类字符串，移除其中的空白\r\nexports.shortenFunc = (s) => s.replace(/\\s*([,()])\\s*/g, '$1');\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/utils/shorten-func.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/utils/shorten-number-list.ts":
-/*!***************************************************!*\
-  !*** ./src/slimming/utils/shorten-number-list.ts ***!
-  \***************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nexports.shortenNumberList = (s) => s.trim().replace(/\\s*,\\s*|\\s+/g, ',').replace(/,(?=[+-]\\.?\\d+)/g, '').replace(/([\\.eE]\\d+),(?=\\.\\d+)/g, '$1');\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/utils/shorten-number-list.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/utils/shorten-number.ts":
-/*!**********************************************!*\
-  !*** ./src/slimming/utils/shorten-number.ts ***!
-  \**********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst shorten_pure_decimal_1 = __webpack_require__(/*! ./shorten-pure-decimal */ \"./src/slimming/utils/shorten-pure-decimal.ts\");\r\nconst to_scientific_1 = __webpack_require__(/*! ./to-scientific */ \"./src/slimming/utils/to-scientific.ts\");\r\nexports.shortenNumber = ramda_1.pipe(to_scientific_1.toScientific, shorten_pure_decimal_1.shortenPureDecimal);\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/utils/shorten-number.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/utils/shorten-pure-decimal.ts":
-/*!****************************************************!*\
-  !*** ./src/slimming/utils/shorten-pure-decimal.ts ***!
-  \****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\n// 移除纯小数的前导 0\r\nexports.shortenPureDecimal = (s) => s.replace(/^(-?)0\\./, '$1.');\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/utils/shorten-pure-decimal.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/utils/stringify-funcval.ts":
-/*!*************************************************!*\
-  !*** ./src/slimming/utils/stringify-funcval.ts ***!
-  \*************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst shorten_number_1 = __webpack_require__(/*! ./shorten-number */ \"./src/slimming/utils/shorten-number.ts\");\r\nconst shorten_number_list_1 = __webpack_require__(/*! ./shorten-number-list */ \"./src/slimming/utils/shorten-number-list.ts\");\r\n// 将函数类参数转为字符串，并优化（转科学计数法，移除掉正、负号前面的逗号，移除掉0.前面的0，移除掉.1,.1或e1,.1这种case中间的逗号）\r\nexports.stringifyFuncVal = (s) => shorten_number_list_1.shortenNumberList(s.map(shorten_number_1.shortenNumber).join(','));\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/utils/stringify-funcval.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/utils/to-scientific.ts":
-/*!*********************************************!*\
-  !*** ./src/slimming/utils/to-scientific.ts ***!
-  \*********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nexports.toScientific = (s) => {\r\n    const sStr = s.toString();\r\n    let _s = sStr;\r\n    let e = 0;\r\n    while (_s.slice(-1) === '0') {\r\n        _s = _s.slice(0, -1);\r\n        e++;\r\n    }\r\n    _s = `${_s}e${e}`;\r\n    return _s.length <= sStr.length ? _s : sStr;\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/utils/to-scientific.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/utils/tohex.ts":
-/*!*************************************!*\
-  !*** ./src/slimming/utils/tohex.ts ***!
-  \*************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst HEX = 16;\r\nconst TEN = 10;\r\nexports.toHex = (s) => parseInt(`${s}`, TEN).toString(HEX);\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/utils/tohex.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/utils/traversal-obj.ts":
-/*!*********************************************!*\
-  !*** ./src/slimming/utils/traversal-obj.ts ***!
-  \*********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\n/*\r\n * 深度遍历所有的 Object 属性\r\n * @param { function } 条件\r\n * @param { function } 回调\r\n * @param { object } 目标对象\r\n * @param { object[] } 避免对象调用自身造成死循环\r\n * @param { boolean } 是否深度优先，是的话会先遍历子元素\r\n */\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst traversal = (condition, cb, obj, path, visited, deep) => {\r\n    if (visited.includes(obj)) {\r\n        return;\r\n    }\r\n    visited.push(obj);\r\n    if (!deep) {\r\n        if (condition(obj)) {\r\n            cb(obj, path);\r\n            return;\r\n        }\r\n    }\r\n    path.push(obj);\r\n    if (Array.isArray(obj)) {\r\n        for (let i = 0; i < obj.length;) {\r\n            const item = obj[i];\r\n            traversal(condition, cb, item, path, visited, deep);\r\n            if (item === obj[i]) {\r\n                i++;\r\n            }\r\n        }\r\n    }\r\n    else {\r\n        for (const key in obj) {\r\n            if (typeof obj[key] === 'object') { // tslint:disable-line strict-type-predicates\r\n                traversal(condition, cb, obj[key], path, visited, deep);\r\n            }\r\n        }\r\n    }\r\n    path.pop();\r\n    if (deep) {\r\n        if (condition(obj)) {\r\n            cb(obj, path);\r\n        }\r\n    }\r\n};\r\nexports.traversalObj = (condition, cb, obj, deep = false) => {\r\n    traversal(condition, cb, obj, [], [], deep);\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/utils/traversal-obj.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/validate/legal-value.ts":
-/*!**********************************************!*\
-  !*** ./src/slimming/validate/legal-value.ts ***!
-  \**********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst regular_attr_1 = __webpack_require__(/*! ../const/regular-attr */ \"./src/slimming/const/regular-attr.ts\");\r\nconst use_enum_1 = __webpack_require__(/*! ./use-enum */ \"./src/slimming/validate/use-enum.ts\");\r\nconst use_reg_1 = __webpack_require__(/*! ./use-reg */ \"./src/slimming/validate/use-reg.ts\");\r\nexports.legalValue = (attrDefine, attr, nodeName = '') => {\r\n    if (attrDefine.legalValues.length) {\r\n        // 只要有一个规则命中就返回 true\r\n        let noMatchRule = true; // 重要！要判断是否有可以用于验证的规则，如果所有规则不适用于验证当前属性，则不应该 return false，而应该 return true\r\n        for (const legalRule of attrDefine.legalValues) {\r\n            // 当前验证规则可能只适用于某些 tag，legalTag 表示当前规则适用于所有 tag 或当前验证的 tag 在规则匹配列表中\r\n            const legalTag = !legalRule.tag || !nodeName || legalRule.tag.includes(nodeName);\r\n            if (legalTag) {\r\n                noMatchRule = false;\r\n                switch (legalRule.type) {\r\n                    // 用正则判断\r\n                    case 'reg':\r\n                        if (use_reg_1.useReg(legalRule.value, attr.value)) {\r\n                            return true;\r\n                        }\r\n                        break;\r\n                    // 用枚举判断\r\n                    case 'enum':\r\n                        if (use_enum_1.useEnum(legalRule.value, attr.value)) {\r\n                            return true;\r\n                        }\r\n                        break;\r\n                    // 值应该是一个属性名，而且不允许循环引用\r\n                    case 'attr':\r\n                        if (!regular_attr_1.regularAttr[attr.value].isUndef && attr.fullname !== attr.value) {\r\n                            return true;\r\n                        }\r\n                        break;\r\n                    // 值应该是一个特定字符串\r\n                    default:\r\n                        if (legalRule.value === attr.value) {\r\n                            return true;\r\n                        }\r\n                        break;\r\n                }\r\n            }\r\n        }\r\n        return noMatchRule;\r\n    }\r\n    return !attrDefine.isUndef;\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/validate/legal-value.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/validate/use-enum.ts":
-/*!*******************************************!*\
-  !*** ./src/slimming/validate/use-enum.ts ***!
-  \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nexports.useEnum = (e, val) => new RegExp(`^${e}$`).test(val);\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/validate/use-enum.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/validate/use-reg.ts":
-/*!******************************************!*\
-  !*** ./src/slimming/validate/use-reg.ts ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nexports.useReg = (reg, val) => reg.test(val.trim());\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/validate/use-reg.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/xml/attr-is-equal.ts":
-/*!*******************************************!*\
-  !*** ./src/slimming/xml/attr-is-equal.ts ***!
-  \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst exec_1 = __webpack_require__(/*! ../color/exec */ \"./src/slimming/color/exec.ts\");\r\nconst exec_numberlist_1 = __webpack_require__(/*! ../utils/exec-numberlist */ \"./src/slimming/utils/exec-numberlist.ts\");\r\nexports.valueIsEqual = (attrDefine, value1, value2) => {\r\n    if (value1 === value2) {\r\n        return true;\r\n    }\r\n    if (attrDefine.maybeColor) {\r\n        const color1 = exec_1.execColor(value1);\r\n        const color2 = exec_1.execColor(value2);\r\n        color1.origin = '';\r\n        color2.origin = '';\r\n        if (ramda_1.equals(color1, color2)) {\r\n            return true;\r\n        }\r\n    }\r\n    if (attrDefine.maybeSizeNumber || attrDefine.maybeAccurateNumber) {\r\n        const nums2 = exec_numberlist_1.execNumberList(value2);\r\n        if (nums2.length > 0 && ramda_1.equals(exec_numberlist_1.execNumberList(value1), nums2)) {\r\n            return true;\r\n        }\r\n    }\r\n    return false;\r\n};\r\nexports.attrIsEqual = (attrDefine, value, nodeName) => {\r\n    if (typeof attrDefine.initValue === 'string') {\r\n        return exports.valueIsEqual(attrDefine, value, attrDefine.initValue);\r\n    }\r\n    else {\r\n        const initValue = attrDefine.initValue;\r\n        for (let ii = 0, il = initValue.length; ii < il; ii++) {\r\n            if (initValue[ii].tag.includes(nodeName) && exports.valueIsEqual(attrDefine, value, initValue[ii].val)) {\r\n                return true;\r\n            }\r\n        }\r\n    }\r\n    return false;\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/xml/attr-is-equal.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/xml/create.ts":
-/*!************************************!*\
-  !*** ./src/slimming/xml/create.ts ***!
-  \************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst css_1 = __webpack_require__(/*! css */ \"css\");\r\nconst index_1 = __webpack_require__(/*! ../../node/index */ \"./src/node/index.ts\");\r\nconst shorten_tag_1 = __webpack_require__(/*! ../style/shorten-tag */ \"./src/slimming/style/shorten-tag.ts\");\r\nconst mix_white_space_1 = __webpack_require__(/*! ../utils/mix-white-space */ \"./src/slimming/utils/mix-white-space.ts\");\r\nconst rm_node_1 = __webpack_require__(/*! ./rm-node */ \"./src/slimming/xml/rm-node.ts\");\r\nexports.createNode = (node) => {\r\n    let xml = '';\r\n    const textContent = node.textContent;\r\n    switch (node.nodeType) {\r\n        case index_1.NodeType.Tag:\r\n            xml += exports.createTag(node);\r\n            break;\r\n        case index_1.NodeType.Text:\r\n            xml += textContent;\r\n            break;\r\n        case index_1.NodeType.XMLDecl:\r\n            xml += `<?xml${mix_white_space_1.mixWhiteSpace(` ${textContent}`).replace(/\\s(?=\"|=|$)/g, '')}?>`;\r\n            break;\r\n        case index_1.NodeType.Comments:\r\n            const comments = mix_white_space_1.mixWhiteSpace(textContent).trim();\r\n            if (comments) {\r\n                xml += `<!--${comments}-->`;\r\n            }\r\n            break;\r\n        case index_1.NodeType.CDATA:\r\n            if (!textContent.includes('<')) {\r\n                xml += textContent;\r\n            }\r\n            else {\r\n                xml += `<![CDATA[${textContent}]]>`;\r\n            }\r\n            break;\r\n        case index_1.NodeType.DocType:\r\n            xml += `<!DOCTYPE${mix_white_space_1.mixWhiteSpace(` ${textContent.trim()}`)}>`;\r\n            break;\r\n        default:\r\n            break;\r\n    }\r\n    return xml;\r\n};\r\nexports.createTag = (node) => {\r\n    let xml = '';\r\n    xml += `<${node.namespace ? `${node.namespace}:` : ''}${node.nodeName}`;\r\n    if (node.attributes.length) {\r\n        for (const { name, value, namespace } of node.attributes) {\r\n            if (value.trim()) {\r\n                xml += ` ${namespace ? `${namespace}:` : ''}${name}=\"${mix_white_space_1.mixWhiteSpace(value.trim()).replace(/\"/g, '&quot;')}\"`;\r\n            }\r\n        }\r\n    }\r\n    if (node.childNodes.length) {\r\n        xml += '>';\r\n        node.childNodes.forEach(childNode => {\r\n            xml += exports.createNode(childNode);\r\n        });\r\n        xml += `</${node.namespace ? `${node.namespace}:` : ''}${node.nodeName}>`;\r\n    }\r\n    else {\r\n        xml += '/>';\r\n    }\r\n    return xml;\r\n};\r\nexports.createXML = (dom) => {\r\n    if (!dom) {\r\n        return '';\r\n    }\r\n    let result = '';\r\n    if (dom.stylesheet) {\r\n        const cssText = shorten_tag_1.shortenTag(css_1.stringify(dom.stylesheet, { compress: true }));\r\n        if (cssText) {\r\n            dom.styletag.childNodes[0].textContent = cssText;\r\n        }\r\n        else {\r\n            rm_node_1.rmNode(dom.styletag);\r\n        }\r\n    }\r\n    dom.childNodes.forEach(node => {\r\n        result += exports.createNode(node);\r\n    });\r\n    return result;\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/xml/create.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/xml/exec-style-tree.ts":
-/*!*********************************************!*\
-  !*** ./src/slimming/xml/exec-style-tree.ts ***!
-  \*********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst regular_attr_1 = __webpack_require__(/*! ../const/regular-attr */ \"./src/slimming/const/regular-attr.ts\");\r\nconst exec_1 = __webpack_require__(/*! ../style/exec */ \"./src/slimming/style/exec.ts\");\r\nconst exec_selector_1 = __webpack_require__(/*! ../style/exec-selector */ \"./src/slimming/style/exec-selector.ts\");\r\nconst seletor_priority_1 = __webpack_require__(/*! ../style/seletor-priority */ \"./src/slimming/style/seletor-priority.ts\");\r\nconst get_by_id_1 = __webpack_require__(/*! ./get-by-id */ \"./src/slimming/xml/get-by-id.ts\");\r\nconst get_by_selector_1 = __webpack_require__(/*! ./get-by-selector */ \"./src/slimming/xml/get-by-selector.ts\");\r\nconst is_tag_1 = __webpack_require__(/*! ./is-tag */ \"./src/slimming/xml/is-tag.ts\");\r\nconst traversal_node_1 = __webpack_require__(/*! ./traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\nconst check = (dom, styleItems) => {\r\n    traversal_node_1.traversalNode(is_tag_1.isTag, node => {\r\n        let nodeStyle = {};\r\n        if (node.styles) {\r\n            nodeStyle = node.styles;\r\n        }\r\n        else {\r\n            node.styles = nodeStyle;\r\n        }\r\n        // 可能有 xlink 引用，css 样式会影响到 xlink 引用的节点\r\n        let xlinkObj;\r\n        node.attributes.forEach(attr => {\r\n            if (attr.fullname === 'style') {\r\n                // 行内样式优先级最高\r\n                const styles = exec_1.execStyle(attr.value);\r\n                styles.forEach(style => {\r\n                    nodeStyle[style.name] = {\r\n                        value: style.value,\r\n                        from: 'inline',\r\n                    };\r\n                });\r\n            }\r\n            else if (attr.name === 'href') {\r\n                // 获取 xlink 引用\r\n                xlinkObj = get_by_id_1.getById(node.getAttribute(attr.fullname), dom);\r\n            }\r\n            else if (regular_attr_1.regularAttr[attr.fullname].couldBeStyle) {\r\n                // 属性优先级最低，但可以覆盖继承\r\n                const styleDefine = nodeStyle[attr.fullname];\r\n                // tslint:disable-next-line\r\n                if (!styleDefine || styleDefine.from === 'inherit') {\r\n                    nodeStyle[attr.fullname] = {\r\n                        value: attr.value,\r\n                        from: 'attr',\r\n                    };\r\n                }\r\n            }\r\n        });\r\n        // 判断 style 标签内的样式，优先级高于 attr 和 inehrit\r\n        styleItems.forEach(styleItem => {\r\n            if (styleItem.nodes.includes(node)) {\r\n                styleItem.styles.forEach(style => {\r\n                    const styleDefine = nodeStyle[style.name];\r\n                    // tslint:disable-next-line\r\n                    if (!styleDefine || styleDefine.from === 'attr' || styleDefine.from === 'inherit' || (styleDefine.from === 'styletag' && styleDefine.selectorPriority && seletor_priority_1.overrideAble(styleItem.selectorPriority, styleDefine.selectorPriority))) {\r\n                        nodeStyle[style.name] = {\r\n                            value: style.value,\r\n                            from: 'styletag',\r\n                            selectorPriority: styleItem.selectorPriority,\r\n                        };\r\n                    }\r\n                });\r\n            }\r\n        });\r\n        const parentNode = node.parentNode;\r\n        if (parentNode && parentNode.styles) {\r\n            // 可能从父元素继承的样式\r\n            Object.keys(parentNode.styles).forEach(key => {\r\n                if (!nodeStyle.hasOwnProperty(key) && regular_attr_1.regularAttr[key].inherited) {\r\n                    nodeStyle[key] = {\r\n                        value: parentNode.styles[key].value,\r\n                        from: 'inherit',\r\n                    };\r\n                }\r\n            });\r\n        }\r\n        if (xlinkObj) {\r\n            let styleObj = {};\r\n            if (xlinkObj.styles) {\r\n                styleObj = xlinkObj.styles;\r\n            }\r\n            else {\r\n                xlinkObj.styles = styleObj;\r\n            }\r\n            Object.keys(nodeStyle).forEach(key => {\r\n                if (!styleObj.hasOwnProperty(key)) {\r\n                    styleObj[key] = {\r\n                        value: nodeStyle[key].value,\r\n                        from: 'inherit',\r\n                    };\r\n                }\r\n            });\r\n        }\r\n    }, dom);\r\n};\r\n// 解析样式树，为每个节点增加 styles 属性，标记当前节点生效的样式信息\r\nexports.execStyleTree = (dom) => {\r\n    // 首先清理掉曾经被解析过的样式树\r\n    traversal_node_1.traversalNode(is_tag_1.isTag, node => {\r\n        if (node.styles) {\r\n            delete node.styles;\r\n        }\r\n    }, dom);\r\n    const styleItems = [];\r\n    // 记录 stylesheet 选择器权重和影响到的节点\r\n    if (dom.stylesheet) {\r\n        dom.stylesheet.stylesheet.rules.forEach((styleRule) => {\r\n            // 只针对规则类\r\n            if (styleRule.type === 'rule' && styleRule.declarations && styleRule.selectors) {\r\n                const styles = [];\r\n                styleRule.declarations.forEach((ruleItem) => {\r\n                    if (ruleItem.property && ruleItem.value) {\r\n                        styles.push({\r\n                            name: ruleItem.property,\r\n                            fullname: ruleItem.property,\r\n                            value: ruleItem.value,\r\n                        });\r\n                    }\r\n                });\r\n                for (let si = styleRule.selectors.length; si--;) {\r\n                    const selector = exec_selector_1.execSelector(styleRule.selectors[si]);\r\n                    const selectorPriority = seletor_priority_1.getSelectorPriority(selector);\r\n                    const nodes = get_by_selector_1.getBySelector(dom, selector);\r\n                    if (nodes.length) {\r\n                        styleItems.push({\r\n                            styles,\r\n                            selectorPriority,\r\n                            nodes,\r\n                        });\r\n                    }\r\n                }\r\n            }\r\n        });\r\n    }\r\n    check(dom, styleItems);\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/xml/exec-style-tree.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/xml/get-ancestor.ts":
-/*!******************************************!*\
-  !*** ./src/slimming/xml/get-ancestor.ts ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\n// 根据条件获取祖先元素\r\nexports.getAncestor = (tag, checkFn) => {\r\n    let _tag = tag;\r\n    if (checkFn(_tag)) {\r\n        return _tag;\r\n    }\r\n    while (_tag.parentNode) {\r\n        _tag = _tag.parentNode;\r\n        if (checkFn(_tag)) {\r\n            return _tag;\r\n        }\r\n    }\r\n    return null;\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/xml/get-ancestor.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/xml/get-animate-attr.ts":
-/*!**********************************************!*\
-  !*** ./src/slimming/xml/get-animate-attr.ts ***!
-  \**********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst definitions_1 = __webpack_require__(/*! ../const/definitions */ \"./src/slimming/const/definitions.ts\");\r\n// 如果子对象包含动画元素，获取这些动画元素影响了哪些属性\r\nexports.getAnimateAttr = (node) => {\r\n    const result = [];\r\n    node.childNodes.forEach(childNode => {\r\n        if (definitions_1.animationAttrElements.includes(childNode.nodeName)) {\r\n            const attributeName = childNode.getAttribute('attributeName');\r\n            if (attributeName) {\r\n                if (childNode.nodeName !== 'animateTransform' || attributeName === 'tranform' || attributeName === 'patternTransform') {\r\n                    const value = [];\r\n                    const from = childNode.getAttribute('from');\r\n                    const to = childNode.getAttribute('to');\r\n                    const by = childNode.getAttribute('by');\r\n                    const values = childNode.getAttribute('values');\r\n                    const key = [];\r\n                    if (from) {\r\n                        value.push(from);\r\n                        key.push('from');\r\n                    }\r\n                    if (to) {\r\n                        value.push(to);\r\n                        key.push('to');\r\n                    }\r\n                    if (by) {\r\n                        value.push(by);\r\n                        key.push('by');\r\n                    }\r\n                    if (values) {\r\n                        value.push(...values.split(';').map(val => val.trim()).filter(val => !!val));\r\n                        key.push('values');\r\n                    }\r\n                    result.push({\r\n                        node: childNode,\r\n                        attributeName,\r\n                        keys: key,\r\n                        values: value,\r\n                    });\r\n                }\r\n            }\r\n        }\r\n    });\r\n    return result;\r\n};\r\nexports.checkAnimateAttr = (animateAttrs, name, condition = (v) => true) => animateAttrs.some(item => item.attributeName === name && item.values.some(condition));\r\nexports.findAnimateAttr = (animateAttrs, name) => animateAttrs.filter(item => item.attributeName === name);\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/xml/get-animate-attr.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/xml/get-attr.ts":
-/*!**************************************!*\
-  !*** ./src/slimming/xml/get-attr.ts ***!
-  \**************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\n// 获取属性（根据 SVG 覆盖规则，css 优先）\r\nexports.getAttr = (node, key, defaultVal) => {\r\n    let val = defaultVal;\r\n    const styles = node.styles;\r\n    if (styles.hasOwnProperty(key)) {\r\n        val = styles[key].value;\r\n    }\r\n    return val;\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/xml/get-attr.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/xml/get-by-id.ts":
-/*!***************************************!*\
-  !*** ./src/slimming/xml/get-by-id.ts ***!
-  \***************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst traversal_node_1 = __webpack_require__(/*! ./traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\nexports.getById = (idStr, dom) => {\r\n    let result;\r\n    traversal_node_1.traversalNode(n => idStr === `#${n.getAttribute('id')}`, (n) => {\r\n        if (!result) {\r\n            result = n;\r\n        }\r\n    }, dom);\r\n    return result;\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/xml/get-by-id.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/xml/get-by-selector.ts":
-/*!*********************************************!*\
-  !*** ./src/slimming/xml/get-by-selector.ts ***!
-  \*********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst define_1 = __webpack_require__(/*! ../style/define */ \"./src/slimming/style/define.ts\");\r\nconst match_selector_1 = __webpack_require__(/*! ../style/match-selector */ \"./src/slimming/style/match-selector.ts\");\r\nconst is_tag_1 = __webpack_require__(/*! ./is-tag */ \"./src/slimming/xml/is-tag.ts\");\r\nconst traversal_node_1 = __webpack_require__(/*! ./traversal-node */ \"./src/slimming/xml/traversal-node.ts\");\r\n// 类似 querySelectorAll 的规则，找到所有符合条件的元素\r\nexports.getBySelector = (dom, selectors) => {\r\n    const len = selectors.length;\r\n    const result = [];\r\n    traversal_node_1.traversalNode(ramda_1.both(is_tag_1.isTag, match_selector_1.matchSelector(selectors[len - 1])), node => {\r\n        let i = len - 2;\r\n        let currentNode = node;\r\n        while (i >= 0) {\r\n            const matchI = match_selector_1.matchSelector(selectors[i]);\r\n            switch (selectors[i].combinator) {\r\n                // 子选择器\r\n                case define_1.selectorUnitCombinator['>']:\r\n                    if (currentNode.parentNode) {\r\n                        if (!matchI(currentNode.parentNode)) {\r\n                            return;\r\n                        }\r\n                        currentNode = currentNode.parentNode;\r\n                        break;\r\n                    }\r\n                    return;\r\n                // 相邻兄弟选择器\r\n                case define_1.selectorUnitCombinator['+']:\r\n                    if (currentNode.parentNode) {\r\n                        const brothers = currentNode.parentNode.childNodes;\r\n                        const index = brothers.indexOf(currentNode);\r\n                        if (index <= 0 || !matchI(brothers[index - 1])) {\r\n                            return;\r\n                        }\r\n                        currentNode = brothers[index - 1];\r\n                        break;\r\n                    }\r\n                    return;\r\n                // 兄弟选择器\r\n                case define_1.selectorUnitCombinator['~']:\r\n                    if (currentNode.parentNode) {\r\n                        const _brothers = currentNode.parentNode.childNodes;\r\n                        const _index = _brothers.indexOf(currentNode);\r\n                        if (_index <= 0) {\r\n                            return;\r\n                        }\r\n                        let _brother;\r\n                        for (let bi = _index; bi--;) {\r\n                            _brother = _brothers[bi];\r\n                            if (matchI(_brother)) {\r\n                                currentNode = _brother;\r\n                                break;\r\n                            }\r\n                        }\r\n                        if (currentNode !== _brother) {\r\n                            return;\r\n                        }\r\n                        break;\r\n                    }\r\n                    return;\r\n                // 后代选择器\r\n                default:\r\n                    let parent = currentNode.parentNode;\r\n                    while (parent) {\r\n                        if (matchI(parent)) {\r\n                            currentNode = parent;\r\n                            break;\r\n                        }\r\n                        parent = parent.parentNode;\r\n                    }\r\n                    if (currentNode !== parent) {\r\n                        return;\r\n                    }\r\n                    break;\r\n            }\r\n            i--;\r\n        }\r\n        result.push(node);\r\n    }, dom);\r\n    return result;\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/xml/get-by-selector.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/xml/is-tag.ts":
-/*!************************************!*\
-  !*** ./src/slimming/xml/is-tag.ts ***!
-  \************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst ramda_1 = __webpack_require__(/*! ramda */ \"ramda\");\r\nconst index_1 = __webpack_require__(/*! ../../node/index */ \"./src/node/index.ts\");\r\nexports.isTag = ramda_1.propEq('nodeType', index_1.NodeType.Tag);\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/xml/is-tag.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/xml/rm-attrs.ts":
-/*!**************************************!*\
-  !*** ./src/slimming/xml/rm-attrs.ts ***!
-  \**************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst exec_1 = __webpack_require__(/*! ../style/exec */ \"./src/slimming/style/exec.ts\");\r\nconst stringify_1 = __webpack_require__(/*! ../style/stringify */ \"./src/slimming/style/stringify.ts\");\r\nexports.rmAttrs = (node, attrs) => {\r\n    let styleVal = exec_1.execStyle(node.getAttribute('style') || '');\r\n    for (const key of attrs) {\r\n        node.removeAttribute(key);\r\n        styleVal = styleVal.filter(attr => attr.fullname !== key);\r\n    }\r\n    if (styleVal.length) {\r\n        node.setAttribute('style', stringify_1.stringifyStyle(styleVal));\r\n    }\r\n    else {\r\n        node.removeAttribute('style');\r\n    }\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/xml/rm-attrs.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/xml/rm-node.ts":
-/*!*************************************!*\
-  !*** ./src/slimming/xml/rm-node.ts ***!
-  \*************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nexports.rmNode = (node) => {\r\n    if (node.parentNode) {\r\n        node.parentNode.removeChild(node);\r\n    }\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/xml/rm-node.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/xml/traversal-node-async.ts":
-/*!**************************************************!*\
-  !*** ./src/slimming/xml/traversal-node-async.ts ***!
-  \**************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\n/*\r\n * 遍历所有的 Node 节点，并对符合条件的节点执行操作，异步版本\r\n * @param { function } 条件\r\n * @param { function } 回调\r\n * @param { Node } 目标节点\r\n */\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nexports.traversalNodeAsync = async (condition, cb, node) => new Promise((resolve, reject) => {\r\n    if (node.childNodes && node.childNodes.length) {\r\n        const list = [];\r\n        for (const childNode of node.childNodes) {\r\n            if (condition(childNode)) {\r\n                list.push(new Promise(resv => {\r\n                    Promise.resolve().then(async () => {\r\n                        await cb(childNode);\r\n                        if (childNode.parentNode === node) {\r\n                            await exports.traversalNodeAsync(condition, cb, childNode);\r\n                        }\r\n                        resv();\r\n                    });\r\n                }));\r\n            }\r\n            else {\r\n                list.push(new Promise(resv => {\r\n                    Promise.resolve().then(async () => {\r\n                        await exports.traversalNodeAsync(condition, cb, childNode);\r\n                        resv();\r\n                    });\r\n                }));\r\n            }\r\n        }\r\n        Promise.all(list).then(() => {\r\n            resolve();\r\n        }, reject); // tslint:disable-line no-floating-promises\r\n    }\r\n    else {\r\n        resolve();\r\n    }\r\n});\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/xml/traversal-node-async.ts?");
-
-/***/ }),
-
-/***/ "./src/slimming/xml/traversal-node.ts":
-/*!********************************************!*\
-  !*** ./src/slimming/xml/traversal-node.ts ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\n/*\r\n * 遍历所有的 Node 节点，并对符合条件的节点执行操作\r\n * @param { function } 条件\r\n * @param { function } 回调\r\n * @param { Node } 目标节点\r\n */\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst traversal = (condition, cb, node, breakImmediate) => {\r\n    // 此处不能用 forEach ，for 循环可以避免当前节点被移除导致下一个节点不会被遍历到的问题\r\n    if (node.childNodes) {\r\n        for (let i = 0; i < node.childNodes.length;) {\r\n            const childNode = node.childNodes[i];\r\n            if (condition(childNode)) {\r\n                cb(childNode);\r\n                if (childNode === node.childNodes[i]) {\r\n                    traversal(condition, cb, childNode, breakImmediate);\r\n                    i++;\r\n                }\r\n            }\r\n            else {\r\n                if (!breakImmediate) {\r\n                    traversal(condition, cb, childNode, breakImmediate);\r\n                }\r\n                i++;\r\n            }\r\n        }\r\n    }\r\n};\r\nexports.traversalNode = (condition, cb, dom, breakImmediate = false) => {\r\n    traversal(condition, cb, dom, breakImmediate);\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/slimming/xml/traversal-node.ts?");
-
-/***/ }),
-
-/***/ "./src/xml-parser/app.ts":
-/*!*******************************!*\
-  !*** ./src/xml-parser/app.ts ***!
-  \*******************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nvar index_1 = __webpack_require__(/*! ../node/index */ \"./src/node/index.ts\");\r\nexports.NodeType = index_1.NodeType;\r\nvar parser_1 = __webpack_require__(/*! ./parser */ \"./src/xml-parser/parser.ts\");\r\nexports.parse = parser_1.Parser;\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/xml-parser/app.ts?");
-
-/***/ }),
-
-/***/ "./src/xml-parser/node.ts":
-/*!********************************!*\
-  !*** ./src/xml-parser/node.ts ***!
-  \********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst index_1 = __webpack_require__(/*! ../node/index */ \"./src/node/index.ts\");\r\nclass Node {\r\n    constructor(option) {\r\n        this.nodeName = option.nodeName;\r\n        this.nodeType = option.nodeType;\r\n        this.namespace = option.namespace;\r\n        this.selfClose = option.selfClose;\r\n        this.textContent = option.textContent;\r\n        if (this.nodeType === index_1.NodeType.Tag || this.nodeType === index_1.NodeType.Document) {\r\n            this.attributes = [];\r\n            this.childNodes = [];\r\n        }\r\n    }\r\n    // 复制自身，但是不复制节点树关系链\r\n    cloneNode() {\r\n        const cloneNode = new Node({\r\n            nodeName: this.nodeName,\r\n            nodeType: this.nodeType,\r\n            namespace: this.namespace,\r\n            textContent: this.textContent,\r\n        });\r\n        if (this.attributes) {\r\n            // 属性需要深拷贝\r\n            cloneNode.attributes = this.attributes.map(attr => {\r\n                return {\r\n                    name: attr.name,\r\n                    value: attr.value,\r\n                    fullname: attr.fullname,\r\n                    namespace: attr.namespace,\r\n                };\r\n            });\r\n        }\r\n        return cloneNode;\r\n    }\r\n    // 追加子节点\r\n    appendChild(childNode) {\r\n        if (this.childNodes) {\r\n            // 如果子节点原本有父节点，则先从原本的父节点中移除\r\n            if (childNode.parentNode) {\r\n                childNode.parentNode.removeChild(childNode);\r\n            }\r\n            this.childNodes.push(childNode);\r\n            childNode.parentNode = this;\r\n        }\r\n    }\r\n    // 插入到子节点之前\r\n    insertBefore(childNode, previousTarget) {\r\n        if (this.childNodes) {\r\n            // 如果子节点原本有父节点，则先从原本的父节点中移除\r\n            if (childNode.parentNode) {\r\n                childNode.parentNode.removeChild(childNode);\r\n            }\r\n            // 判断目标节点是否在自己的子节点列表中，如果不在，直接插入\r\n            const pindex = this.childNodes.indexOf(previousTarget);\r\n            if (pindex !== -1) {\r\n                this.childNodes.splice(pindex, 0, childNode);\r\n            }\r\n            else {\r\n                this.childNodes.push(childNode);\r\n            }\r\n            childNode.parentNode = this;\r\n        }\r\n    }\r\n    // 替换子节点\r\n    replaceChild(childNode, ...children) {\r\n        if (this.childNodes) {\r\n            const index = this.childNodes.indexOf(childNode);\r\n            if (index !== -1) {\r\n                children.forEach(child => {\r\n                    // 先把要插入的子节点从原有父节点移除\r\n                    if (child.parentNode) {\r\n                        child.parentNode.removeChild(child);\r\n                    }\r\n                    // 指定父节点到自身\r\n                    child.parentNode = this;\r\n                });\r\n                this.childNodes.splice(index, 1, ...children);\r\n                // 清理被替换掉的子节点的钩子\r\n                delete childNode.parentNode;\r\n            }\r\n        }\r\n    }\r\n    // 移除子节点\r\n    removeChild(childNode) {\r\n        if (this.childNodes) {\r\n            const index = this.childNodes.indexOf(childNode);\r\n            if (index !== -1) {\r\n                this.childNodes.splice(index, 1);\r\n                delete childNode.parentNode;\r\n            }\r\n        }\r\n    }\r\n    // 是否存在属性\r\n    hasAttribute(name, namespace) {\r\n        if (this.attributes) {\r\n            for (const attr of this.attributes) {\r\n                if ((!namespace && attr.fullname === name) || (attr.name === name && attr.namespace === namespace)) {\r\n                    return true;\r\n                }\r\n            }\r\n        }\r\n        return false;\r\n    }\r\n    getAttribute(name, namespace) {\r\n        if (this.attributes) {\r\n            for (const attr of this.attributes) {\r\n                if ((!namespace && attr.fullname === name) || (attr.name === name && attr.namespace === namespace)) {\r\n                    return attr.value;\r\n                }\r\n            }\r\n        }\r\n        return null;\r\n    }\r\n    setAttribute(name, value, namespace) {\r\n        if (this.attributes) {\r\n            for (const attr of this.attributes) {\r\n                if ((!namespace && attr.fullname === name) || (attr.name === name && attr.namespace === namespace)) {\r\n                    attr.value = value;\r\n                    return;\r\n                }\r\n            }\r\n            const newAttr = {\r\n                name,\r\n                value,\r\n                fullname: name,\r\n            };\r\n            if (namespace) {\r\n                newAttr.fullname = `${namespace}:${name}`;\r\n                newAttr.namespace = namespace;\r\n            }\r\n            this.attributes.push(newAttr);\r\n        }\r\n    }\r\n    removeAttribute(name, namespace) {\r\n        if (this.attributes) {\r\n            for (let i = this.attributes.length; i--;) {\r\n                const attr = this.attributes[i];\r\n                if ((!namespace && attr.fullname === name) || (attr.name === name && attr.namespace === namespace)) {\r\n                    this.attributes.splice(i, 1);\r\n                    break;\r\n                }\r\n            }\r\n        }\r\n    }\r\n}\r\nexports.Node = Node;\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/xml-parser/node.ts?");
-
-/***/ }),
-
-/***/ "./src/xml-parser/parser.ts":
-/*!**********************************!*\
-  !*** ./src/xml-parser/parser.ts ***!
-  \**********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst index_1 = __webpack_require__(/*! ../node/index */ \"./src/node/index.ts\");\r\nconst node_1 = __webpack_require__(/*! ./node */ \"./src/xml-parser/node.ts\");\r\nconst regs_1 = __webpack_require__(/*! ./regs */ \"./src/xml-parser/regs.ts\");\r\nexports.REG_XML_DECL = regs_1.REG_XML_DECL;\r\nexports.REG_CDATA_SECT = regs_1.REG_CDATA_SECT;\r\nexports.REG_OTHER_SECT = regs_1.REG_OTHER_SECT;\r\nexports.REG_DOCTYPE = regs_1.REG_DOCTYPE;\r\nexports.REG_OTHER_DECL = regs_1.REG_OTHER_DECL;\r\nexports.REG_COMMENTS = regs_1.REG_COMMENTS;\r\nexports.REG_START_TAG = regs_1.REG_START_TAG;\r\nexports.REG_END_TAG = regs_1.REG_END_TAG;\r\nexports.REG_ATTR = regs_1.REG_ATTR;\r\nconst utils_1 = __webpack_require__(/*! ./utils */ \"./src/xml-parser/utils.ts\");\r\nconst mix_white_space_1 = __webpack_require__(/*! ../slimming/utils/mix-white-space */ \"./src/slimming/utils/mix-white-space.ts\");\r\nconst configs = [\r\n    [1, 'xml-decl', regs_1.REG_XML_DECL, index_1.NodeType.XMLDecl],\r\n    [1, 'cdata', regs_1.REG_CDATA_SECT, index_1.NodeType.CDATA],\r\n    [2, regs_1.REG_OTHER_SECT, index_1.NodeType.OtherSect],\r\n    [1, 'doctype', regs_1.REG_DOCTYPE, index_1.NodeType.DocType],\r\n    [2, regs_1.REG_OTHER_DECL, index_1.NodeType.OtherDecl],\r\n    [1, 'comments', regs_1.REG_COMMENTS, index_1.NodeType.Comments],\r\n];\r\nconst updStatus = (pos, str, status) => {\r\n    for (; status.lastpos < pos; status.lastpos++) {\r\n        if (str[status.lastpos] === '\\r' || str[status.lastpos] === '\\n') {\r\n            // 换行判断，\\r 直接换行，\\n 判断一下是不是紧跟在 \\r 后面\r\n            if (str[status.lastpos] === '\\r' || str[status.lastpos - 1] !== '\\r') {\r\n                status.line++;\r\n                status.pos = 0;\r\n            }\r\n        }\r\n        else {\r\n            status.pos++;\r\n        }\r\n    }\r\n};\r\n// 应对一个捕获组的状况\r\nconst Process1 = (conf, str, lastIndex) => {\r\n    const reg = conf[2];\r\n    reg.lastIndex = lastIndex;\r\n    const execResult = reg.exec(str);\r\n    if (execResult && execResult.index === lastIndex) {\r\n        return {\r\n            node: new node_1.Node({\r\n                nodeType: conf[3],\r\n                nodeName: `#${conf[1]}`,\r\n                textContent: execResult[1],\r\n            }),\r\n            lastIndex: reg.lastIndex,\r\n        };\r\n    }\r\n    return null;\r\n};\r\n// 应对两个捕获组的状况\r\nconst Process2 = (conf, str, lastIndex) => {\r\n    const reg = conf[1];\r\n    reg.lastIndex = lastIndex;\r\n    const execResult = reg.exec(str);\r\n    if (execResult && execResult.index === lastIndex) {\r\n        return {\r\n            node: new node_1.Node({\r\n                nodeType: conf[2],\r\n                nodeName: `#${execResult[1].toLowerCase()}`,\r\n                textContent: execResult[2],\r\n            }),\r\n            lastIndex: reg.lastIndex,\r\n        };\r\n    }\r\n    return null;\r\n};\r\n// 处理标签\r\nconst ProcessTag = (str, status, lastIndex) => {\r\n    regs_1.REG_START_TAG.lastIndex = lastIndex;\r\n    const execResult = regs_1.REG_START_TAG.exec(str);\r\n    if (execResult && execResult.index === lastIndex) {\r\n        const tempStatus = { line: status.line, pos: status.pos, lastpos: 0 };\r\n        const result = {\r\n            node: new node_1.Node({\r\n                nodeType: index_1.NodeType.Tag,\r\n                nodeName: execResult[1],\r\n                namespace: '',\r\n                selfClose: execResult[3] === '/',\r\n            }),\r\n            lastIndex: regs_1.REG_START_TAG.lastIndex,\r\n        };\r\n        // 标签的 namespace\r\n        if (execResult[1].includes(':')) {\r\n            const tagName = execResult[1].split(':');\r\n            if (tagName.length !== 2 || !tagName[0] || !tagName[1]) {\r\n                throw new Error(`Wrong start tag! at ${status.line}:${status.pos}`);\r\n            }\r\n            else {\r\n                result.node.nodeName = tagName[1];\r\n                result.node.namespace = tagName[0];\r\n            }\r\n        }\r\n        updStatus(execResult[1].length + 1, execResult[0], tempStatus);\r\n        // ** 重要 ** 重置匹配位置！\r\n        regs_1.REG_ATTR.lastIndex = 0;\r\n        let attrExec = regs_1.REG_ATTR.exec(execResult[2]);\r\n        const attrUnique = {};\r\n        while (attrExec) {\r\n            updStatus(attrExec.index + execResult[1].length + 1, execResult[0], tempStatus);\r\n            // 属性名排重\r\n            if (attrUnique[attrExec[1]]) {\r\n                throw new Error(`Duplicate property names! at ${tempStatus.line}:${tempStatus.pos}`);\r\n            }\r\n            attrUnique[attrExec[1]] = true;\r\n            if (attrExec[1].includes(':')) {\r\n                const attrName = attrExec[1].split(':');\r\n                if (attrName.length === 2 && attrName[0] && attrName[1]) {\r\n                    result.node.setAttribute(attrName[1], utils_1.collapseQuot(attrExec[2]).trim(), attrName[0]);\r\n                }\r\n                else {\r\n                    throw new Error(`Wrong attribute name! at ${tempStatus.line + status.line - 1}:${tempStatus.line > 1 ? tempStatus.pos : status.pos + tempStatus.pos}`);\r\n                }\r\n            }\r\n            else {\r\n                result.node.setAttribute(attrExec[1], utils_1.collapseQuot(attrExec[2]).trim());\r\n            }\r\n            attrExec = regs_1.REG_ATTR.exec(execResult[2]);\r\n        }\r\n        return result;\r\n    }\r\n    return null;\r\n};\r\nconst ProcessEndTag = (str, status, lastIndex) => {\r\n    regs_1.REG_END_TAG.lastIndex = lastIndex;\r\n    const execResult = regs_1.REG_END_TAG.exec(str);\r\n    if (execResult && execResult.index === lastIndex) {\r\n        const result = {\r\n            node: new node_1.Node({\r\n                nodeType: index_1.NodeType.EndTag,\r\n                nodeName: execResult[1],\r\n                namespace: '',\r\n            }),\r\n            lastIndex: regs_1.REG_END_TAG.lastIndex,\r\n        };\r\n        if (execResult[1].includes(':')) {\r\n            const tagName = execResult[1].split(':');\r\n            if (tagName.length !== 2 || !tagName[1] || !tagName[0]) {\r\n                throw new Error(`Wrong end tag! at ${status.line}:${status.pos}`);\r\n            }\r\n            else {\r\n                result.node.nodeName = tagName[1];\r\n                result.node.namespace = tagName[0];\r\n            }\r\n        }\r\n        return result;\r\n    }\r\n    return null;\r\n};\r\nconst parse = (str, status, lastIndex) => {\r\n    const REG_LT = /</g;\r\n    REG_LT.lastIndex = lastIndex;\r\n    const ltExec = REG_LT.exec(str);\r\n    if (ltExec) {\r\n        if (ltExec.index === lastIndex) { // 以 < 开始的情况都按节点处理\r\n            for (const cfg of configs) {\r\n                if (cfg[0] === 1) {\r\n                    const processResult1 = Process1(cfg, str, lastIndex);\r\n                    if (processResult1) {\r\n                        return processResult1;\r\n                    }\r\n                }\r\n                else {\r\n                    const processResult2 = Process2(cfg, str, lastIndex);\r\n                    if (processResult2) {\r\n                        return processResult2;\r\n                    }\r\n                }\r\n            }\r\n            const processTag = ProcessTag(str, status, lastIndex);\r\n            if (processTag) {\r\n                return processTag;\r\n            }\r\n            const processEndTag = ProcessEndTag(str, status, lastIndex);\r\n            if (processEndTag) {\r\n                return processEndTag;\r\n            }\r\n            throw new Error(`Failed to parse tags! at ${status.line}:${status.pos}`);\r\n        }\r\n        else { // 非 < 开始的都按文本处理\r\n            return {\r\n                node: new node_1.Node({\r\n                    nodeType: index_1.NodeType.Text,\r\n                    nodeName: '#text',\r\n                    textContent: mix_white_space_1.mixWhiteSpace(str.slice(lastIndex, ltExec.index)),\r\n                }),\r\n                lastIndex: ltExec.index,\r\n            };\r\n        }\r\n    }\r\n    else {\r\n        return {\r\n            node: new node_1.Node({\r\n                nodeType: index_1.NodeType.Text,\r\n                nodeName: '#text',\r\n                textContent: mix_white_space_1.mixWhiteSpace(str.slice(lastIndex)),\r\n            }),\r\n            lastIndex: str.length,\r\n        };\r\n    }\r\n};\r\nexports.Parser = async (str) => {\r\n    return new Promise((resolve, reject) => {\r\n        const doc = new node_1.Node({\r\n            nodeType: index_1.NodeType.Document,\r\n            nodeName: '#document',\r\n        });\r\n        const stack = [];\r\n        const status = {\r\n            line: 1,\r\n            pos: 0,\r\n            lastpos: 0,\r\n        };\r\n        const len = str.length;\r\n        let current;\r\n        let hasRoot = false;\r\n        const firstIndex = str.indexOf('<');\r\n        if (firstIndex > 0 && !/^\\s+</.test(str)) {\r\n            reject(new Error(`Unexpected text node! at ${status.line}:${status.pos}`));\r\n            return;\r\n        }\r\n        try {\r\n            current = parse(str, status, firstIndex); // 第一个 < 之前的全部字符都忽略掉\r\n        }\r\n        catch (e) {\r\n            reject(e);\r\n            return;\r\n        }\r\n        if (current.node.nodeType === index_1.NodeType.XMLDecl && firstIndex > 0) {\r\n            reject(new Error(`The xml declaration must be at the front of the document! at ${status.line}:${status.pos}`));\r\n            return;\r\n        }\r\n        doc.appendChild(current.node);\r\n        if (current.node.nodeType === index_1.NodeType.Tag) {\r\n            hasRoot = true;\r\n            if (!current.node.selfClose) {\r\n                stack.push(current.node);\r\n            }\r\n        }\r\n        while (current.lastIndex < len) {\r\n            updStatus(current.lastIndex, str, status);\r\n            try {\r\n                current = parse(str, status, current.lastIndex); // 第一个 < 之前的全部字符都忽略掉\r\n            }\r\n            catch (e) {\r\n                reject(e);\r\n                return;\r\n            }\r\n            const stackLen = stack.length;\r\n            if (current.node.nodeType === index_1.NodeType.EndTag) {\r\n                // 遇到结束标签的处理逻辑\r\n                if (stackLen) {\r\n                    // 结束标签和开始标签匹配\r\n                    if (stack[stackLen - 1].nodeName === current.node.nodeName && stack[stackLen - 1].namespace === current.node.namespace) {\r\n                        // 无子节点，则转为自闭合节点\r\n                        const childNodes = stack[stackLen - 1].childNodes;\r\n                        if (!childNodes || !childNodes.length) {\r\n                            stack[stackLen - 1].selfClose = true;\r\n                        }\r\n                        stack.pop();\r\n                    }\r\n                    else {\r\n                        reject(new Error(`The start and end tags cannot match! at ${status.line}:${status.pos}`));\r\n                        return;\r\n                    }\r\n                }\r\n                else {\r\n                    // 没有开始标签而出现了结束标签\r\n                    reject(new Error(`Unexpected end tag! at ${status.line}:${status.pos}`));\r\n                    return;\r\n                }\r\n            }\r\n            else {\r\n                if (stackLen) {\r\n                    // 插入子节点\r\n                    stack[stackLen - 1].appendChild(current.node);\r\n                }\r\n                else if (current.node.nodeType === index_1.NodeType.Text || current.node.nodeType === index_1.NodeType.CDATA) {\r\n                    // 没有节点而出现了非空文本节点\r\n                    if (current.node.textContent.replace(/\\s/g, '')) {\r\n                        reject(new Error(`Unexpected text node! at ${status.line}:${status.pos}`));\r\n                        return;\r\n                    }\r\n                }\r\n                else {\r\n                    // 直接扔到根下\r\n                    doc.appendChild(current.node);\r\n                }\r\n                // 遇到未闭合的节点，扔到stack内\r\n                if (current.node.nodeType === index_1.NodeType.Tag) {\r\n                    if (!stackLen) {\r\n                        if (hasRoot) {\r\n                            reject(new Error(`Only one root element node is allowed! at ${status.line}:${status.pos}`));\r\n                            return;\r\n                        }\r\n                        hasRoot = true;\r\n                    }\r\n                    if (!current.node.selfClose) {\r\n                        stack.push(current.node);\r\n                    }\r\n                }\r\n            }\r\n            if (current.lastIndex === len) {\r\n                updStatus(len, str, status);\r\n            }\r\n        }\r\n        if (stack.length) {\r\n            reject(new Error(`Document structure is wrong! at ${status.line}:${status.pos}`));\r\n            return;\r\n        }\r\n        if (!hasRoot) {\r\n            reject(new Error(`No root element node! at ${status.line}:${status.pos}`));\r\n            return;\r\n        }\r\n        resolve(doc);\r\n    });\r\n};\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/xml-parser/parser.ts?");
-
-/***/ }),
-
-/***/ "./src/xml-parser/regs.ts":
-/*!********************************!*\
-  !*** ./src/xml-parser/regs.ts ***!
-  \********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nlet supportUnicode = true;\r\ntry {\r\n    supportUnicode = /\\u{20BB7}/u.test('𠮷');\r\n}\r\ncatch (e) {\r\n    supportUnicode = false;\r\n}\r\nconst NameStartChar = `:A-Z_a-z\\\\u00C0-\\\\u00D6\\\\u00D8-\\\\u00F6\\\\u00F8-\\\\u02FF\\\\u0370-\\\\u037D\\\\u037F-\\\\u1FFF\\\\u200C-\\\\u200D\\\\u2070-\\\\u218F\\\\u2C00-\\\\u2FEF\\\\u3001-\\\\uD7FF\\\\uF900-\\\\uFDCF\\\\uFDF0-\\\\uFFFD${supportUnicode ? '\\\\u{10000}-\\\\u{EFFFF}' : ''}`;\r\nconst NameChar = `${NameStartChar}\\\\-\\\\.0-9\\\\u00B7\\\\u0300-\\\\u036F\\\\u203F-\\\\u2040`;\r\nconst Name = `[${NameStartChar}][${NameChar}]*`;\r\nconst Eq = '\\\\s*=\\\\s*';\r\nconst VersionNum = '1\\\\.[0-9]+';\r\nconst EncName = '[A-Za-z](?:[A-Za-z0-9\\\\._]|-)*';\r\nconst VersionInfo = `\\\\s+version${Eq}(?:'${VersionNum}'|\"${VersionNum}\")`;\r\nconst EncodingDecl = `\\\\s+encoding${Eq}(?:'${EncName}'|\"${EncName}\")`;\r\nconst SDDecl = `\\\\s+standalone${Eq}(?:'(?:yes|no)'|\"(?:yes|no)\")`;\r\nconst Reference = `(?:&${Name};|&#[0-9]+;|&#x[0-9a-fA-F]+;)`;\r\nconst AttrVal = `\"(?:[^<&\"]|${Reference})*\"|'(?:[^<&']|${Reference})*'`;\r\n// tslint:disable-next-line\r\nconst DeclContent = `(?:[^<>'\"]+|[^<>']*'[^']*'[^<>']*|[^<>\"]*\"[^\"]*\"[^<>\"]*|[^<>'\"]*<[^<>]*>[^<>'\"]*)+?`;\r\nexports.REG_XML_DECL = new RegExp(`<\\\\?xml(${VersionInfo}(?:${EncodingDecl})?(?:${SDDecl})?\\\\s*)\\\\?>`, 'g');\r\nexports.REG_CDATA_SECT = /<!\\[CDATA\\[([\\d\\D]*?)\\]\\]>/g;\r\nexports.REG_OTHER_SECT = /<!\\[\\s?([A-Z]+)\\s?\\[([\\d\\D]*?)\\]\\]>/g;\r\nexports.REG_DOCTYPE = new RegExp(`<!DOCTYPE\\\\s+(${DeclContent})>`, 'g');\r\nexports.REG_OTHER_DECL = new RegExp(`<!([A-Z]+)\\\\s+(${DeclContent})>`, 'g');\r\nexports.REG_COMMENTS = /<!--([\\d\\D]*?)-->/g;\r\nexports.REG_START_TAG = new RegExp(`<(${Name})((?:\\\\s+${Name}${Eq}(?:${AttrVal}))*)\\\\s*(\\\\/?)>`, supportUnicode ? 'gu' : 'g');\r\nexports.REG_END_TAG = new RegExp(`</(${Name})\\\\s*>`, supportUnicode ? 'gu' : 'g');\r\nexports.REG_ATTR = new RegExp(`(?:^|\\\\s)(${Name})${Eq}(${AttrVal})`, supportUnicode ? 'gu' : 'g');\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/xml-parser/regs.ts?");
-
-/***/ }),
-
-/***/ "./src/xml-parser/utils.ts":
-/*!*********************************!*\
-  !*** ./src/xml-parser/utils.ts ***!
-  \*********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nexports.collapseQuot = (str) => str.slice(1, -1);\r\n\n\n//# sourceURL=webpack://svg-slimming/./src/xml-parser/utils.ts?");
-
-/***/ }),
-
-/***/ "css":
-/*!**********************!*\
-  !*** external "css" ***!
-  \**********************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("module.exports = require(\"css\");\n\n//# sourceURL=webpack://svg-slimming/external_%22css%22?");
-
-/***/ }),
-
-/***/ "he":
-/*!*********************!*\
-  !*** external "he" ***!
-  \*********************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("module.exports = require(\"he\");\n\n//# sourceURL=webpack://svg-slimming/external_%22he%22?");
-
-/***/ }),
-
-/***/ "ramda":
-/*!************************!*\
-  !*** external "ramda" ***!
-  \************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("module.exports = require(\"ramda\");\n\n//# sourceURL=webpack://svg-slimming/external_%22ramda%22?");
-
-/***/ }),
-
-/***/ "svg-path-contours":
-/*!************************************!*\
-  !*** external "svg-path-contours" ***!
-  \************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("module.exports = require(\"svg-path-contours\");\n\n//# sourceURL=webpack://svg-slimming/external_%22svg-path-contours%22?");
-
-/***/ }),
-
-/***/ "triangulate-contours":
-/*!***************************************!*\
-  !*** external "triangulate-contours" ***!
-  \***************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("module.exports = require(\"triangulate-contours\");\n\n//# sourceURL=webpack://svg-slimming/external_%22triangulate-contours%22?");
-
-/***/ })
-
-/******/ });
-});
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('ramda'), require('css'), require('he')) :
+	typeof define === 'function' && define.amd ? define(['ramda', 'css', 'he'], factory) :
+	(global = typeof globalThis !== 'undefined' ? globalThis : global || self, global['svg-slimming'] = factory(global.ramda, global.css, global.he));
+}(this, (function (ramda, css, he) { 'use strict';
+
+	/*
+	 * 除了 EndTag ，其它值都来自标准：
+	 * https://developer.mozilla.org/zh-CN/docs/Web/API/Node/nodeType
+	 */
+	var NodeType;
+	(function (NodeType) {
+	    NodeType[NodeType["EndTag"] = -1] = "EndTag";
+	    NodeType[NodeType["Tag"] = 1] = "Tag";
+	    NodeType[NodeType["Text"] = 3] = "Text";
+	    NodeType[NodeType["CDATA"] = 4] = "CDATA";
+	    NodeType[NodeType["OtherSect"] = 5] = "OtherSect";
+	    NodeType[NodeType["OtherDecl"] = 6] = "OtherDecl";
+	    NodeType[NodeType["XMLDecl"] = 7] = "XMLDecl";
+	    NodeType[NodeType["Comments"] = 8] = "Comments";
+	    NodeType[NodeType["Document"] = 9] = "Document";
+	    NodeType[NodeType["DocType"] = 10] = "DocType";
+	})(NodeType || (NodeType = {}));
+
+	class Node {
+	    constructor(option) {
+	        this.nodeName = option.nodeName;
+	        this.nodeType = option.nodeType;
+	        this.namespace = option.namespace;
+	        this.selfClose = option.selfClose;
+	        this.textContent = option.textContent;
+	        if (this.nodeType === NodeType.Tag || this.nodeType === NodeType.Document) {
+	            this.attributes = [];
+	            this.childNodes = [];
+	        }
+	    }
+	    // 复制自身，但是不复制节点树关系链
+	    cloneNode() {
+	        const cloneNode = new Node({
+	            nodeName: this.nodeName,
+	            nodeType: this.nodeType,
+	            namespace: this.namespace,
+	            textContent: this.textContent,
+	        });
+	        if (this.attributes) {
+	            // 属性需要深拷贝
+	            cloneNode.attributes = this.attributes.map(attr => {
+	                return {
+	                    name: attr.name,
+	                    value: attr.value,
+	                    fullname: attr.fullname,
+	                    namespace: attr.namespace,
+	                };
+	            });
+	        }
+	        return cloneNode;
+	    }
+	    // 追加子节点
+	    appendChild(childNode) {
+	        if (this.childNodes) {
+	            // 如果子节点原本有父节点，则先从原本的父节点中移除
+	            if (childNode.parentNode) {
+	                childNode.parentNode.removeChild(childNode);
+	            }
+	            this.childNodes.push(childNode);
+	            childNode.parentNode = this;
+	        }
+	    }
+	    // 插入到子节点之前
+	    insertBefore(childNode, previousTarget) {
+	        if (this.childNodes) {
+	            // 如果子节点原本有父节点，则先从原本的父节点中移除
+	            if (childNode.parentNode) {
+	                childNode.parentNode.removeChild(childNode);
+	            }
+	            // 判断目标节点是否在自己的子节点列表中，如果不在，直接插入
+	            const pindex = this.childNodes.indexOf(previousTarget);
+	            if (pindex !== -1) {
+	                this.childNodes.splice(pindex, 0, childNode);
+	            }
+	            else {
+	                this.childNodes.push(childNode);
+	            }
+	            childNode.parentNode = this;
+	        }
+	    }
+	    // 替换子节点
+	    replaceChild(childNode, ...children) {
+	        if (this.childNodes) {
+	            const index = this.childNodes.indexOf(childNode);
+	            if (index !== -1) {
+	                children.forEach(child => {
+	                    // 先把要插入的子节点从原有父节点移除
+	                    if (child.parentNode) {
+	                        child.parentNode.removeChild(child);
+	                    }
+	                    // 指定父节点到自身
+	                    child.parentNode = this;
+	                });
+	                this.childNodes.splice(index, 1, ...children);
+	                // 清理被替换掉的子节点的钩子
+	                delete childNode.parentNode;
+	            }
+	        }
+	    }
+	    // 移除子节点
+	    removeChild(childNode) {
+	        if (this.childNodes) {
+	            const index = this.childNodes.indexOf(childNode);
+	            if (index !== -1) {
+	                this.childNodes.splice(index, 1);
+	                delete childNode.parentNode;
+	            }
+	        }
+	    }
+	    // 是否存在属性
+	    hasAttribute(name, namespace) {
+	        if (this.attributes) {
+	            for (const attr of this.attributes) {
+	                if ((!namespace && attr.fullname === name) || (attr.name === name && attr.namespace === namespace)) {
+	                    return true;
+	                }
+	            }
+	        }
+	        return false;
+	    }
+	    getAttribute(name, namespace) {
+	        if (this.attributes) {
+	            for (const attr of this.attributes) {
+	                if ((!namespace && attr.fullname === name) || (attr.name === name && attr.namespace === namespace)) {
+	                    return attr.value;
+	                }
+	            }
+	        }
+	        return null;
+	    }
+	    setAttribute(name, value, namespace) {
+	        if (this.attributes) {
+	            for (const attr of this.attributes) {
+	                if ((!namespace && attr.fullname === name) || (attr.name === name && attr.namespace === namespace)) {
+	                    attr.value = value;
+	                    return;
+	                }
+	            }
+	            const newAttr = {
+	                name,
+	                value,
+	                fullname: name,
+	            };
+	            if (namespace) {
+	                newAttr.fullname = `${namespace}:${name}`;
+	                newAttr.namespace = namespace;
+	            }
+	            this.attributes.push(newAttr);
+	        }
+	    }
+	    removeAttribute(name, namespace) {
+	        if (this.attributes) {
+	            for (let i = this.attributes.length; i--;) {
+	                const attr = this.attributes[i];
+	                if ((!namespace && attr.fullname === name) || (attr.name === name && attr.namespace === namespace)) {
+	                    this.attributes.splice(i, 1);
+	                    break;
+	                }
+	            }
+	        }
+	    }
+	}
+
+	let supportUnicode = true;
+	try {
+	    supportUnicode = /\u{20BB7}/u.test('𠮷');
+	}
+	catch (e) {
+	    supportUnicode = false;
+	}
+	const NameStartChar = `:A-Z_a-z\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD${supportUnicode ? '\\u{10000}-\\u{EFFFF}' : ''}`;
+	const NameChar = `${NameStartChar}\\-\\.0-9\\u00B7\\u0300-\\u036F\\u203F-\\u2040`;
+	const Name = `[${NameStartChar}][${NameChar}]*`;
+	const Eq = '\\s*=\\s*';
+	const VersionNum = '1\\.[0-9]+';
+	const EncName = '[A-Za-z](?:[A-Za-z0-9\\._]|-)*';
+	const VersionInfo = `\\s+version${Eq}(?:'${VersionNum}'|"${VersionNum}")`;
+	const EncodingDecl = `\\s+encoding${Eq}(?:'${EncName}'|"${EncName}")`;
+	const SDDecl = `\\s+standalone${Eq}(?:'(?:yes|no)'|"(?:yes|no)")`;
+	const Reference = `(?:&${Name};|&#[0-9]+;|&#x[0-9a-fA-F]+;)`;
+	const AttrVal = `"(?:[^<&"]|${Reference})*"|'(?:[^<&']|${Reference})*'`;
+	// tslint:disable-next-line
+	const DeclContent = '(?:[^<>\'"]+|[^<>\']*\'[^\']*\'[^<>\']*|[^<>"]*"[^"]*"[^<>"]*|[^<>\'"]*<[^<>]*>[^<>\'"]*)+?';
+	const REG_XML_DECL = new RegExp(`<\\?xml(${VersionInfo}(?:${EncodingDecl})?(?:${SDDecl})?\\s*)\\?>`, 'g');
+	const REG_CDATA_SECT = /<!\[CDATA\[([\d\D]*?)\]\]>/g;
+	const REG_OTHER_SECT = /<!\[\s?([A-Z]+)\s?\[([\d\D]*?)\]\]>/g;
+	const REG_DOCTYPE = new RegExp(`<!DOCTYPE\\s+(${DeclContent})>`, 'g');
+	const REG_OTHER_DECL = new RegExp(`<!([A-Z]+)\\s+(${DeclContent})>`, 'g');
+	const REG_COMMENTS = /<!--([\d\D]*?)-->/g;
+	const REG_START_TAG = new RegExp(`<(${Name})((?:\\s+${Name}${Eq}(?:${AttrVal}))*)\\s*(\\/?)>`, supportUnicode ? 'gu' : 'g');
+	const REG_END_TAG = new RegExp(`</(${Name})\\s*>`, supportUnicode ? 'gu' : 'g');
+	const REG_ATTR = new RegExp(`(?:^|\\s)(${Name})${Eq}(${AttrVal})`, supportUnicode ? 'gu' : 'g');
+
+	const collapseQuot = (str) => str.slice(1, -1);
+
+	const mixWhiteSpace = (str) => str.replace(/\s+/g, ' ');
+
+	const configs = [
+	    [1, 'xml-decl', REG_XML_DECL, NodeType.XMLDecl],
+	    [1, 'cdata', REG_CDATA_SECT, NodeType.CDATA],
+	    [2, REG_OTHER_SECT, NodeType.OtherSect],
+	    [1, 'doctype', REG_DOCTYPE, NodeType.DocType],
+	    [2, REG_OTHER_DECL, NodeType.OtherDecl],
+	    [1, 'comments', REG_COMMENTS, NodeType.Comments],
+	];
+	const updStatus = (pos, str, status) => {
+	    for (; status.lastpos < pos; status.lastpos++) {
+	        if (str[status.lastpos] === '\r' || str[status.lastpos] === '\n') {
+	            // 换行判断，\r 直接换行，\n 判断一下是不是紧跟在 \r 后面
+	            if (str[status.lastpos] === '\r' || str[status.lastpos - 1] !== '\r') {
+	                status.line++;
+	                status.pos = 0;
+	            }
+	        }
+	        else {
+	            status.pos++;
+	        }
+	    }
+	};
+	// 应对一个捕获组的状况
+	const Process1 = (conf, str, lastIndex) => {
+	    const reg = conf[2];
+	    reg.lastIndex = lastIndex;
+	    const execResult = reg.exec(str);
+	    if (execResult && execResult.index === lastIndex) {
+	        return {
+	            node: new Node({
+	                nodeType: conf[3],
+	                nodeName: `#${conf[1]}`,
+	                textContent: execResult[1],
+	            }),
+	            lastIndex: reg.lastIndex,
+	        };
+	    }
+	    return null;
+	};
+	// 应对两个捕获组的状况
+	const Process2 = (conf, str, lastIndex) => {
+	    const reg = conf[1];
+	    reg.lastIndex = lastIndex;
+	    const execResult = reg.exec(str);
+	    if (execResult && execResult.index === lastIndex) {
+	        return {
+	            node: new Node({
+	                nodeType: conf[2],
+	                nodeName: `#${execResult[1].toLowerCase()}`,
+	                textContent: execResult[2],
+	            }),
+	            lastIndex: reg.lastIndex,
+	        };
+	    }
+	    return null;
+	};
+	// 处理标签
+	const ProcessTag = (str, status, lastIndex) => {
+	    REG_START_TAG.lastIndex = lastIndex;
+	    const execResult = REG_START_TAG.exec(str);
+	    if (execResult && execResult.index === lastIndex) {
+	        const tempStatus = { line: status.line, pos: status.pos, lastpos: 0 };
+	        const result = {
+	            node: new Node({
+	                nodeType: NodeType.Tag,
+	                nodeName: execResult[1],
+	                namespace: '',
+	                selfClose: execResult[3] === '/',
+	            }),
+	            lastIndex: REG_START_TAG.lastIndex,
+	        };
+	        // 标签的 namespace
+	        if (execResult[1].includes(':')) {
+	            const tagName = execResult[1].split(':');
+	            if (tagName.length !== 2 || !tagName[0] || !tagName[1]) {
+	                throw new Error(`Wrong start tag! at ${status.line}:${status.pos}`);
+	            }
+	            else {
+	                result.node.nodeName = tagName[1];
+	                result.node.namespace = tagName[0];
+	            }
+	        }
+	        updStatus(execResult[1].length + 1, execResult[0], tempStatus);
+	        // ** 重要 ** 重置匹配位置！
+	        REG_ATTR.lastIndex = 0;
+	        let attrExec = REG_ATTR.exec(execResult[2]);
+	        const attrUnique = {};
+	        while (attrExec) {
+	            updStatus(attrExec.index + execResult[1].length + 1, execResult[0], tempStatus);
+	            // 属性名排重
+	            if (attrUnique[attrExec[1]]) {
+	                throw new Error(`Duplicate property names! at ${tempStatus.line}:${tempStatus.pos}`);
+	            }
+	            attrUnique[attrExec[1]] = true;
+	            if (attrExec[1].includes(':')) {
+	                const attrName = attrExec[1].split(':');
+	                if (attrName.length === 2 && attrName[0] && attrName[1]) {
+	                    result.node.setAttribute(attrName[1], collapseQuot(attrExec[2]).trim(), attrName[0]);
+	                }
+	                else {
+	                    throw new Error(`Wrong attribute name! at ${tempStatus.line + status.line - 1}:${tempStatus.line > 1 ? tempStatus.pos : status.pos + tempStatus.pos}`);
+	                }
+	            }
+	            else {
+	                result.node.setAttribute(attrExec[1], collapseQuot(attrExec[2]).trim());
+	            }
+	            attrExec = REG_ATTR.exec(execResult[2]);
+	        }
+	        return result;
+	    }
+	    return null;
+	};
+	const ProcessEndTag = (str, status, lastIndex) => {
+	    REG_END_TAG.lastIndex = lastIndex;
+	    const execResult = REG_END_TAG.exec(str);
+	    if (execResult && execResult.index === lastIndex) {
+	        const result = {
+	            node: new Node({
+	                nodeType: NodeType.EndTag,
+	                nodeName: execResult[1],
+	                namespace: '',
+	            }),
+	            lastIndex: REG_END_TAG.lastIndex,
+	        };
+	        if (execResult[1].includes(':')) {
+	            const tagName = execResult[1].split(':');
+	            if (tagName.length !== 2 || !tagName[1] || !tagName[0]) {
+	                throw new Error(`Wrong end tag! at ${status.line}:${status.pos}`);
+	            }
+	            else {
+	                result.node.nodeName = tagName[1];
+	                result.node.namespace = tagName[0];
+	            }
+	        }
+	        return result;
+	    }
+	    return null;
+	};
+	const parse = (str, status, lastIndex) => {
+	    const REG_LT = /</g;
+	    REG_LT.lastIndex = lastIndex;
+	    const ltExec = REG_LT.exec(str);
+	    if (ltExec) {
+	        if (ltExec.index === lastIndex) { // 以 < 开始的情况都按节点处理
+	            for (const cfg of configs) {
+	                if (cfg[0] === 1) {
+	                    const processResult1 = Process1(cfg, str, lastIndex);
+	                    if (processResult1) {
+	                        return processResult1;
+	                    }
+	                }
+	                else {
+	                    const processResult2 = Process2(cfg, str, lastIndex);
+	                    if (processResult2) {
+	                        return processResult2;
+	                    }
+	                }
+	            }
+	            const processTag = ProcessTag(str, status, lastIndex);
+	            if (processTag) {
+	                return processTag;
+	            }
+	            const processEndTag = ProcessEndTag(str, status, lastIndex);
+	            if (processEndTag) {
+	                return processEndTag;
+	            }
+	            throw new Error(`Failed to parse tags! at ${status.line}:${status.pos}`);
+	        }
+	        else { // 非 < 开始的都按文本处理
+	            return {
+	                node: new Node({
+	                    nodeType: NodeType.Text,
+	                    nodeName: '#text',
+	                    textContent: mixWhiteSpace(str.slice(lastIndex, ltExec.index)),
+	                }),
+	                lastIndex: ltExec.index,
+	            };
+	        }
+	    }
+	    else {
+	        return {
+	            node: new Node({
+	                nodeType: NodeType.Text,
+	                nodeName: '#text',
+	                textContent: mixWhiteSpace(str.slice(lastIndex)),
+	            }),
+	            lastIndex: str.length,
+	        };
+	    }
+	};
+	const Parser = async (str) => {
+	    return new Promise((resolve, reject) => {
+	        const doc = new Node({
+	            nodeType: NodeType.Document,
+	            nodeName: '#document',
+	        });
+	        const stack = [];
+	        const status = {
+	            line: 1,
+	            pos: 0,
+	            lastpos: 0,
+	        };
+	        const len = str.length;
+	        let current;
+	        let hasRoot = false;
+	        const firstIndex = str.indexOf('<');
+	        if (firstIndex > 0 && !/^\s+</.test(str)) {
+	            reject(new Error(`Unexpected text node! at ${status.line}:${status.pos}`));
+	            return;
+	        }
+	        try {
+	            current = parse(str, status, firstIndex); // 第一个 < 之前的全部字符都忽略掉
+	        }
+	        catch (e) {
+	            reject(e);
+	            return;
+	        }
+	        if (current.node.nodeType === NodeType.XMLDecl && firstIndex > 0) {
+	            reject(new Error(`The xml declaration must be at the front of the document! at ${status.line}:${status.pos}`));
+	            return;
+	        }
+	        doc.appendChild(current.node);
+	        if (current.node.nodeType === NodeType.Tag) {
+	            hasRoot = true;
+	            if (!current.node.selfClose) {
+	                stack.push(current.node);
+	            }
+	        }
+	        while (current.lastIndex < len) {
+	            updStatus(current.lastIndex, str, status);
+	            try {
+	                current = parse(str, status, current.lastIndex); // 第一个 < 之前的全部字符都忽略掉
+	            }
+	            catch (e) {
+	                reject(e);
+	                return;
+	            }
+	            const stackLen = stack.length;
+	            if (current.node.nodeType === NodeType.EndTag) {
+	                // 遇到结束标签的处理逻辑
+	                if (stackLen) {
+	                    // 结束标签和开始标签匹配
+	                    if (stack[stackLen - 1].nodeName === current.node.nodeName && stack[stackLen - 1].namespace === current.node.namespace) {
+	                        // 无子节点，则转为自闭合节点
+	                        const childNodes = stack[stackLen - 1].childNodes;
+	                        if (!childNodes || !childNodes.length) {
+	                            stack[stackLen - 1].selfClose = true;
+	                        }
+	                        stack.pop();
+	                    }
+	                    else {
+	                        reject(new Error(`The start and end tags cannot match! at ${status.line}:${status.pos}`));
+	                        return;
+	                    }
+	                }
+	                else {
+	                    // 没有开始标签而出现了结束标签
+	                    reject(new Error(`Unexpected end tag! at ${status.line}:${status.pos}`));
+	                    return;
+	                }
+	            }
+	            else {
+	                if (stackLen) {
+	                    // 插入子节点
+	                    stack[stackLen - 1].appendChild(current.node);
+	                }
+	                else if (current.node.nodeType === NodeType.Text || current.node.nodeType === NodeType.CDATA) {
+	                    // 没有节点而出现了非空文本节点
+	                    if (current.node.textContent.replace(/\s/g, '')) {
+	                        reject(new Error(`Unexpected text node! at ${status.line}:${status.pos}`));
+	                        return;
+	                    }
+	                }
+	                else {
+	                    // 直接扔到根下
+	                    doc.appendChild(current.node);
+	                }
+	                // 遇到未闭合的节点，扔到stack内
+	                if (current.node.nodeType === NodeType.Tag) {
+	                    if (!stackLen) {
+	                        if (hasRoot) {
+	                            reject(new Error(`Only one root element node is allowed! at ${status.line}:${status.pos}`));
+	                            return;
+	                        }
+	                        hasRoot = true;
+	                    }
+	                    if (!current.node.selfClose) {
+	                        stack.push(current.node);
+	                    }
+	                }
+	            }
+	            if (current.lastIndex === len) {
+	                updStatus(len, str, status);
+	            }
+	        }
+	        if (stack.length) {
+	            reject(new Error(`Document structure is wrong! at ${status.line}:${status.pos}`));
+	            return;
+	        }
+	        if (!hasRoot) {
+	            reject(new Error(`No root element node! at ${status.line}:${status.pos}`));
+	            return;
+	        }
+	        resolve(doc);
+	    });
+	};
+
+	const rmNode = (node) => {
+	    if (node.parentNode) {
+	        node.parentNode.removeChild(node);
+	    }
+	};
+
+	/*
+	 * 遍历所有的 Node 节点，并对符合条件的节点执行操作
+	 * @param { function } 条件
+	 * @param { function } 回调
+	 * @param { Node } 目标节点
+	 */
+	const traversal = (condition, cb, node, breakImmediate) => {
+	    // 此处不能用 forEach ，for 循环可以避免当前节点被移除导致下一个节点不会被遍历到的问题
+	    if (node.childNodes) {
+	        for (let i = 0; i < node.childNodes.length;) {
+	            const childNode = node.childNodes[i];
+	            if (condition(childNode)) {
+	                cb(childNode);
+	                if (childNode === node.childNodes[i]) {
+	                    traversal(condition, cb, childNode, breakImmediate);
+	                    i++;
+	                }
+	            }
+	            else {
+	                if (!breakImmediate) {
+	                    traversal(condition, cb, childNode, breakImmediate);
+	                }
+	                i++;
+	            }
+	        }
+	    }
+	};
+	const traversalNode = (condition, cb, dom, breakImmediate = false) => {
+	    traversal(condition, cb, dom, breakImmediate);
+	};
+
+	// 合并多个 script 标签，并将内容合并为一个子节点
+	const combineScript = async (dom) => new Promise(resolve => {
+	    let firstScript;
+	    let lastChildNode;
+	    const checkCNode = (node) => {
+	        for (let i = 0; i < node.childNodes.length; i++) {
+	            const cNode = node.childNodes[i];
+	            if (cNode.nodeType !== NodeType.Text && cNode.nodeType !== NodeType.CDATA) {
+	                rmNode(cNode);
+	                i--;
+	            }
+	            else {
+	                cNode.textContent = mixWhiteSpace(cNode.textContent.trim());
+	                if (cNode.nodeType === NodeType.Text) {
+	                    cNode.nodeType = NodeType.CDATA;
+	                }
+	                if (!lastChildNode) {
+	                    lastChildNode = cNode;
+	                }
+	                else {
+	                    if (lastChildNode.textContent.slice(-1) !== ';') {
+	                        lastChildNode.textContent += ';';
+	                    }
+	                    lastChildNode.textContent += cNode.textContent;
+	                    rmNode(cNode);
+	                    i--;
+	                }
+	            }
+	        }
+	    };
+	    traversalNode(ramda.propEq('nodeName', 'script'), node => {
+	        const type = node.getAttribute('type');
+	        if (type && !/^(?:application|text)\/(?:javascript|ecmascript)$/.test(type)) {
+	            rmNode(node);
+	            return;
+	        }
+	        if (firstScript) {
+	            checkCNode(node);
+	            rmNode(node);
+	        }
+	        else {
+	            firstScript = node;
+	            checkCNode(node);
+	        }
+	    }, dom);
+	    if (firstScript) {
+	        const childNodes = firstScript.childNodes;
+	        if (childNodes.length === 0 || !childNodes[0].textContent || !childNodes[0].textContent.replace(/\s/g, '')) {
+	            // 如果内容为空，则移除 script 节点
+	            rmNode(firstScript);
+	        }
+	        else {
+	            const textContent = childNodes[0].textContent;
+	            if (!textContent.includes('<')) {
+	                // 如果没有危险代码，则由 CDATA 转为普通文本类型
+	                childNodes[0].nodeType = NodeType.Text;
+	            }
+	            if (textContent.slice(-1) === ';') {
+	                // 移除尾分号
+	                childNodes[0].textContent = childNodes[0].textContent.slice(0, -1);
+	            }
+	            // 把 script 标签插入到最后
+	            traversalNode(ramda.propEq('nodeName', 'svg'), node => {
+	                node.appendChild(firstScript);
+	            }, dom);
+	        }
+	    }
+	    resolve();
+	});
+
+	/*
+	 * 深度遍历所有的 Object 属性
+	 * @param { function } 条件
+	 * @param { function } 回调
+	 * @param { object } 目标对象
+	 * @param { object[] } 避免对象调用自身造成死循环
+	 * @param { boolean } 是否深度优先，是的话会先遍历子元素
+	 */
+	const traversal$1 = (condition, cb, obj, path, visited, deep) => {
+	    if (visited.includes(obj)) {
+	        return;
+	    }
+	    visited.push(obj);
+	    if (!deep) {
+	        if (condition(obj)) {
+	            cb(obj, path);
+	            return;
+	        }
+	    }
+	    path.push(obj);
+	    if (Array.isArray(obj)) {
+	        for (let i = 0; i < obj.length;) {
+	            const item = obj[i];
+	            traversal$1(condition, cb, item, path, visited, deep);
+	            if (item === obj[i]) {
+	                i++;
+	            }
+	        }
+	    }
+	    else {
+	        for (const key in obj) {
+	            if (typeof obj[key] === 'object') { // tslint:disable-line strict-type-predicates
+	                traversal$1(condition, cb, obj[key], path, visited, deep);
+	            }
+	        }
+	    }
+	    path.pop();
+	    if (deep) {
+	        if (condition(obj)) {
+	            cb(obj, path);
+	        }
+	    }
+	};
+	const traversalObj = (condition, cb, obj, deep = false) => {
+	    traversal$1(condition, cb, obj, [], [], deep);
+	};
+
+	// elements group
+	const animationElements = ['animate', 'animateMotion', 'animateTransform', 'discard', 'set'];
+	const animationAttrElements = ['animate', 'animateTransform', 'set'];
+	const descriptiveElements = ['desc', 'metadata', 'title'];
+	const gradientElements = ['linearGradient', 'radialGradient'];
+	const filterPrimitiveElements = ['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDropShadow', 'feFlood', 'feGaussianBlur', 'feImage', 'feMerge', 'feMorphology', 'feOffset', 'feSpecularLighting', 'feTile', 'feTurbulence'];
+	const transferFunctionElements = ['feFuncR', 'feFuncG', 'feFuncB', 'feFuncA'];
+	const lightSourceElements = ['feDistantLight', 'fePointLight', 'feSpotLight'];
+	const paintServerElements = ['solidcolor', 'linearGradient', 'radialGradient', 'meshgradient', 'pattern', 'hatch'];
+	const shapeElements = ['circle', 'ellipse', 'line', 'path', 'polygon', 'polyline', 'rect'];
+	const structuralElements = ['defs', 'g', 'svg', 'symbol', 'use'];
+	const textContentChildElements = ['tspan', 'textPath'];
+	const textContentElements = ['text'].concat(textContentChildElements);
+	const graphicsElements = ['audio', 'canvas', 'circle', 'ellipse', 'foreignObject', 'iframe', 'image', 'line', 'mesh', 'path', 'polygon', 'polyline', 'rect', 'text', 'textPath', 'tspan', 'video'];
+	const containerElements = ['a', 'clipPath', 'defs', 'g', 'marker', 'mask', 'pattern', 'svg', 'switch', 'symbol', 'unknown'];
+	const newViewportsElements = ['svg', 'symbol', 'foreignObject', 'video', 'audio', 'canvas', 'image', 'iframe'];
+	const unnecessaryElements = ['desc', 'discard', 'foreignObject', 'video', 'audio', 'iframe', 'canvas', 'metadata', 'script', 'style', 'title', 'unknown', 'image'];
+	// attributes group
+	// https://www.w3.org/TR/SVG2/interact.html#EventAttributes
+	const eventAttributes = ['onabort', 'onafterprint', 'onbeforeprint', 'onbegin', 'oncancel', 'oncanplay', 'oncanplaythrough', 'onchange', 'onclick', 'onclose', 'oncuechange', 'ondblclick', 'ondrag', 'ondragend', 'ondragenter', 'ondragexit', 'ondragleave', 'ondragover', 'ondragstart', 'ondrop', 'ondurationchange', 'onemptied', 'onend', 'onended', 'onerror', 'onerror', 'onfocus', 'onfocusin', 'onfocusout', 'onhashchange', 'oninput', 'oninvalid', 'onkeydown', 'onkeypress', 'onkeyup', 'onload', 'onloadeddata', 'onloadedmetadata', 'onloadstart', 'onmessage', 'onmousedown', 'onmouseenter', 'onmouseleave', 'onmousemove', 'onmouseout', 'onmouseover', 'onmouseup', 'onmousewheel', 'onoffline', 'ononline', 'onpagehide', 'onpageshow', 'onpause', 'onplay', 'onplaying', 'onpopstate', 'onprogress', 'onratechange', 'onrepeat', 'onreset', 'onresize', 'onresize', 'onscroll', 'onscroll', 'onseeked', 'onseeking', 'onselect', 'onshow', 'onstalled', 'onstorage', 'onsubmit', 'onsuspend', 'ontimeupdate', 'ontoggle', 'onunload', 'onunload', 'onvolumechange', 'onwaiting'];
+	// https://www.w3.org/TR/wai-aria-1.1/#aria-activedescendant
+	const ariaAttributes = ['aria-activedescendant', 'aria-atomic', 'aria-busy', 'aria-checked', 'aria-colcount', 'aria-colindex', 'aria-colspan', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details', 'aria-disabled', 'aria-dropeffect', 'aria-errormessage', 'aria-expanded', 'aria-flowto', 'aria-grabbed', 'aria-haspopup', 'aria-hidden', 'aria-invalid', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-level', 'aria-live', 'aria-modal', 'aria-multiline', 'aria-multiselectable', 'aria-orientation', 'aria-owns', 'aria-placeholder', 'aria-posinset', 'aria-pressed', 'aria-readonly', 'aria-relevant', 'aria-required', 'aria-roledescription', 'aria-rowcount', 'aria-rowindex', 'aria-rowspan', 'aria-selected', 'aria-setsize', 'aria-sort', 'aria-valuemax', 'aria-valuemin', 'aria-valuenow', 'aria-valuetext', 'role'];
+	const animationAttributes = ['from', 'to', 'by', 'values'];
+	const transformAttributes = ['gradientTransform', 'patternTransform', 'transform'];
+	const cantCollapseAttributes = ['id', 'class', 'mask', 'style'];
+	const conditionalProcessingAttributes = ['requiredExtensions', 'systemLanguage'];
+	const coreAttributes = ['id', 'tabindex', 'lang', 'xml:space', 'class', 'style', 'transform'];
+	const deprecatedXlinkAttributes = ['xlink:href', 'xlink:title'];
+	const animationAdditionAttributes = ['additive', 'accumulate'];
+	const animationTimingAttributes = ['begin', 'dur', 'end', 'min', 'max', 'restart', 'repeatCount', 'repeatDur', 'fill'];
+	const animationValueAttributes = ['calcMode', 'values', 'keyTimes', 'keySplines', 'from', 'to', 'by'];
+	const rectAttributes = ['x', 'y', 'width', 'height'];
+	const transferFunctionElementAttributes = ['type', 'tableValues', 'slope', 'intercept', 'amplitude', 'exponent', 'offset'];
+	const validPseudoClass = ['hover', 'link', 'active', 'visited', 'focus', 'first-child', 'lang', 'not'];
+	const validPseudoElement = ['first-letter', 'first-line'];
+
+	// 用于属性合法性验证的枚举类型（此处存储方便直接转换为正则的字符串形式）
+	const calcMode = 'discrete|linear|paced|spline';
+	const units = 'userSpaceOnUse|objectBoundingBox';
+	const crossOrigin = 'anonymous|use-credentials';
+	const dur = 'media|indefinite';
+	const edgeMode = 'duplicate|wrap|none';
+	const inVal = 'SourceGraphic|SourceAlpha|BackgroundImage|BackgroundAlpha|FillPaint|StrokePaint';
+	const lengthAdjust = 'spacing|spacingAndGlyphs';
+	const markerUnit = 'strokeWidth|userSpaceOnUse';
+	const method = 'align|stretch';
+	const blendMode = 'normal|multiply|screen|overlay|darken|lighten|color-dodge|color-burn|hard-light|soft-light|difference|exclusion|hue|saturation|color|luminosity';
+	const operater = 'over|in|out|atop|xor|lighter|arithmetic';
+	const operater1 = 'erode|dilate';
+	const orient = 'auto|auto-start-reverse';
+	const alignX = 'left|center|right';
+	const alignY = 'top|center|bottom';
+	const referrer = 'no-referrer|no-referrer-when-downgrade|same-origin|origin|strict-origin|origin-when-cross-origin|strict-origin-when-cross-origin|unsafe-url';
+	const restart = 'always|whenNotActive|never';
+	const spreadMethod = 'pad|reflect|repeat';
+	const target = '_self|_parent|_top|_blank';
+	const animateTransformType = 'translate|scale|rotate|skewX|skewY';
+	const feColorMatrixType = 'matrix|saturate|hueRotate|luminanceToAlpha';
+	const feFuncType = 'identity|table|discrete|linear|gamma';
+	const feTurbulenceType = 'fractalNoise|turbulence';
+	const channel = 'R|G|B|A';
+	const isolationMode = 'auto|isolate';
+
+	// 符合官方定义的 token
+	// https://drafts.csswg.org/css-syntax-3
+	// 是否支持 unicode
+	let supportUnicode$1 = true;
+	try {
+	    supportUnicode$1 = /\u{20BB7}/u.test('𠮷');
+	}
+	catch (e) {
+	    supportUnicode$1 = false;
+	}
+	const uModifier = supportUnicode$1 ? 'u' : '';
+	// definition
+	const commaWsp = '(?:\\s*,\\s*|\\s*)';
+	const semi = '\\s*;\\s*';
+	const paren = '\\s*\\(\\s*';
+	const rParen = '\\s*\\)';
+	// name token
+	// https://www.w3.org/TR/xml/#NT-Name
+	const NameStartChar$1 = `:A-Z_a-z\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD${supportUnicode$1 ? '\\u{10000}-\\u{EFFFF}' : ''}`;
+	const NameChar$1 = `${NameStartChar$1}\\-\\.0-9\\u00B7\\u0300-\\u036F\\u203F-\\u2040`;
+	const Name$1 = `[${NameStartChar$1}][${NameChar$1}]*`;
+	// css syntax
+	// https://drafts.csswg.org/css-syntax-3/#non-ascii-code-point
+	const cssNameStartChar = `A-Za-z_\\u0080-\\uFFFF${supportUnicode$1 ? '\\u{10000}-\\u{EFFFF}' : ''}`;
+	const cssNameChar = `${cssNameStartChar}\\-0-9`;
+	const cssName = `[${cssNameStartChar}][${cssNameChar}]*`;
+	const nameFullMatch = new RegExp(`^${Name$1}$`, uModifier);
+	const cssNameFullMatch = new RegExp(`^${cssName}$`, uModifier);
+	const cssNameSpaceSeparatedFullMatch = new RegExp(`^${cssName}(?:\\s+${cssName})*$`, uModifier);
+	// number token
+	// https://www.w3.org/TR/css3-values/#length-value
+	// https://www.w3.org/TR/css-syntax-3/#number-token-diagram
+	// https://www.w3.org/TR/css-syntax-3/#percentage-token-diagram
+	const numberPattern = '[+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?';
+	const numberSequence = `${numberPattern}(?:${commaWsp}${numberPattern})*`;
+	const numberGlobal = new RegExp(numberPattern, 'g');
+	const numberFullMatch = new RegExp(`^${numberPattern}$`);
+	const numberOptionalFullMatch = new RegExp(`^${numberPattern}(?:\\s*${numberPattern})?$`);
+	const numberListFullMatch = new RegExp(`^${numberSequence}$`);
+	const numberSemiSepatatedFullMatch = new RegExp(`^${numberPattern}(?:${semi}${numberPattern})*(?:${semi})?$`);
+	const integerFullMatch = /^[+-]?(?:\d+|(?:\d*\.)?\d+[eE][+-]?\d+)$/;
+	const pureNumOrWithPx = new RegExp(`^${numberPattern}(?:px)?$`);
+	const pureNumOrWithPxList = new RegExp(`^${numberPattern}(?:px)?(?:${commaWsp}${numberPattern}(?:px)?)*$`);
+	// https://www.w3.org/TR/css-values-3/#angle-value
+	const angel = 'deg|grad|rad|turn';
+	const angelFullMatch = new RegExp(`^${numberPattern}(?:${angel})?$`);
+	const controlPoint = `${numberPattern}${commaWsp}${numberPattern}${commaWsp}${numberPattern}${commaWsp}${numberPattern}`;
+	const controlPointsFullMatch = new RegExp(`^${controlPoint}(?:${semi}${controlPoint})*(?:${semi})?$`);
+	const Units = '(?:em|ex|ch|rem|vx|vw|vmin|vmax|cm|mm|Q|in|pt|pc|px)';
+	const percentageFullMatch = new RegExp(`^${numberPattern}%$`);
+	const length = `${numberPattern}${Units}?`;
+	const lengthPercentage = `(?:${length}|${numberPattern}%)`;
+	const lengthPair = `${length}${commaWsp}${length}`;
+	const lengthPairFullMatch = new RegExp(`^${lengthPair}$`);
+	const lengthPairListFullMatch = new RegExp(`^${lengthPair}(?:${semi}${lengthPair})*$`);
+	const lengthPercentageFullMatch = new RegExp(`^${lengthPercentage}$`);
+	const lengthPercentageListFullMatch = new RegExp(`^${lengthPercentage}(?:${commaWsp}${lengthPercentage})*$`);
+	const viewBoxFullMatch = new RegExp(`^${controlPoint}$`);
+	// time token
+	// https://svgwg.org/specs/animations/#BeginValueListSyntax
+	const timeCountValue = '\\d+(?:\\.\\d+)?(?:h|min|s|ms)?';
+	const timeValue = '(?:\\d+:)?[0-5]\\d:[0-5]\\d(?:\\.\\d+)?';
+	const clockValue = `(?:${timeCountValue}|${timeValue})`;
+	const offsetValue = `(?:\\s*[+-]\\s*)?${clockValue}`;
+	const syncbaseValue = `${Name$1}\\.(?:begin|end)(?:${offsetValue})?`;
+	const eventValue = `(?:${Name$1}\\.)?(?:${eventAttributes.join('|')})(?:${offsetValue})?`;
+	const repeatValue = `(?:${Name$1}\\.)?repeat\\(\\d+\\)(?:${offsetValue})?`;
+	const accessKeyValue = `accessKey\\(.\\)(?:${offsetValue})?`;
+	const wallclockSyncValue = 'wallclock\\(\\d+\\)';
+	const timePattern = `(?:${offsetValue}|${syncbaseValue}|${eventValue}|${repeatValue}|${accessKeyValue}|${wallclockSyncValue}|indefinite)`;
+	const clockFullMatch = new RegExp(`^${clockValue}$`);
+	const timeListFullMatch = new RegExp(`^${timePattern}(\\s*;\\s*${timePattern})*$`, uModifier);
+	// transform token
+	// https://drafts.csswg.org/css-transforms/#svg-comma
+	const translate = `translate${paren}${numberPattern}(?:${commaWsp}?${numberPattern})?${rParen}`;
+	const scale = `scale${paren}${numberPattern}(?:${commaWsp}?${numberPattern})?${rParen}`;
+	const rotate = `rotate${paren}${numberPattern}(?:${commaWsp}?${numberPattern}${commaWsp}?${numberPattern})?${rParen}`;
+	const skewX = `skewX${paren}${numberPattern}${rParen}`;
+	const skewY = `skewY${paren}${numberPattern}${rParen}`;
+	const matrix = `matrix${paren}${numberPattern}(?:${commaWsp}?${numberPattern}){5}${rParen}`;
+	const transformListFullMatch = new RegExp(`^(?:\\s*(?:${translate}|${scale}|${rotate}|${skewX}|${skewY}|${matrix})\\s*)*$`);
+	// uri token
+	// http://www.ietf.org/rfc/rfc3986.txt
+	const URIFullMatch = /^(?:[^:/?#]+:)?(?:\/\/[^/?#]*)?(?:[^?#]*)(?:\?[^#]*)?(?:#.*)?$/;
+	// https://tools.ietf.org/html/bcp47#section-2.1
+	const langFullMatch = /^[a-zA-Z]{2,}(?:-[a-zA-Z0-9%]+)*$/;
+	// https://drafts.csswg.org/css-syntax-3/#typedef-ident-token
+	const hexDigit = '0-9a-fA-F';
+	const newLine = '\\r\\n';
+	const escape = `\\\\(?:[^${hexDigit}${newLine}]|[${hexDigit}]{1,6}\\s?)`;
+	const indentToken = `(?:--|-?(?:[${cssNameStartChar}]|${escape}))(?:[${cssNameChar}]|${escape})*`;
+	const indentFullMatch = new RegExp(`^${indentToken}$`, uModifier);
+	// https://svgwg.org/svg2-draft/paths.html#PathDataBNF
+	const pathZ = '[zZ]';
+	const pathMTo = `[mM]\\s*${numberSequence}`;
+	const pathTo = `[lLhHvVcCsSqQtTaA]\\s*${numberSequence}`;
+	const pathPattern = `(?:${pathMTo}|${pathZ}|${pathTo})`;
+	const pathFullMatch = new RegExp(`^${pathMTo}(?:${commaWsp}${pathPattern})*$`);
+	const preservAspectRatioFullMatch = /^(?:none|xMinYMin|xMidYMin|xMaxYMin|xMinYMid|xMidYMid|xMaxYMid|xMinYMax|xMidYMax|xMaxYMax)(?:\s+(?:meet|slice))?$/;
+	// IRI
+	const funcIRIToID = /^url\((["']?)#(.+)\1\)$/;
+	const IRIFullMatch = /^#(.+)$/;
+	const mediaTypeFullMatch = /^(?:image|audio|video|application|text|multipart|message)\/[^/]+$/;
+
+	const shapeAndText = shapeElements.concat(textContentElements);
+	const viewport = ['pattern', 'marker'].concat(newViewportsElements);
+	const useContainerGraphics = ['use'].concat(containerElements, graphicsElements);
+	const colorApply = ['animate'].concat(useContainerGraphics, gradientElements);
+	// tslint:disable:max-file-line-count
+	const _regularAttr = {
+	    'accumulate': {
+	        name: 'accumulate',
+	        legalValues: [{
+	                type: 'string',
+	                value: 'none',
+	            }, {
+	                type: 'string',
+	                value: 'sum',
+	            }],
+	        initValue: 'none',
+	        applyTo: [],
+	    },
+	    'additive': {
+	        name: 'additive',
+	        legalValues: [{
+	                type: 'string',
+	                value: 'replace',
+	            }, {
+	                type: 'string',
+	                value: 'sum',
+	            }],
+	        initValue: 'replace',
+	        applyTo: [],
+	    },
+	    'amplitude': {
+	        name: 'amplitude',
+	        animatable: true,
+	        maybeAccurateNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberFullMatch,
+	            }],
+	        initValue: '1',
+	        applyTo: [],
+	    },
+	    'attributeName': {
+	        name: 'attributeName',
+	        legalValues: [{
+	                type: 'attr',
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'azimuth': {
+	        name: 'azimuth',
+	        animatable: true,
+	        maybeAccurateNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberFullMatch,
+	            }],
+	        initValue: '0',
+	        applyTo: [],
+	    },
+	    'baseFrequency': {
+	        name: 'baseFrequency',
+	        animatable: true,
+	        maybeAccurateNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberOptionalFullMatch,
+	            }],
+	        initValue: '0',
+	        applyTo: [],
+	    },
+	    'begin': {
+	        name: 'begin',
+	        legalValues: [{
+	                type: 'reg',
+	                value: timeListFullMatch,
+	            }],
+	        initValue: '0s',
+	        applyTo: [],
+	    },
+	    'bias': {
+	        name: 'bias',
+	        animatable: true,
+	        maybeAccurateNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberFullMatch,
+	            }],
+	        initValue: '0',
+	        applyTo: [],
+	    },
+	    'by': {
+	        name: 'by',
+	        legalValues: [{
+	                type: 'reg',
+	                value: lengthPairFullMatch,
+	                tag: ['animateMotion'],
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'calcMode': {
+	        name: 'calcMode',
+	        legalValues: [{
+	                type: 'enum',
+	                value: calcMode,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'class': {
+	        name: 'class',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: cssNameSpaceSeparatedFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'clipPathUnits': {
+	        name: 'clipPathUnits',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'enum',
+	                value: units,
+	            }],
+	        initValue: 'userSpaceOnUse',
+	        applyTo: [],
+	    },
+	    'crossorigin': {
+	        name: 'crossorigin',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'enum',
+	                value: crossOrigin,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'cx': {
+	        name: 'cx',
+	        couldBeStyle: true,
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: lengthPercentageFullMatch,
+	            }],
+	        initValue: [{
+	                val: '50%',
+	                tag: ['radialGradient'],
+	            }, {
+	                val: '0',
+	                tag: ['circle', 'ellipse'],
+	            }],
+	        applyTo: ['circle', 'ellipse'],
+	    },
+	    'cy': {
+	        name: 'cy',
+	        couldBeStyle: true,
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: lengthPercentageFullMatch,
+	            }],
+	        initValue: [{
+	                val: '50%',
+	                tag: ['radialGradient'],
+	            }, {
+	                val: '0',
+	                tag: ['circle', 'ellipse'],
+	            }],
+	        applyTo: ['circle', 'ellipse'],
+	    },
+	    'd': {
+	        name: 'd',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: pathFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'diffuseConstant': {
+	        name: 'diffuseConstant',
+	        animatable: true,
+	        maybeAccurateNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberFullMatch,
+	            }],
+	        initValue: '1',
+	        applyTo: [],
+	    },
+	    'divisor': {
+	        name: 'divisor',
+	        animatable: true,
+	        maybeAccurateNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'download': {
+	        name: 'download',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: nameFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'dur': {
+	        name: 'dur',
+	        legalValues: [{
+	                type: 'reg',
+	                value: clockFullMatch,
+	            }, {
+	                type: 'enum',
+	                value: dur,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'dx': {
+	        name: 'dx',
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberFullMatch,
+	                tag: ['feOffset', 'feDropShadow'],
+	            }, {
+	                type: 'reg',
+	                value: lengthPercentageListFullMatch,
+	                tag: ['text', 'tspan'],
+	            }],
+	        initValue: [{
+	                val: '2',
+	                tag: ['feOffset', 'feDropShadow'],
+	            }, {
+	                val: '',
+	                tag: ['tspan', 'text'],
+	            }],
+	        applyTo: [],
+	    },
+	    'dy': {
+	        name: 'dy',
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberFullMatch,
+	                tag: ['feOffset', 'feDropShadow'],
+	            }, {
+	                type: 'reg',
+	                value: lengthPercentageListFullMatch,
+	                tag: ['text', 'tspan'],
+	            }],
+	        initValue: [{
+	                val: '2',
+	                tag: ['feOffset', 'feDropShadow'],
+	            }, {
+	                val: '',
+	                tag: ['tspan', 'text'],
+	            }],
+	        applyTo: [],
+	    },
+	    'edgeMode': {
+	        name: 'edgeMode',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'enum',
+	                value: edgeMode,
+	            }],
+	        initValue: [{
+	                val: 'duplicate',
+	                tag: ['feConvolveMatrix'],
+	            }, {
+	                val: 'none',
+	                tag: ['feGaussianBlur'],
+	            }],
+	        applyTo: [],
+	    },
+	    'elevation': {
+	        name: 'elevation',
+	        animatable: true,
+	        maybeAccurateNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberFullMatch,
+	            }],
+	        initValue: '0',
+	        applyTo: [],
+	    },
+	    'end': {
+	        name: 'end',
+	        legalValues: [{
+	                type: 'reg',
+	                value: timeListFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'exponent': {
+	        name: 'exponent',
+	        animatable: true,
+	        maybeAccurateNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberFullMatch,
+	            }],
+	        initValue: '1',
+	        applyTo: [],
+	    },
+	    'filterUnits': {
+	        name: 'filterUnits',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'enum',
+	                value: units,
+	            }],
+	        initValue: 'objectBoundingBox',
+	        applyTo: [],
+	    },
+	    'fr': {
+	        name: 'fr',
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: lengthPercentageFullMatch,
+	            }],
+	        initValue: '0%',
+	        applyTo: [],
+	    },
+	    'from': {
+	        name: 'from',
+	        legalValues: [{
+	                type: 'reg',
+	                value: lengthPairFullMatch,
+	                tag: ['animateMotion'],
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'fx': {
+	        name: 'fx',
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: lengthPercentageFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'fy': {
+	        name: 'fy',
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: lengthPercentageFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'gradientTransform': {
+	        name: 'gradientTransform',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: transformListFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'gradientUnits': {
+	        name: 'gradientUnits',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'enum',
+	                value: units,
+	            }],
+	        initValue: 'objectBoundingBox',
+	        applyTo: [],
+	    },
+	    'height': {
+	        name: 'height',
+	        couldBeStyle: true,
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: lengthPercentageFullMatch,
+	            }, {
+	                type: 'string',
+	                value: 'auto',
+	            }],
+	        initValue: [{
+	                val: '100%',
+	                tag: filterPrimitiveElements.concat(['svg']),
+	            }, {
+	                val: '120%',
+	                tag: ['filter', 'mask'],
+	            }, {
+	                val: '0',
+	                tag: ['pattern', 'rect', 'foreignObject'],
+	            }, {
+	                val: 'auto',
+	                tag: ['svg', 'image', 'rect', 'foreignObject'],
+	            }],
+	        applyTo: filterPrimitiveElements.concat(['filter', 'mask', 'pattern', 'svg', 'image', 'rect', 'foreignObject']),
+	    },
+	    'href': {
+	        name: 'href',
+	        animatable: true,
+	        maybeIRI: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: URIFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'hreflang': {
+	        name: 'hreflang',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: langFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'id': {
+	        name: 'id',
+	        legalValues: [{
+	                type: 'reg',
+	                value: nameFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'in': {
+	        name: 'in',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'enum',
+	                value: inVal,
+	            }, {
+	                type: 'reg',
+	                value: indentFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'in2': {
+	        name: 'in2',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'enum',
+	                value: inVal,
+	            }, {
+	                type: 'reg',
+	                value: indentFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'intercept': {
+	        name: 'intercept',
+	        animatable: true,
+	        maybeAccurateNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberFullMatch,
+	            }],
+	        initValue: '0',
+	        applyTo: [],
+	    },
+	    'isolation': {
+	        name: 'isolation',
+	        legalValues: [{
+	                type: 'enum',
+	                value: isolationMode,
+	            }],
+	        initValue: 'auto',
+	        applyTo: [],
+	    },
+	    'k1': {
+	        name: 'k1',
+	        animatable: true,
+	        maybeAccurateNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberFullMatch,
+	            }],
+	        initValue: '0',
+	        applyTo: [],
+	    },
+	    'k2': {
+	        name: 'k2',
+	        animatable: true,
+	        maybeAccurateNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberFullMatch,
+	            }],
+	        initValue: '0',
+	        applyTo: [],
+	    },
+	    'k3': {
+	        name: 'k3',
+	        animatable: true,
+	        maybeAccurateNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberFullMatch,
+	            }],
+	        initValue: '0',
+	        applyTo: [],
+	    },
+	    'k4': {
+	        name: 'k4',
+	        animatable: true,
+	        maybeAccurateNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberFullMatch,
+	            }],
+	        initValue: '0',
+	        applyTo: [],
+	    },
+	    'kernelMatrix': {
+	        name: 'kernelMatrix',
+	        animatable: true,
+	        maybeAccurateNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberListFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'kernelUnitLength': {
+	        name: 'kernelUnitLength',
+	        animatable: true,
+	        maybeAccurateNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberOptionalFullMatch,
+	            }],
+	        initValue: '2 2',
+	        applyTo: [],
+	    },
+	    'keyPoints': {
+	        name: 'keyPoints',
+	        maybeAccurateNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberSemiSepatatedFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'keySplines': {
+	        name: 'keySplines',
+	        maybeAccurateNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: controlPointsFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'keyTimes': {
+	        name: 'keyTimes',
+	        maybeAccurateNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberSemiSepatatedFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'lang': {
+	        name: 'lang',
+	        legalValues: [{
+	                type: 'reg',
+	                value: langFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'lengthAdjust': {
+	        name: 'lengthAdjust',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'enum',
+	                value: lengthAdjust,
+	            }],
+	        initValue: 'spacing',
+	        applyTo: [],
+	    },
+	    'limitingConeAngle': {
+	        name: 'limitingConeAngle',
+	        animatable: true,
+	        maybeAccurateNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'markerHeight': {
+	        name: 'markerHeight',
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: lengthPercentageFullMatch,
+	            }],
+	        initValue: '3',
+	        applyTo: [],
+	    },
+	    'markerUnits': {
+	        name: 'markerUnits',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'enum',
+	                value: markerUnit,
+	            }],
+	        initValue: 'strokeWidth',
+	        applyTo: [],
+	    },
+	    'markerWidth': {
+	        name: 'markerWidth',
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: lengthPercentageFullMatch,
+	            }],
+	        initValue: '3',
+	        applyTo: [],
+	    },
+	    'maskContentUnits': {
+	        name: 'maskContentUnits',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'enum',
+	                value: units,
+	            }],
+	        initValue: 'userSpaceOnUse',
+	        applyTo: [],
+	    },
+	    'maskUnits': {
+	        name: 'maskUnits',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'enum',
+	                value: units,
+	            }],
+	        initValue: 'objectBoundingBox',
+	        applyTo: [],
+	    },
+	    'max': {
+	        name: 'max',
+	        legalValues: [{
+	                type: 'reg',
+	                value: clockFullMatch,
+	            }, {
+	                type: 'string',
+	                value: 'media',
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'media': {
+	        name: 'media',
+	        legalValues: [],
+	        initValue: [{
+	                val: 'all',
+	                tag: ['css'],
+	            }],
+	        applyTo: [],
+	    },
+	    'method': {
+	        name: 'method',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'enum',
+	                value: method,
+	            }],
+	        initValue: 'align',
+	        applyTo: [],
+	    },
+	    'min': {
+	        name: 'min',
+	        legalValues: [{
+	                type: 'reg',
+	                value: clockFullMatch,
+	            }, {
+	                type: 'string',
+	                value: 'media',
+	            }],
+	        initValue: '0',
+	        applyTo: [],
+	    },
+	    'mode': {
+	        name: 'mode',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'enum',
+	                value: blendMode,
+	            }],
+	        initValue: 'normal',
+	        applyTo: [],
+	    },
+	    'numOctaves': {
+	        name: 'numOctaves',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: integerFullMatch,
+	            }],
+	        initValue: '1',
+	        applyTo: [],
+	    },
+	    'offset': {
+	        name: 'offset',
+	        animatable: true,
+	        maybeAccurateNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberFullMatch,
+	            }, {
+	                type: 'reg',
+	                value: percentageFullMatch,
+	                tag: ['stop'],
+	            }],
+	        initValue: '0',
+	        applyTo: [],
+	    },
+	    'operator': {
+	        name: 'operator',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'enum',
+	                value: operater,
+	                tag: ['feComposite'],
+	            }, {
+	                type: 'enum',
+	                value: operater1,
+	                tag: ['feMorphology'],
+	            }],
+	        initValue: [{
+	                val: 'over',
+	                tag: ['feComposite'],
+	            }, {
+	                val: 'erode',
+	                tag: ['feMorphology'],
+	            }],
+	        applyTo: [],
+	    },
+	    'order': {
+	        name: 'order',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberOptionalFullMatch,
+	            }],
+	        initValue: '3',
+	        applyTo: [],
+	    },
+	    'orient': {
+	        name: 'orient',
+	        animatable: true,
+	        maybeAccurateNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberFullMatch,
+	            }, {
+	                type: 'reg',
+	                value: angelFullMatch,
+	            }, {
+	                type: 'enum',
+	                value: orient,
+	            }],
+	        initValue: '0',
+	        applyTo: [],
+	    },
+	    'path': {
+	        name: 'path',
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: pathFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'pathLength': {
+	        name: 'pathLength',
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'patternContentUnits': {
+	        name: 'patternContentUnits',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'enum',
+	                value: units,
+	            }],
+	        initValue: 'userSpaceOnUse',
+	        applyTo: [],
+	    },
+	    'patternTransform': {
+	        name: 'patternTransform',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: transformListFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'patternUnits': {
+	        name: 'patternUnits',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'enum',
+	                value: units,
+	            }],
+	        initValue: 'objectBoundingBox',
+	        applyTo: [],
+	    },
+	    'ping': {
+	        name: 'ping',
+	        legalValues: [],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'playbackorder': {
+	        name: 'playbackorder',
+	        legalValues: [{
+	                type: 'string',
+	                value: 'forwardonly',
+	            }, {
+	                type: 'string',
+	                value: 'all',
+	            }],
+	        initValue: 'all',
+	        applyTo: [],
+	    },
+	    'points': {
+	        name: 'points',
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberListFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'pointsAtX': {
+	        name: 'pointsAtX',
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberFullMatch,
+	            }],
+	        initValue: '0',
+	        applyTo: [],
+	    },
+	    'pointsAtY': {
+	        name: 'pointsAtY',
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberFullMatch,
+	            }],
+	        initValue: '0',
+	        applyTo: [],
+	    },
+	    'pointsAtZ': {
+	        name: 'pointsAtZ',
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberFullMatch,
+	            }],
+	        initValue: '0',
+	        applyTo: [],
+	    },
+	    'preserveAlpha': {
+	        name: 'preserveAlpha',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'string',
+	                value: 'false',
+	            }, {
+	                type: 'string',
+	                value: 'true',
+	            }],
+	        initValue: 'false',
+	        applyTo: [],
+	    },
+	    'preserveAspectRatio': {
+	        name: 'preserveAspectRatio',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: preservAspectRatioFullMatch,
+	            }],
+	        initValue: [{
+	                val: 'xMidYMid',
+	                tag: ['canvas', 'feImage', 'image', 'marker', 'pattern', 'svg', 'symbol', 'view'],
+	            }, {
+	                val: 'xMidYMid meet',
+	                tag: ['canvas', 'feImage', 'image', 'marker', 'pattern', 'svg', 'symbol', 'view'],
+	            }],
+	        applyTo: [],
+	    },
+	    'primitiveUnits': {
+	        name: 'primitiveUnits',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'enum',
+	                value: units,
+	            }],
+	        initValue: 'userSpaceOnUse.',
+	        applyTo: [],
+	    },
+	    'r': {
+	        name: 'r',
+	        couldBeStyle: true,
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: lengthPercentageFullMatch,
+	            }],
+	        initValue: [{
+	                val: '50%',
+	                tag: ['radialGradient'],
+	            }, {
+	                val: '0',
+	                tag: ['circle'],
+	            }],
+	        applyTo: ['circle'],
+	    },
+	    'radius': {
+	        name: 'radius',
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberOptionalFullMatch,
+	            }],
+	        initValue: '0',
+	        applyTo: [],
+	    },
+	    'refX': {
+	        name: 'refX',
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: lengthPercentageFullMatch,
+	            }, {
+	                type: 'enum',
+	                value: alignX,
+	            }],
+	        initValue: [{
+	                val: '0',
+	                tag: ['marker'],
+	            }],
+	        applyTo: [],
+	    },
+	    'refY': {
+	        name: 'refY',
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: lengthPercentageFullMatch,
+	            }, {
+	                type: 'enum',
+	                value: alignY,
+	            }],
+	        initValue: [{
+	                val: '0',
+	                tag: ['marker'],
+	            }],
+	        applyTo: [],
+	    },
+	    'referrerpolicy': {
+	        name: 'referrerpolicy',
+	        legalValues: [{
+	                type: 'enum',
+	                value: referrer,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'rel': {
+	        name: 'rel',
+	        animatable: true,
+	        legalValues: [],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'repeatCount': {
+	        name: 'repeatCount',
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberFullMatch,
+	            }, {
+	                type: 'string',
+	                value: 'indefinite',
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'repeatDur': {
+	        name: 'repeatDur',
+	        legalValues: [{
+	                type: 'reg',
+	                value: clockFullMatch,
+	            }, {
+	                type: 'string',
+	                value: 'indefinite',
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'requiredExtensions': {
+	        name: 'requiredExtensions',
+	        legalValues: [],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'restart': {
+	        name: 'restart',
+	        legalValues: [{
+	                type: 'enum',
+	                value: restart,
+	            }],
+	        initValue: 'always',
+	        applyTo: [],
+	    },
+	    'result': {
+	        name: 'result',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: cssNameFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'rotate': {
+	        name: 'rotate',
+	        animatable: true,
+	        maybeAccurateNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberListFullMatch,
+	                tag: ['text', 'tspan'],
+	            }, {
+	                type: 'reg',
+	                value: numberFullMatch,
+	                tag: ['animateMotion'],
+	            }, {
+	                type: 'string',
+	                value: 'auto',
+	                tag: ['animateMotion'],
+	            }, {
+	                type: 'string',
+	                value: 'auto-reverse',
+	                tag: ['animateMotion'],
+	            }],
+	        initValue: '0',
+	        applyTo: [],
+	    },
+	    'rx': {
+	        name: 'rx',
+	        couldBeStyle: true,
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: lengthPercentageFullMatch,
+	            }, {
+	                type: 'string',
+	                value: 'auto',
+	            }],
+	        initValue: 'auto',
+	        applyTo: ['ellipse', 'rect'],
+	    },
+	    'ry': {
+	        name: 'ry',
+	        couldBeStyle: true,
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: lengthPercentageFullMatch,
+	            }, {
+	                type: 'string',
+	                value: 'auto',
+	            }],
+	        initValue: 'auto',
+	        applyTo: ['ellipse', 'rect'],
+	    },
+	    'scale': {
+	        name: 'scale',
+	        animatable: true,
+	        maybeAccurateNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberFullMatch,
+	            }],
+	        initValue: '0',
+	        applyTo: [],
+	    },
+	    'seed': {
+	        name: 'seed',
+	        animatable: true,
+	        maybeAccurateNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberFullMatch,
+	            }],
+	        initValue: '0',
+	        applyTo: [],
+	    },
+	    'side': {
+	        name: 'side',
+	        animatable: true,
+	        maybeAccurateNumber: true,
+	        legalValues: [{
+	                type: 'string',
+	                value: 'left',
+	            }, {
+	                type: 'string',
+	                value: 'right',
+	            }],
+	        initValue: 'left',
+	        applyTo: [],
+	    },
+	    'slope': {
+	        name: 'slope',
+	        animatable: true,
+	        maybeAccurateNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberFullMatch,
+	            }],
+	        initValue: '1',
+	        applyTo: [],
+	    },
+	    'spacing': {
+	        name: 'spacing',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'string',
+	                value: 'auto',
+	            }, {
+	                type: 'string',
+	                value: 'exact',
+	            }],
+	        initValue: 'exact',
+	        applyTo: [],
+	    },
+	    'specularConstant': {
+	        name: 'specularConstant',
+	        animatable: true,
+	        maybeAccurateNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberFullMatch,
+	            }],
+	        initValue: '1',
+	        applyTo: [],
+	    },
+	    'specularExponent': {
+	        name: 'specularExponent',
+	        animatable: true,
+	        maybeAccurateNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberFullMatch,
+	            }],
+	        initValue: '1',
+	        applyTo: [],
+	    },
+	    'spreadMethod': {
+	        name: 'spreadMethod',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'enum',
+	                value: spreadMethod,
+	            }],
+	        initValue: 'pad',
+	        applyTo: [],
+	    },
+	    'startOffset': {
+	        name: 'startOffset',
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: lengthPercentageFullMatch,
+	            }],
+	        initValue: '0',
+	        applyTo: [],
+	    },
+	    'stdDeviation': {
+	        name: 'stdDeviation',
+	        animatable: true,
+	        maybeAccurateNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberOptionalFullMatch,
+	            }],
+	        initValue: [{
+	                val: '2',
+	                tag: ['feDropShadow'],
+	            }, {
+	                val: '0',
+	                tag: ['feGaussianBlur'],
+	            }],
+	        applyTo: [],
+	    },
+	    'stitchTiles': {
+	        name: 'stitchTiles',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'string',
+	                value: 'stitch',
+	            }, {
+	                type: 'string',
+	                value: 'noStitch',
+	            }],
+	        initValue: 'noStitch',
+	        applyTo: [],
+	    },
+	    'style': {
+	        name: 'style',
+	        legalValues: [],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'surfaceScale': {
+	        name: 'surfaceScale',
+	        animatable: true,
+	        maybeAccurateNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberFullMatch,
+	            }],
+	        initValue: '1',
+	        applyTo: [],
+	    },
+	    'systemLanguage': {
+	        name: 'systemLanguage',
+	        legalValues: [],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'tabindex': {
+	        name: 'tabindex',
+	        legalValues: [{
+	                type: 'reg',
+	                value: integerFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'tableValues': {
+	        name: 'tableValues',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberListFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'target': {
+	        name: 'target',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: nameFullMatch,
+	            }, {
+	                type: 'enum',
+	                value: target,
+	            }],
+	        initValue: '_self',
+	        applyTo: [],
+	    },
+	    'targetX': {
+	        name: 'targetX',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: integerFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'targetY': {
+	        name: 'targetY',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: integerFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'textLength': {
+	        name: 'textLength',
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: lengthPercentageFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'timelinebegin': {
+	        name: 'timelinebegin',
+	        legalValues: [{
+	                type: 'string',
+	                value: 'loadend',
+	            }, {
+	                type: 'string',
+	                value: 'loadbegin',
+	            }],
+	        initValue: 'loadend',
+	        applyTo: [],
+	    },
+	    'title': {
+	        name: 'title',
+	        legalValues: [],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'to': {
+	        name: 'to',
+	        legalValues: [{
+	                type: 'reg',
+	                value: lengthPairFullMatch,
+	                tag: ['animateMotion'],
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'type': {
+	        name: 'type',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'enum',
+	                value: animateTransformType,
+	                tag: ['animateTransform'],
+	            }, {
+	                type: 'enum',
+	                value: feColorMatrixType,
+	                tag: ['feColorMatrix'],
+	            }, {
+	                type: 'enum',
+	                value: feFuncType,
+	                tag: ['feFuncA', 'feFuncB', 'feFuncG', 'feFuncR'],
+	            }, {
+	                type: 'enum',
+	                value: feTurbulenceType,
+	                tag: ['feTurbulence'],
+	            }, {
+	                type: 'reg',
+	                value: mediaTypeFullMatch,
+	                tag: ['script'],
+	            }, {
+	                type: 'reg',
+	                value: mediaTypeFullMatch,
+	                tag: ['style'],
+	            }],
+	        initValue: [{
+	                val: 'translate',
+	                tag: ['animateTransform'],
+	            }, {
+	                val: 'matrix',
+	                tag: ['feColorMatrix'],
+	            }, {
+	                val: 'identity',
+	                tag: ['feFuncA', 'feFuncB', 'feFuncG', 'feFuncR'],
+	            }, {
+	                val: 'turbulence',
+	                tag: ['feTurbulence'],
+	            }, {
+	                val: 'application/ecmascript',
+	                tag: ['script'],
+	            }, {
+	                val: 'text/css',
+	                tag: ['style'],
+	            }],
+	        applyTo: [],
+	    },
+	    'values': {
+	        name: 'values',
+	        animatable: true,
+	        maybeAccurateNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberListFullMatch,
+	                tag: ['feColorMatrix'],
+	            }, {
+	                type: 'reg',
+	                value: lengthPairListFullMatch,
+	                tag: ['animateMotion'],
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'viewBox': {
+	        name: 'viewBox',
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: viewBoxFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'width': {
+	        name: 'width',
+	        couldBeStyle: true,
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: lengthPercentageFullMatch,
+	            }, {
+	                type: 'string',
+	                value: 'auto',
+	            }],
+	        initValue: [{
+	                val: '100%',
+	                tag: filterPrimitiveElements.concat(['svg']),
+	            }, {
+	                val: '120%',
+	                tag: ['filter', 'mask'],
+	            }, {
+	                val: '0',
+	                tag: ['pattern', 'rect', 'foreignObject'],
+	            }, {
+	                val: 'auto',
+	                tag: ['svg', 'image', 'rect', 'foreignObject'],
+	            }],
+	        applyTo: filterPrimitiveElements.concat(['filter', 'mask', 'pattern', 'svg', 'image', 'rect', 'foreignObject']),
+	    },
+	    'x': {
+	        name: 'x',
+	        couldBeStyle: true,
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: lengthPercentageFullMatch,
+	                tag: filterPrimitiveElements.concat(['filter', 'mask', 'pattern', 'svg', 'rect', 'image', 'foreignObject']),
+	            }, {
+	                type: 'reg',
+	                value: numberFullMatch,
+	                tag: ['fePointLight', 'feSpotLight'],
+	            }, {
+	                type: 'reg',
+	                value: lengthPercentageListFullMatch,
+	                tag: ['text', 'tspan'],
+	            }, {
+	                type: 'string',
+	                value: 'auto',
+	            }],
+	        initValue: [{
+	                val: '0%',
+	                tag: filterPrimitiveElements,
+	            }, {
+	                val: '0',
+	                tag: ['fePointLight', 'feSpotLight', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text'],
+	            }, {
+	                val: '-10%',
+	                tag: ['filter', 'mask'],
+	            }, {
+	                val: '',
+	                tag: ['tspan'],
+	            }],
+	        applyTo: filterPrimitiveElements.concat(['fePointLight', 'feSpotLight', 'filter', 'mask', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text']),
+	    },
+	    'x1': {
+	        name: 'x1',
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: lengthPercentageFullMatch,
+	            }, {
+	                type: 'string',
+	                value: 'auto',
+	            }],
+	        initValue: [{
+	                val: '0',
+	                tag: ['line'],
+	            }, {
+	                val: '0%',
+	                tag: ['linearGradient'],
+	            }],
+	        applyTo: [],
+	    },
+	    'x2': {
+	        name: 'x2',
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: lengthPercentageFullMatch,
+	            }, {
+	                type: 'string',
+	                value: 'auto',
+	            }],
+	        initValue: [{
+	                val: '0',
+	                tag: ['line'],
+	            }, {
+	                val: '100%',
+	                tag: ['linearGradient'],
+	            }],
+	        applyTo: [],
+	    },
+	    'xChannelSelector': {
+	        name: 'xChannelSelector',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'enum',
+	                value: channel,
+	            }],
+	        initValue: 'A',
+	        applyTo: [],
+	    },
+	    'xlink:href': {
+	        name: 'xlink:href',
+	        animatable: true,
+	        maybeIRI: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: URIFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'xlink:title': {
+	        name: 'xlink:title',
+	        legalValues: [],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'xml:space': {
+	        name: 'xml:space',
+	        isUndef: true,
+	        legalValues: [{
+	                type: 'string',
+	                value: 'default',
+	            }, {
+	                type: 'string',
+	                value: 'preserve',
+	            }],
+	        initValue: 'default',
+	        applyTo: [],
+	    },
+	    'xmlns': {
+	        name: 'xmlns',
+	        legalValues: [{
+	                type: 'reg',
+	                value: URIFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'xmlns:xlink': {
+	        name: 'xmlns:xlink',
+	        legalValues: [{
+	                type: 'reg',
+	                value: URIFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: [],
+	    },
+	    'y': {
+	        name: 'y',
+	        couldBeStyle: true,
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: lengthPercentageFullMatch,
+	                tag: filterPrimitiveElements.concat(['filter', 'mask', 'pattern', 'svg', 'rect', 'image', 'foreignObject']),
+	            }, {
+	                type: 'reg',
+	                value: lengthPercentageListFullMatch,
+	                tag: ['text', 'tspan'],
+	            }, {
+	                type: 'reg',
+	                value: numberFullMatch,
+	                tag: ['fePointLight', 'feSpotLight'],
+	            }, {
+	                type: 'string',
+	                value: 'auto',
+	            }],
+	        initValue: [{
+	                val: '0%',
+	                tag: filterPrimitiveElements,
+	            }, {
+	                val: '0',
+	                tag: ['fePointLight', 'feSpotLight', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text'],
+	            }, {
+	                val: '-10%',
+	                tag: ['filter', 'mask'],
+	            }, {
+	                val: '',
+	                tag: ['tspan'],
+	            }],
+	        applyTo: filterPrimitiveElements.concat(['fePointLight', 'feSpotLight', 'filter', 'mask', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'text']),
+	    },
+	    'y1': {
+	        name: 'y1',
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: lengthPercentageFullMatch,
+	            }, {
+	                type: 'string',
+	                value: 'auto',
+	            }],
+	        initValue: [{
+	                val: '0',
+	                tag: ['line'],
+	            }, {
+	                val: '0%',
+	                tag: ['linearGradient'],
+	            }],
+	        applyTo: [],
+	    },
+	    'y2': {
+	        name: 'y2',
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: lengthPercentageFullMatch,
+	            }, {
+	                type: 'string',
+	                value: 'auto',
+	            }],
+	        initValue: [{
+	                val: '0',
+	                tag: ['line'],
+	            }, {
+	                val: '0%',
+	                tag: ['linearGradient'],
+	            }],
+	        applyTo: [],
+	    },
+	    'yChannelSelector': {
+	        name: 'yChannelSelector',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'enum',
+	                value: channel,
+	            }],
+	        initValue: 'A',
+	        applyTo: [],
+	    },
+	    'z': {
+	        name: 'z',
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: numberFullMatch,
+	            }],
+	        initValue: '0',
+	        applyTo: [],
+	    },
+	    'zoomAndPan': {
+	        name: 'zoomAndPan',
+	        animatable: true,
+	        legalValues: [{
+	                type: 'string',
+	                value: 'disable',
+	            }, {
+	                type: 'string',
+	                value: 'magnify',
+	            }],
+	        initValue: 'disable',
+	        applyTo: [],
+	    },
+	    // 下面是 property
+	    'alignment-baseline': {
+	        name: 'alignment-baseline',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'baseline',
+	        applyTo: ['tspan', 'textPath'],
+	    },
+	    'all': {
+	        name: 'all',
+	        couldBeStyle: true,
+	        cantTrans: true,
+	        cantBeAttr: true,
+	        legalValues: [],
+	        initValue: '',
+	        applyTo: useContainerGraphics,
+	    },
+	    'animation-name': {
+	        name: 'animation-name',
+	        couldBeStyle: true,
+	        cantTrans: true,
+	        cantBeAttr: true,
+	        legalValues: [],
+	        initValue: 'none',
+	        applyTo: useContainerGraphics,
+	    },
+	    'animation-duration': {
+	        name: 'animation-duration',
+	        maybeAccurateNumber: true,
+	        couldBeStyle: true,
+	        cantTrans: true,
+	        cantBeAttr: true,
+	        legalValues: [],
+	        initValue: '0',
+	        applyTo: useContainerGraphics,
+	    },
+	    'animation-timing-function': {
+	        name: 'animation-timing-function',
+	        maybeAccurateNumber: true,
+	        couldBeStyle: true,
+	        cantTrans: true,
+	        cantBeAttr: true,
+	        legalValues: [],
+	        initValue: 'ease',
+	        applyTo: useContainerGraphics,
+	    },
+	    'animation-iteration-count': {
+	        name: 'animation-iteration-count',
+	        maybeSizeNumber: true,
+	        couldBeStyle: true,
+	        cantTrans: true,
+	        cantBeAttr: true,
+	        legalValues: [],
+	        initValue: '1',
+	        applyTo: useContainerGraphics,
+	    },
+	    'animation-direction': {
+	        name: 'animation-direction',
+	        couldBeStyle: true,
+	        cantTrans: true,
+	        cantBeAttr: true,
+	        legalValues: [],
+	        initValue: 'normal',
+	        applyTo: useContainerGraphics,
+	    },
+	    'animation-play-state': {
+	        name: 'animation-play-state',
+	        couldBeStyle: true,
+	        cantTrans: true,
+	        cantBeAttr: true,
+	        legalValues: [],
+	        initValue: 'normal',
+	        applyTo: useContainerGraphics,
+	    },
+	    'animation-delay': {
+	        name: 'animation-delay',
+	        maybeAccurateNumber: true,
+	        couldBeStyle: true,
+	        cantTrans: true,
+	        cantBeAttr: true,
+	        legalValues: [],
+	        initValue: '0',
+	        applyTo: useContainerGraphics,
+	    },
+	    'animation-fill-mode': {
+	        name: 'animation-fill-mode',
+	        couldBeStyle: true,
+	        cantTrans: true,
+	        cantBeAttr: true,
+	        legalValues: [],
+	        initValue: 'none',
+	        applyTo: useContainerGraphics,
+	    },
+	    'animation': {
+	        name: 'animation',
+	        couldBeStyle: true,
+	        cantTrans: true,
+	        cantBeAttr: true,
+	        legalValues: [],
+	        initValue: '',
+	        applyTo: useContainerGraphics,
+	    },
+	    'baseline-shift': {
+	        name: 'baseline-shift',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [],
+	        initValue: '0',
+	        applyTo: ['tspan', 'textPath'],
+	    },
+	    'clip': {
+	        name: 'clip',
+	        couldBeStyle: true,
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [],
+	        initValue: 'auto',
+	        applyTo: viewport,
+	    },
+	    'clip-path': {
+	        name: 'clip-path',
+	        couldBeStyle: true,
+	        animatable: true,
+	        maybeFuncIRI: true,
+	        legalValues: [],
+	        initValue: 'none',
+	        applyTo: useContainerGraphics,
+	    },
+	    'clip-rule': {
+	        name: 'clip-rule',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'nonzero',
+	        applyTo: ['use'].concat(graphicsElements),
+	    },
+	    'color': {
+	        name: 'color',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        maybeColor: true,
+	        legalValues: [],
+	        initValue: '',
+	        applyTo: ['feFlood', 'feDiffuseLighting', 'feSpecularLighting', 'stop'].concat(shapeAndText),
+	    },
+	    'color-interpolation': {
+	        name: 'color-interpolation',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'sRGB',
+	        applyTo: colorApply,
+	    },
+	    'color-interpolation-filters': {
+	        name: 'color-interpolation-filters',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'auto',
+	        applyTo: ['feSpotLight'].concat(filterPrimitiveElements),
+	    },
+	    'color-rendering': {
+	        name: 'color-rendering',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'auto',
+	        applyTo: colorApply,
+	    },
+	    'cursor': {
+	        name: 'cursor',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        maybeFuncIRI: true,
+	        legalValues: [],
+	        initValue: 'auto',
+	        applyTo: useContainerGraphics,
+	    },
+	    'direction': {
+	        name: 'direction',
+	        couldBeStyle: true,
+	        inherited: true,
+	        legalValues: [],
+	        initValue: 'ltr',
+	        applyTo: textContentElements,
+	    },
+	    'display': {
+	        name: 'display',
+	        couldBeStyle: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'inline',
+	        applyTo: ['svg', 'g', 'switch', 'a', 'foreignObject', 'use'].concat(graphicsElements),
+	    },
+	    'dominant-baseline': {
+	        name: 'dominant-baseline',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'auto',
+	        applyTo: textContentElements,
+	    },
+	    'fill': {
+	        name: 'fill',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        maybeColor: true,
+	        maybeFuncIRI: true,
+	        legalValues: [],
+	        initValue: [{
+	                val: 'black',
+	                tag: useContainerGraphics,
+	            }, {
+	                val: 'remove',
+	                tag: ['animate', 'animateMotion', 'animateTransform', 'set'],
+	            }],
+	        applyTo: ['animate', 'animateMotion', 'animateTransform', 'set'].concat(shapeAndText),
+	    },
+	    'fill-opacity': {
+	        name: 'fill-opacity',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        maybeAlpha: true,
+	        legalValues: [],
+	        initValue: '1',
+	        applyTo: shapeAndText,
+	    },
+	    'fill-rule': {
+	        name: 'fill-rule',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'nonzero',
+	        applyTo: shapeAndText,
+	    },
+	    'filter': {
+	        name: 'filter',
+	        couldBeStyle: true,
+	        animatable: true,
+	        maybeFuncIRI: true,
+	        legalValues: [],
+	        initValue: 'none',
+	        applyTo: useContainerGraphics,
+	    },
+	    'flood-color': {
+	        name: 'flood-color',
+	        couldBeStyle: true,
+	        animatable: true,
+	        maybeColor: true,
+	        legalValues: [],
+	        initValue: 'black',
+	        applyTo: ['feFlood'],
+	    },
+	    'flood-opacity': {
+	        name: 'flood-opacity',
+	        couldBeStyle: true,
+	        maybeAlpha: true,
+	        legalValues: [],
+	        initValue: '1',
+	        applyTo: ['feFlood'],
+	    },
+	    'font': {
+	        name: 'font',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [],
+	        initValue: '',
+	        applyTo: textContentElements,
+	    },
+	    'font-family': {
+	        name: 'font-family',
+	        couldBeStyle: true,
+	        inherited: true,
+	        legalValues: [],
+	        initValue: '',
+	        applyTo: textContentElements,
+	    },
+	    'font-feature-settings': {
+	        name: 'font-feature-settings',
+	        couldBeStyle: true,
+	        cantTrans: true,
+	        cantBeAttr: true,
+	        inherited: true,
+	        legalValues: [],
+	        initValue: 'normal',
+	        applyTo: textContentElements,
+	    },
+	    'font-kerning': {
+	        name: 'font-kerning',
+	        couldBeStyle: true,
+	        cantTrans: true,
+	        cantBeAttr: true,
+	        inherited: true,
+	        legalValues: [],
+	        initValue: 'auto',
+	        applyTo: textContentElements,
+	    },
+	    'font-size': {
+	        name: 'font-size',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [],
+	        initValue: 'medium',
+	        applyTo: textContentElements,
+	    },
+	    'font-size-adjust': {
+	        name: 'font-size-adjust',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [],
+	        initValue: 'none',
+	        applyTo: textContentElements,
+	    },
+	    'font-stretch': {
+	        name: 'font-stretch',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'normal',
+	        applyTo: textContentElements,
+	    },
+	    'font-style': {
+	        name: 'font-style',
+	        couldBeStyle: true,
+	        inherited: true,
+	        legalValues: [],
+	        initValue: 'normal',
+	        applyTo: textContentElements,
+	    },
+	    'font-variant': {
+	        name: 'font-variant',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'normal',
+	        applyTo: textContentElements,
+	    },
+	    'font-variant-ligatures': {
+	        name: 'font-variant-ligatures',
+	        couldBeStyle: true,
+	        inherited: true,
+	        legalValues: [],
+	        initValue: 'normal',
+	        applyTo: textContentElements,
+	    },
+	    'font-variant-position': {
+	        name: 'font-variant-position',
+	        couldBeStyle: true,
+	        inherited: true,
+	        legalValues: [],
+	        initValue: 'normal',
+	        applyTo: textContentElements,
+	    },
+	    'font-variant-caps': {
+	        name: 'font-variant-caps',
+	        couldBeStyle: true,
+	        inherited: true,
+	        legalValues: [],
+	        initValue: 'normal',
+	        applyTo: textContentElements,
+	    },
+	    'font-variant-numeric': {
+	        name: 'font-variant-numeric',
+	        couldBeStyle: true,
+	        inherited: true,
+	        legalValues: [],
+	        initValue: 'normal',
+	        applyTo: textContentElements,
+	    },
+	    'font-variant-east-asian': {
+	        name: 'font-variant-east-asian',
+	        couldBeStyle: true,
+	        inherited: true,
+	        legalValues: [],
+	        initValue: 'normal',
+	        applyTo: textContentElements,
+	    },
+	    'font-weight': {
+	        name: 'font-weight',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'normal',
+	        applyTo: textContentElements,
+	    },
+	    'image-rendering': {
+	        name: 'image-rendering',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'auto',
+	        applyTo: ['image'],
+	    },
+	    'inline-size': {
+	        name: 'inline-size',
+	        couldBeStyle: true,
+	        maybeSizeNumber: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: '0',
+	        applyTo: ['text'],
+	    },
+	    'letter-spacing': {
+	        name: 'letter-spacing',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [],
+	        initValue: 'normal',
+	        applyTo: textContentElements,
+	    },
+	    'lighting-color': {
+	        name: 'lighting-color',
+	        couldBeStyle: true,
+	        animatable: true,
+	        maybeColor: true,
+	        legalValues: [],
+	        initValue: 'white',
+	        applyTo: ['feDiffuseLighting', 'feSpecularLighting'],
+	    },
+	    'line-height': {
+	        name: 'line-height',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        maybeColor: true,
+	        maybeSizeNumber: true,
+	        legalValues: [],
+	        initValue: 'normal',
+	        applyTo: ['text'],
+	    },
+	    'marker': {
+	        name: 'marker',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        maybeFuncIRI: true,
+	        legalValues: [],
+	        initValue: 'none',
+	        applyTo: shapeElements,
+	    },
+	    'marker-end': {
+	        name: 'marker-end',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        maybeFuncIRI: true,
+	        legalValues: [],
+	        initValue: 'none',
+	        applyTo: shapeElements,
+	    },
+	    'marker-mid': {
+	        name: 'marker-mid',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        maybeFuncIRI: true,
+	        legalValues: [],
+	        initValue: 'none',
+	        applyTo: shapeElements,
+	    },
+	    'marker-start': {
+	        name: 'marker-start',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        maybeFuncIRI: true,
+	        legalValues: [],
+	        initValue: 'none',
+	        applyTo: shapeElements,
+	    },
+	    'mask': {
+	        name: 'mask',
+	        couldBeStyle: true,
+	        animatable: true,
+	        maybeFuncIRI: true,
+	        legalValues: [],
+	        initValue: 'none',
+	        applyTo: useContainerGraphics,
+	    },
+	    'mask-image': {
+	        name: 'mask-image',
+	        couldBeStyle: true,
+	        animatable: true,
+	        maybeFuncIRI: true,
+	        legalValues: [],
+	        initValue: 'none',
+	        applyTo: useContainerGraphics,
+	    },
+	    'mask-mode': {
+	        name: 'mask-mode',
+	        couldBeStyle: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'match-source',
+	        applyTo: useContainerGraphics,
+	    },
+	    'mask-repeat': {
+	        name: 'mask-repeat',
+	        couldBeStyle: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'repeat',
+	        applyTo: useContainerGraphics,
+	    },
+	    'mask-position': {
+	        name: 'mask-position',
+	        couldBeStyle: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: '0% 0%',
+	        applyTo: useContainerGraphics,
+	    },
+	    'mask-clip': {
+	        name: 'mask-clip',
+	        couldBeStyle: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'border-box',
+	        applyTo: useContainerGraphics,
+	    },
+	    'mask-origin': {
+	        name: 'mask-origin',
+	        couldBeStyle: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'border-box',
+	        applyTo: useContainerGraphics,
+	    },
+	    'mask-size': {
+	        name: 'mask-size',
+	        couldBeStyle: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'auto',
+	        applyTo: useContainerGraphics,
+	    },
+	    'mask-composite': {
+	        name: 'mask-composite',
+	        couldBeStyle: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'add',
+	        applyTo: useContainerGraphics,
+	    },
+	    'mix-blend-mode': {
+	        name: 'mix-blend-mode',
+	        couldBeStyle: true,
+	        cantTrans: true,
+	        cantBeAttr: true,
+	        legalValues: [],
+	        initValue: 'normal',
+	        applyTo: useContainerGraphics,
+	    },
+	    'opacity': {
+	        name: 'opacity',
+	        couldBeStyle: true,
+	        animatable: true,
+	        maybeAlpha: true,
+	        legalValues: [],
+	        initValue: '1',
+	        applyTo: ['svg', 'g', 'symbol', 'marker', 'a', 'switch', 'use', 'unknown'].concat(graphicsElements),
+	    },
+	    'overflow': {
+	        name: 'overflow',
+	        couldBeStyle: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'visible',
+	        applyTo: viewport,
+	    },
+	    'paint-order': {
+	        name: 'paint-order',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'normal',
+	        applyTo: shapeAndText,
+	    },
+	    'pointer-events': {
+	        name: 'pointer-events',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'visiblePainted',
+	        applyTo: useContainerGraphics,
+	    },
+	    'shape-image-threshold': {
+	        name: 'shape-image-threshold',
+	        couldBeStyle: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: '0',
+	        applyTo: ['text'],
+	    },
+	    'shape-inside': {
+	        name: 'shape-inside',
+	        couldBeStyle: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'auto',
+	        applyTo: ['text'],
+	    },
+	    'shape-margin': {
+	        name: 'shape-margin',
+	        couldBeStyle: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: '0',
+	        applyTo: ['text'],
+	    },
+	    'shape-padding': {
+	        name: 'shape-padding',
+	        couldBeStyle: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: '',
+	        applyTo: ['text'],
+	    },
+	    'shape-rendering': {
+	        name: 'shape-rendering',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'auto',
+	        applyTo: shapeElements,
+	    },
+	    'shape-subtract': {
+	        name: 'shape-subtract',
+	        couldBeStyle: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'none',
+	        applyTo: ['text'],
+	    },
+	    'stop-color': {
+	        name: 'stop-color',
+	        couldBeStyle: true,
+	        animatable: true,
+	        maybeColor: true,
+	        legalValues: [],
+	        initValue: 'black',
+	        applyTo: ['stop'],
+	    },
+	    'stop-opacity': {
+	        name: 'stop-opacity',
+	        couldBeStyle: true,
+	        animatable: true,
+	        maybeAlpha: true,
+	        legalValues: [],
+	        initValue: '1',
+	        applyTo: ['stop'],
+	    },
+	    'stroke': {
+	        name: 'stroke',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        maybeColor: true,
+	        maybeFuncIRI: true,
+	        legalValues: [],
+	        initValue: 'none',
+	        applyTo: shapeAndText,
+	    },
+	    'stroke-dasharray': {
+	        name: 'stroke-dasharray',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [],
+	        initValue: 'none',
+	        applyTo: shapeAndText,
+	    },
+	    'stroke-dashoffset': {
+	        name: 'stroke-dashoffset',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [],
+	        initValue: '0',
+	        applyTo: shapeAndText,
+	    },
+	    'stroke-linecap': {
+	        name: 'stroke-linecap',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'butt',
+	        applyTo: shapeAndText,
+	    },
+	    'stroke-linejoin': {
+	        name: 'stroke-linejoin',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'miter',
+	        applyTo: shapeAndText,
+	    },
+	    'stroke-miterlimit': {
+	        name: 'stroke-miterlimit',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [],
+	        initValue: '4',
+	        applyTo: shapeAndText,
+	    },
+	    'stroke-opacity': {
+	        name: 'stroke-opacity',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        maybeAlpha: true,
+	        legalValues: [],
+	        initValue: '1',
+	        applyTo: shapeAndText,
+	    },
+	    'stroke-width': {
+	        name: 'stroke-width',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [],
+	        initValue: '1',
+	        applyTo: shapeAndText,
+	    },
+	    'text-anchor': {
+	        name: 'text-anchor',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'start',
+	        applyTo: textContentElements,
+	    },
+	    'text-decoration': {
+	        name: 'text-decoration',
+	        couldBeStyle: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: '',
+	        applyTo: textContentElements,
+	    },
+	    'text-decoration-line': {
+	        name: 'text-decoration-line',
+	        couldBeStyle: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'none',
+	        applyTo: textContentElements,
+	    },
+	    'text-decoration-style': {
+	        name: 'text-decoration-style',
+	        couldBeStyle: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'solid',
+	        applyTo: textContentElements,
+	    },
+	    'text-decoration-color': {
+	        name: 'text-decoration-color',
+	        couldBeStyle: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'currentcolor',
+	        applyTo: textContentElements,
+	    },
+	    'text-decoration-fill': {
+	        name: 'text-decoration-fill',
+	        couldBeStyle: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: '',
+	        applyTo: textContentElements,
+	    },
+	    'text-decoration-stroke': {
+	        name: 'text-decoration-stroke',
+	        couldBeStyle: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: '',
+	        applyTo: textContentElements,
+	    },
+	    'text-orientation': {
+	        name: 'text-orientation',
+	        couldBeStyle: true,
+	        inherited: true,
+	        legalValues: [],
+	        initValue: 'mixed',
+	        applyTo: textContentElements,
+	    },
+	    'text-overflow': {
+	        name: 'text-overflow',
+	        couldBeStyle: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'auto',
+	        applyTo: textContentElements,
+	    },
+	    'text-rendering': {
+	        name: 'text-rendering',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'auto',
+	        applyTo: ['text'],
+	    },
+	    'transform': {
+	        name: 'transform',
+	        animatable: true,
+	        couldBeStyle: true,
+	        cantTrans: true,
+	        legalValues: [{
+	                type: 'reg',
+	                value: transformListFullMatch,
+	            }],
+	        initValue: '',
+	        applyTo: useContainerGraphics,
+	    },
+	    'transform-box': {
+	        name: 'transform-box',
+	        couldBeStyle: true,
+	        cantTrans: true,
+	        cantBeAttr: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'border-box',
+	        applyTo: useContainerGraphics,
+	    },
+	    'transform-origin': {
+	        name: 'transform-origin',
+	        animatable: true,
+	        couldBeStyle: true,
+	        cantTrans: true,
+	        maybeSizeNumber: true,
+	        legalValues: [],
+	        initValue: '',
+	        applyTo: useContainerGraphics,
+	    },
+	    'unicode-bidi': {
+	        name: 'unicode-bidi',
+	        couldBeStyle: true,
+	        legalValues: [],
+	        initValue: 'normal',
+	        applyTo: textContentElements,
+	    },
+	    'vector-effect': {
+	        name: 'vector-effect',
+	        couldBeStyle: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'none',
+	        applyTo: ['use'].concat(graphicsElements),
+	    },
+	    'visibility': {
+	        name: 'visibility',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'visible',
+	        applyTo: ['use', 'a'].concat(graphicsElements),
+	    },
+	    'white-space': {
+	        name: 'white-space',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        legalValues: [],
+	        initValue: 'normal',
+	        applyTo: textContentElements,
+	    },
+	    'will-change': {
+	        name: 'will-change',
+	        couldBeStyle: true,
+	        legalValues: [],
+	        initValue: 'auto',
+	        applyTo: useContainerGraphics,
+	    },
+	    'word-spacing': {
+	        name: 'word-spacing',
+	        couldBeStyle: true,
+	        inherited: true,
+	        animatable: true,
+	        maybeSizeNumber: true,
+	        legalValues: [],
+	        initValue: 'normal',
+	        applyTo: textContentElements,
+	    },
+	    'writing-mode': {
+	        name: 'writing-mode',
+	        couldBeStyle: true,
+	        inherited: true,
+	        legalValues: [],
+	        initValue: [{
+	                val: 'lr-tb',
+	                tag: ['text'],
+	            }, {
+	                val: 'horizontal-tb',
+	                tag: ['text'],
+	            }],
+	        applyTo: ['text'],
+	    },
+	};
+	const undefAttr = {
+	    name: '',
+	    isUndef: true,
+	    legalValues: [],
+	    initValue: '',
+	    applyTo: [],
+	};
+	const regularAttr = new Proxy(_regularAttr, {
+	    get(obj, prop) {
+	        return prop in obj ? obj[prop] : undefAttr;
+	    },
+	});
+
+	const useEnum = (e, val) => new RegExp(`^${e}$`).test(val);
+
+	const useReg = (reg, val) => reg.test(val.trim());
+
+	const legalValue = (attrDefine, attr, nodeName = '') => {
+	    if (attrDefine.legalValues.length) {
+	        // 只要有一个规则命中就返回 true
+	        let noMatchRule = true; // 重要！要判断是否有可以用于验证的规则，如果所有规则不适用于验证当前属性，则不应该 return false，而应该 return true
+	        for (const legalRule of attrDefine.legalValues) {
+	            // 当前验证规则可能只适用于某些 tag，legalTag 表示当前规则适用于所有 tag 或当前验证的 tag 在规则匹配列表中
+	            const legalTag = !legalRule.tag || !nodeName || legalRule.tag.includes(nodeName);
+	            if (legalTag) {
+	                noMatchRule = false;
+	                switch (legalRule.type) {
+	                    // 用正则判断
+	                    case 'reg':
+	                        if (useReg(legalRule.value, attr.value)) {
+	                            return true;
+	                        }
+	                        break;
+	                    // 用枚举判断
+	                    case 'enum':
+	                        if (useEnum(legalRule.value, attr.value)) {
+	                            return true;
+	                        }
+	                        break;
+	                    // 值应该是一个属性名，而且不允许循环引用
+	                    case 'attr':
+	                        if (!regularAttr[attr.value].isUndef && attr.fullname !== attr.value) {
+	                            return true;
+	                        }
+	                        break;
+	                    // 值应该是一个特定字符串
+	                    default:
+	                        if (legalRule.value === attr.value) {
+	                            return true;
+	                        }
+	                        break;
+	                }
+	            }
+	        }
+	        return noMatchRule;
+	    }
+	    return !attrDefine.isUndef;
+	};
+
+	const rmCSSNode = (cssNode, plist) => {
+	    const index = plist.indexOf(cssNode);
+	    if (index !== -1) {
+	        plist.splice(index, 1);
+	    }
+	};
+	// 合并多个 style 标签，并将文本节点合并到一个子节点
+	const combineStyle = async (dom) => new Promise(resolve => {
+	    let firstStyle;
+	    let lastChildNode;
+	    const checkCNode = (node) => {
+	        for (let i = 0; i < node.childNodes.length; i++) {
+	            const cNode = node.childNodes[i];
+	            if (cNode.nodeType !== NodeType.Text && cNode.nodeType !== NodeType.CDATA) {
+	                rmNode(cNode);
+	                i--;
+	            }
+	            else {
+	                cNode.textContent = mixWhiteSpace(cNode.textContent.trim());
+	                if (cNode.nodeType === NodeType.Text) {
+	                    cNode.nodeType = NodeType.CDATA;
+	                }
+	                if (!lastChildNode) {
+	                    lastChildNode = cNode;
+	                }
+	                else {
+	                    lastChildNode.textContent += cNode.textContent;
+	                    rmNode(cNode);
+	                    i--;
+	                }
+	            }
+	        }
+	    };
+	    traversalNode(ramda.propEq('nodeName', 'style'), node => {
+	        const type = node.getAttribute('type');
+	        if (type && type !== 'text/css') {
+	            rmNode(node);
+	            return;
+	        }
+	        if (firstStyle) {
+	            checkCNode(node);
+	            rmNode(node);
+	        }
+	        else {
+	            firstStyle = node;
+	            checkCNode(node);
+	        }
+	    }, dom);
+	    const ruleParents = [];
+	    if (firstStyle) {
+	        const childNodes = firstStyle.childNodes;
+	        if (childNodes.length === 0 || !childNodes[0].textContent || !childNodes[0].textContent.replace(/\s/g, '')) { // 如果内容为空，则移除style节点
+	            rmNode(firstStyle);
+	        }
+	        else {
+	            if (!childNodes[0].textContent.includes('<')) { // 如果没有危险代码，则由 CDATA 转为普通文本类型
+	                childNodes[0].nodeType = NodeType.Text;
+	            }
+	            // 解析 stylesheet 并缓存
+	            try {
+	                const parsedCss = css.parse(childNodes[0].textContent);
+	                if (parsedCss.stylesheet) {
+	                    dom.stylesheet = parsedCss;
+	                    dom.styletag = firstStyle;
+	                    traversalObj(ramda.has('type'), (cssNode, parents) => {
+	                        switch (cssNode.type) {
+	                            case 'rule':
+	                            case 'keyframe':
+	                            case 'font-face':
+	                            case 'page': {
+	                                const cssRule = cssNode;
+	                                if (!cssRule.declarations) {
+	                                    rmCSSNode(cssRule, parents[parents.length - 1]);
+	                                    return;
+	                                }
+	                                const declared = {};
+	                                for (let i = cssRule.declarations.length; i--;) {
+	                                    const ruleItem = cssRule.declarations[i];
+	                                    // 1、移除不存在属性名或属性值的项
+	                                    // 2、排重
+	                                    if (!ruleItem.property || !ruleItem.value || declared[ruleItem.property]) {
+	                                        cssRule.declarations.splice(i, 1);
+	                                    }
+	                                    else {
+	                                        declared[ruleItem.property] = true;
+	                                    }
+	                                }
+	                                if (!cssRule.declarations.length) {
+	                                    rmCSSNode(cssRule, parents[parents.length - 1]);
+	                                }
+	                                else {
+	                                    ruleParents.push([cssRule, parents[parents.length - 1]]);
+	                                }
+	                                break;
+	                            }
+	                            case 'keyframes': {
+	                                const keyframes = cssNode;
+	                                if (!keyframes.keyframes || !keyframes.keyframes.length) {
+	                                    rmCSSNode(cssNode, parents[parents.length - 1]);
+	                                }
+	                                break;
+	                            }
+	                            case 'media':
+	                            case 'host':
+	                            case 'supports':
+	                            case 'document': {
+	                                const ruleParent = cssNode;
+	                                if (!ruleParent.rules || !ruleParent.rules.length) {
+	                                    rmCSSNode(cssNode, parents[parents.length - 1]);
+	                                }
+	                                break;
+	                            }
+	                            case 'comment':
+	                                rmCSSNode(cssNode, parents[parents.length - 1]);
+	                                break;
+	                            default:
+	                                break;
+	                        }
+	                    }, parsedCss.stylesheet.rules, true);
+	                }
+	                else {
+	                    rmNode(firstStyle);
+	                }
+	            }
+	            catch (e) {
+	                rmNode(firstStyle);
+	            }
+	        }
+	    }
+	    if (ruleParents.length) {
+	        // (async () => { // tslint:disable-line no-floating-promises
+	        for (const [rule, parent] of ruleParents) {
+	            // 				if (typeof document === 'undefined') { // tslint:disable-line strict-type-predicates
+	            // 					let cssString = 'text,rect{';
+	            // 					rule.declarations.forEach(d => {
+	            // 						cssString += `${d.property}:${d.value};
+	            // `;
+	            // 					});
+	            // 					cssString += '}';
+	            // 					const result = await legalCss(cssString);
+	            // 					if (!result.validity) {
+	            // 						result.errors.forEach(err => {
+	            // 							if (err.type === 'zero') { // 忽略没有单位导致的错误
+	            // 								return;
+	            // 							}
+	            // 							const styleItem = rule.declarations[err.line - 1] as Declaration | undefined;
+	            // 							if (styleItem && err.message.includes(styleItem.property as string)) { // cssValidator 有时候会报错行数，需要确保规则对得上
+	            // 								const styleDefine = regularAttr[styleItem.property as string];
+	            // 								// css 验证失败，还需要进行一次 svg-slimming 的合法性验证，确保没有问题
+	            // 								if (!styleDefine.legalValues.length || !legalValue(styleDefine, {
+	            // 									fullname: styleItem.property as string,
+	            // 									value: styleItem.value as string,
+	            // 									name: '',
+	            // 								})) {
+	            // 									styleItem.value = '';
+	            // 								}
+	            // 							}
+	            // 						});
+	            // 					}
+	            // 				}
+	            // 只做基本验证
+	            rule.declarations.forEach(styleItem => {
+	                const styleDefine = regularAttr[styleItem.property];
+	                if (!legalValue(styleDefine, {
+	                    fullname: styleItem.property,
+	                    value: styleItem.value,
+	                    name: '',
+	                })) {
+	                    styleItem.value = '';
+	                }
+	            });
+	            rule.declarations = rule.declarations.filter(item => !!item.value);
+	            if (!rule.declarations.length) {
+	                rmCSSNode(rule, parent);
+	            }
+	        }
+	        // resolve();
+	        // })();
+	    }
+	    // } else {
+	    resolve();
+	    // }
+	});
+
+	const baseChildren = ['script'].concat(descriptiveElements);
+	const shapeChildren = ['clipPath', 'marker', 'mask', 'style'].concat(animationElements, baseChildren, paintServerElements);
+	const globalChildren = ['a', 'audio', 'canvas', 'clipPath', 'cursor', 'filter', 'foreignObject', 'iframe', 'image', 'marker', 'mask', 'style', 'switch', 'text', 'video', 'view'].concat(animationElements, baseChildren, paintServerElements, shapeElements, structuralElements);
+	const gradientChildren = ['animate', 'animateTransform', 'set', 'stop', 'style'].concat(baseChildren);
+	const feChildren = ['animate', 'set'].concat(baseChildren);
+	const conditionAndCore = conditionalProcessingAttributes.concat(coreAttributes);
+	const shapeAttributes = ['pathLength'].concat(conditionAndCore);
+	const animateAttributes = conditionAndCore.concat(animationAdditionAttributes, animationTimingAttributes, animationValueAttributes);
+	const feAttributes = ['result'].concat(coreAttributes, rectAttributes);
+	const feFuncAttributes = transferFunctionElementAttributes.concat(coreAttributes);
+	// tag define
+	const _regularTag = {
+	    'a': {
+	        containTextNode: true,
+	        legalChildElements: { transparent: true, noself: true, childElements: [] },
+	        ownAttributes: ['href', 'target', 'download', 'rel', 'hreflang', 'type'].concat(conditionAndCore, deprecatedXlinkAttributes),
+	    },
+	    'animate': {
+	        legalChildElements: { childElements: baseChildren },
+	        ownAttributes: ['attributeName'].concat(animateAttributes),
+	        onlyAttr: ['fill'],
+	    },
+	    'animateMotion': {
+	        legalChildElements: { childElements: ['mpath'].concat(baseChildren) },
+	        ownAttributes: ['path', 'keyPoints', 'rotate', 'origin'].concat(animateAttributes),
+	        onlyAttr: ['fill'],
+	    },
+	    'animateTransform': {
+	        legalChildElements: { childElements: baseChildren },
+	        ownAttributes: ['attributeName', 'type'].concat(animateAttributes),
+	        onlyAttr: ['fill'],
+	    },
+	    'audio': {
+	        legalChildElements: { childElements: [] },
+	        ownAttributes: [],
+	    },
+	    'canvas': {
+	        legalChildElements: { childElements: [] },
+	        ownAttributes: [],
+	    },
+	    'circle': {
+	        legalChildElements: { childElements: shapeChildren },
+	        ownAttributes: ['cx', 'cy', 'r'].concat(shapeAttributes),
+	    },
+	    'clipPath': {
+	        legalChildElements: { childElements: ['text', 'use'].concat(baseChildren, animationElements, shapeElements) },
+	        ownAttributes: ['externalResourcesRequired', 'transform', 'clipPathUnits'].concat(conditionAndCore),
+	    },
+	    'defs': {
+	        legalChildElements: { childElements: globalChildren },
+	        ownAttributes: coreAttributes,
+	    },
+	    'desc': {
+	        containTextNode: true,
+	        legalChildElements: { any: true, childElements: [] },
+	        ownAttributes: coreAttributes,
+	    },
+	    'discard': {
+	        legalChildElements: { childElements: baseChildren },
+	        ownAttributes: ['begin', 'href'].concat(conditionAndCore),
+	    },
+	    'ellipse': {
+	        legalChildElements: { childElements: shapeChildren },
+	        ownAttributes: ['cx', 'cy', 'rx', 'ry'].concat(shapeAttributes),
+	    },
+	    'feBlend': {
+	        legalChildElements: { childElements: feChildren },
+	        ownAttributes: ['in', 'in2', 'mode'].concat(feAttributes),
+	    },
+	    'feColorMatrix': {
+	        legalChildElements: { childElements: feChildren },
+	        ownAttributes: ['in', 'type', 'values'].concat(feAttributes),
+	    },
+	    'feComponentTransfer': {
+	        legalChildElements: { childElements: transferFunctionElements.concat(baseChildren) },
+	        ownAttributes: ['in'].concat(feAttributes),
+	    },
+	    'feComposite': {
+	        legalChildElements: { childElements: feChildren },
+	        ownAttributes: ['in', 'in2', 'operator', 'k1', 'k2', 'k3', 'k4'].concat(feAttributes),
+	    },
+	    'feConvolveMatrix': {
+	        legalChildElements: { childElements: feChildren },
+	        ownAttributes: ['in', 'order', 'kernelMatrix', 'divisor', 'bias', 'targetX', 'targetY', 'edgeMode', 'kernelUnitLength', 'preserveAlpha'].concat(feAttributes),
+	    },
+	    'feDiffuseLighting': {
+	        legalChildElements: { childElements: baseChildren.concat(lightSourceElements) },
+	        ownAttributes: ['in', 'surfaceScale', 'diffuseConstant', 'kernelUnitLength'].concat(feAttributes),
+	    },
+	    'feDisplacementMap': {
+	        legalChildElements: { childElements: feChildren },
+	        ownAttributes: ['in', 'in2', 'scale', 'xChannelSelector', 'yChannelSelector'].concat(feAttributes),
+	    },
+	    'feDistantLight': {
+	        legalChildElements: { childElements: feChildren },
+	        ownAttributes: ['azimuth', 'elevation'].concat(coreAttributes),
+	    },
+	    'feFlood': {
+	        legalChildElements: { childElements: feChildren },
+	        ownAttributes: feAttributes,
+	    },
+	    'feFuncA': {
+	        legalChildElements: { childElements: feChildren },
+	        ownAttributes: feFuncAttributes,
+	    },
+	    'feFuncB': {
+	        legalChildElements: { childElements: feChildren },
+	        ownAttributes: feFuncAttributes,
+	    },
+	    'feFuncG': {
+	        legalChildElements: { childElements: feChildren },
+	        ownAttributes: feFuncAttributes,
+	    },
+	    'feFuncR': {
+	        legalChildElements: { childElements: feChildren },
+	        ownAttributes: feFuncAttributes,
+	    },
+	    'feGaussianBlur': {
+	        legalChildElements: { childElements: feChildren },
+	        ownAttributes: ['in', 'stdDeviation', 'edgeMode'].concat(feAttributes),
+	    },
+	    'feImage': {
+	        legalChildElements: { childElements: ['animate', 'animateTransform', 'set'].concat(baseChildren) },
+	        ownAttributes: ['externalResourcesRequired', 'preserveAspectRatio', 'xlink:href', 'href', 'crossorigin'].concat(feAttributes),
+	    },
+	    'feMerge': {
+	        legalChildElements: { childElements: ['feMergeNode'].concat(baseChildren) },
+	        ownAttributes: feAttributes,
+	    },
+	    'feMergeNode': {
+	        legalChildElements: { childElements: feChildren },
+	        ownAttributes: ['in'].concat(coreAttributes),
+	    },
+	    'feMorphology': {
+	        legalChildElements: { childElements: feChildren },
+	        ownAttributes: ['in', 'operator', 'radius'].concat(feAttributes),
+	    },
+	    'feOffset': {
+	        legalChildElements: { childElements: feChildren },
+	        ownAttributes: ['in', 'dx', 'dy'].concat(feAttributes),
+	    },
+	    'fePointLight': {
+	        legalChildElements: { childElements: feChildren },
+	        ownAttributes: ['x', 'y', 'z'].concat(coreAttributes),
+	    },
+	    'feSpecularLighting': {
+	        legalChildElements: { childElements: baseChildren.concat(lightSourceElements) },
+	        ownAttributes: ['in', 'surfaceScale', 'specularConstant', 'specularExponent', 'kernelUnitLength'].concat(feAttributes),
+	    },
+	    'feSpotLight': {
+	        legalChildElements: { childElements: feChildren },
+	        ownAttributes: ['x', 'y', 'z'].concat(coreAttributes),
+	    },
+	    'feTile': {
+	        legalChildElements: { childElements: feChildren },
+	        ownAttributes: ['in'].concat(feAttributes),
+	    },
+	    'feTurbulence': {
+	        legalChildElements: { childElements: feChildren },
+	        ownAttributes: ['baseFrequency', 'numOctaves', 'seed', 'stitchTiles', 'type'].concat(feAttributes),
+	    },
+	    'filter': {
+	        legalChildElements: { childElements: feChildren.concat(filterPrimitiveElements) },
+	        ownAttributes: ['externalResourcesRequired', 'filterUnits', 'primitiveUnits'].concat(coreAttributes, rectAttributes),
+	    },
+	    'foreignObject': {
+	        legalChildElements: { any: true, childElements: [] },
+	        ownAttributes: rectAttributes.concat(conditionAndCore),
+	    },
+	    'g': {
+	        legalChildElements: { childElements: globalChildren },
+	        ownAttributes: conditionAndCore,
+	    },
+	    'iframe': {
+	        legalChildElements: { childElements: [] },
+	        ownAttributes: [],
+	    },
+	    'image': {
+	        legalChildElements: { childElements: ['clipPath', 'mask', 'style'].concat(animationElements, baseChildren) },
+	        ownAttributes: ['preserveAspectRatio', 'href', 'crossorigin'].concat(conditionAndCore, deprecatedXlinkAttributes, rectAttributes),
+	    },
+	    'line': {
+	        legalChildElements: { childElements: shapeChildren },
+	        ownAttributes: ['x1', 'y1', 'x2', 'y2'].concat(shapeAttributes),
+	    },
+	    'linearGradient': {
+	        legalChildElements: { childElements: gradientChildren },
+	        ownAttributes: ['x1', 'y1', 'x2', 'y2', 'gradientUnits', 'gradientTransform', 'spreadMethod', 'href'].concat(coreAttributes, deprecatedXlinkAttributes),
+	    },
+	    'marker': {
+	        legalChildElements: { childElements: globalChildren },
+	        ownAttributes: ['viewBox', 'preserveAspectRatio', 'refX', 'refY', 'markerUnits', 'markerWidth', 'markerHeight', 'orient'].concat(coreAttributes),
+	    },
+	    'mask': {
+	        legalChildElements: { childElements: ['a', 'clipPath', 'cursor', 'filter', 'foreignObject', 'image', 'marker', 'mask', 'pattern', 'style', 'switch', 'view', 'text'].concat(animationElements, baseChildren, shapeElements, structuralElements, gradientElements) },
+	        ownAttributes: ['maskUnits', 'maskContentUnits'].concat(rectAttributes, conditionAndCore),
+	    },
+	    'metadata': {
+	        containTextNode: true,
+	        legalChildElements: { any: true, childElements: [] },
+	        ownAttributes: coreAttributes,
+	    },
+	    'mpath': {
+	        legalChildElements: { childElements: baseChildren },
+	        ownAttributes: ['href'].concat(coreAttributes),
+	    },
+	    'path': {
+	        legalChildElements: { childElements: shapeChildren },
+	        ownAttributes: ['d'].concat(shapeAttributes),
+	    },
+	    'pattern': {
+	        legalChildElements: { childElements: globalChildren },
+	        ownAttributes: ['viewBox', 'preserveAspectRatio', 'patternUnits', 'patternContentUnits', 'patternTransform', 'href'].concat(coreAttributes, deprecatedXlinkAttributes, rectAttributes),
+	    },
+	    'polygon': {
+	        legalChildElements: { childElements: shapeChildren },
+	        ownAttributes: ['points'].concat(shapeAttributes),
+	    },
+	    'polyline': {
+	        legalChildElements: { childElements: shapeChildren },
+	        ownAttributes: ['points'].concat(shapeAttributes),
+	    },
+	    'radialGradient': {
+	        legalChildElements: { childElements: gradientChildren },
+	        ownAttributes: ['cx', 'cy', 'r', 'fx', 'fy', 'fr', 'gradientUnits', 'gradientTransform', 'spreadMethod', 'href'].concat(coreAttributes, deprecatedXlinkAttributes),
+	        onlyAttr: ['cx', 'cy', 'r'],
+	    },
+	    'rect': {
+	        legalChildElements: { childElements: shapeChildren },
+	        ownAttributes: ['rx', 'ry'].concat(rectAttributes, shapeAttributes),
+	    },
+	    'script': {
+	        containTextNode: true,
+	        legalChildElements: { childElements: [] },
+	        ownAttributes: ['type', 'href', 'crossorigin'].concat(coreAttributes, deprecatedXlinkAttributes),
+	    },
+	    'set': {
+	        legalChildElements: { childElements: baseChildren },
+	        ownAttributes: ['to', 'attributeName'].concat(conditionAndCore, animationTimingAttributes),
+	        onlyAttr: ['fill'],
+	    },
+	    'stop': {
+	        legalChildElements: { childElements: ['animate', 'script', 'set', 'style'] },
+	        ownAttributes: ['path', 'offset'].concat(coreAttributes),
+	    },
+	    'style': {
+	        containTextNode: true,
+	        legalChildElements: { childElements: [] },
+	        ownAttributes: ['type', 'media', 'title'].concat(coreAttributes),
+	    },
+	    'svg': {
+	        legalChildElements: { childElements: globalChildren },
+	        ownAttributes: ['viewBox', 'preserveAspectRatio', 'zoomAndPan', 'transform'].concat(conditionAndCore, rectAttributes),
+	        onlyAttr: ['width', 'height'],
+	    },
+	    'switch': {
+	        legalChildElements: { childElements: ['a', 'audio', 'canvas', 'foreignObject', 'g', 'iframe', 'image', 'svg', 'switch', 'text', 'use', 'video'].concat(animationElements, shapeElements) },
+	        ownAttributes: conditionAndCore,
+	    },
+	    'symbol': {
+	        legalChildElements: { childElements: globalChildren },
+	        ownAttributes: ['preserveAspectRatio', 'viewBox', 'refX', 'refY'].concat(coreAttributes, rectAttributes),
+	    },
+	    'text': {
+	        containTextNode: true,
+	        legalChildElements: { childElements: ['a', 'clipPath', 'marker', 'mask', 'style'].concat(animationElements, baseChildren, paintServerElements, textContentChildElements) },
+	        ownAttributes: ['lengthAdjust', 'x', 'y', 'dx', 'dy', 'rotate', 'textLength'].concat(conditionAndCore),
+	        onlyAttr: ['x', 'y'],
+	    },
+	    'textPath': {
+	        containTextNode: true,
+	        legalChildElements: { childElements: ['a', 'animate', 'clipPath', 'marker', 'mask', 'set', 'style', 'tspan'].concat(baseChildren, paintServerElements) },
+	        ownAttributes: ['lengthAdjust', 'textLength', 'path', 'href', 'startOffset', 'method', 'spacing', 'side'].concat(conditionAndCore, deprecatedXlinkAttributes),
+	    },
+	    'title': {
+	        containTextNode: true,
+	        legalChildElements: { any: true, childElements: ['a', 'animate', 'set', 'style', 'tspan'].concat(baseChildren, paintServerElements) },
+	        ownAttributes: coreAttributes,
+	    },
+	    'tspan': {
+	        containTextNode: true,
+	        legalChildElements: { childElements: [] },
+	        ownAttributes: ['lengthAdjust', 'x', 'y', 'dx', 'dy', 'rotate', 'textLength'].concat(conditionAndCore),
+	        onlyAttr: ['x', 'y'],
+	    },
+	    'unknown': {
+	        legalChildElements: { any: true, childElements: [] },
+	        ownAttributes: conditionAndCore,
+	    },
+	    'use': {
+	        legalChildElements: { childElements: ['clipPath', 'mask', 'style'].concat(animationElements, baseChildren) },
+	        ownAttributes: ['href'].concat(rectAttributes, conditionAndCore, deprecatedXlinkAttributes),
+	    },
+	    'video': {
+	        legalChildElements: { childElements: [] },
+	        ownAttributes: [],
+	    },
+	    'view': {
+	        legalChildElements: { childElements: ['style'].concat(animationElements, baseChildren) },
+	        ownAttributes: ['viewBox', 'preserveAspectRatio', 'zoomAndPan'].concat(coreAttributes),
+	    },
+	};
+	const undefTag = {
+	    isUndef: true,
+	    legalChildElements: {},
+	    ownAttributes: [],
+	};
+	const regularTag = new Proxy(_regularTag, {
+	    get(obj, prop) {
+	        return prop in obj ? obj[prop] : undefTag;
+	    },
+	});
+
+	const combineTextNode = async (dom) => new Promise(resolve => {
+	    // 首先移除所有可移除的文本节点，并对文本节点进行冗余空格清理
+	    traversalNode(node => node.nodeType === NodeType.Text || node.nodeType === NodeType.CDATA, node => {
+	        const parentName = node.parentNode && node.parentNode.nodeName;
+	        if (parentName && (regularTag[parentName].isUndef || !regularTag[parentName].containTextNode)) {
+	            rmNode(node);
+	        }
+	        else {
+	            node.textContent = mixWhiteSpace(node.textContent);
+	        }
+	    }, dom);
+	    // 合并相邻的同类型节点
+	    traversalNode(node => !regularTag[node.nodeName].isUndef && regularTag[node.nodeName].containTextNode, node => {
+	        let lastNode;
+	        for (let i = 0; i < node.childNodes.length; i++) {
+	            const childNode = node.childNodes[i];
+	            if (childNode.nodeType === NodeType.Text || childNode.nodeType === NodeType.CDATA) {
+	                if (lastNode) {
+	                    if (lastNode.nodeType === childNode.nodeType) {
+	                        lastNode.textContent = mixWhiteSpace(`${lastNode.textContent}${childNode.textContent}`);
+	                        rmNode(childNode);
+	                        i--;
+	                    }
+	                    else {
+	                        lastNode = childNode;
+	                    }
+	                }
+	                else {
+	                    lastNode = childNode;
+	                }
+	            }
+	        }
+	    }, dom);
+	    resolve();
+	});
+
+	// 移除其它类型的 xml 定义节点和 xml 片段节点
+	const rmUseless = async (dom) => new Promise(resolve => {
+	    traversalNode(ramda.anyPass([ramda.propEq('nodeType', NodeType.OtherSect), ramda.propEq('nodeType', NodeType.OtherDecl)]), rmNode, dom);
+	    resolve();
+	});
+
+	const hasProp = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
+
+	const isTag = ramda.propEq('nodeType', NodeType.Tag);
+
+	const collapseAttributes = (node1, node2) => {
+	    const attrObj = {};
+	    node1.attributes.forEach(attr => {
+	        attrObj[attr.fullname] = attr;
+	    });
+	    node2.attributes.forEach(attr => {
+	        if (hasProp(attrObj, attr.fullname)) {
+	            if (transformAttributes.includes(attr.fullname)) {
+	                attrObj[attr.fullname].value = `${attr.value} ${attrObj[attr.fullname].value}`;
+	            }
+	        }
+	        else {
+	            node1.setAttribute(attr.name, attr.value, attr.namespace);
+	            attrObj[attr.fullname] = attr;
+	        }
+	    });
+	};
+	// 包含某些特定属性，不允许进行塌陷
+	const cantCollapse = (node) => node.attributes.filter(attr => cantCollapseAttributes.includes(attr.fullname)).length;
+	const doCollapse = (dom) => {
+	    traversalNode(ramda.propEq('nodeName', 'g'), node => {
+	        const childNodes = node.childNodes;
+	        const childTags = childNodes.filter(isTag);
+	        if (!childTags.length) {
+	            rmNode(node);
+	        }
+	        else if (!cantCollapse(node)) {
+	            if (childTags.length === 1) { // 只有一个子节点
+	                const childNode = childTags[0];
+	                collapseAttributes(childNode, node);
+	                node.parentNode.replaceChild(node, ...childNodes);
+	            }
+	            else if (!node.attributes.length) { // 没有属性
+	                node.parentNode.replaceChild(node, ...childNodes);
+	            }
+	        }
+	    }, dom);
+	};
+	const collapseG = async (rule, dom) => new Promise(resolve => {
+	    if (rule[0]) {
+	        doCollapse(dom);
+	    }
+	    resolve();
+	});
+
+	const collapseTextwrap = async (rule, dom) => new Promise(resolve => {
+	    if (rule[0]) {
+	        traversalNode(isTag, node => {
+	            const tagDefine = regularTag[node.nodeName];
+	            // 规则执行的前提：文本容器嵌套关系
+	            if (tagDefine.containTextNode && node.parentNode && regularTag[node.parentNode.nodeName].containTextNode) {
+	                for (let i = node.attributes.length; i--;) {
+	                    // 只要有一个非空属性，就不执行塌陷
+	                    if (node.attributes[i].value.trim()) {
+	                        return;
+	                    }
+	                }
+	                node.parentNode.replaceChild(node, ...node.childNodes);
+	            }
+	        }, dom);
+	    }
+	    resolve();
+	});
+
+	const FF = 255;
+	const Hundred = 100;
+	const Hex = 16;
+	const CIRC = 360;
+	const HALF_CIRC = 180;
+	const GRAD = 400;
+	const RAD = Math.PI * 2;
+	const matrixEPos = 4;
+	const HALF = 0.5;
+	const APOS_RX = 0;
+	const APOS_RY = 1;
+	const APOS_ROTATION = 2;
+	const APOS_LARGE = 3;
+	const APOS_SWEEP = 4;
+	const APOS_X = 5;
+	const APOS_Y = 6;
+	const APOS_LEN = 7;
+	const OPACITY_DIGIT = 3; // 浏览器对于颜色的 alpha 值只处理到小数点后第 3 位
+	const DEFAULT_SIZE_DIGIT = 2;
+	const DEFAULT_ACCURATE_DIGIT = 2;
+	const DEFAULT_MATRIX_DIGIT = 3;
+	// path 直线指令
+	const LineTypes = 'LlHhVv';
+
+	const toFixed = ramda.curry((digit, a) => (a < 0 ? -1 : 1) * Math.round(Math.abs(a) * Math.pow(10, digit)) / Math.pow(10, digit));
+
+	// 移除纯小数的前导 0
+	const shortenPureDecimal = (s) => s.replace(/^(-?)0\./, '$1.');
+
+	// 浮点数转百分比
+	const toPercent = (digit, n) => `${toFixed(Math.max(digit - 2, 0), n * Hundred)}%`;
+
+	// 此工具函数用于优化同时可以用小数和百分比表示，并且二者可以互转的值，例如颜色的 alpha 值
+	const shortenAlpha = (digit, s) => {
+	    const perc = shortenPureDecimal(toPercent(digit, s));
+	    const num = shortenPureDecimal(`${toFixed(digit, s)}`);
+	    return perc.length < num.length ? perc : num;
+	};
+
+	// 转换百分比格式字符串为数值
+	const validPercent = (max, n) => Math.round(Math.max(Math.min(Hundred, n), 0) * max / Hundred);
+	// 转换非百分比格式字符串为数值
+	const validNum = (max, n) => Math.max(Math.min(max, Math.round(n)), 0);
+	// 转换字符串为数值
+	const valid = (isPercent, max, n) => isPercent ? validPercent(max, +n) : validNum(max, +n);
+	// 转换透明度数值
+	const validOpacity = (p, n) => Math.max(Math.min(1, p ? +n / Hundred : +n), 0);
+
+	// 缩短函数类字符串，移除其中的空白
+	const shortenFunc = (s) => s.replace(/\s*([,()])\s*/g, '$1');
+
+	const CIRC6 = CIRC / 6;
+	const hsl2rgb = (h, s, l) => {
+	    let _R;
+	    let G;
+	    let B;
+	    let _h = (h % CIRC) / CIRC6;
+	    const C = s * 2 * (l < HALF ? l : 1 - l);
+	    const X = C * (1 - Math.abs(_h % 2 - 1));
+	    _R = G = B = l - C / 2;
+	    _h = ~~_h;
+	    _R += [C, X, 0, 0, X, C][_h];
+	    G += [X, C, C, X, 0, 0][_h];
+	    B += [0, 0, X, C, C, X][_h];
+	    return [validNum(FF, _R * FF), validNum(FF, G * FF), validNum(FF, B * FF)];
+	};
+
+	const keywords = {
+	    'aliceblue': '#f0f8ff',
+	    'antiquewhite': '#faebd7',
+	    'aqua': '#00ffff',
+	    'aquamarine': '#7fffd4',
+	    'azure': '#f0ffff',
+	    'beige': '#f5f5dc',
+	    'bisque': '#ffe4c4',
+	    'black': '#000000',
+	    'blanchedalmond': '#ffebcd',
+	    'blue': '#0000ff',
+	    'blueviolet': '#8a2be2',
+	    'brown': '#a52a2a',
+	    'burlywood': '#deb887',
+	    'cadetblue': '#5f9ea0',
+	    'chartreuse': '#7fff00',
+	    'chocolate': '#d2691e',
+	    'coral': '#ff7f50',
+	    'cornflowerblue': '#6495ed',
+	    'cornsilk': '#fff8dc',
+	    'crimson': '#dc143c',
+	    'cyan': '#00ffff',
+	    'darkblue': '#00008b',
+	    'darkcyan': '#008b8b',
+	    'darkgoldenrod': '#b8860b',
+	    'darkgray': '#a9a9a9',
+	    'darkgreen': '#006400',
+	    'darkgrey': '#a9a9a9',
+	    'darkkhaki': '#bdb76b',
+	    'darkmagenta': '#8b008b',
+	    'darkolivegreen': '#556b2f',
+	    'darkorange': '#ff8c00',
+	    'darkorchid': '#9932cc',
+	    'darkred': '#8b0000',
+	    'darksalmon': '#e9967a',
+	    'darkseagreen': '#8fbc8f',
+	    'darkslateblue': '#483d8b',
+	    'darkslategray': '#2f4f4f',
+	    'darkslategrey': '#2f4f4f',
+	    'darkturquoise': '#00ced1',
+	    'darkviolet': '#9400d3',
+	    'deeppink': '#ff1493',
+	    'deepskyblue': '#00bfff',
+	    'dimgray': '#696969',
+	    'dimgrey': '#696969',
+	    'dodgerblue': '#1e90ff',
+	    'firebrick': '#b22222',
+	    'floralwhite': '#fffaf0',
+	    'forestgreen': '#228b22',
+	    'fuchsia': '#ff00ff',
+	    'gainsboro': '#dcdcdc',
+	    'ghostwhite': '#f8f8ff',
+	    'gold': '#ffd700',
+	    'goldenrod': '#daa520',
+	    'gray': '#808080',
+	    'green': '#008000',
+	    'greenyellow': '#adff2f',
+	    'grey': '#808080',
+	    'honeydew': '#f0fff0',
+	    'hotpink': '#ff69b4',
+	    'indianred': '#cd5c5c',
+	    'indigo': '#4b0082',
+	    'ivory': '#fffff0',
+	    'khaki': '#f0e68c',
+	    'lavender': '#e6e6fa',
+	    'lavenderblush': '#fff0f5',
+	    'lawngreen': '#7cfc00',
+	    'lemonchiffon': '#fffacd',
+	    'lightblue': '#add8e6',
+	    'lightcoral': '#f08080',
+	    'lightcyan': '#e0ffff',
+	    'lightgoldenrodyellow': '#fafad2',
+	    'lightgray': '#d3d3d3',
+	    'lightgreen': '#90ee90',
+	    'lightgrey': '#d3d3d3',
+	    'lightpink': '#ffb6c1',
+	    'lightsalmon': '#ffa07a',
+	    'lightseagreen': '#20b2aa',
+	    'lightskyblue': '#87cefa',
+	    'lightslategray': '#778899',
+	    'lightslategrey': '#778899',
+	    'lightsteelblue': '#b0c4de',
+	    'lightyellow': '#ffffe0',
+	    'lime': '#00ff00',
+	    'limegreen': '#32cd32',
+	    'linen': '#faf0e6',
+	    'magenta': '#ff00ff',
+	    'maroon': '#800000',
+	    'mediumaquamarine': '#66cdaa',
+	    'mediumblue': '#0000cd',
+	    'mediumorchid': '#ba55d3',
+	    'mediumpurple': '#9370db',
+	    'mediumseagreen': '#3cb371',
+	    'mediumslateblue': '#7b68ee',
+	    'mediumspringgreen': '#00fa9a',
+	    'mediumturquoise': '#48d1cc',
+	    'mediumvioletred': '#c71585',
+	    'midnightblue': '#191970',
+	    'mintcream': '#f5fffa',
+	    'mistyrose': '#ffe4e1',
+	    'moccasin': '#ffe4b5',
+	    'navajowhite': '#ffdead',
+	    'navy': '#000080',
+	    'oldlace': '#fdf5e6',
+	    'olive': '#808000',
+	    'olivedrab': '#6b8e23',
+	    'orange': '#ffa500',
+	    'orangered': '#ff4500',
+	    'orchid': '#da70d6',
+	    'palegoldenrod': '#eee8aa',
+	    'palegreen': '#98fb98',
+	    'paleturquoise': '#afeeee',
+	    'palevioletred': '#db7093',
+	    'papayawhip': '#ffefd5',
+	    'peachpuff': '#ffdab9',
+	    'peru': '#cd853f',
+	    'pink': '#ffc0cb',
+	    'plum': '#dda0dd',
+	    'powderblue': '#b0e0e6',
+	    'purple': '#800080',
+	    'rebeccapurple': '#663399',
+	    'red': '#ff0000',
+	    'rosybrown': '#bc8f8f',
+	    'royalblue': '#4169e1',
+	    'saddlebrown': '#8b4513',
+	    'salmon': '#fa8072',
+	    'sandybrown': '#f4a460',
+	    'seagreen': '#2e8b57',
+	    'seashell': '#fff5ee',
+	    'sienna': '#a0522d',
+	    'silver': '#c0c0c0',
+	    'skyblue': '#87ceeb',
+	    'slateblue': '#6a5acd',
+	    'slategray': '#708090',
+	    'slategrey': '#708090',
+	    'snow': '#fffafa',
+	    'springgreen': '#00ff7f',
+	    'steelblue': '#4682b4',
+	    'tan': '#d2b48c',
+	    'teal': '#008080',
+	    'thistle': '#d8bfd8',
+	    'tomato': '#ff6347',
+	    'turquoise': '#40e0d0',
+	    'violet': '#ee82ee',
+	    'wheat': '#f5deb3',
+	    'white': '#ffffff',
+	    'whitesmoke': '#f5f5f5',
+	    'yellow': '#ffff00',
+	    'yellowgreen': '#9acd32',
+	};
+
+	const rgbReg = new RegExp(`^rgba?\\((${numberPattern})(%?),(${numberPattern})\\2,(${numberPattern})\\2(?:,(${numberPattern})(%?))?\\)$`, 'gi');
+	const hslReg = new RegExp(`^hsla?\\((${numberPattern})((?:${angel})?),(${numberPattern})%,(${numberPattern})%(?:,(${numberPattern})(%?))?\\)$`, 'gi');
+	const hexReg = /^#([0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i;
+	const alphaMap = {
+	    '255': 100,
+	    '252': 99,
+	    '250': 98,
+	    '247': 97,
+	    '245': 96,
+	    '242': 95,
+	    '240': 94,
+	    '237': 93,
+	    '235': 92,
+	    '232': 91,
+	    '230': 90,
+	    '227': 89,
+	    '224': 88,
+	    '222': 87,
+	    '219': 86,
+	    '217': 85,
+	    '214': 84,
+	    '212': 83,
+	    '209': 82,
+	    '207': 81,
+	    '204': 80,
+	    '201': 79,
+	    '199': 78,
+	    '196': 77,
+	    '194': 76,
+	    '191': 75,
+	    '189': 74,
+	    '186': 73,
+	    '184': 72,
+	    '181': 71,
+	    '179': 70,
+	    '176': 69,
+	    '173': 68,
+	    '171': 67,
+	    '168': 66,
+	    '166': 65,
+	    '163': 64,
+	    '161': 63,
+	    '158': 62,
+	    '156': 61,
+	    '153': 60,
+	    '150': 59,
+	    '148': 58,
+	    '145': 57,
+	    '143': 56,
+	    '140': 55,
+	    '138': 54,
+	    '135': 53,
+	    '133': 52,
+	    '130': 51,
+	    '128': 50,
+	    '125': 49,
+	    '122': 48,
+	    '120': 47,
+	    '117': 46,
+	    '115': 45,
+	    '112': 44,
+	    '110': 43,
+	    '107': 42,
+	    '105': 41,
+	    '102': 40,
+	    '99': 39,
+	    '97': 38,
+	    '94': 37,
+	    '92': 36,
+	    '89': 35,
+	    '87': 34,
+	    '84': 33,
+	    '82': 32,
+	    '79': 31,
+	    '77': 30,
+	    '74': 29,
+	    '71': 28,
+	    '69': 27,
+	    '66': 26,
+	    '64': 25,
+	    '61': 24,
+	    '59': 23,
+	    '56': 22,
+	    '54': 21,
+	    '51': 20,
+	    '48': 19,
+	    '46': 18,
+	    '43': 17,
+	    '41': 16,
+	    '38': 15,
+	    '36': 14,
+	    '33': 13,
+	    '31': 12,
+	    '28': 11,
+	    '26': 10,
+	    '23': 9,
+	    '20': 8,
+	    '18': 7,
+	    '15': 6,
+	    '13': 5,
+	    '10': 4,
+	    '8': 3,
+	    '5': 2,
+	    '3': 1,
+	    '0': 0,
+	};
+	const execColor = (color, digit = OPACITY_DIGIT) => {
+	    // 首先对原始字符串进行基本的格式处理和类型转换
+	    let _color = color.trim();
+	    if (hasProp(keywords, _color)) {
+	        // 关键字转为 16 位色
+	        _color = keywords[_color];
+	    }
+	    else if (/^(?:rgb|hsl)a?\s*\(/.test(_color)) {
+	        // 缩短函数类
+	        _color = shortenFunc(_color);
+	    }
+	    const result = {
+	        r: 0,
+	        g: 0,
+	        b: 0,
+	        a: 1,
+	        origin: _color,
+	        valid: true,
+	    };
+	    // 16 位色直接解析
+	    const hexMatch = _color.match(hexReg);
+	    if (hexMatch) {
+	        const hex = hexMatch[1];
+	        switch (hex.length) {
+	            case 3:
+	                result.r = parseInt(`0x${hex[0]}${hex[0]}`, Hex);
+	                result.g = parseInt(`0x${hex[1]}${hex[1]}`, Hex);
+	                result.b = parseInt(`0x${hex[2]}${hex[2]}`, Hex);
+	                break;
+	            case 4: {
+	                result.r = parseInt(`0x${hex[0]}${hex[0]}`, Hex);
+	                result.g = parseInt(`0x${hex[1]}${hex[1]}`, Hex);
+	                result.b = parseInt(`0x${hex[2]}${hex[2]}`, Hex);
+	                const alpha4 = parseInt(`0x${hex[3]}${hex[3]}`, Hex);
+	                result.a = ramda.has(`${alpha4}`, alphaMap) ? alphaMap[`${alpha4}`] / Hundred : alpha4 / FF;
+	                break;
+	            }
+	            case 8: {
+	                result.r = parseInt(`0x${hex[0]}${hex[1]}`, Hex);
+	                result.g = parseInt(`0x${hex[2]}${hex[3]}`, Hex);
+	                result.b = parseInt(`0x${hex[4]}${hex[5]}`, Hex);
+	                const alpha8 = parseInt(`0x${hex[6]}${hex[7]}`, Hex);
+	                result.a = ramda.has(`${alpha8}`, alphaMap) ? alphaMap[`${alpha8}`] / Hundred : alpha8 / FF;
+	                break;
+	            }
+	            default:
+	                result.r = parseInt(`0x${hex[0]}${hex[1]}`, Hex);
+	                result.g = parseInt(`0x${hex[2]}${hex[3]}`, Hex);
+	                result.b = parseInt(`0x${hex[4]}${hex[5]}`, Hex);
+	                break;
+	        }
+	        return result;
+	    }
+	    // rgb/rgba/hsl/hsla 解析
+	    rgbReg.lastIndex = 0; // 重置正则表达式匹配位置
+	    const rgbMatch = rgbReg.exec(_color);
+	    if (rgbMatch) {
+	        result.r = valid(rgbMatch[2], FF, rgbMatch[1]);
+	        result.g = valid(rgbMatch[2], FF, rgbMatch[3]);
+	        result.b = valid(rgbMatch[2], FF, rgbMatch[4]);
+	        if (rgbMatch[5]) {
+	            result.a = validOpacity(rgbMatch[6], rgbMatch[5]);
+	        }
+	        return result;
+	    }
+	    hslReg.lastIndex = 0;
+	    const hslMatch = hslReg.exec(_color);
+	    if (hslMatch) {
+	        let hue;
+	        switch (hslMatch[2].toLowerCase()) {
+	            case 'grad':
+	                hue = +hslMatch[1] * CIRC / GRAD;
+	                break;
+	            case 'rad':
+	                hue = +hslMatch[1] * CIRC / RAD;
+	                break;
+	            case 'turn':
+	                hue = +hslMatch[1] * CIRC;
+	                break;
+	            default: // deg 和纯数值都按照 360 解析
+	                hue = +hslMatch[1];
+	                break;
+	        }
+	        [result.r, result.g, result.b] = hsl2rgb(hue, +hslMatch[3] / Hundred, +hslMatch[4] / Hundred);
+	        if (hslMatch[5]) {
+	            // 考虑到转来转去可能和原始字符串不同，保留一份缩短后的 hsl 原始字符串
+	            result.a = validOpacity(hslMatch[6], hslMatch[5]);
+	            result.origin = `hsl(${validNum(CIRC, hue)},${validNum(Hundred, +hslMatch[3])}%,${validNum(Hundred, +hslMatch[4])}%,${shortenAlpha(digit, result.a)})`;
+	        }
+	        return result;
+	    }
+	    if (_color === 'transparent') {
+	        result.a = 0;
+	        return result;
+	    }
+	    result.valid = false;
+	    return result;
+	};
+
+	const alphaReg = new RegExp(`^(${numberPattern})(%?)$`);
+	// 解析 opacity 类型的值，成功解析返回 0~1 之间的数值，无法解析则返回原始字符串
+	const execAlpha = (s) => {
+	    const alpha = alphaReg.exec(s);
+	    if (alpha) {
+	        return validOpacity(alpha[2], alpha[1]);
+	    }
+	    return s;
+	};
+
+	const cssReg = /([^:;]+):((?:[^;'"]*?(?:(?:'[^']*?'|"[^"]*?"|\/\*.*?\*\/))*[^;'"]*?)*)(?=;|$)/gim;
+	const execStyle = (styleStr) => {
+	    // 此处使用数组，因为不能在解析器中排重，排重的工作要交给优化工具
+	    const style = [];
+	    const str = he.decode(styleStr, {
+	        isAttributeValue: true,
+	    });
+	    // 重置正则
+	    cssReg.lastIndex = 0;
+	    let match = cssReg.exec(str);
+	    while (match !== null) {
+	        // 去除前导注释和空格
+	        const name = match[1].replace(/^(?:\s*\/\*.+?\*\/\s*)*/g, '').trim().replace(/\s/g, '');
+	        // 去除两端注释和冗余空格
+	        const value = match[2].replace(/^(?:\s*\/\*.+?\*\/\s*)*|(?:\s*\/\*.+?\*\/\s*)*$/g, '').trim().replace(/\s+/, ' ');
+	        // 只保留非空
+	        if (name && value) {
+	            style.push({
+	                fullname: name,
+	                name,
+	                value,
+	            });
+	        }
+	        match = cssReg.exec(str);
+	    }
+	    return style;
+	};
+
+	// 用于验证的正则表达式
+	// css 选择器相关字符
+	const idChar = '#[^#\\.\\[\\*:\\s]+';
+	const classChar = '\\.[^#\\.\\[\\*:\\s]+';
+	// tslint:disable-next-line
+	const attrChar = '\\[[a-zA-Z][a-zA-Z0-9\\-]*(?:[\\|\\^\\$\\*~]?=(?:\'[^\']*\'|"[^"]*"|[^\'"\\]]+))?\\]';
+	const pseudoChar = '\\:{1,2}[a-zA-Z-]+(?:\\((?:[^\\)]+|[^\\(]+\\([^\\)]+\\))\\))?';
+
+	// 选择器混合字符，不含后代选择器（空格）
+	var selectorUnitCombinator;
+	(function (selectorUnitCombinator) {
+	    selectorUnitCombinator[selectorUnitCombinator[">"] = 1] = ">";
+	    selectorUnitCombinator[selectorUnitCombinator["+"] = 2] = "+";
+	    selectorUnitCombinator[selectorUnitCombinator["~"] = 3] = "~";
+	})(selectorUnitCombinator || (selectorUnitCombinator = {}));
+	// 属性选择器等号修饰符
+	var attrModifier;
+	(function (attrModifier) {
+	    attrModifier[attrModifier["^"] = 1] = "^";
+	    attrModifier[attrModifier["$"] = 2] = "$";
+	    attrModifier[attrModifier["~"] = 3] = "~";
+	    attrModifier[attrModifier["|"] = 4] = "|";
+	    attrModifier[attrModifier["*"] = 5] = "*";
+	})(attrModifier || (attrModifier = {}));
+
+	const execSelector = (selector) => {
+	    const selectors = [];
+	    const selectorUnitReg = new RegExp(`^([^\\s>+~#\\.\\[:]+|\\*)?((?:${idChar}|${classChar}|${attrChar}|${pseudoChar})*)([\\s>+~]+|$)`);
+	    let selectorStr = selector;
+	    let selectorExec = selectorUnitReg.exec(selectorStr);
+	    while (selectorExec && selectorExec[0].length) {
+	        const selectorUnit = { id: [], class: [], attr: [], pseudo: [] };
+	        if (selectorExec[1]) {
+	            if (selectorExec[1] === '*') {
+	                selectorUnit.universal = true;
+	            }
+	            else {
+	                selectorUnit.type = selectorExec[1];
+	            }
+	        }
+	        if (selectorExec[2]) {
+	            let specialStr = selectorExec[2];
+	            const specialReg = new RegExp(`^(?:${idChar}|${classChar}|${attrChar}|${pseudoChar})`);
+	            let specialExec = specialReg.exec(specialStr);
+	            while (specialExec) {
+	                switch (specialExec[0][0]) {
+	                    case '.': // class 选择器
+	                        selectorUnit.class.push(specialExec[0].slice(1));
+	                        break;
+	                    case '[': { // 属性选择器
+	                        const attrStr = specialExec[0].slice(1, -1);
+	                        const eqIndex = attrStr.indexOf('=');
+	                        if (eqIndex === -1) {
+	                            // 没有等号的情况
+	                            selectorUnit.attr.push({
+	                                key: attrStr,
+	                            });
+	                        }
+	                        else {
+	                            // 取出等号修饰符
+	                            // tslint:disable-next-line strict-type-predicates
+	                            if (typeof attrModifier[attrStr[eqIndex - 1]] === 'number') {
+	                                selectorUnit.attr.push({
+	                                    key: attrStr.slice(0, eqIndex - 1),
+	                                    modifier: attrModifier[attrStr[eqIndex - 1]],
+	                                    value: attrStr.slice(eqIndex + 1),
+	                                });
+	                            }
+	                            else {
+	                                selectorUnit.attr.push({
+	                                    key: attrStr.slice(0, eqIndex),
+	                                    value: attrStr.slice(eqIndex + 1),
+	                                });
+	                            }
+	                        }
+	                        break;
+	                    }
+	                    case ':': { // 伪类，伪元素
+	                        const isClass = specialExec[0][1] !== ':';
+	                        const pseudoStr = specialExec[0].replace(/^:+/, '');
+	                        const parenIndex = pseudoStr.indexOf('(');
+	                        if (parenIndex === -1) {
+	                            // 不是函数型伪类
+	                            selectorUnit.pseudo.push({
+	                                func: pseudoStr,
+	                                isClass,
+	                            });
+	                        }
+	                        else {
+	                            selectorUnit.pseudo.push({
+	                                func: pseudoStr.slice(0, parenIndex),
+	                                value: pseudoStr.slice(parenIndex + 1, -1),
+	                                isClass,
+	                            });
+	                        }
+	                        break;
+	                    }
+	                    default: // id 选择器
+	                        selectorUnit.id.push(specialExec[0].slice(1));
+	                        break;
+	                }
+	                specialStr = specialStr.slice(specialExec[0].length);
+	                specialExec = specialReg.exec(specialStr);
+	            }
+	        }
+	        if (selectorExec[3]) {
+	            const combinator = selectorExec[3].trim();
+	            // tslint:disable-next-line strict-type-predicates
+	            if (typeof selectorUnitCombinator[combinator] === 'number') {
+	                selectorUnit.combinator = selectorUnitCombinator[combinator];
+	            }
+	        }
+	        selectors.push(selectorUnit);
+	        selectorStr = selectorStr.slice(selectorExec[0].length);
+	        selectorExec = selectorUnitReg.exec(selectorStr);
+	    }
+	    return selectors;
+	};
+
+	const getSelectorPriority = (seletors) => {
+	    const priority = {
+	        id: 0,
+	        class: 0,
+	        tag: 0,
+	    };
+	    seletors.forEach(seletor => {
+	        priority.id += seletor.id.length;
+	        priority.class += seletor.class.length + seletor.pseudo.length + seletor.attr.length;
+	        priority.tag += seletor.type ? 1 : 0;
+	    });
+	    return priority;
+	};
+	const overrideAble = (priority1, priority2) => {
+	    if (priority1.id !== priority2.id) {
+	        return priority1.id > priority2.id;
+	    }
+	    else if (priority1.class !== priority2.class) {
+	        return priority1.class > priority2.class;
+	    }
+	    else if (priority1.tag !== priority2.tag) {
+	        return priority1.tag > priority2.tag;
+	    }
+	    return true;
+	};
+
+	const getById = (idStr, dom) => {
+	    let result;
+	    traversalNode(n => idStr === `#${n.getAttribute('id')}`, (n) => {
+	        if (!result) {
+	            result = n;
+	        }
+	    }, dom);
+	    return result;
+	};
+
+	// 验证 className
+	const checkClass = (node, selector) => {
+	    const className = node.getAttribute('class');
+	    let classNames = [];
+	    if (className) {
+	        classNames = className.trim().split(/\s+/);
+	    }
+	    for (let ci = selector.class.length; ci--;) {
+	        if (!classNames.includes(selector.class[ci])) {
+	            return false;
+	        }
+	    }
+	    return true;
+	};
+	// 验证 ID
+	const checkID = (node, selector) => {
+	    let id = node.getAttribute('id');
+	    if (id) {
+	        id = id.trim();
+	    }
+	    for (let i = selector.id.length; i--;) {
+	        if (id !== selector.id[i]) {
+	            return false;
+	        }
+	    }
+	    return true;
+	};
+	// 验证属性
+	const checkAttr = (node, selector) => {
+	    for (let ai = selector.attr.length; ai--;) {
+	        const attrSelector = selector.attr[ai];
+	        let attr = node.getAttribute(attrSelector.key);
+	        if (attr === null) {
+	            return false;
+	        }
+	        else if (attrSelector.value) {
+	            // 属性值大小写不敏感
+	            attr = attr.trim().toLowerCase();
+	            switch (attrSelector.modifier) {
+	                // 开始字符匹配
+	                case attrModifier['^']:
+	                    if (attr.indexOf(attrSelector.value) !== 0) {
+	                        return false;
+	                    }
+	                    break;
+	                // 结尾字符匹配
+	                // tslint:disable-next-line:no-string-literal
+	                case attrModifier['$']:
+	                    if (attr.lastIndexOf(attrSelector.value) !== attr.length - attrSelector.value.length) {
+	                        return false;
+	                    }
+	                    break;
+	                // 空格分组字符匹配
+	                case attrModifier['~']:
+	                    if (!attr.split(/\s+/).includes(attrSelector.value)) {
+	                        return false;
+	                    }
+	                    break;
+	                // 前缀字符匹配
+	                case attrModifier['|']:
+	                    if (attr !== attrSelector.value && attr.indexOf(`${attrSelector.value}-`) !== 0) {
+	                        return false;
+	                    }
+	                    break;
+	                // 模糊匹配
+	                case attrModifier['*']:
+	                    if (!attr.includes(attrSelector.value)) {
+	                        return false;
+	                    }
+	                    break;
+	                // 默认全字匹配
+	                default:
+	                    if (attr !== attrSelector.value) {
+	                        return false;
+	                    }
+	                    break;
+	            }
+	        }
+	    }
+	    return true;
+	};
+	// 验证伪类和伪元素
+	// 根据 SVG 标准只验证 CSS 2.1 规范的伪类和伪元素
+	// https://www.w3.org/TR/SVG2/styling.html#RequiredCSSFeatures
+	const checkPseudo = (node, selector) => {
+	    for (let pi = selector.pseudo.length; pi--;) {
+	        const pseudoSelector = selector.pseudo[pi];
+	        if (!validPseudoClass.includes(pseudoSelector.func) && !validPseudoElement.includes(pseudoSelector.func)) {
+	            return false;
+	        }
+	        // 命中伪元素，需要验证作用域链上是否存在文本节点 text
+	        if (validPseudoElement.includes(pseudoSelector.func)) {
+	            let hasText = false;
+	            if (node.nodeName === 'text') {
+	                hasText = true;
+	            }
+	            else {
+	                traversalNode(isTag, (n) => {
+	                    if (n.nodeName === 'text') {
+	                        hasText = true;
+	                    }
+	                }, node);
+	            }
+	            if (!hasText) {
+	                return false;
+	            }
+	        }
+	    }
+	    return true;
+	};
+	// 验证 selector 和 node 是否匹配
+	const matchSelector = (selector) => (node) => {
+	    if (!selector || !node) {
+	        return false;
+	    }
+	    // 如果存在标签，则标签必须符合
+	    if (selector.type && selector.type !== node.nodeName) {
+	        return false;
+	    }
+	    // 如果存在 class 选择器，则每个 class 都要匹配
+	    if (selector.class.length) {
+	        if (!checkClass(node, selector)) {
+	            return false;
+	        }
+	    }
+	    // 如果存在 id 选择器，则每个 id 都要匹配
+	    if (selector.id.length) {
+	        if (!checkID(node, selector)) {
+	            return false;
+	        }
+	    }
+	    if (selector.attr.length) {
+	        if (!checkAttr(node, selector)) {
+	            return false;
+	        }
+	    }
+	    if (selector.pseudo.length) {
+	        if (!checkPseudo(node, selector)) {
+	            return false;
+	        }
+	    }
+	    return true;
+	};
+
+	// 类似 querySelectorAll 的规则，找到所有符合条件的元素
+	const getBySelector = (dom, selectors) => {
+	    const len = selectors.length;
+	    const result = [];
+	    traversalNode(ramda.both(isTag, matchSelector(selectors[len - 1])), node => {
+	        let i = len - 2;
+	        let currentNode = node;
+	        while (i >= 0) {
+	            const matchI = matchSelector(selectors[i]);
+	            switch (selectors[i].combinator) {
+	                // 子选择器
+	                case selectorUnitCombinator['>']:
+	                    if (currentNode.parentNode) {
+	                        if (!matchI(currentNode.parentNode)) {
+	                            return;
+	                        }
+	                        currentNode = currentNode.parentNode;
+	                        break;
+	                    }
+	                    return;
+	                // 相邻兄弟选择器
+	                case selectorUnitCombinator['+']:
+	                    if (currentNode.parentNode) {
+	                        const brothers = currentNode.parentNode.childNodes;
+	                        const index = brothers.indexOf(currentNode);
+	                        if (index <= 0 || !matchI(brothers[index - 1])) {
+	                            return;
+	                        }
+	                        currentNode = brothers[index - 1];
+	                        break;
+	                    }
+	                    return;
+	                // 兄弟选择器
+	                case selectorUnitCombinator['~']:
+	                    if (currentNode.parentNode) {
+	                        const _brothers = currentNode.parentNode.childNodes;
+	                        const _index = _brothers.indexOf(currentNode);
+	                        if (_index <= 0) {
+	                            return;
+	                        }
+	                        let _brother;
+	                        for (let bi = _index; bi--;) {
+	                            _brother = _brothers[bi];
+	                            if (matchI(_brother)) {
+	                                currentNode = _brother;
+	                                break;
+	                            }
+	                        }
+	                        if (currentNode !== _brother) {
+	                            return;
+	                        }
+	                        break;
+	                    }
+	                    return;
+	                // 后代选择器
+	                default: {
+	                    let parent = currentNode.parentNode;
+	                    while (parent) {
+	                        if (matchI(parent)) {
+	                            currentNode = parent;
+	                            break;
+	                        }
+	                        parent = parent.parentNode;
+	                    }
+	                    if (currentNode !== parent) {
+	                        return;
+	                    }
+	                    break;
+	                }
+	            }
+	            i--;
+	        }
+	        result.push(node);
+	    }, dom);
+	    return result;
+	};
+
+	const check = (dom, styleItems) => {
+	    traversalNode(isTag, node => {
+	        let nodeStyle = {};
+	        if (node.styles) {
+	            nodeStyle = node.styles;
+	        }
+	        else {
+	            node.styles = nodeStyle;
+	        }
+	        // 可能有 xlink 引用，css 样式会影响到 xlink 引用的节点
+	        let xlinkObj;
+	        node.attributes.forEach(attr => {
+	            if (attr.fullname === 'style') {
+	                // 行内样式优先级最高
+	                const styles = execStyle(attr.value);
+	                styles.forEach(style => {
+	                    nodeStyle[style.name] = {
+	                        value: style.value,
+	                        from: 'inline',
+	                    };
+	                });
+	            }
+	            else if (attr.name === 'href') {
+	                // 获取 xlink 引用
+	                xlinkObj = getById(node.getAttribute(attr.fullname), dom);
+	            }
+	            else if (regularAttr[attr.fullname].couldBeStyle) {
+	                // 属性优先级最低，但可以覆盖继承
+	                const styleDefine = nodeStyle[attr.fullname];
+	                // tslint:disable-next-line
+	                if (!styleDefine || styleDefine.from === 'inherit') {
+	                    nodeStyle[attr.fullname] = {
+	                        value: attr.value,
+	                        from: 'attr',
+	                    };
+	                }
+	            }
+	        });
+	        // 判断 style 标签内的样式，优先级高于 attr 和 inehrit
+	        styleItems.forEach(styleItem => {
+	            if (styleItem.nodes.includes(node)) {
+	                styleItem.styles.forEach(style => {
+	                    const styleDefine = nodeStyle[style.name];
+	                    // tslint:disable-next-line
+	                    if (!styleDefine || styleDefine.from === 'attr' || styleDefine.from === 'inherit' || (styleDefine.from === 'styletag' && styleDefine.selectorPriority && overrideAble(styleItem.selectorPriority, styleDefine.selectorPriority))) {
+	                        nodeStyle[style.name] = {
+	                            value: style.value,
+	                            from: 'styletag',
+	                            selectorPriority: styleItem.selectorPriority,
+	                        };
+	                    }
+	                });
+	            }
+	        });
+	        const parentNode = node.parentNode;
+	        if (parentNode && parentNode.styles) {
+	            // 可能从父元素继承的样式
+	            Object.keys(parentNode.styles).forEach(key => {
+	                if (!hasProp(nodeStyle, key) && regularAttr[key].inherited) {
+	                    nodeStyle[key] = {
+	                        value: parentNode.styles[key].value,
+	                        from: 'inherit',
+	                    };
+	                }
+	            });
+	        }
+	        if (xlinkObj) {
+	            let styleObj = {};
+	            if (xlinkObj.styles) {
+	                styleObj = xlinkObj.styles;
+	            }
+	            else {
+	                xlinkObj.styles = styleObj;
+	            }
+	            Object.keys(nodeStyle).forEach(key => {
+	                if (!hasProp(styleObj, key)) {
+	                    styleObj[key] = {
+	                        value: nodeStyle[key].value,
+	                        from: 'inherit',
+	                    };
+	                }
+	            });
+	        }
+	    }, dom);
+	};
+	// 解析样式树，为每个节点增加 styles 属性，标记当前节点生效的样式信息
+	const execStyleTree = (dom) => {
+	    // 首先清理掉曾经被解析过的样式树
+	    traversalNode(isTag, node => {
+	        if (node.styles) {
+	            delete node.styles;
+	        }
+	    }, dom);
+	    const styleItems = [];
+	    // 记录 stylesheet 选择器权重和影响到的节点
+	    if (dom.stylesheet) {
+	        dom.stylesheet.stylesheet.rules.forEach((styleRule) => {
+	            // 只针对规则类
+	            if (styleRule.type === 'rule' && styleRule.declarations && styleRule.selectors) {
+	                const styles = [];
+	                styleRule.declarations.forEach((ruleItem) => {
+	                    if (ruleItem.property && ruleItem.value) {
+	                        styles.push({
+	                            name: ruleItem.property,
+	                            fullname: ruleItem.property,
+	                            value: ruleItem.value,
+	                        });
+	                    }
+	                });
+	                for (let si = styleRule.selectors.length; si--;) {
+	                    const selector = execSelector(styleRule.selectors[si]);
+	                    const selectorPriority = getSelectorPriority(selector);
+	                    const nodes = getBySelector(dom, selector);
+	                    if (nodes.length) {
+	                        styleItems.push({
+	                            styles,
+	                            selectorPriority,
+	                            nodes,
+	                        });
+	                    }
+	                }
+	            }
+	        });
+	    }
+	    check(dom, styleItems);
+	};
+
+	// 获取属性（根据 SVG 覆盖规则，css 优先）
+	const getAttr = (node, key, defaultVal) => {
+	    let val = defaultVal;
+	    const styles = node.styles;
+	    if (hasProp(styles, key)) {
+	        val = styles[key].value;
+	    }
+	    return val;
+	};
+
+	// 合并属性和样式完全相同的路径
+	// // TODO 验证路径是否相交
+	// const checkPath = (str: string) => {
+	// 	const paths: number[][] = [];
+	// 	const pathItems = doCompute(execPath(str));
+	// 	let verify = true;
+	// 	let currentPath: number[] = [];
+	// 	pathItems.every(item => {
+	// 		switch (item.type) {
+	// 			// 平移 - 绝对
+	// 			case 'M':
+	// 				currentPath = [item.val[0], item.val[1]];
+	// 				paths.push(currentPath);
+	// 				return true;
+	// 			case 'm':
+	// 				currentPath = [plus(item.from[0], item.val[0]), plus(item.from[1], item.val[1])];
+	// 				paths.push(currentPath);
+	// 				return true;
+	// 			case 'Z':
+	// 			case 'z':
+	// 				currentPath.push(currentPath[0], currentPath[1]);
+	// 				return true;
+	// 			// 水平直线 - 绝对
+	// 			case 'H':
+	// 				item.val.forEach(val => {
+	// 					currentPath.push(val, item.from[1]);
+	// 				});
+	// 				return true;
+	// 			// 水平直线 - 相对
+	// 			case 'h':
+	// 				item.val.reduce((accumulator, val) => {
+	// 					currentPath.push(plus(val, accumulator), item.from[1]);
+	// 					return plus(val, accumulator);
+	// 				}, item.from[0]);
+	// 				return true;
+	// 			// 垂直直线 - 绝对
+	// 			case 'V':
+	// 				item.val.forEach(val => {
+	// 					currentPath.push(item.from[0], val);
+	// 				});
+	// 				return true;
+	// 			// 垂直直线 - 相对
+	// 			case 'v':
+	// 				item.val.reduce((accumulator, val) => {
+	// 					currentPath.push(item.from[0], plus(val, accumulator));
+	// 					return plus(val, accumulator);
+	// 				}, item.from[1]);
+	// 				return true;
+	// 			// 直线 - 绝对
+	// 			case 'L':
+	// 				currentPath.push(...item.val);
+	// 				return true;
+	// 			// 直线 - 相对
+	// 			case 'l':
+	// 				currentPath.reduce((accumulator, val, index) => {
+	// 					currentPath.push(plus(accumulator[index % 2], val));
+	// 					return [plus(accumulator[0], val * (1 - (index % 2))), plus(accumulator[1], val * (index % 2))];
+	// 				}, item.from);
+	// 				return true;
+	// 			default:
+	// 				verify = false;
+	// 				return false;
+	// 		}
+	// 	});
+	// 	return {
+	// 		verify,
+	// 		paths
+	// 	};
+	// }
+	// const noJoin = (attr1: string, attr2: string): boolean => {
+	// 	const checkResult1 = checkPath(attr1);
+	// 	const checkResult2 = checkPath(attr2);
+	// 	if (checkResult1.verify && checkResult2.verify) {
+	// 		// TODO： 验证碰撞
+	// 	}
+	// 	return true;
+	// }
+	const canbeCombine = (node1, node2, attr, combineFill, combineOpacity) => {
+	    // 不能存在任何子节点
+	    if (node1.childNodes.length || node2.childNodes.length) {
+	        return false;
+	    }
+	    // 有 marker 引用不能进行合并
+	    const hasMarker = getAttr(node1, 'marker-start', 'none') !== 'none' || getAttr(node1, 'marker-mid', 'none') !== 'none' || getAttr(node1, 'marker-end', 'none') !== 'none';
+	    if (hasMarker) {
+	        return false;
+	    }
+	    const styles = node1.styles;
+	    const noOpacity = !hasProp(styles, 'opacity') || execAlpha(styles.opacity.value) === 1;
+	    const noStrokeOpacity = execColor(hasProp(styles, 'stroke') ? styles.stroke.value : '').a === 1 && (!hasProp(styles, 'stroke-opacity') || execAlpha(styles['stroke-opacity'].value) === 1);
+	    const noFillOpacity = execColor(hasProp(styles, 'fill') ? styles.fill.value : '').a === 1 && (!hasProp(styles, 'fill-opacity') || execAlpha(styles['fill-opacity'].value) === 1);
+	    // fill 为空
+	    const noFill = hasProp(styles, 'fill') && styles.fill.value === 'none' && (combineOpacity || (noOpacity && noStrokeOpacity));
+	    // 填充规则不能是 evenodd 必须是 nonzero
+	    const noEvenOdd = !hasProp(styles, 'fill-rule') || styles['fill-rule'].value !== 'evenodd';
+	    // stroke 为空
+	    const noStroke = (!hasProp(styles, 'stroke') || styles.stroke.value === 'none') && (combineOpacity || (noOpacity && noFillOpacity));
+	    return noFill || (combineFill && noStroke && noEvenOdd) /* || noJoin(attr.value, node2.getAttribute('d'))*/;
+	};
+	const getKey = (node) => {
+	    const keyObj = {
+	        attr: '',
+	        inline: '',
+	        styletag: '',
+	        inherit: '',
+	    };
+	    const styles = node.styles;
+	    Object.keys(styles).forEach(key => {
+	        const define = styles[key];
+	        keyObj[define.from] += `${key}=${define.value}&`;
+	    });
+	    return `attr:${keyObj.attr}|inline:${keyObj.inline}|styletag:${keyObj.styletag}|inherit:${keyObj.inherit}`;
+	};
+	const combinePath = async (rule, dom) => new Promise(resolve => {
+	    if (rule[0]) {
+	        const { disregardFill, disregardOpacity, } = rule[1];
+	        execStyleTree(dom);
+	        traversalNode(isTag, node => {
+	            const pathChildren = {};
+	            let tagIndex = 0;
+	            for (let i = 0; i < node.childNodes.length; i++) {
+	                const childNode = node.childNodes[i];
+	                if (childNode.nodeName === 'path') {
+	                    let d;
+	                    let k = '';
+	                    childNode.attributes.forEach(attr => {
+	                        if (attr.fullname === 'd') {
+	                            d = attr;
+	                        }
+	                        else if (attr.fullname !== 'style') {
+	                            k += `${attr.fullname}=${attr.value}&`;
+	                        }
+	                    });
+	                    if (d) {
+	                        const key = `${k}|${getKey(childNode)}`;
+	                        if (ramda.has(key, pathChildren)) {
+	                            // 允许路径合并的条件：
+	                            // 1、所有属性和样式（包括继承样式）相同
+	                            // 2、相邻
+	                            // 3、没有 fill 或 stroke
+	                            // 4、所有可见透明度 ≥ 1
+	                            // TODO 路径没有相交或包含
+	                            if (pathChildren[key].index === tagIndex - 1 && canbeCombine(childNode, pathChildren[key].node, d, disregardFill, disregardOpacity)) {
+	                                // 路径拼合时，第一个 m 要转为绝对，否则会有 bug
+	                                pathChildren[key].attr.value += d.value.replace(/^m/, 'M');
+	                                rmNode(childNode);
+	                                tagIndex--;
+	                                i--;
+	                            }
+	                            else {
+	                                pathChildren[key] = {
+	                                    attr: d,
+	                                    index: tagIndex,
+	                                    node: childNode,
+	                                };
+	                            }
+	                        }
+	                        else {
+	                            pathChildren[key] = {
+	                                attr: d,
+	                                index: tagIndex,
+	                                node: childNode,
+	                            };
+	                        }
+	                    }
+	                }
+	                if (isTag(childNode)) {
+	                    tagIndex++;
+	                }
+	            }
+	        }, dom);
+	    }
+	    resolve();
+	});
+
+	/*
+	 * 以字符串的形式返回小数部分
+	 */
+	const decimal = (a) => {
+	    const astr = `${a}`;
+	    return astr.includes('.') ? astr.slice(astr.indexOf('.') + 1) : '';
+	};
+
+	/*
+	 * 保证精度的乘法
+	 * 用于解决 双精度浮点数 导致精度变化的问题
+	 */
+	const multiply = ramda.curry((a, b) => toFixed(decimal(a).length + decimal(b).length, a * b));
+
+	/*
+	 * 返回两个小数的最大精度
+	 */
+	const digit = ramda.curry((a, b) => Math.max(decimal(a).length, decimal(b).length));
+
+	/*
+	 * 保证精度的加法
+	 * 用于解决 双精度浮点数 导致精度变化的问题
+	 */
+	const plus = ramda.curry((a, b) => toFixed(digit(a, b), a + b));
+
+	const HALF_CIRC$1 = 180;
+	class Matrix {
+	    constructor(a = 1, b = 0, c = 0, d = 1, e = 0, f = 0) {
+	        this.a = a;
+	        this.b = b;
+	        this.c = c;
+	        this.d = d;
+	        this.e = e;
+	        this.f = f;
+	    }
+	    translate(x, y) {
+	        return this.multiply(new Matrix(1, 0, 0, 1, x, y));
+	    }
+	    rotate(corner) {
+	        const arg = corner * Math.PI / HALF_CIRC$1;
+	        return this.multiply(new Matrix(Math.cos(arg), Math.sin(arg), -Math.sin(arg), Math.cos(arg), 0, 0));
+	    }
+	    scale(xscale, yscale = null) {
+	        return this.multiply(new Matrix(xscale, 0, 0, yscale === null ? xscale : yscale, 0, 0));
+	    }
+	    skewX(corner) {
+	        const skew = corner * Math.PI / HALF_CIRC$1;
+	        return this.multiply(new Matrix(1, 0, Math.tan(skew), 1, 0, 0));
+	    }
+	    skewY(corner) {
+	        const skew = corner * Math.PI / HALF_CIRC$1;
+	        return this.multiply(new Matrix(1, Math.tan(skew), 0, 1, 0, 0));
+	    }
+	    multiply(m) {
+	        const a = this.a * m.a + this.c * m.b;
+	        const b = this.b * m.a + this.d * m.b;
+	        const c = this.a * m.c + this.c * m.d;
+	        const d = this.b * m.c + this.d * m.d;
+	        const e = this.a * m.e + this.c * m.f + this.e;
+	        const f = this.b * m.e + this.d * m.f + this.f;
+	        this.a = a;
+	        this.b = b;
+	        this.c = c;
+	        this.d = d;
+	        this.e = e;
+	        this.f = f;
+	        return this;
+	    }
+	}
+
+	const aPos = 0;
+	const bPos = 1;
+	const cPos = 2;
+	const dPos = 3;
+	const ePos = 4;
+	const fPos = 5;
+	// 把 matrix 函数反转为简单函数
+	const simplify = (matrix, digit1, digit2) => {
+	    const mVal = matrix.val.map((v, i) => toFixed((i < matrixEPos) ? digit1 : digit2, v)).join(',');
+	    const fixed1 = toFixed(digit1);
+	    const fixed2 = toFixed(digit2);
+	    if (/^1,0,0,1/.test(mVal)) {
+	        return {
+	            type: 'translate',
+	            val: fixed2(matrix.val[fPos]) === 0 ? [matrix.val[ePos]] : [matrix.val[ePos], matrix.val[fPos]],
+	        };
+	    }
+	    if (/^[^,]+,0,0,[^,]+,0,0/.test(mVal)) {
+	        return {
+	            type: 'scale',
+	            val: fixed1(matrix.val[aPos]) === fixed1(matrix.val[dPos]) ? [matrix.val[aPos]] : [matrix.val[aPos], matrix.val[dPos]],
+	        };
+	    }
+	    if (/^1,0,[^,]+,1,0,0/.test(mVal)) {
+	        let corner = (Math.atan(matrix.val[cPos]) * HALF_CIRC / Math.PI + CIRC) % CIRC;
+	        if (corner > CIRC - 10) {
+	            corner -= CIRC;
+	        }
+	        return {
+	            type: 'skewX',
+	            val: [corner],
+	        };
+	    }
+	    if (/^1,[^,]+,0,1,0,0/.test(mVal)) {
+	        let corner = (Math.atan(matrix.val[bPos]) * HALF_CIRC / Math.PI + CIRC) % CIRC;
+	        if (corner > CIRC - 10) {
+	            corner -= CIRC;
+	        }
+	        return {
+	            type: 'skewY',
+	            val: [corner],
+	        };
+	    }
+	    if (fixed1(matrix.val[aPos]) === fixed1(matrix.val[dPos])
+	        &&
+	            fixed1(matrix.val[bPos]) === -fixed1(matrix.val[cPos])
+	        &&
+	            fixed1(Math.pow(matrix.val[aPos], 2) + Math.pow(matrix.val[bPos], 2)) === 1) {
+	        let arc;
+	        if (matrix.val[aPos] >= 0) {
+	            arc = Math.asin(matrix.val[bPos]);
+	        }
+	        else {
+	            if (matrix.val[bPos] >= 0) {
+	                arc = Math.acos(matrix.val[aPos]);
+	            }
+	            else {
+	                arc = -Math.acos(matrix.val[aPos]);
+	            }
+	        }
+	        let corner = (arc * HALF_CIRC / Math.PI + CIRC) % CIRC;
+	        if (corner > CIRC - 10) {
+	            corner -= CIRC;
+	        }
+	        // [1,0,0,1,x,y].[a,b,c,d,0,0].[1,0,0,1,-x,-y] = [a,b,c,d,e,f]，根据该公式反解
+	        const cx = (matrix.val[ePos] * (1 - matrix.val[aPos]) - matrix.val[bPos] * matrix.val[fPos]) / (2 - matrix.val[aPos] * 2);
+	        const cy = (cx * matrix.val[bPos] + matrix.val[fPos]) / (1 - matrix.val[dPos]);
+	        return {
+	            type: 'rotate',
+	            val: [corner, cx, cy],
+	        };
+	    }
+	    return matrix;
+	};
+
+	// 降低 transform 函数的参数精度，移除冗余参数，并对无效函数打上标记
+	const shorten = (m, digit1 = DEFAULT_MATRIX_DIGIT, digit2 = DEFAULT_SIZE_DIGIT, digit3 = DEFAULT_ACCURATE_DIGIT) => {
+	    const res = {
+	        type: m.type,
+	        val: [],
+	    };
+	    switch (m.type) {
+	        case 'translate':
+	            m.val.forEach((v, i) => {
+	                res.val[i] = toFixed(digit2, v);
+	            });
+	            if (res.val[1] === 0) {
+	                res.val.length = 1;
+	            }
+	            if (res.val[0] === 0) {
+	                res.val[0] = 0;
+	                if (res.val.length === 1) {
+	                    res.noEffect = true;
+	                }
+	            }
+	            break;
+	        case 'scale':
+	            m.val.forEach((v, i) => {
+	                res.val[i] = toFixed(digit1, v);
+	            });
+	            if (res.val[0] === res.val[1]) {
+	                res.val.length = 1;
+	            }
+	            if (res.val[0] === 1 && res.val.length === 1) {
+	                res.noEffect = true;
+	            }
+	            break;
+	        case 'rotate':
+	            res.val[0] = toFixed(digit3, m.val[0]);
+	            if (res.val[0] === 0) {
+	                res.val[0] = 0;
+	                res.noEffect = true;
+	            }
+	            if (m.val.length === 3) {
+	                res.val[1] = toFixed(digit2, m.val[1]);
+	                res.val[2] = toFixed(digit2, m.val[2]);
+	                if (res.val[1] === 0 && res.val[2] === 0) {
+	                    res.val.length = 1;
+	                }
+	            }
+	            break;
+	        case 'skewX':
+	        case 'skewY':
+	            res.val[0] = toFixed(digit3, m.val[0]);
+	            if (res.val[0] === 0) {
+	                res.val[0] = 0;
+	                res.noEffect = true;
+	            }
+	            break;
+	        default: {
+	            const _res = simplify(m, digit1, digit2);
+	            if (_res.type === 'matrix') {
+	                _res.val.forEach((v, i) => {
+	                    res.val[i] = toFixed((i < matrixEPos) ? digit1 : digit2, v);
+	                });
+	                break;
+	            }
+	            else {
+	                return shorten(_res, digit1, digit2, digit3);
+	            }
+	        }
+	    }
+	    return res;
+	};
+
+	const combineMatrix = (operate, digit1 = DEFAULT_MATRIX_DIGIT, digit2 = DEFAULT_SIZE_DIGIT, digit3 = DEFAULT_ACCURATE_DIGIT) => {
+	    let matrix = new Matrix();
+	    for (const item of operate) {
+	        switch (item.type) {
+	            case 'translate':
+	                matrix = matrix.translate(item.val[0], item.val[1]);
+	                break;
+	            case 'rotate':
+	                if (item.val.length === 3) {
+	                    matrix = matrix.translate(item.val[1], item.val[2]);
+	                    matrix = matrix.rotate(item.val[0]);
+	                    matrix = matrix.translate(-item.val[1], -item.val[2]);
+	                }
+	                else {
+	                    matrix = matrix.rotate(item.val[0]);
+	                }
+	                break;
+	            case 'scale':
+	                matrix = matrix.scale(item.val[0], ...item.val.slice(1));
+	                break;
+	            case 'skewX':
+	                matrix = matrix.skewX(item.val[0]);
+	                break;
+	            case 'skewY':
+	                matrix = matrix.skewY(item.val[0]);
+	                break;
+	            default:
+	                matrix = matrix.multiply(new Matrix(...item.val));
+	                break;
+	        }
+	    }
+	    return shorten({
+	        type: 'matrix',
+	        val: [matrix.a, matrix.b, matrix.c, matrix.d, matrix.e, matrix.f],
+	    }, digit1, digit2, digit3);
+	};
+
+	const execNumberList = (s) => {
+	    const result = [];
+	    // 首先全字匹配字符串，不符合的直接退出
+	    if (numberListFullMatch.test(s)) {
+	        // 重要！含有 g 修饰符的正则表达式 exec 时要先重置！
+	        numberGlobal.lastIndex = 0;
+	        let matches = numberGlobal.exec(s);
+	        while (matches) {
+	            result.push(+matches[0]);
+	            matches = numberGlobal.exec(s);
+	        }
+	    }
+	    return result;
+	};
+
+	const matrixSingle = `(translate|scale|rotate|skewX|skewY|matrix)\\s*\\(\\s*(${numberPattern}(?:${commaWsp}${numberPattern})*)\\s*\\)`;
+	const matrixReg = new RegExp(matrixSingle, 'gm');
+	const matrixFullReg = new RegExp(`^${matrixSingle}(?:${commaWsp}${matrixSingle})*$`, 'm');
+	const matrixValLen = 6;
+	const execMatrix = (str) => {
+	    const result = [];
+	    // 首先全字匹配完整的字符串，不匹配的直接退出
+	    if (matrixFullReg.test(str.trim())) {
+	        // 重置正则匹配位置
+	        matrixReg.lastIndex = 0;
+	        let match = matrixReg.exec(str);
+	        while (match !== null) {
+	            const val = execNumberList(match[2]);
+	            // 验证参数的个数是否合法，不合法的直接退出
+	            if (match[1] === 'translate' || match[1] === 'scale') {
+	                if (val.length > 2) {
+	                    return [];
+	                }
+	            }
+	            else if (match[1] === 'matrix') {
+	                if (val.length !== matrixValLen) {
+	                    return [];
+	                }
+	            }
+	            else if (match[1] === 'rotate') {
+	                if (val.length !== 1 && val.length !== 3) {
+	                    return [];
+	                }
+	            }
+	            else {
+	                if (val.length !== 1) {
+	                    return [];
+	                }
+	            }
+	            result.push({
+	                type: match[1],
+	                val,
+	            });
+	            match = matrixReg.exec(str);
+	        }
+	    }
+	    return result;
+	};
+
+	const merge = (func1, func2, digit1 = DEFAULT_MATRIX_DIGIT, digit2 = DEFAULT_SIZE_DIGIT, digit3 = DEFAULT_ACCURATE_DIGIT) => {
+	    let resFunc = {
+	        type: func1.type,
+	        val: [],
+	    };
+	    switch (func1.type) {
+	        case 'translate':
+	            if (func1.val.length === 1) {
+	                func1.val[1] = 0;
+	            }
+	            if (func2.val.length === 1) {
+	                func2.val[1] = 0;
+	            }
+	            resFunc.val = [func1.val[0] + func2.val[0], func1.val[1] + func2.val[1]];
+	            break;
+	        case 'scale':
+	            if (func1.val.length === 1) {
+	                func1.val[1] = func1.val[0];
+	            }
+	            if (func2.val.length === 1) {
+	                func2.val[1] = func2.val[0];
+	            }
+	            resFunc.val = [func1.val[0] * func2.val[0], func1.val[1] * func2.val[1]];
+	            break;
+	        case 'rotate':
+	            if (func1.val.length === 1 && func2.val.length === 1) {
+	                resFunc.val[0] = func1.val[0] + func2.val[0];
+	            }
+	            else if (func1.val[1] === func2.val[1] && func1.val[2] === func2.val[2]) {
+	                resFunc.val = [func1.val[0] + func2.val[0], func1.val[1], func1.val[2]];
+	            }
+	            else {
+	                resFunc = combineMatrix([func1, func2], digit1, digit2, digit3);
+	            }
+	            break;
+	        case 'skewX':
+	        case 'skewY':
+	            resFunc = combineMatrix([func1, func2], digit1, digit2, digit3);
+	            break;
+	        default:
+	            return combineMatrix([func1, func2], digit1, digit2, digit3);
+	    }
+	    return shorten(resFunc, digit1, digit2, digit3);
+	};
+
+	const toScientific = (s) => {
+	    const sStr = s.toString();
+	    let _s = sStr;
+	    let e = 0;
+	    while (_s.slice(-1) === '0') {
+	        _s = _s.slice(0, -1);
+	        e++;
+	    }
+	    _s = `${_s}e${e}`;
+	    return _s.length <= sStr.length ? _s : sStr;
+	};
+
+	const shortenNumber = ramda.pipe(toScientific, shortenPureDecimal);
+
+	const shortenNumberList = (s) => s.trim().replace(/\s*,\s*|\s+/g, ',').replace(/,(?=[+-]\.?\d+)/g, '').replace(/([.eE]\d+),(?=\.\d+)/g, '$1');
+
+	// 将函数类参数转为字符串，并优化（转科学计数法，移除掉正、负号前面的逗号，移除掉0.前面的0，移除掉.1,.1或e1,.1这种case中间的逗号）
+	const stringifyFuncVal = (s) => shortenNumberList(s.map(shortenNumber).join(','));
+
+	const stringify = (m, digit1 = DEFAULT_MATRIX_DIGIT, digit2 = DEFAULT_SIZE_DIGIT, digit3 = DEFAULT_ACCURATE_DIGIT) => {
+	    let result = '';
+	    m.forEach(v => {
+	        const _v = shorten(v, digit1, digit2, digit3);
+	        if (!_v.noEffect) {
+	            result += `${_v.type}(${stringifyFuncVal(_v.val)})`;
+	        }
+	    });
+	    return result;
+	};
+
+	/*
+	 * 保证精度的减法
+	 * 用于解决 双精度浮点数 导致精度变化的问题
+	 */
+	const minus = ramda.curry((a, b) => toFixed(digit(a, b), a - b));
+
+	const numberLength = (num) => shortenNumberList(num.map(shortenNumber).join(',')).length;
+
+	const computeH = (absolute, relative, pathResult, pos) => {
+	    const relLen = numberLength([relative]);
+	    const absLen = numberLength([absolute]);
+	    if (relLen === absLen) { // 如果相等则参照前一个指令
+	        if (pathResult[pathResult.length - 1].type === 'H') {
+	            pathResult.push({
+	                type: 'H',
+	                from: pos.slice(),
+	                val: [absolute],
+	            });
+	        }
+	        else {
+	            pathResult.push({
+	                type: 'h',
+	                from: pos.slice(),
+	                val: [relative],
+	            });
+	        }
+	    }
+	    else if (relLen < absLen) {
+	        pathResult.push({
+	            type: 'h',
+	            from: pos.slice(),
+	            val: [relative],
+	        });
+	    }
+	    else {
+	        pathResult.push({
+	            type: 'H',
+	            from: pos.slice(),
+	            val: [absolute],
+	        });
+	    }
+	    return [absolute, pos[1]];
+	};
+
+	const computeV = (absolute, relative, pathResult, pos) => {
+	    const relLen = numberLength([relative]);
+	    const absLen = numberLength([absolute]);
+	    if (relLen === absLen) { // 如果相等则参照前一个指令
+	        if (pathResult[pathResult.length - 1].type === 'V') {
+	            pathResult.push({
+	                type: 'V',
+	                from: pos.slice(),
+	                val: [absolute],
+	            });
+	        }
+	        else {
+	            pathResult.push({
+	                type: 'v',
+	                from: pos.slice(),
+	                val: [relative],
+	            });
+	        }
+	    }
+	    else if (relLen < absLen) {
+	        pathResult.push({
+	            type: 'v',
+	            from: pos.slice(),
+	            val: [relative],
+	        });
+	    }
+	    else {
+	        pathResult.push({
+	            type: 'V',
+	            from: pos.slice(),
+	            val: [absolute],
+	        });
+	    }
+	    return [pos[0], absolute];
+	};
+
+	const computeL = (absolute, relative, pathResult, pos) => {
+	    // 需要转为水平或垂直的情况
+	    // 注意，0 长度的线段不能省略，它可能也是有意义的 @by wangfeng-pd @v1.5.0
+	    // https://www.w3.org/TR/SVG/paths.html#ZeroLengthSegments
+	    if (relative[1] === 0) {
+	        return computeH(absolute[0], relative[0], pathResult, pos);
+	    }
+	    else if (relative[0] === 0) {
+	        return computeV(absolute[1], relative[1], pathResult, pos);
+	    }
+	    // 普通情况
+	    const relLen = numberLength(relative);
+	    const absLen = numberLength(absolute);
+	    if (relLen === absLen) { // 如果相等则参照前一个指令
+	        if (pathResult[pathResult.length - 1].type === 'L') {
+	            pathResult.push({
+	                type: 'L',
+	                from: pos.slice(),
+	                val: absolute.slice(),
+	            });
+	        }
+	        else {
+	            pathResult.push({
+	                type: 'l',
+	                from: pos.slice(),
+	                val: relative.slice(),
+	            });
+	        }
+	    }
+	    else if (relLen < absLen) {
+	        pathResult.push({
+	            type: 'l',
+	            from: pos.slice(),
+	            val: relative.slice(),
+	        });
+	    }
+	    else {
+	        pathResult.push({
+	            type: 'L',
+	            from: pos.slice(),
+	            val: absolute.slice(),
+	        });
+	    }
+	    return absolute.slice();
+	};
+
+	const computeA = (absolute, relative, pathResult, pos) => {
+	    // https://www.w3.org/TR/SVG/paths.html#ArcOutOfRangeParameters
+	    // 起始点和目标点重合，或者有一个半径为 0，可以转直线指令
+	    if ((absolute[APOS_X] === pos[0] && absolute[APOS_Y] === pos[1]) || absolute[APOS_RX] === 0 || absolute[APOS_RY] === 0) {
+	        return computeL([absolute[APOS_X], absolute[APOS_Y]], [relative[APOS_X], relative[APOS_Y]], pathResult, pos);
+	    }
+	    // 负数半径取绝对值
+	    if (absolute[APOS_RX] < 0) {
+	        absolute[APOS_RX] = Math.abs(absolute[APOS_RX]);
+	    }
+	    if (absolute[APOS_RY] < 0) {
+	        absolute[APOS_RY] = Math.abs(absolute[APOS_RY]);
+	    }
+	    const rLen = pathResult.length;
+	    const relLen = numberLength(relative);
+	    const absLen = numberLength(absolute);
+	    if (relLen === absLen) { // 如果相等则参照前一个指令
+	        if (pathResult[rLen - 1].type === 'A') {
+	            pathResult.push({
+	                type: 'A',
+	                from: pos.slice(),
+	                val: absolute,
+	            });
+	        }
+	        else {
+	            pathResult.push({
+	                type: 'a',
+	                from: pos.slice(),
+	                val: relative,
+	            });
+	        }
+	    }
+	    else if (relLen < absLen) {
+	        pathResult.push({
+	            type: 'a',
+	            from: pos.slice(),
+	            val: relative,
+	        });
+	    }
+	    else {
+	        pathResult.push({
+	            type: 'A',
+	            from: pos.slice(),
+	            val: absolute,
+	        });
+	    }
+	    return [absolute[APOS_X], absolute[APOS_Y]];
+	};
+
+	const SPOS_X = 2;
+	const SPOS_Y = 3;
+	const computeS = (absolute, relative, pathResult, pos) => {
+	    const relLen = numberLength(relative);
+	    const absLen = numberLength(absolute);
+	    if (relLen === absLen) { // 如果相等则参照前一个指令
+	        if (pathResult[pathResult.length - 1].type === 'S') {
+	            pathResult.push({
+	                type: 'S',
+	                from: pos.slice(),
+	                val: absolute.slice(),
+	            });
+	        }
+	        else {
+	            pathResult.push({
+	                type: 's',
+	                from: pos.slice(),
+	                val: relative.slice(),
+	            });
+	        }
+	    }
+	    else if (relLen < absLen) {
+	        pathResult.push({
+	            type: 's',
+	            from: pos.slice(),
+	            val: relative.slice(),
+	        });
+	    }
+	    else {
+	        pathResult.push({
+	            type: 'S',
+	            from: pos.slice(),
+	            val: absolute.slice(),
+	        });
+	    }
+	    return [absolute[SPOS_X], absolute[SPOS_Y]];
+	};
+
+	// 获取 a 相对于 b 的对称值
+	const symmetry = ramda.curry((a, b) => plus(b, minus(b, a)));
+
+	// 匹配贝塞尔曲线的控制点
+	const matchControl = (ctrl1X, ctrl1Y, centerX, centerY, ctrl2X, ctrl2Y) => symmetry(ctrl1X, centerX) === ctrl2X && symmetry(ctrl1Y, centerY) === ctrl2Y;
+
+	const canTransformS = (pathResult, ctrlX, ctrlY, from) => {
+	    const lastItem = pathResult[pathResult.length - 1];
+	    const type = lastItem.type;
+	    switch (type) {
+	        case 'C':
+	            return matchControl(lastItem.val[2], lastItem.val[3], from[0], from[1], ctrlX, ctrlY);
+	        case 'c':
+	            return matchControl(plus(lastItem.val[2], lastItem.from[0]), plus(lastItem.val[3], lastItem.from[1]), from[0], from[1], ctrlX, ctrlY);
+	        case 'S':
+	            return matchControl(lastItem.val[0], lastItem.val[1], from[0], from[1], ctrlX, ctrlY);
+	        case 's':
+	            return matchControl(plus(lastItem.val[0], lastItem.from[0]), plus(lastItem.val[1], lastItem.from[1]), from[0], from[1], ctrlX, ctrlY);
+	        default:
+	            // 前置不是 c/s 指令，则可以根据控制点和 from 是否重合来决定是否可以转为 s
+	            return ctrlX === from[0] && ctrlY === from[1];
+	    }
+	};
+	const computeC = (absolute, relative, pathResult, pos) => {
+	    if (canTransformS(pathResult, absolute[0], absolute[1], pos)) {
+	        return computeS(absolute.slice(2), relative.slice(2), pathResult, pos);
+	    }
+	    else {
+	        // 普通情况
+	        const relLen = numberLength(relative);
+	        const absLen = numberLength(absolute);
+	        if (relLen === absLen) { // 如果相等则参照前一个指令
+	            if (pathResult[pathResult.length - 1].type === 'C') {
+	                pathResult.push({
+	                    type: 'C',
+	                    from: pos.slice(),
+	                    val: absolute.slice(),
+	                });
+	            }
+	            else {
+	                pathResult.push({
+	                    type: 'c',
+	                    from: pos.slice(),
+	                    val: relative.slice(),
+	                });
+	            }
+	        }
+	        else if (relLen < absLen) {
+	            pathResult.push({
+	                type: 'c',
+	                from: pos.slice(),
+	                val: relative.slice(),
+	            });
+	        }
+	        else {
+	            pathResult.push({
+	                type: 'C',
+	                from: pos.slice(),
+	                val: absolute.slice(),
+	            });
+	        }
+	        return [absolute[4], absolute[5]];
+	    }
+	};
+
+	const computeM = (absolute, relative, pathResult, pos) => {
+	    if (ramda.lt(numberLength(absolute), numberLength(relative))) {
+	        pathResult.push({
+	            type: 'M',
+	            from: pos.slice(),
+	            val: absolute.slice(),
+	        });
+	    }
+	    else {
+	        pathResult.push({
+	            type: 'm',
+	            from: pos.slice(),
+	            val: relative.slice(),
+	        });
+	    }
+	    return absolute.slice();
+	};
+
+	const computeT = (absolute, relative, pathResult, pos) => {
+	    // t 类型的 from 会存储 4 个值，前 2 个为前一个指令的 absolute，后 2 个存储本指令未记录的控制点的绝对坐标
+	    const from = pos.slice();
+	    const lastItem = pathResult[pathResult.length - 1];
+	    switch (lastItem.type) {
+	        case 'T':
+	        case 't':
+	            from.push(symmetry(lastItem.from[2], from[0]), symmetry(lastItem.from[3], from[1]));
+	            break;
+	        case 'Q':
+	            from.push(symmetry(lastItem.val[0], from[0]), symmetry(lastItem.val[1], from[1]));
+	            break;
+	        case 'q':
+	            from.push(symmetry(plus(lastItem.val[0], lastItem.from[0]), from[0]), symmetry(plus(lastItem.val[1], lastItem.from[1]), from[1]));
+	            break;
+	        default:
+	            // 前置不是 q/t 指令，则控制点与 from 相同
+	            from.push(from[0], from[1]);
+	            break;
+	    }
+	    const relLen = numberLength(relative);
+	    const absLen = numberLength(absolute);
+	    if (relLen === absLen) { // 如果相等则参照前一个指令
+	        if (pathResult[pathResult.length - 1].type === 'T') {
+	            pathResult.push({
+	                type: 'T',
+	                from,
+	                val: absolute.slice(),
+	            });
+	        }
+	        else {
+	            pathResult.push({
+	                type: 't',
+	                from,
+	                val: relative.slice(),
+	            });
+	        }
+	    }
+	    else if (relLen < absLen) {
+	        pathResult.push({
+	            type: 't',
+	            from,
+	            val: relative.slice(),
+	        });
+	    }
+	    else {
+	        pathResult.push({
+	            type: 'T',
+	            from,
+	            val: absolute.slice(),
+	        });
+	    }
+	    return absolute.slice();
+	};
+
+	const canTransformT = (pathResult, ctrlX, ctrlY, from) => {
+	    const lastItem = pathResult[pathResult.length - 1];
+	    const type = lastItem.type;
+	    switch (type) {
+	        case 'Q':
+	            return matchControl(lastItem.val[0], lastItem.val[1], from[0], from[1], ctrlX, ctrlY);
+	        case 'q':
+	            return matchControl(plus(lastItem.val[0], lastItem.from[0]), plus(lastItem.val[1], lastItem.from[1]), from[0], from[1], ctrlX, ctrlY);
+	        case 'T':
+	        case 't':
+	            return matchControl(lastItem.from[2], lastItem.from[3], from[0], from[1], ctrlX, ctrlY);
+	        default:
+	            // 前置不是 q/t 指令，则可以根据控制点和 from 是否重合来决定是否可以转为 t
+	            return ramda.equals([ctrlX, ctrlY], from);
+	    }
+	};
+	const computeQ = (absolute, relative, pathResult, pos) => {
+	    if (canTransformT(pathResult, absolute[0], absolute[1], pos)) {
+	        return computeT(absolute.slice(2), relative.slice(2), pathResult, pos);
+	    }
+	    else {
+	        // 普通情况
+	        const relLen = numberLength(relative);
+	        const absLen = numberLength(absolute);
+	        if (relLen === absLen) { // 如果相等则参照前一个指令
+	            if (pathResult[pathResult.length - 1].type === 'Q') {
+	                pathResult.push({
+	                    type: 'Q',
+	                    from: pos.slice(),
+	                    val: absolute.slice(),
+	                });
+	            }
+	            else {
+	                pathResult.push({
+	                    type: 'q',
+	                    from: pos.slice(),
+	                    val: relative.slice(),
+	                });
+	            }
+	        }
+	        else if (relLen < absLen) {
+	            pathResult.push({
+	                type: 'q',
+	                from: pos.slice(),
+	                val: relative.slice(),
+	            });
+	        }
+	        else {
+	            pathResult.push({
+	                type: 'Q',
+	                from: pos.slice(),
+	                val: absolute.slice(),
+	            });
+	        }
+	        return [absolute[2], absolute[3]];
+	    }
+	};
+
+	const computeZ = (pathResult, pos) => {
+	    const rLen = pathResult.length;
+	    const lastItem = pathResult[rLen - 1];
+	    // 如果 z 指令紧跟着 z 指令，直接抛弃
+	    if (lastItem.type.toLowerCase() === 'z') {
+	        return pos;
+	    }
+	    const zpos = (pathResult[0].type === 'm') ? [plus(pathResult[0].val[0], pathResult[0].from[0]), plus(pathResult[0].val[1], pathResult[0].from[1])] : [pathResult[0].val[0], pathResult[0].val[1]];
+	    pathResult.push({
+	        type: 'z',
+	        from: pos.slice(),
+	        val: [],
+	    });
+	    return zpos;
+	};
+
+	const rel2abs = (val, pos) => val.map((s, index) => plus(s, pos[index % 2]));
+	const abs2rel = (val, pos) => val.map((s, index) => minus(s, pos[index % 2]));
+	const getRelHV = (pathItem) => {
+	    const isRel = pathItem.type === pathItem.type.toLowerCase();
+	    if (isRel)
+	        return pathItem.val[0];
+	    const isH = pathItem.type.toLowerCase() === 'h';
+	    return minus(pathItem.val[0], pathItem.from[isH ? 0 : 1]);
+	};
+	const getAbsHV = (pathItem) => {
+	    const isAbs = pathItem.type === pathItem.type.toUpperCase();
+	    if (isAbs)
+	        return pathItem.val[0];
+	    const isH = pathItem.type.toLowerCase() === 'h';
+	    return plus(pathItem.val[0], pathItem.from[isH ? 0 : 1]);
+	};
+	const getRel = (pathItem) => pathItem.type === pathItem.type.toLowerCase() ? pathItem.val.slice() : abs2rel(pathItem.val, pathItem.from);
+	const getAbs = (pathItem) => pathItem.type === pathItem.type.toUpperCase() ? pathItem.val.slice() : rel2abs(pathItem.val, pathItem.from);
+
+	const cArgLen = 6;
+	const sArgLen = 4;
+	const qArgLen = 4;
+	const doCompute = (pathArr) => {
+	    const result = [];
+	    let pos = [0, 0];
+	    // tslint:disable-next-line:cyclomatic-complexity
+	    for (const subPath of pathArr) {
+	        const pathResult = [];
+	        for (const pathItem of subPath) {
+	            switch (pathItem.type) {
+	                // 平移 - 绝对
+	                case 'M':
+	                    // 当移动指令超过 2 个时，后续指令按平移处理 - fixed@v1.4.2
+	                    for (let i = 0, l = pathItem.val.length; i < l; i += 2) {
+	                        const handler = (i === 0) ? computeM : computeL;
+	                        pos = handler([pathItem.val[i], pathItem.val[i + 1]], abs2rel([pathItem.val[i], pathItem.val[i + 1]], pos), pathResult, pos);
+	                    }
+	                    break;
+	                // 平移 - 相对
+	                case 'm':
+	                    // 当移动指令超过 2 个时，后续指令按平移处理 - fixed@v1.4.2
+	                    for (let i = 0, l = pathItem.val.length; i < l; i += 2) {
+	                        const handler = (i === 0) ? computeM : computeL;
+	                        pos = handler(rel2abs([pathItem.val[i], pathItem.val[i + 1]], pos), [pathItem.val[i], pathItem.val[i + 1]], pathResult, pos);
+	                    }
+	                    break;
+	                // 水平直线 - 绝对
+	                case 'H':
+	                    for (let i = 0, l = pathItem.val.length; i < l; i++) {
+	                        pos = computeH(pathItem.val[i], minus(pathItem.val[i], pos[0]), pathResult, pos);
+	                    }
+	                    break;
+	                // 水平直线 - 相对
+	                case 'h':
+	                    for (let i = 0, l = pathItem.val.length; i < l; i++) {
+	                        pos = computeH(plus(pathItem.val[i], pos[0]), pathItem.val[i], pathResult, pos);
+	                    }
+	                    break;
+	                // 垂直直线 - 绝对
+	                case 'V':
+	                    for (let i = 0, l = pathItem.val.length; i < l; i++) {
+	                        pos = computeV(pathItem.val[i], minus(pathItem.val[i], pos[1]), pathResult, pos);
+	                    }
+	                    break;
+	                // 垂直直线 - 相对
+	                case 'v':
+	                    for (let i = 0, l = pathItem.val.length; i < l; i++) {
+	                        pos = computeV(plus(pathItem.val[i], pos[1]), pathItem.val[i], pathResult, pos);
+	                    }
+	                    break;
+	                // 直线 - 绝对
+	                case 'L':
+	                    for (let i = 0, l = pathItem.val.length; i < l; i += 2) {
+	                        pos = computeL([pathItem.val[i], pathItem.val[i + 1]], abs2rel([pathItem.val[i], pathItem.val[i + 1]], pos), pathResult, pos);
+	                    }
+	                    break;
+	                // 直线 - 相对
+	                case 'l':
+	                    for (let i = 0, l = pathItem.val.length; i < l; i += 2) {
+	                        pos = computeL(rel2abs([pathItem.val[i], pathItem.val[i + 1]], pos), [pathItem.val[i], pathItem.val[i + 1]], pathResult, pos);
+	                    }
+	                    break;
+	                // 三次贝塞尔曲线 - 绝对
+	                case 'C':
+	                    for (let i = 0, l = pathItem.val.length; i < l; i += cArgLen) {
+	                        const CArgs = pathItem.val.slice(i, i + cArgLen);
+	                        pos = computeC(CArgs, abs2rel(CArgs, pos), pathResult, pos);
+	                    }
+	                    break;
+	                // 三次贝塞尔曲线 - 相对
+	                case 'c':
+	                    for (let i = 0, l = pathItem.val.length; i < l; i += cArgLen) {
+	                        const cArgs = pathItem.val.slice(i, i + cArgLen);
+	                        pos = computeC(rel2abs(cArgs, pos), cArgs, pathResult, pos);
+	                    }
+	                    break;
+	                // 三次连续贝塞尔曲线 - 绝对
+	                case 'S':
+	                    for (let i = 0, l = pathItem.val.length; i < l; i += sArgLen) {
+	                        const SArgs = pathItem.val.slice(i, i + sArgLen);
+	                        pos = computeS(SArgs, abs2rel(SArgs, pos), pathResult, pos);
+	                    }
+	                    break;
+	                // 三次连续贝塞尔曲线 - 相对
+	                case 's':
+	                    for (let i = 0, l = pathItem.val.length; i < l; i += sArgLen) {
+	                        const sArgs = pathItem.val.slice(i, i + sArgLen);
+	                        pos = computeS(rel2abs(sArgs, pos), sArgs, pathResult, pos);
+	                    }
+	                    break;
+	                // 二次贝塞尔曲线 - 绝对
+	                case 'Q':
+	                    for (let i = 0, l = pathItem.val.length; i < l; i += qArgLen) {
+	                        const QArgs = pathItem.val.slice(i, i + qArgLen);
+	                        pos = computeQ(QArgs, abs2rel(QArgs, pos), pathResult, pos);
+	                    }
+	                    break;
+	                // 二次贝塞尔曲线 - 相对
+	                case 'q':
+	                    for (let i = 0, l = pathItem.val.length; i < l; i += qArgLen) {
+	                        const qArgs = pathItem.val.slice(i, i + qArgLen);
+	                        pos = computeQ(rel2abs(qArgs, pos), qArgs, pathResult, pos);
+	                    }
+	                    break;
+	                // 二次连续贝塞尔曲线 - 绝对
+	                case 'T':
+	                    for (let i = 0, l = pathItem.val.length; i < l; i += 2) {
+	                        const TArgs = pathItem.val.slice(i, i + 2);
+	                        pos = computeT(TArgs, abs2rel(TArgs, pos), pathResult, pos);
+	                    }
+	                    break;
+	                // 二次连续贝塞尔曲线 - 相对
+	                case 't':
+	                    for (let i = 0, l = pathItem.val.length; i < l; i += 2) {
+	                        const tArgs = pathItem.val.slice(i, i + 2);
+	                        pos = computeT(rel2abs(tArgs, pos), tArgs, pathResult, pos);
+	                    }
+	                    break;
+	                // 圆弧 - 绝对
+	                case 'A':
+	                    for (let i = 0, l = pathItem.val.length; i < l; i += APOS_LEN) {
+	                        const AArgs = pathItem.val.slice(i, i + APOS_LEN);
+	                        pos = computeA(AArgs, AArgs.slice(0, APOS_X).concat(abs2rel(AArgs.slice(APOS_X), pos)), pathResult, pos);
+	                    }
+	                    break;
+	                // 圆弧 - 相对
+	                case 'a':
+	                    for (let i = 0, l = pathItem.val.length; i < l; i += APOS_LEN) {
+	                        const aArgs = pathItem.val.slice(i, i + APOS_LEN);
+	                        pos = computeA(aArgs.slice(0, APOS_X).concat(rel2abs(aArgs.slice(APOS_X), pos)), aArgs, pathResult, pos);
+	                    }
+	                    break;
+	                default:
+	                    pos = computeZ(pathResult, pos);
+	                    break;
+	            }
+	        }
+	        if (pathResult.length) {
+	            result.push(pathResult);
+	        }
+	    }
+	    return result;
+	};
+
+	const FLAG_POS1 = 3;
+	const FLAG_POS2 = 4;
+	const LOOP_LEN = 7;
+	const execArc = (s) => {
+	    const result = [];
+	    // 重要！含有 g 修饰符的正则表达式 exec 时要先重置！
+	    numberGlobal.lastIndex = 0;
+	    let matches = numberGlobal.exec(s);
+	    let pos = 0;
+	    while (matches) {
+	        if (pos % LOOP_LEN === FLAG_POS1 || pos % LOOP_LEN === FLAG_POS2) {
+	            if (matches[0][0] === '0' || matches[0][0] === '1') {
+	                result.push(+matches[0][0]);
+	                matches[0] = matches[0].slice(1);
+	                if (matches[0].length) {
+	                    pos++;
+	                    continue;
+	                }
+	            }
+	        }
+	        else {
+	            result.push(+matches[0]);
+	        }
+	        pos++;
+	        matches = numberGlobal.exec(s);
+	    }
+	    return result;
+	};
+
+	const pathReg = new RegExp(`([mzlhvcsqta])\\s*((?:${numberSequence})?)(.*?)(?=[mzlhvcsqta]|$)`, 'gim');
+	const execPath = (str) => {
+	    const result = [];
+	    let temp = [];
+	    // 重置正则匹配位置
+	    pathReg.lastIndex = 0;
+	    let match = pathReg.exec(str);
+	    outer: while (match !== null) {
+	        // 所有路径必须从 mM 开始
+	        const type = match[1].toLowerCase();
+	        if (!temp.length && type !== 'm') {
+	            return result;
+	        }
+	        let val = [];
+	        if (match[2]) {
+	            val = type === 'a' ? execArc(match[2]) : execNumberList(match[2]);
+	        }
+	        switch (type) {
+	            // 平移的参数必须为偶数
+	            case 'm':
+	                if (temp.length) {
+	                    result.push(temp);
+	                    temp = [];
+	                }
+	                if (val.length % 2 !== 0) {
+	                    if (val.length > 2) {
+	                        temp.push({
+	                            type: match[1],
+	                            val: val.slice(0, val.length - 1),
+	                        });
+	                    }
+	                    break outer;
+	                }
+	                break;
+	            case 'l':
+	            case 't':
+	                // l 和 t 的参数必须为偶数
+	                if (val.length % 2 !== 0) {
+	                    if (val.length > 2) {
+	                        temp.push({
+	                            type: match[1],
+	                            val: val.slice(0, val.length - 1),
+	                        });
+	                    }
+	                    break outer;
+	                }
+	                break;
+	            case 'z':
+	                // z 不允许有参数
+	                if (val.length) {
+	                    temp.push({
+	                        type: match[1],
+	                        val: [],
+	                    });
+	                    break outer;
+	                }
+	                break;
+	            case 's':
+	            case 'q':
+	                // s 和 q 的参数必须是 4 的整倍数
+	                if (val.length % 4 !== 0) {
+	                    if (val.length > 4) {
+	                        temp.push({
+	                            type: match[1],
+	                            val: val.slice(0, val.length - val.length % 4),
+	                        });
+	                    }
+	                    break outer;
+	                }
+	                break;
+	            case 'c':
+	                // c 的参数必须是 6 的整倍数
+	                if (val.length % 6 !== 0) {
+	                    if (val.length > 6) {
+	                        temp.push({
+	                            type: match[1],
+	                            val: val.slice(0, val.length - val.length % 6),
+	                        });
+	                    }
+	                    break outer;
+	                }
+	                break;
+	            case 'a': {
+	                // a 的参数第 3、4 位必须是 0 或 1
+	                const _val = [];
+	                val.every((v, i) => {
+	                    if ((i % APOS_LEN === APOS_LARGE || i % APOS_LEN === APOS_SWEEP) && v !== 0 && v !== 1) {
+	                        return false;
+	                    }
+	                    _val.push(v);
+	                    return true;
+	                });
+	                // a 的参数必须是 7 的整倍数
+	                if (_val.length % APOS_LEN !== 0) {
+	                    if (_val.length > APOS_LEN) {
+	                        temp.push({
+	                            type: match[1],
+	                            val: _val.slice(0, _val.length - _val.length % APOS_LEN),
+	                        });
+	                    }
+	                    break outer;
+	                }
+	                break;
+	            }
+	        }
+	        // 只有 z 指令不能没有参数
+	        if (type !== 'z' && !val.length) {
+	            break outer;
+	        }
+	        temp.push({
+	            type: match[1],
+	            val,
+	        });
+	        if (match[3] && !/^\s*,?\s*$/.test(match[3])) {
+	            break;
+	        }
+	        match = pathReg.exec(str);
+	    }
+	    result.push(temp);
+	    return result;
+	};
+
+	const shortenDigit = (pathItem, digit1, digit2) => {
+	    if (pathItem.type.toLowerCase() === 'a') {
+	        return pathItem.val.map((val, index) => {
+	            const i = index % APOS_LEN;
+	            switch (i) {
+	                case APOS_RX:
+	                case APOS_RY:
+	                case APOS_X:
+	                case APOS_Y:
+	                    return toFixed(digit1, val);
+	                case APOS_ROTATION:
+	                    return toFixed(digit2, val);
+	                default:
+	                    return val;
+	            }
+	        });
+	    }
+	    else {
+	        return pathItem.val.map(val => toFixed(digit1, val));
+	    }
+	};
+
+	const FLAG_POS1$1 = 3;
+	const FLAG_POS2$1 = 4;
+	const LOOP_LEN$1 = 7;
+	// 将函数类参数转为字符串，并优化（转科学计数法，移除掉正、负号前面的逗号，移除掉0.前面的0，移除掉.1,.1或e1,.1这种case中间的逗号）
+	// 特殊，针对 arc 类 path 指令，flag 位后面不需要跟逗号
+	const stringifyArc = (s) => shortenNumberList(s.reduce((prev, curr, index) => {
+	    if (index % LOOP_LEN$1 === FLAG_POS1$1 || index % LOOP_LEN$1 === FLAG_POS2$1 || index === s.length - 1) {
+	        return `${prev}${shortenNumber(curr)}`;
+	    }
+	    else {
+	        return `${prev}${shortenNumber(curr)},`;
+	    }
+	}, ''));
+
+	// 路径字符串化
+	const stringifyPath = (pathResult, digit1 = DEFAULT_SIZE_DIGIT, digit2 = DEFAULT_ACCURATE_DIGIT) => {
+	    let d = '';
+	    let lastType = '';
+	    for (const subPath of pathResult) {
+	        for (const pathItem of subPath) {
+	            const stringifyFunc = pathItem.type === 'a' || pathItem.type === 'A' ? stringifyArc : stringifyFuncVal;
+	            if (
+	            // 注意：连续的 m 指令不能进行合并
+	            (pathItem.type === lastType && lastType.toLowerCase() !== 'm')
+	                ||
+	                    // 字符串化的时候，紧跟 m 指令的 l 指令，且大小写一致，可以直接向前合并
+	                    (pathItem.type === 'l' && lastType === 'm')
+	                ||
+	                    (pathItem.type === 'L' && lastType === 'M')) {
+	                d = shortenNumberList(`${d},${stringifyFunc(shortenDigit(pathItem, digit1, digit2))}`);
+	            }
+	            else {
+	                lastType = pathItem.type;
+	                d += `${pathItem.type}${stringifyFunc(shortenDigit(pathItem, digit1, digit2))}`;
+	            }
+	        }
+	    }
+	    return d;
+	};
+
+	const stringifyStyle = (style) => style.map(attr => `${attr.name}:${attr.value}`).join(';');
+
+	// 如果子对象包含动画元素，获取这些动画元素影响了哪些属性
+	const getAnimateAttr = (node) => {
+	    const result = [];
+	    node.childNodes.forEach(childNode => {
+	        if (animationAttrElements.includes(childNode.nodeName)) {
+	            const attributeName = childNode.getAttribute('attributeName');
+	            if (attributeName) {
+	                if (childNode.nodeName !== 'animateTransform' || attributeName === 'tranform' || attributeName === 'patternTransform') {
+	                    const value = [];
+	                    const from = childNode.getAttribute('from');
+	                    const to = childNode.getAttribute('to');
+	                    const by = childNode.getAttribute('by');
+	                    const values = childNode.getAttribute('values');
+	                    const key = [];
+	                    if (from) {
+	                        value.push(from);
+	                        key.push('from');
+	                    }
+	                    if (to) {
+	                        value.push(to);
+	                        key.push('to');
+	                    }
+	                    if (by) {
+	                        value.push(by);
+	                        key.push('by');
+	                    }
+	                    if (values) {
+	                        value.push(...values.split(';').map(val => val.trim()).filter(val => !!val));
+	                        key.push('values');
+	                    }
+	                    result.push({
+	                        node: childNode,
+	                        attributeName,
+	                        keys: key,
+	                        values: value,
+	                    });
+	                }
+	            }
+	        }
+	    });
+	    return result;
+	};
+	const checkAnimateAttr = (animateAttrs, name, condition = () => true) => animateAttrs.some(item => item.attributeName === name && item.values.some(condition));
+	const findAnimateAttr = (animateAttrs, name) => animateAttrs.filter(item => item.attributeName === name);
+
+	const rmAttrs = (node, attrs) => {
+	    let styleVal = execStyle(node.getAttribute('style') || '');
+	    for (const key of attrs) {
+	        node.removeAttribute(key);
+	        styleVal = styleVal.filter(attr => attr.fullname !== key);
+	    }
+	    if (styleVal.length) {
+	        node.setAttribute('style', stringifyStyle(styleVal));
+	    }
+	    else {
+	        node.removeAttribute('style');
+	    }
+	};
+
+	// tslint:disable max-file-line-count
+	const SAFE_ROTATE_CORNER = 90;
+	const fixedMVal = toFixed(DEFAULT_MATRIX_DIGIT);
+	const applyNumber = (fn, s, ex) => shortenNumber(fn(parseFloat(s), ex));
+	const applyNumberList = (fn, numlist, ex) => {
+	    numlist.forEach((val, index) => {
+	        numlist[index] = fn(val, ex);
+	    });
+	    return shortenNumberList(numlist.map(shortenNumber).join(','));
+	};
+	const applyNumberPairs = (fn, numlist) => {
+	    for (let i = 0; i < numlist.length; i += 2) {
+	        [numlist[i], numlist[i + 1]] = fn(numlist[i], numlist[i + 1]);
+	    }
+	    return shortenNumberList(numlist.map(shortenNumber).join(','));
+	};
+	const checkAttr$1 = (node, attrname, val) => {
+	    if (val === '0') {
+	        rmAttrs(node, [attrname]);
+	    }
+	    else {
+	        node.removeAttribute(attrname);
+	        const attrDefine = regularAttr[attrname];
+	        if (attrDefine.couldBeStyle && node.hasAttribute('style')) {
+	            const styleAttr = execStyle(node.getAttribute('style'));
+	            styleAttr.some(sAttr => {
+	                if (sAttr.fullname === attrname) {
+	                    sAttr.value = val;
+	                    return true;
+	                }
+	                return false;
+	            });
+	            node.setAttribute('style', stringifyStyle(styleAttr));
+	        }
+	        else {
+	            node.setAttribute(attrname, val);
+	        }
+	    }
+	};
+	// 应用
+	const applyTextTransform = (node, matrix, animateAttrs) => {
+	    // todo 暂不支持 animate
+	    if (matrix.type !== 'translate' || checkAnimateAttr(animateAttrs, 'dx') || checkAnimateAttr(animateAttrs, 'dy')) {
+	        return false;
+	    }
+	    const dx = node.getAttribute('dx') || '0';
+	    const dy = node.getAttribute('dy') || '0';
+	    // 必须是纯数值列表
+	    if (pureNumOrWithPxList.test(dx) && pureNumOrWithPxList.test(dy)) {
+	        const dxs = execNumberList(dx);
+	        checkAttr$1(node, 'dx', applyNumberList(plus, dxs, matrix.val[0]));
+	        if (matrix.val[1]) {
+	            const dys = execNumberList(dy);
+	            checkAttr$1(node, 'dy', applyNumberList(plus, dys, matrix.val[1]));
+	        }
+	        node.removeAttribute('transform');
+	        return true;
+	    }
+	    return false;
+	};
+	const applyRectTransform = (node, matrix, animateAttrs, hasStroke, hasMarker) => {
+	    const x = getAttr(node, 'x', '0');
+	    const y = getAttr(node, 'y', '0');
+	    const width = getAttr(node, 'width', '0');
+	    const height = getAttr(node, 'height', '0');
+	    let rx = getAttr(node, 'rx', 'auto');
+	    let ry = getAttr(node, 'ry', 'auto');
+	    if (rx === 'auto') {
+	        rx = ry;
+	    }
+	    else if (ry === 'auto') {
+	        ry = rx;
+	    }
+	    if (rx === 'auto') {
+	        rx = '0';
+	        ry = '0';
+	    }
+	    // todo 暂不支持 animate
+	    if (!pureNumOrWithPx.test(x) || !pureNumOrWithPx.test(y) || checkAnimateAttr(animateAttrs, 'x') || checkAnimateAttr(animateAttrs, 'y')) {
+	        return false;
+	    }
+	    if (matrix.type !== 'translate') {
+	        if (hasMarker) {
+	            return false;
+	        }
+	        if (matrix.type !== 'rotate' && hasStroke) {
+	            return false;
+	        }
+	        if (checkAnimateAttr(animateAttrs, 'width') || checkAnimateAttr(animateAttrs, 'height') || checkAnimateAttr(animateAttrs, 'rx') || checkAnimateAttr(animateAttrs, 'ry')) {
+	            return false;
+	        }
+	        if (!pureNumOrWithPx.test(width) || !pureNumOrWithPx.test(height) || !pureNumOrWithPx.test(rx) || !pureNumOrWithPx.test(ry)) {
+	            return false;
+	        }
+	    }
+	    switch (matrix.type) {
+	        case 'translate':
+	            checkAttr$1(node, 'x', applyNumber(plus, x, matrix.val[0]));
+	            checkAttr$1(node, 'y', applyNumber(plus, y, matrix.val[1] || 0));
+	            node.removeAttribute('transform');
+	            return true;
+	        case 'rotate':
+	            // 1、没有 marker
+	            // 2、仅限直角旋转
+	            if (matrix.val[0] % SAFE_ROTATE_CORNER === 0) {
+	                let mx = new Matrix();
+	                if (matrix.val.length === 3) {
+	                    mx = mx.translate(matrix.val[1], matrix.val[2]);
+	                    mx = mx.rotate(matrix.val[0]);
+	                    mx = mx.translate(-matrix.val[1], -matrix.val[2]);
+	                }
+	                else {
+	                    mx = mx.rotate(matrix.val[0]);
+	                }
+	                // 获取两个对角坐标
+	                let _x1 = parseFloat(x);
+	                let _y1 = parseFloat(y);
+	                let _x2 = plus(_x1, parseFloat(width));
+	                let _y2 = plus(_y1, parseFloat(height));
+	                // 运算
+	                [_x1, _y1] = [mx.a * _x1 + mx.c * _y1 + mx.e, mx.b * _x1 + mx.d * _y1 + mx.f];
+	                [_x2, _y2] = [mx.a * _x2 + mx.c * _y2 + mx.e, mx.b * _x2 + mx.d * _y2 + mx.f];
+	                // 重新生成 x 和 y
+	                checkAttr$1(node, 'x', `${fixedMVal(Math.min(_x1, _x2))}`);
+	                checkAttr$1(node, 'y', `${fixedMVal(Math.min(_y1, _y2))}`);
+	                if (Math.abs(matrix.val[0] % (SAFE_ROTATE_CORNER * 2)) === SAFE_ROTATE_CORNER) {
+	                    checkAttr$1(node, 'width', height);
+	                    checkAttr$1(node, 'height', width);
+	                    checkAttr$1(node, 'rx', ry);
+	                    if (rx === ry) {
+	                        rmAttrs(node, ['ry']);
+	                    }
+	                    else {
+	                        checkAttr$1(node, 'ry', rx);
+	                    }
+	                }
+	                node.removeAttribute('transform');
+	                return true;
+	            }
+	            return false;
+	        case 'scale': {
+	            // 1. 没有描边
+	            // 2. 属性不存在，或者没有百分比的值
+	            const sx = matrix.val[0];
+	            const sy = matrix.val.length === 2 ? matrix.val[1] : matrix.val[0];
+	            checkAttr$1(node, 'x', applyNumber(multiply, x, sx));
+	            checkAttr$1(node, 'y', applyNumber(multiply, y, sy));
+	            checkAttr$1(node, 'width', applyNumber(multiply, width, sx));
+	            checkAttr$1(node, 'height', applyNumber(multiply, height, sy));
+	            rx = applyNumber(multiply, rx, sx);
+	            ry = applyNumber(multiply, ry, sy);
+	            checkAttr$1(node, 'rx', rx);
+	            if (rx === ry) {
+	                rmAttrs(node, ['ry']);
+	            }
+	            else {
+	                checkAttr$1(node, 'ry', ry);
+	            }
+	            node.removeAttribute('transform');
+	            return true;
+	        }
+	        case 'matrix':
+	            if (matrix.val[1] === 0 && matrix.val[2] === 0) {
+	                // 仅验证缩放 + 平移的情况
+	                const msx = matrix.val[0];
+	                const msy = matrix.val[3];
+	                checkAttr$1(node, 'x', applyNumber(plus, applyNumber(multiply, x, msx), matrix.val[4]));
+	                checkAttr$1(node, 'y', applyNumber(plus, applyNumber(multiply, y, msy), matrix.val[5]));
+	                checkAttr$1(node, 'width', applyNumber(multiply, width, msx));
+	                checkAttr$1(node, 'height', applyNumber(multiply, height, msy));
+	                rx = applyNumber(multiply, rx, msx);
+	                ry = applyNumber(multiply, ry, msy);
+	                checkAttr$1(node, 'rx', rx);
+	                if (rx === ry) {
+	                    rmAttrs(node, ['ry']);
+	                }
+	                else {
+	                    checkAttr$1(node, 'ry', ry);
+	                }
+	                node.removeAttribute('transform');
+	                return true;
+	            }
+	            return false;
+	        default:
+	            return false;
+	    }
+	};
+	const applyLineTransform = (node, matrix, animateAttrs, hasMarker) => {
+	    if (checkAnimateAttr(animateAttrs, 'x1') || checkAnimateAttr(animateAttrs, 'y1') || checkAnimateAttr(animateAttrs, 'x2') || checkAnimateAttr(animateAttrs, 'y2')) {
+	        return false;
+	    }
+	    const x1 = node.getAttribute('x1') || '0';
+	    const y1 = node.getAttribute('y1') || '0';
+	    const x2 = node.getAttribute('x2') || '0';
+	    const y2 = node.getAttribute('y2') || '0';
+	    if (!pureNumOrWithPx.test(x1) || !pureNumOrWithPx.test(y1) || !pureNumOrWithPx.test(x2) || !pureNumOrWithPx.test(y2)) {
+	        return false;
+	    }
+	    switch (matrix.type) {
+	        case 'translate': {
+	            const tx = matrix.val[0];
+	            const ty = matrix.val[1] || 0;
+	            checkAttr$1(node, 'x1', applyNumber(plus, x1, tx));
+	            checkAttr$1(node, 'y1', applyNumber(plus, y1, ty));
+	            checkAttr$1(node, 'x2', applyNumber(plus, x2, tx));
+	            checkAttr$1(node, 'y2', applyNumber(plus, y2, ty));
+	            node.removeAttribute('transform');
+	            return true;
+	        }
+	        case 'rotate': {
+	            if (hasMarker) {
+	                return false;
+	            }
+	            let mx = new Matrix();
+	            if (matrix.val.length === 3) {
+	                mx = mx.translate(matrix.val[1], matrix.val[2]);
+	                mx = mx.rotate(matrix.val[0]);
+	                mx = mx.translate(-matrix.val[1], -matrix.val[2]);
+	            }
+	            else {
+	                mx = mx.rotate(matrix.val[0]);
+	            }
+	            const _x1 = parseFloat(x1);
+	            const _y1 = parseFloat(y1);
+	            const _x2 = parseFloat(x2);
+	            const _y2 = parseFloat(y2);
+	            checkAttr$1(node, 'x1', `${fixedMVal(mx.a * _x1 + mx.c * _y1 + mx.e)}`);
+	            checkAttr$1(node, 'y1', `${fixedMVal(mx.b * _x1 + mx.d * _y1 + mx.f)}`);
+	            checkAttr$1(node, 'x2', `${fixedMVal(mx.a * _x2 + mx.c * _y2 + mx.e)}`);
+	            checkAttr$1(node, 'y2', `${fixedMVal(mx.b * _x2 + mx.d * _y2 + mx.f)}`);
+	            node.removeAttribute('transform');
+	            return true;
+	        }
+	        default:
+	            return false;
+	    }
+	};
+	const applyCircleTransform = (node, matrix, animateAttrs, hasStroke, hasMarker) => {
+	    if (checkAnimateAttr(animateAttrs, 'cx') || checkAnimateAttr(animateAttrs, 'cy')) {
+	        return false;
+	    }
+	    const cx = getAttr(node, 'cx', '0');
+	    const cy = getAttr(node, 'cy', '0');
+	    const r = getAttr(node, 'r', '0');
+	    if (!pureNumOrWithPx.test(cx) || !pureNumOrWithPx.test(cy)) {
+	        return false;
+	    }
+	    if (matrix.type !== 'translate' && hasMarker) {
+	        return false;
+	    }
+	    switch (matrix.type) {
+	        case 'translate': {
+	            const tx = matrix.val[0];
+	            const ty = matrix.val[1] || 0;
+	            checkAttr$1(node, 'cx', applyNumber(plus, cx, tx));
+	            checkAttr$1(node, 'cy', applyNumber(plus, cy, ty));
+	            node.removeAttribute('transform');
+	            return true;
+	        }
+	        case 'rotate': {
+	            let mx = new Matrix();
+	            if (matrix.val.length === 3) {
+	                mx = mx.translate(matrix.val[1], matrix.val[2]);
+	                mx = mx.rotate(matrix.val[0]);
+	                mx = mx.translate(-matrix.val[1], -matrix.val[2]);
+	            }
+	            else {
+	                mx = mx.rotate(matrix.val[0]);
+	            }
+	            const _cx = parseFloat(cx);
+	            const _cy = parseFloat(cy);
+	            checkAttr$1(node, 'cx', `${fixedMVal(mx.a * _cx + mx.c * _cy + mx.e)}`);
+	            checkAttr$1(node, 'cy', `${fixedMVal(mx.b * _cx + mx.d * _cy + mx.f)}`);
+	            node.removeAttribute('transform');
+	            return true;
+	        }
+	        case 'scale': {
+	            if (hasStroke || !pureNumOrWithPx.test(r) || checkAnimateAttr(animateAttrs, 'r')) {
+	                return false;
+	            }
+	            const sx = matrix.val[0];
+	            const sy = matrix.val.length === 2 ? matrix.val[1] : matrix.val[0];
+	            checkAttr$1(node, 'cx', applyNumber(multiply, cx, sx));
+	            checkAttr$1(node, 'cy', applyNumber(multiply, cy, sy));
+	            if (sx === sy) {
+	                checkAttr$1(node, 'r', applyNumber(multiply, r, sx));
+	            }
+	            else {
+	                // 转成椭圆
+	                node.nodeName = 'ellipse';
+	                checkAttr$1(node, 'rx', applyNumber(multiply, r, sx));
+	                checkAttr$1(node, 'ry', applyNumber(multiply, r, sy));
+	                rmAttrs(node, ['r']);
+	            }
+	            node.removeAttribute('transform');
+	            return true;
+	        }
+	        case 'matrix':
+	            if (matrix.val[1] === 0 && matrix.val[2] === 0) {
+	                if (hasStroke || !pureNumOrWithPx.test(r) || checkAnimateAttr(animateAttrs, 'r')) {
+	                    return false;
+	                }
+	                // 仅验证缩放 + 平移的情况
+	                const msx = matrix.val[0];
+	                const msy = matrix.val[3];
+	                checkAttr$1(node, 'cx', applyNumber(plus, applyNumber(multiply, cx, msx), matrix.val[4]));
+	                checkAttr$1(node, 'cy', applyNumber(plus, applyNumber(multiply, cy, msy), matrix.val[5]));
+	                if (msx === msy) {
+	                    checkAttr$1(node, 'r', applyNumber(multiply, r, msx));
+	                }
+	                else {
+	                    // 转成椭圆
+	                    node.nodeName = 'ellipse';
+	                    checkAttr$1(node, 'rx', applyNumber(multiply, r, msx));
+	                    checkAttr$1(node, 'ry', applyNumber(multiply, r, msy));
+	                    rmAttrs(node, ['r']);
+	                }
+	                node.removeAttribute('transform');
+	                return true;
+	            }
+	            return false;
+	        default:
+	            return false;
+	    }
+	};
+	const applyEllipseTransform = (node, matrix, animateAttrs, hasStroke, hasMarker) => {
+	    const cx = getAttr(node, 'cx', '0');
+	    const cy = getAttr(node, 'cy', '0');
+	    let rx = getAttr(node, 'rx', 'auto');
+	    let ry = getAttr(node, 'ry', 'auto');
+	    if (rx === 'auto') {
+	        rx = ry;
+	    }
+	    else if (ry === 'auto') {
+	        ry = rx;
+	    }
+	    if (rx === 'auto') {
+	        rx = '0';
+	        ry = '0';
+	    }
+	    if (!pureNumOrWithPx.test(cx) || !pureNumOrWithPx.test(cy) || checkAnimateAttr(animateAttrs, 'cx') || checkAnimateAttr(animateAttrs, 'cy')) {
+	        return false;
+	    }
+	    if (matrix.type !== 'translate' && hasMarker) {
+	        return false;
+	    }
+	    if (rx === ry && !checkAnimateAttr(animateAttrs, 'rx') && !checkAnimateAttr(animateAttrs, 'ry')) {
+	        node.nodeName = 'circle';
+	        rmAttrs(node, ['rx', 'ry']);
+	        checkAttr$1(node, 'r', rx);
+	        return applyCircleTransform(node, matrix, animateAttrs, hasStroke, hasMarker);
+	    }
+	    switch (matrix.type) {
+	        case 'translate': {
+	            const tx = matrix.val[0];
+	            const ty = matrix.val[1] || 0;
+	            checkAttr$1(node, 'cx', applyNumber(plus, cx, tx));
+	            checkAttr$1(node, 'cy', applyNumber(plus, cy, ty));
+	            node.removeAttribute('transform');
+	            return true;
+	        }
+	        case 'rotate': {
+	            // 仅限直角旋转
+	            if (matrix.val[0] % SAFE_ROTATE_CORNER !== 0) {
+	                return false;
+	            }
+	            let mx = new Matrix();
+	            if (matrix.val.length === 3) {
+	                mx = mx.translate(matrix.val[1], matrix.val[2]);
+	                mx = mx.rotate(matrix.val[0]);
+	                mx = mx.translate(-matrix.val[1], -matrix.val[2]);
+	            }
+	            else {
+	                mx = mx.rotate(matrix.val[0]);
+	            }
+	            const _cx = parseFloat(cx);
+	            const _cy = parseFloat(cy);
+	            // 垂直的情况要交换 rx 和 ry
+	            if (Math.abs(matrix.val[0] % (SAFE_ROTATE_CORNER * 2)) === SAFE_ROTATE_CORNER) {
+	                // 如果存在百分比的尺寸，不能交换 rx 和 ry
+	                // TODO：如果存在动画，暂时不做处理
+	                if (rx.includes('%') || ry.includes('%') || checkAnimateAttr(animateAttrs, 'rx') || checkAnimateAttr(animateAttrs, 'ry')) {
+	                    return false;
+	                }
+	                checkAttr$1(node, 'rx', ry);
+	                checkAttr$1(node, 'ry', rx);
+	            }
+	            checkAttr$1(node, 'cx', `${fixedMVal(mx.a * _cx + mx.c * _cy + mx.e)}`);
+	            checkAttr$1(node, 'cy', `${fixedMVal(mx.b * _cx + mx.d * _cy + mx.f)}`);
+	            node.removeAttribute('transform');
+	            return true;
+	        }
+	        case 'scale': {
+	            if (hasStroke || !pureNumOrWithPx.test(rx) || !pureNumOrWithPx.test(ry) || checkAnimateAttr(animateAttrs, 'rx') || checkAnimateAttr(animateAttrs, 'ry')) {
+	                return false;
+	            }
+	            const sx = matrix.val[0];
+	            const sy = matrix.val.length === 2 ? matrix.val[1] : matrix.val[0];
+	            checkAttr$1(node, 'cx', applyNumber(multiply, cx, sx));
+	            checkAttr$1(node, 'cy', applyNumber(multiply, cy, sy));
+	            rx = applyNumber(multiply, rx, sx);
+	            ry = applyNumber(multiply, ry, sy);
+	            if (rx === ry) {
+	                // 转成正圆
+	                node.nodeName = 'circle';
+	                rmAttrs(node, ['rx', 'ry']);
+	                checkAttr$1(node, 'r', rx);
+	            }
+	            else {
+	                checkAttr$1(node, 'rx', rx);
+	                checkAttr$1(node, 'ry', ry);
+	            }
+	            node.removeAttribute('transform');
+	            return true;
+	        }
+	        case 'matrix':
+	            if (matrix.val[1] === 0 && matrix.val[2] === 0) {
+	                if (hasStroke || !pureNumOrWithPx.test(rx) || !pureNumOrWithPx.test(ry) || checkAnimateAttr(animateAttrs, 'rx') || checkAnimateAttr(animateAttrs, 'ry')) {
+	                    return false;
+	                }
+	                // 仅验证缩放 + 平移的情况
+	                const msx = matrix.val[0];
+	                const msy = matrix.val[3];
+	                checkAttr$1(node, 'cx', applyNumber(plus, applyNumber(multiply, cx, msx), matrix.val[4]));
+	                checkAttr$1(node, 'cy', applyNumber(plus, applyNumber(multiply, cy, msy), matrix.val[5]));
+	                rx = applyNumber(multiply, rx, msx);
+	                ry = applyNumber(multiply, ry, msy);
+	                if (rx === ry) {
+	                    // 转成正圆
+	                    node.nodeName = 'circle';
+	                    rmAttrs(node, ['rx', 'ry']);
+	                    checkAttr$1(node, 'r', rx);
+	                }
+	                else {
+	                    checkAttr$1(node, 'rx', rx);
+	                    checkAttr$1(node, 'ry', ry);
+	                }
+	                node.removeAttribute('transform');
+	                return true;
+	            }
+	            return false;
+	        default:
+	            return false;
+	    }
+	};
+	const applyPolyTransform = (node, matrix, animateAttrs, hasStroke, hasMarker, minStr) => {
+	    if (checkAnimateAttr(animateAttrs, 'points')) {
+	        return false;
+	    }
+	    let pointVal = node.getAttribute('points') || '';
+	    const points = execNumberList(pointVal);
+	    // points 数量必须是偶数
+	    if (points.length % 2 === 1) {
+	        points.pop();
+	        pointVal = shortenNumberList(points.map(shortenNumber).join(','));
+	        node.setAttribute('points', pointVal);
+	    }
+	    if (matrix.type === 'translate') {
+	        const tx = matrix.val[0];
+	        const ty = matrix.val[1] || 0;
+	        const _points = applyNumberPairs((x, y) => [plus(x, tx), plus(y, ty)], points);
+	        if (_points.length < pointVal.length + minStr.length) {
+	            node.setAttribute('points', _points);
+	            node.removeAttribute('transform');
+	            return true;
+	        }
+	        else {
+	            return false;
+	        }
+	    }
+	    if (hasMarker || (matrix.type !== 'rotate' && hasStroke)) {
+	        return false;
+	    }
+	    let mx = new Matrix();
+	    switch (matrix.type) {
+	        case 'rotate':
+	            if (matrix.val.length === 3) {
+	                mx = mx.translate(matrix.val[1], matrix.val[2]);
+	                mx = mx.rotate(matrix.val[0]);
+	                mx = mx.translate(-matrix.val[1], -matrix.val[2]);
+	            }
+	            else {
+	                mx = mx.rotate(matrix.val[0]);
+	            }
+	            break;
+	        case 'scale':
+	        case 'skewX':
+	        case 'skewY':
+	            mx = mx[matrix.type](...matrix.val);
+	            break;
+	        default:
+	            mx = new Matrix(...matrix.val);
+	            break;
+	    }
+	    const newPoints = applyNumberPairs((n1, n2) => [
+	        fixedMVal(mx.a * n1 + mx.c * n2 + mx.e),
+	        fixedMVal(mx.b * n1 + mx.d * n2 + mx.f),
+	    ], points);
+	    if (newPoints.length < pointVal.length + minStr.length) {
+	        node.setAttribute('points', newPoints);
+	        node.removeAttribute('transform');
+	        return true;
+	    }
+	    else {
+	        return false;
+	    }
+	};
+	const applyPathTransform = (node, matrix, animateAttrs, hasStroke, hasMarker, minStr) => {
+	    if (checkAnimateAttr(animateAttrs, 'd')) {
+	        return false;
+	    }
+	    const d = node.getAttribute('d') || '';
+	    const pathResult = doCompute(execPath(d));
+	    if (matrix.type === 'translate') {
+	        const tx = matrix.val[0];
+	        const ty = matrix.val[1] || 0;
+	        pathResult.forEach((subPath, index) => {
+	            subPath.forEach(pathItem => {
+	                switch (pathItem.type) {
+	                    case 'm':
+	                        // 第一个移动指令也要执行平移变换
+	                        if (index === 0) {
+	                            pathItem.val[0] = plus(pathItem.val[0], tx);
+	                            pathItem.val[1] = plus(pathItem.val[1], ty);
+	                        }
+	                        break;
+	                    case 'M':
+	                    case 'L':
+	                    case 'C':
+	                    case 'S':
+	                    case 'Q':
+	                    case 'T':
+	                        for (let i = 0; i < pathItem.val.length; i += 2) {
+	                            pathItem.val[i] = plus(pathItem.val[i], tx);
+	                            pathItem.val[i + 1] = plus(pathItem.val[i + 1], ty);
+	                        }
+	                        break;
+	                    case 'H':
+	                        for (let i = 0; i < pathItem.val.length; i++) {
+	                            pathItem.val[i] = plus(pathItem.val[i], tx);
+	                        }
+	                        break;
+	                    case 'V':
+	                        for (let i = 0; i < pathItem.val.length; i++) {
+	                            pathItem.val[i] = plus(pathItem.val[i], ty);
+	                        }
+	                        break;
+	                    case 'A':
+	                        for (let i = 0; i < pathItem.val.length; i += APOS_LEN) {
+	                            pathItem.val[i + APOS_X] = plus(pathItem.val[i + APOS_X], tx);
+	                            pathItem.val[i + APOS_Y] = plus(pathItem.val[i + APOS_Y], ty);
+	                        }
+	                        break;
+	                }
+	            });
+	        });
+	        const _d = stringifyPath(doCompute(pathResult));
+	        if (_d.length < d.length + minStr.length) {
+	            node.setAttribute('d', _d);
+	            node.removeAttribute('transform');
+	            return true;
+	        }
+	        else {
+	            return false;
+	        }
+	    }
+	    // 不能有 marker
+	    if (hasMarker) {
+	        return false;
+	    }
+	    else if (matrix.type !== 'rotate') {
+	        // rotate 之外不能有 stroke
+	        // rotate 和 scale 之外遇到 a 指令会有问题
+	        if (hasStroke || (matrix.type !== 'scale' && d.toLowerCase().includes('a'))) {
+	            return false;
+	        }
+	    }
+	    if (matrix.type === 'scale') {
+	        const sx = matrix.val[0];
+	        const sy = matrix.val.length === 2 ? matrix.val[1] : matrix.val[0];
+	        pathResult.forEach(subPath => {
+	            subPath.forEach(pathItem => {
+	                switch (pathItem.type.toLowerCase()) {
+	                    case 'm':
+	                    case 'l':
+	                    case 'c':
+	                    case 's':
+	                    case 'q':
+	                    case 't':
+	                        for (let i = 0; i < pathItem.val.length; i += 2) {
+	                            pathItem.val[i] = multiply(pathItem.val[i], sx);
+	                            pathItem.val[i + 1] = multiply(pathItem.val[i + 1], sy);
+	                        }
+	                        break;
+	                    case 'h':
+	                        for (let i = 0; i < pathItem.val.length; i++) {
+	                            pathItem.val[i] = multiply(pathItem.val[i], sx);
+	                        }
+	                        break;
+	                    case 'v':
+	                        for (let i = 0; i < pathItem.val.length; i++) {
+	                            pathItem.val[i] = multiply(pathItem.val[i], sy);
+	                        }
+	                        break;
+	                    case 'a':
+	                        for (let i = 0; i < pathItem.val.length; i += APOS_LEN) {
+	                            pathItem.val[i + APOS_RX] = multiply(pathItem.val[i + APOS_RX], sx);
+	                            pathItem.val[i + APOS_RY] = multiply(pathItem.val[i + APOS_RY], sy);
+	                            pathItem.val[i + APOS_X] = multiply(pathItem.val[i + APOS_X], sx);
+	                            pathItem.val[i + APOS_Y] = multiply(pathItem.val[i + APOS_Y], sy);
+	                        }
+	                        break;
+	                }
+	            });
+	        });
+	        const _d = stringifyPath(doCompute(pathResult));
+	        if (_d.length < d.length + minStr.length) {
+	            node.setAttribute('d', _d);
+	            node.removeAttribute('transform');
+	            return true;
+	        }
+	        else {
+	            return false;
+	        }
+	    }
+	    let mx = new Matrix();
+	    switch (matrix.type) {
+	        case 'rotate':
+	            if (matrix.val.length === 3) {
+	                mx = mx.translate(matrix.val[1], matrix.val[2]);
+	                mx = mx.rotate(matrix.val[0]);
+	                mx = mx.translate(-matrix.val[1], -matrix.val[2]);
+	            }
+	            else {
+	                mx = mx.rotate(matrix.val[0]);
+	            }
+	            break;
+	        case 'skewX':
+	        case 'skewY':
+	            mx = mx[matrix.type](matrix.val[0]);
+	            break;
+	        default:
+	            mx = new Matrix(...matrix.val);
+	            break;
+	    }
+	    pathResult.forEach((subPath, index) => {
+	        subPath.forEach(pathItem => {
+	            switch (pathItem.type) {
+	                case 'M':
+	                case 'L':
+	                case 'C':
+	                case 'S':
+	                case 'Q':
+	                case 'T':
+	                    for (let i = 0; i < pathItem.val.length; i += 2) {
+	                        [pathItem.val[i], pathItem.val[i + 1]] = [
+	                            fixedMVal(mx.a * pathItem.val[i] + mx.c * pathItem.val[i + 1] + mx.e),
+	                            fixedMVal(mx.b * pathItem.val[i] + mx.d * pathItem.val[i + 1] + mx.f),
+	                        ];
+	                    }
+	                    break;
+	                case 'm':
+	                case 'l':
+	                case 'c':
+	                case 's':
+	                case 'q':
+	                case 't':
+	                    for (let i = 0; i < pathItem.val.length; i += 2) {
+	                        [pathItem.val[i], pathItem.val[i + 1]] = [
+	                            fixedMVal(mx.a * pathItem.val[i] + mx.c * pathItem.val[i + 1]),
+	                            fixedMVal(mx.b * pathItem.val[i] + mx.d * pathItem.val[i + 1]),
+	                        ];
+	                    }
+	                    // 第一个移动指令也要执行平移变换
+	                    if (pathItem.type === 'm' && index === 0) {
+	                        pathItem.val[0] = fixedMVal(pathItem.val[0] + mx.e);
+	                        pathItem.val[1] = fixedMVal(pathItem.val[1] + mx.f);
+	                    }
+	                    break;
+	                case 'H': {
+	                    pathItem.type = 'L';
+	                    const HVal = pathItem.val.slice();
+	                    const Hy = pathItem.from[1];
+	                    for (let i = 0; i < HVal.length; i++) {
+	                        pathItem.val[i * 2] = fixedMVal(mx.a * HVal[i] + mx.c * Hy + mx.e);
+	                        pathItem.val[i * 2 + 1] = fixedMVal(mx.b * HVal[i] + mx.d * Hy + mx.f);
+	                    }
+	                    break;
+	                }
+	                case 'h': {
+	                    pathItem.type = 'l';
+	                    const hVal = pathItem.val.slice();
+	                    const hy = 0;
+	                    for (let i = 0; i < hVal.length; i++) {
+	                        pathItem.val[i * 2] = fixedMVal(mx.a * hVal[i] + mx.c * hy);
+	                        pathItem.val[i * 2 + 1] = fixedMVal(mx.b * hVal[i] + mx.d * hy);
+	                    }
+	                    break;
+	                }
+	                case 'V': {
+	                    pathItem.type = 'L';
+	                    const VVal = pathItem.val.slice();
+	                    const Vx = pathItem.from[0];
+	                    for (let i = 0; i < VVal.length; i++) {
+	                        pathItem.val[i * 2] = fixedMVal(mx.a * Vx + mx.c * VVal[i] + mx.e);
+	                        pathItem.val[i * 2 + 1] = fixedMVal(mx.b * Vx + mx.d * VVal[i] + mx.f);
+	                    }
+	                    break;
+	                }
+	                case 'v': {
+	                    pathItem.type = 'l';
+	                    const vVal = pathItem.val.slice();
+	                    const vx = 0;
+	                    for (let i = 0; i < vVal.length; i++) {
+	                        pathItem.val[i * 2] = fixedMVal(mx.a * vx + mx.c * vVal[i]);
+	                        pathItem.val[i * 2 + 1] = fixedMVal(mx.b * vx + mx.d * vVal[i]);
+	                    }
+	                    break;
+	                }
+	            }
+	        });
+	    });
+	    const newD = stringifyPath(doCompute(pathResult));
+	    if (newD.length < d.length + minStr.length) {
+	        node.setAttribute('d', newD);
+	        node.removeAttribute('transform');
+	        return true;
+	    }
+	    else {
+	        return false;
+	    }
+	};
+	const applyTransform = (node, matrix, minStr) => {
+	    const animateAttrs = getAnimateAttr(node);
+	    // 平移可以直接应用，旋转要判断节点类型，其它变形函数只能在没有描边的时候应用
+	    const hasStroke = (getAttr(node, 'stroke', 'none') !== 'none' || checkAnimateAttr(animateAttrs, 'stroke', val => val !== 'none')) && (getAttr(node, 'stroke-width', '1') !== '0' || checkAnimateAttr(animateAttrs, 'stroke-width', val => val !== '0'));
+	    // 存在 marker 引用的对象只能进行平移变换
+	    const hasMarker = getAttr(node, 'marker-start', 'none') !== 'none'
+	        || getAttr(node, 'marker-mid', 'none') !== 'none'
+	        || getAttr(node, 'marker-end', 'none') !== 'none'
+	        || checkAnimateAttr(animateAttrs, 'marker-start', val => val !== 'none')
+	        || checkAnimateAttr(animateAttrs, 'marker-mid', val => val !== 'none')
+	        || checkAnimateAttr(animateAttrs, 'marker-end', val => val !== 'none');
+	    switch (node.nodeName) {
+	        case 'text':
+	        case 'tspan':
+	            return applyTextTransform(node, matrix, animateAttrs);
+	        case 'rect':
+	            return applyRectTransform(node, matrix, animateAttrs, hasStroke, hasMarker);
+	        case 'line':
+	            return applyLineTransform(node, matrix, animateAttrs, hasMarker);
+	        case 'circle':
+	            return applyCircleTransform(node, matrix, animateAttrs, hasStroke, hasMarker);
+	        case 'ellipse':
+	            return applyEllipseTransform(node, matrix, animateAttrs, hasStroke, hasMarker);
+	        case 'polyline':
+	        case 'polygon':
+	            return applyPolyTransform(node, matrix, animateAttrs, hasStroke, hasMarker, minStr);
+	        case 'path':
+	            return applyPathTransform(node, matrix, animateAttrs, hasStroke, hasMarker, minStr);
+	        default:
+	            return false;
+	    }
+	};
+	const combineTransform = async (rule, dom) => new Promise(resolve => {
+	    if (rule[0]) {
+	        execStyleTree(dom);
+	        // digit1 = 矩阵前 4 位的精度，digit2 = 矩阵后 2 位的精度
+	        const { trigDigit, sizeDigit, angelDigit, } = rule[1];
+	        traversalNode(isTag, node => {
+	            for (let i = node.attributes.length; i--;) {
+	                const attr = node.attributes[i];
+	                if (transformAttributes.includes(attr.name)) {
+	                    const transform = [];
+	                    execMatrix(attr.value.trim()).forEach(mFunc => {
+	                        const lastFunc = transform[transform.length - 1];
+	                        if (transform.length && lastFunc.type === mFunc.type) {
+	                            const mergeFunc = merge(lastFunc, mFunc, trigDigit, sizeDigit, angelDigit);
+	                            // 如果合并后为无效变化，则出栈，否则更新合并后的函数
+	                            if (mergeFunc.noEffect) {
+	                                transform.pop();
+	                            }
+	                            else {
+	                                transform[transform.length - 1] = mergeFunc;
+	                            }
+	                        }
+	                        else {
+	                            transform.push(mFunc);
+	                        }
+	                    });
+	                    if (transform.length) {
+	                        const matrix = combineMatrix(transform, trigDigit, sizeDigit, angelDigit);
+	                        const transformStr = stringify(transform, trigDigit, sizeDigit, angelDigit);
+	                        const matrixStr = stringify([matrix], trigDigit, sizeDigit, angelDigit);
+	                        const minStr = (matrixStr.length < transformStr.length) ? matrixStr : transformStr;
+	                        if (matrix.noEffect) {
+	                            node.removeAttribute(attr.fullname);
+	                            return;
+	                        }
+	                        if (attr.fullname === 'transform') {
+	                            // TODO：进一步分析子元素
+	                            // TODO：暂时只应用 transform 属性
+	                            if (applyTransform(node, matrix, ` ${attr.fullname}="${minStr}"`)) {
+	                                return;
+	                            }
+	                        }
+	                        attr.value = minStr;
+	                    }
+	                    else {
+	                        node.removeAttribute(attr.fullname);
+	                    }
+	                }
+	            }
+	        }, dom);
+	    }
+	    resolve();
+	});
+
+	// 2d 向量
+	const HALF_CIRC$2 = 180;
+	const ACCURACY = 1e6;
+	class Vector {
+	    constructor(x = 0, y = 0) {
+	        this.x = x;
+	        this.y = y;
+	    }
+	    // 获取未修正的向量长度
+	    get _modulo() {
+	        return Math.sqrt(this.x * this.x + this.y * this.y);
+	    }
+	    // 获取向量长度
+	    get modulo() {
+	        return Vector.Rounding(Math.sqrt(this.x * this.x + this.y * this.y));
+	    }
+	    set modulo(m) {
+	        this.normalize();
+	        this.x *= m;
+	        this.y *= m;
+	    }
+	    rotate(arc) {
+	        const _x = this.x;
+	        const _y = this.y;
+	        this.x = _x * Math.cos(arc) - _y * Math.sin(arc);
+	        this.y = _x * Math.sin(arc) + _y * Math.cos(arc);
+	        return this;
+	    }
+	    // value 直接返回长度
+	    valueOf() {
+	        return this.modulo;
+	    }
+	    // 返回字符串形式
+	    toString() {
+	        return `[${this.x},${this.y}]`;
+	    }
+	    // 转为单位向量
+	    normalize() {
+	        const modulo = this._modulo;
+	        if (modulo !== 0) {
+	            this.x /= modulo;
+	            this.y /= modulo;
+	        }
+	        else {
+	            throw new Error('零向量无法标准化！');
+	        }
+	        return this;
+	    }
+	    // 转为零向量
+	    zero() {
+	        this.x = 0;
+	        this.y = 0;
+	        return this;
+	    }
+	    // 与另一个向量相加
+	    add(v) {
+	        this.x += v.x;
+	        this.y += v.y;
+	        return this;
+	    }
+	    // 与另一个向量相减
+	    substract(v) {
+	        this.x -= v.x;
+	        this.y -= v.y;
+	        return this;
+	    }
+	    multiplied(n) {
+	        if (typeof n === 'number') {
+	            this.x *= n;
+	            this.y *= n;
+	            return this;
+	        }
+	        else {
+	            return this.x * n.x + this.y * n.y;
+	        }
+	    }
+	    // 计算两个向量的夹角 - 弧度
+	    radian(v) {
+	        return Vector.radian(this, v);
+	    }
+	    // 计算两个向量的夹角 - 角度
+	    angel(v) {
+	        return Vector.angel(this, v);
+	    }
+	    // 自己是不是零向量
+	    get isZero() {
+	        return this.x === 0 && this.y === 0;
+	    }
+	    // 自己是不是单位向量
+	    get isNormalize() {
+	        return this.modulo === 1;
+	    }
+	    // 两个向量相加
+	    static add(v1, v2) {
+	        return new Vector(v1.x + v2.x, v1.y + v2.y);
+	    }
+	    // 两个向量相减
+	    static substract(v1, v2) {
+	        return new Vector(v1.x - v2.x, v1.y - v2.y);
+	    }
+	    // 两个向量相乘
+	    static multiplied(v1, n) {
+	        if (typeof n === 'number') {
+	            return new Vector(v1.x * n, v1.y * n);
+	        }
+	        else {
+	            return v1.x * n.x + v1.y * n.y;
+	        }
+	    }
+	    // 两个向量的夹角 - 弧度
+	    static radian(v1, v2) {
+	        if (v1.isZero || v2.isZero) {
+	            return NaN;
+	        }
+	        return Math.acos(Vector.multiplied(v1, v2) / v1._modulo / v2._modulo);
+	    }
+	    // 两个向量的夹角 - 角度
+	    static angel(v1, v2) {
+	        if (v1.isZero || v2.isZero) {
+	            return NaN;
+	        }
+	        return Vector.Rounding(HALF_CIRC$2 * Vector.radian(v1, v2) / Math.PI);
+	    }
+	    // v1 到 v2 的投影分量
+	    static projected(v1, v2) {
+	        if (v1.isZero || v2.isZero) {
+	            return new Vector(0, 0);
+	        }
+	        return Vector.multiplied(v2, Vector.multiplied(v1, v2) / Math.pow(v2._modulo, 2));
+	    }
+	    // v1 到 v2 的垂直分量
+	    static plumb(v1, v2) {
+	        if (v1.isZero) {
+	            return new Vector(0, 0);
+	        }
+	        if (v2.isZero) {
+	            return new Vector(v1.x, v1.y);
+	        }
+	        return Vector.substract(v1, Vector.projected(v1, v2));
+	    }
+	    // 取模，对小数点后6位进行取整，修正双精度浮点数导致无法正常标准化的
+	    static Rounding(n) {
+	        return Math.round(n * ACCURACY) / ACCURACY;
+	    }
+	    // 求距离
+	    static distance(v1, v2) {
+	        return Vector.substract(v1, v2).modulo;
+	    }
+	}
+
+	const check$1 = (threshold, startI, endI, paths) => {
+	    let max = 0;
+	    let maxI = 0;
+	    // 拿到基础向量
+	    const baseVector = new Vector(minus(paths[endI], paths[startI]), minus(paths[endI + 1], paths[startI + 1]));
+	    for (let i = startI + 2; i < endI; i += 2) {
+	        // 获取每个点基于起始和结束位置的向量
+	        const vectorToStart = new Vector(minus(paths[i], paths[startI]), minus(paths[i + 1], paths[startI + 1]));
+	        const vectorToEnd = new Vector(minus(paths[i], paths[endI]), minus(paths[i + 1], paths[endI + 1]));
+	        let distance = 0;
+	        // 与起始或结束点重合的点直接跳过
+	        if (!vectorToStart.isZero && !vectorToEnd.isZero) {
+	            // 边界情况：投影分量的模大于基础向量，说明途径点在起始点或结束点之外，不能单纯靠垂直分量来抽稀
+	            const prjToStart = Vector.projected(vectorToStart, baseVector);
+	            const prjToEnd = Vector.projected(vectorToEnd, baseVector);
+	            if (prjToStart.modulo > baseVector.modulo) {
+	                distance = prjToStart.modulo;
+	            }
+	            else if (prjToEnd.modulo > baseVector.modulo) {
+	                distance = prjToEnd.modulo;
+	            }
+	            else {
+	                distance = Vector.plumb(vectorToStart, baseVector).modulo;
+	            }
+	            if (distance > max) {
+	                max = distance;
+	                maxI = i;
+	            }
+	        }
+	    }
+	    if (max <= threshold) {
+	        paths.splice(startI + 2, endI - startI - 2);
+	    }
+	    else {
+	        if (maxI < endI - 2) {
+	            check$1(threshold, maxI, endI, paths);
+	        }
+	        if (maxI > startI + 2) {
+	            check$1(threshold, startI, maxI, paths);
+	        }
+	    }
+	};
+	const douglasPeucker = (threshold, pathArr) => {
+	    const pathCopy = pathArr.slice();
+	    check$1(threshold, 0, pathCopy.length - 2, pathCopy);
+	    return pathCopy;
+	};
+
+	const combineHV = (subPath, pathItem, index) => {
+	    const relVal = getRelHV(pathItem);
+	    // 如果前一个函数也是水平/垂直移动，判断是否可以合并
+	    // 判断的依据是：相对值的积为正数（即同向移动）
+	    if (subPath[index - 1].type.toLowerCase() === pathItem.type.toLowerCase()) {
+	        const lastItem = subPath[index - 1];
+	        if (getRelHV(lastItem) * relVal >= 0) {
+	            // 合并时直接转绝对坐标
+	            lastItem.val[0] = getAbsHV(pathItem);
+	            lastItem.type = lastItem.type.toUpperCase();
+	            subPath.splice(index, 1);
+	        }
+	    }
+	};
+	// 同方向的直线直接合并
+	const combineL = (subPath, pathItem, index, digit) => {
+	    const fixed = toFixed(digit);
+	    if (subPath[index - 1].type.toLowerCase() === 'l') {
+	        const lastItem = subPath[index - 1];
+	        const relVal = getRel(pathItem);
+	        const lastRelVal = getRel(lastItem);
+	        if (fixed(Math.atan2(lastRelVal[0], lastRelVal[1])) === fixed(Math.atan2(relVal[0], relVal[1]))) {
+	            lastItem.val = [plus(lastItem.val[0], relVal[0]), plus(lastItem.val[1], relVal[1])];
+	            lastItem.type = 'l';
+	            subPath.splice(index, 1);
+	        }
+	    }
+	};
+	const getCenter = (pathItem, digit) => {
+	    const rotation = pathItem.val[APOS_ROTATION];
+	    const rx = pathItem.val[APOS_RX];
+	    const ry = pathItem.val[APOS_RY];
+	    const ccw = pathItem.val[APOS_LARGE] === pathItem.val[APOS_SWEEP];
+	    const abs = getAbs({
+	        type: pathItem.type,
+	        val: pathItem.val.slice(APOS_X),
+	        from: pathItem.from,
+	    });
+	    const v1 = new Vector(pathItem.from[0], pathItem.from[1]);
+	    const v2 = new Vector(abs[0], abs[1]);
+	    // 先旋转一下
+	    if (rotation) {
+	        v1.rotate(-rotation * Math.PI * 2 / CIRC);
+	        v2.rotate(-rotation * Math.PI * 2 / CIRC);
+	    }
+	    // 从椭圆变成正圆
+	    if (rx !== ry) {
+	        v1.y *= rx / ry;
+	        v2.y *= rx / ry;
+	    }
+	    // 获取起点到终点的向量
+	    const v = new Vector(v2.x - v1.x, v2.y - v1.y);
+	    // r 不一定是够长，需要扩大到指定的大小 https://www.w3.org/TR/SVG/paths.html#ArcOutOfRangeParameters
+	    let r = rx;
+	    if (r < v.modulo / 2) {
+	        r = v.modulo / 2;
+	    }
+	    // 向量长度为另一条直角边
+	    v.modulo = Math.sqrt(r * r - Math.pow(v.modulo / 2, 2));
+	    // 根据方向选择 90 度
+	    const arc = ccw ? -Math.PI / 2 : Math.PI / 2;
+	    v.rotate(arc);
+	    // 把起始点挪到线段中心
+	    v.x += (v1.x + v2.x) / 2;
+	    v.y += (v1.y + v2.y) / 2;
+	    if (rx !== ry) {
+	        v.y *= ry / rx;
+	    }
+	    if (rotation) {
+	        v.rotate(rotation * Math.PI * 2 / CIRC);
+	    }
+	    return [toFixed(digit, v.x), toFixed(digit, v.y)];
+	};
+	const combineA = (subPath, pathItem, index, digit) => {
+	    const lastItem = subPath[index - 1];
+	    if (lastItem.type.toLowerCase() === 'a') {
+	        // rx ry 转角 旋转方向相等，并且圆心重合，才能进行合并
+	        const _eqProps = (prop) => ramda.eqProps(`${prop}`, lastItem.val, pathItem.val);
+	        if (ramda.all(_eqProps, [APOS_RX, APOS_RY, APOS_ROTATION, APOS_SWEEP])) {
+	            const center = getCenter(pathItem, digit);
+	            const lastCenter = getCenter(lastItem, digit);
+	            // equals 存在 0 !== -0 的问题
+	            if (center[0] === lastCenter[0] && center[1] === lastCenter[1]) {
+	                // 前一个指令的起始弧线
+	                const vbase = new Vector(lastItem.from[0] - center[0], lastItem.from[1] - center[1]);
+	                const lastAbs = getAbs({
+	                    type: lastItem.type,
+	                    val: lastItem.val.slice(APOS_X),
+	                    from: lastItem.from,
+	                });
+	                const v1 = new Vector(lastAbs[0] - center[0], lastAbs[1] - center[1]);
+	                const abs = getAbs({
+	                    type: pathItem.type,
+	                    val: pathItem.val.slice(APOS_X),
+	                    from: pathItem.from,
+	                });
+	                const v2 = new Vector(abs[0] - center[0], abs[1] - center[1]);
+	                let radian1 = Vector.radian(vbase, v1);
+	                if (lastItem.val[APOS_LARGE] === 1) {
+	                    radian1 = Math.PI * 2 - radian1;
+	                }
+	                let radian2 = Vector.radian(v1, v2);
+	                if (pathItem.val[APOS_LARGE] === 1) {
+	                    radian2 = Math.PI * 2 - radian2;
+	                }
+	                // 大于等于 360 度不能合并，等于 360 度会造成 a 指令被忽略
+	                if (radian1 + radian2 >= Math.PI * 2) {
+	                    return;
+	                }
+	                // 下面是进行合并的算法
+	                // 首先判断是否要改为大转角
+	                if (radian1 + radian2 > Math.PI && lastItem.val[APOS_LARGE] === 0) {
+	                    lastItem.val[APOS_LARGE] = 1;
+	                }
+	                // 直接强制改为绝对坐标
+	                lastItem.type = 'A';
+	                lastItem.val[APOS_X] = abs[0];
+	                lastItem.val[APOS_Y] = abs[1];
+	                // 移除当前节点
+	                subPath.splice(index, 1);
+	            }
+	        }
+	    }
+	    return;
+	};
+
+	// 把简单路径指令转回复杂指令
+	const complex = (item, lastItem) => {
+	    const complexItem = {
+	        type: item.type,
+	        from: item.from.slice(),
+	        val: item.val.slice(),
+	    };
+	    if (item.type.toLowerCase() === 's') {
+	        let [x, y] = item.from;
+	        if (lastItem.type === 'C') {
+	            x = symmetry(lastItem.val[2], item.from[0]);
+	            y = symmetry(lastItem.val[3], item.from[1]);
+	        }
+	        else if (lastItem.type === 'c') {
+	            x = symmetry(plus(lastItem.val[2], lastItem.from[0]), item.from[0]);
+	            y = symmetry(plus(lastItem.val[3], lastItem.from[1]), item.from[1]);
+	        }
+	        if (item.type === 'S') {
+	            complexItem.type = 'C';
+	            complexItem.val.unshift(x, y);
+	        }
+	        else {
+	            complexItem.type = 'c';
+	            complexItem.val.unshift(minus(x, item.from[0]), minus(y, item.from[1]));
+	        }
+	    }
+	    else if (item.type.toLowerCase() === 't') {
+	        let [x, y] = item.from;
+	        if (lastItem.type === 'Q') {
+	            x = symmetry(lastItem.val[0], item.from[0]);
+	            y = symmetry(lastItem.val[1], item.from[1]);
+	        }
+	        else if (lastItem.type === 'q') {
+	            x = symmetry(plus(lastItem.val[0], lastItem.from[0]), item.from[0]);
+	            y = symmetry(plus(lastItem.val[1], lastItem.from[1]), item.from[1]);
+	        }
+	        if (item.type === 'T') {
+	            complexItem.type = 'Q';
+	            complexItem.val.unshift(x, y);
+	        }
+	        else {
+	            complexItem.type = 'q';
+	            complexItem.val.unshift(minus(x, item.from[0]), minus(y, item.from[1]));
+	        }
+	    }
+	    return complexItem;
+	};
+
+	/* eslint-disable @typescript-eslint/no-var-requires */
+	const contours = require('svg-path-contours');
+	const triangle = require('triangulate-contours');
+	// 当前子路径中除了起始点和自己之外，还有其它任意指令
+	const hasBrother = (subPath, index) => {
+	    return index > 1 || index < subPath.length - 1;
+	};
+	// 移除 0 长度的平移指令，规则是没有 stroke-cap 或具有兄弟，反之可以转为 z 指令
+	const checkHV = (subPath, index, hasStrokeCap) => {
+	    if (!hasStrokeCap || hasBrother(subPath, index)) {
+	        subPath.splice(index, 1);
+	    }
+	    else {
+	        subPath[index].type = 'z';
+	    }
+	};
+	// 如果控制点位于起始点和终点的连线中间位置，则 q 指令可以转 l 指令
+	const checkQ = (pathItem, subPath, index, hasStrokeCap) => {
+	    // 简单指令转复杂指令
+	    const complexItem = complex(pathItem, subPath[index - 1]);
+	    const relVal = getRel(complexItem);
+	    const sameLine = (relVal[0] * relVal[3] === relVal[1] * relVal[2]) && (relVal[0] * (relVal[2] - relVal[0]) >= 0);
+	    if (sameLine) {
+	        if (relVal.every(s => s === 0)) {
+	            // 控制点及指令的相对值全部为 0 ，可以视情况移除或转 z 指令
+	            if (!hasStrokeCap || hasBrother(subPath, index)) {
+	                subPath.splice(index, 1);
+	            }
+	            else {
+	                pathItem.type = 'z';
+	            }
+	            return;
+	        }
+	        // 如果前后都不是 q/t 节点，则可以转直线指令
+	        if (subPath[index - 1].type.toLowerCase() !== 'q' && subPath[index - 1].type.toLowerCase() !== 't' && (index === subPath.length - 1 || subPath[index + 1].type.toLowerCase() !== 't')) {
+	            pathItem.type = complexItem.type === 'q' ? 'l' : 'L';
+	            pathItem.val = complexItem.val.slice(2);
+	        }
+	    }
+	};
+	// 如果控制点位于起始点和终点的连线中间位置，则 c 指令可以转 l 指令
+	const checkC = (pathItem, subPath, index, hasStrokeCap) => {
+	    const complexItem = complex(pathItem, subPath[index - 1]);
+	    const relVal = getRel(complexItem);
+	    const sameLine = (relVal[0] * relVal[5] === relVal[1] * relVal[4])
+	        && (relVal[0] * (relVal[4] - relVal[0]) >= 0)
+	        && (relVal[2] * relVal[5] === relVal[3] * relVal[4])
+	        && (relVal[2] * (relVal[4] - relVal[2]) >= 0);
+	    if (sameLine) {
+	        if (relVal.every(s => s === 0)) {
+	            // 控制点及指令的相对值全部为 0 ，可以视情况移除或转 z 指令
+	            if (!hasStrokeCap || hasBrother(subPath, index)) {
+	                subPath.splice(index, 1);
+	            }
+	            else {
+	                pathItem.type = 'z';
+	            }
+	            return;
+	        }
+	        // 可以直接转直线指令
+	        pathItem.type = complexItem.type === 'c' ? 'l' : 'L';
+	        pathItem.val = complexItem.val.slice(4);
+	    }
+	};
+	const checkSubPath = (pathResult, hasStroke, hasStrokeCap, sizeDigit, angelDigit) => {
+	    const result = [];
+	    // 首先过一遍子路径，移除所有的空节点
+	    pathResult.forEach(subPath => {
+	        for (let j = subPath.length; j--;) {
+	            const pathItem = subPath[j];
+	            switch (pathItem.type) {
+	                case 'm':
+	                    // 所有子路径起始位置改为绝对坐标
+	                    pathItem.type = 'M';
+	                    pathItem.val[0] += subPath[0].from[0];
+	                    pathItem.val[1] += subPath[0].from[1];
+	                    break;
+	                case 'z':
+	                    // 没有 cap，可以移除紧跟 m 指令的 z 指令
+	                    if (!hasStrokeCap && subPath[j - 1].type.toLowerCase() === 'm') {
+	                        subPath.splice(j, 1);
+	                    }
+	                    break;
+	                // 移除长度为 0 的直线指令
+	                case 'h':
+	                case 'v':
+	                    if (pathItem.val[0] === 0) {
+	                        checkHV(subPath, j, hasStrokeCap);
+	                    }
+	                    break;
+	                case 't':
+	                case 'T':
+	                    // 移除 0 长度指令，曲线转直线
+	                    checkQ(pathItem, subPath, j, hasStrokeCap);
+	                    break;
+	                case 'q':
+	                case 'Q':
+	                    // 移除 0 长度指令，曲线转直线
+	                    checkQ(pathItem, subPath, j, hasStrokeCap);
+	                    break;
+	                case 's':
+	                case 'S':
+	                    // 移除 0 长度指令，曲线转直线
+	                    checkC(pathItem, subPath, j, hasStrokeCap);
+	                    break;
+	                case 'c':
+	                case 'C':
+	                    // 移除 0 长度指令，曲线转直线
+	                    checkC(pathItem, subPath, j, hasStrokeCap);
+	                    break;
+	            }
+	        }
+	    });
+	    for (let i = pathResult.length; i--;) {
+	        const subPath = pathResult[i];
+	        // 没有 stroke 直接移除空的子路径
+	        if (!hasStroke) {
+	            // triangle 存在 badcase，可能导致崩溃，所以必须 try
+	            try {
+	                const shapes = triangle(contours(subPath.map(item => [item.type, ...item.val])));
+	                if (!shapes.cells.length) {
+	                    continue;
+	                }
+	            }
+	            catch (e) {
+	                // empty
+	            }
+	        }
+	        // 同向路径合并
+	        for (let j = subPath.length; j--;) {
+	            const pathItem = subPath[j];
+	            switch (pathItem.type.toLowerCase()) {
+	                case 'h':
+	                case 'v':
+	                    combineHV(subPath, pathItem, j);
+	                    break;
+	                case 'l':
+	                    combineL(subPath, pathItem, j, angelDigit);
+	                    break;
+	                case 'a':
+	                    combineA(subPath, pathItem, j, angelDigit);
+	                    break;
+	            }
+	        }
+	        // 如果没有 marker，则空的 m 指令没有意义 https://www.w3.org/TR/SVG/paths.html#ZeroLengthSegments
+	        // 直接移除子路径即可，因为所有子路径起始点已经改为绝对地址，所以不会有副作用
+	        if (subPath.length > 1) {
+	            result.unshift(subPath);
+	        }
+	    }
+	    return result;
+	};
+
+	// 曲线指令转直线指令
+	const straighten = (threshold, pathArr) => {
+	    // 必须逆序执行
+	    outer: for (let pi = pathArr.length; pi--;) {
+	        const pathItem = pathArr[pi];
+	        if (pathItem.type.toLowerCase() === 'a') {
+	            let [x, y] = [pathItem.val[5], pathItem.val[6]];
+	            if (pathItem.type === 'A') {
+	                x = minus(x, pathItem.from[0]);
+	                y = minus(y, pathItem.from[1]);
+	            }
+	            const v = new Vector(x, y);
+	            if (pathItem.val[0] * 2 < threshold && pathItem.val[1] * 2 < threshold && v.modulo < threshold) {
+	                pathItem.type = 'l';
+	                pathItem.val = [x, y];
+	            }
+	        }
+	        else if (
+	        // c/s 指令可以直接直线化
+	        pathItem.type.toLowerCase() === 'c' || pathItem.type.toLowerCase() === 's'
+	            ||
+	                // q 指令必须保证后续指令不是 t 指令
+	                (pathItem.type.toLowerCase() === 'q' && (pi === pathArr.length - 1 || pathArr[pi + 1].type.toLowerCase() !== 't'))) {
+	            const complexItem = complex(pathItem, pathArr[pi - 1]);
+	            if (complexItem.type.toLowerCase() === complexItem.type) {
+	                for (let i = 0; i < complexItem.val.length; i += 2) {
+	                    const v = new Vector(complexItem.val[i], complexItem.val[i + 1]);
+	                    if (v.modulo >= threshold) {
+	                        continue outer;
+	                    }
+	                }
+	                pathItem.type = 'l';
+	                // 忽略所有的控制点，直接移动到目标点
+	                pathItem.val = pathItem.val.slice(pathItem.val.length - 2);
+	            }
+	            else {
+	                for (let i = 0; i < complexItem.val.length; i += 2) {
+	                    const v = new Vector(minus(complexItem.val[i], complexItem.from[0]), minus(complexItem.val[i + 1], complexItem.from[1]));
+	                    if (v.modulo >= threshold) {
+	                        continue outer;
+	                    }
+	                }
+	                pathItem.type = 'L';
+	                // 忽略所有的控制点，直接移动到目标点
+	                pathItem.val = pathItem.val.slice(pathItem.val.length - 2);
+	            }
+	        }
+	    }
+	    return pathArr;
+	};
+
+	const DPItemNormalize = (pathItem) => {
+	    switch (pathItem.type) {
+	        case 'l':
+	            pathItem.val[0] = plus(pathItem.val[0], pathItem.from[0]);
+	            pathItem.val[1] = plus(pathItem.val[1], pathItem.from[1]);
+	            break;
+	        case 'H':
+	            pathItem.val.push(pathItem.from[1]);
+	            break;
+	        case 'h':
+	            pathItem.val[0] = plus(pathItem.val[0], pathItem.from[0]);
+	            pathItem.val.push(pathItem.from[1]);
+	            break;
+	        case 'V':
+	            pathItem.val.unshift(pathItem.from[0]);
+	            break;
+	        case 'v':
+	            pathItem.val.unshift(pathItem.from[0]);
+	            pathItem.val[1] = plus(pathItem.val[1], pathItem.from[1]);
+	            break;
+	    }
+	    pathItem.type = 'L';
+	    return pathItem;
+	};
+	const DPItemMerge = (lastItem, pathItem) => {
+	    lastItem.val = lastItem.val.concat(DPItemNormalize(pathItem).val);
+	};
+	const DPInit = (threshold, pathArr) => {
+	    const pathResult = [];
+	    let len = 0;
+	    for (const pathItem of pathArr) {
+	        if (LineTypes.includes(pathItem.type)) {
+	            const lastItem = pathResult[len - 1];
+	            if (lastItem.type === 'L') {
+	                DPItemMerge(lastItem, pathItem);
+	            }
+	            else {
+	                pathResult.push(DPItemNormalize(pathItem));
+	                len++;
+	            }
+	        }
+	        else {
+	            const lastItem = pathResult[len - 1];
+	            if (len > 0 && lastItem.type === 'L') {
+	                lastItem.val = douglasPeucker(threshold, lastItem.from.concat(lastItem.val)).slice(2);
+	            }
+	            pathResult.push(pathItem);
+	            len++;
+	        }
+	    }
+	    if (pathResult[len - 1].type === 'L') {
+	        const lastItem = pathResult[len - 1];
+	        lastItem.val = douglasPeucker(threshold, lastItem.from.concat(lastItem.val)).slice(2);
+	    }
+	    return pathResult;
+	};
+	const processPath = (dVal, hasMarker, hasStroke, hasStrokeCap, { thinning, sizeDigit, angelDigit, straighten: straighten$1, }) => {
+	    // 先运算一次 doCompute，拿到每条指令的 from 坐标
+	    let pathResult = doCompute(execPath(dVal));
+	    // 如果存在 marker 引用，多余的优化都不能做
+	    if (!hasMarker) {
+	        // 存在小尺寸曲线转直线的规则
+	        if (straighten$1) {
+	            // doCompute 必须执行
+	            pathResult = doCompute(pathResult.map(p => straighten(straighten$1, p)));
+	        }
+	        // 存在路径抽稀规则
+	        if (thinning) {
+	            // doCompute 必须执行
+	            pathResult = doCompute(pathResult.map(p => DPInit(thinning, p)));
+	        }
+	        // 进行合并、指令转换等运算
+	        pathResult = doCompute(checkSubPath(pathResult, hasStroke, hasStrokeCap, sizeDigit, angelDigit));
+	    }
+	    if (pathResult.length) {
+	        return stringifyPath(pathResult, sizeDigit, angelDigit);
+	    }
+	    else {
+	        return '';
+	    }
+	};
+	const computePath = async (rule, dom) => new Promise(resolve => {
+	    if (rule[0]) {
+	        execStyleTree(dom);
+	        traversalNode(ramda.anyPass([ramda.propEq('nodeName', 'path'), ramda.propEq('nodeName', 'animateMotion'), ramda.propEq('nodeName', 'textPath')]), node => {
+	            const option = rule[1];
+	            const attrName = node.nodeName === 'path' ? 'd' : 'path';
+	            const attrD = node.getAttribute(attrName);
+	            const animateAttrs = getAnimateAttr(node);
+	            // 是否存在 marker 引用，没有 marker 可以移除所有空移动指令
+	            const hasMarker = getAttr(node, 'marker-start', 'none') !== 'none' || getAttr(node, 'marker-mid', 'none') !== 'none' || getAttr(node, 'marker-end', 'none') !== 'none';
+	            // 是否存在 stroke，没有 stroke 可以移除面积为 0 的子路径
+	            const hasStroke = getAttr(node, 'stroke', 'none') !== 'none' && getAttr(node, 'stroke-width', '1') !== '0';
+	            // 是否存在 stroke-linecap，没有 stroke-linecap 可以移除长度为 0 的指令
+	            const hasStrokeCap = getAttr(node, 'stroke-linecap', 'butt') !== 'butt';
+	            let noAttrD = true;
+	            let noAnimateD = true;
+	            if (attrD) {
+	                const pathResult = processPath(attrD, hasMarker, hasStroke, hasStrokeCap, option);
+	                if (!pathResult) {
+	                    node.removeAttribute(attrName);
+	                }
+	                else {
+	                    noAttrD = false;
+	                    node.setAttribute(attrName, pathResult);
+	                }
+	            }
+	            // animateMotion 的 path 属性不能再次被动画元素修改
+	            if (node.nodeName !== 'animateMotion' && checkAnimateAttr(animateAttrs, attrName)) {
+	                const animateD = findAnimateAttr(animateAttrs, attrName);
+	                animateD.forEach(item => {
+	                    const value = item.values.map(val => processPath(val, hasMarker, hasStroke, hasStrokeCap, option));
+	                    item.keys.forEach((key, index) => {
+	                        if (key === 'values') {
+	                            const values = value.slice(index).filter(v => !!v).join(';');
+	                            if (values) {
+	                                item.node.setAttribute(key, values);
+	                            }
+	                            else {
+	                                item.node.removeAttribute(key);
+	                            }
+	                        }
+	                        else {
+	                            if (value[index]) {
+	                                item.node.setAttribute(key, value[index]);
+	                            }
+	                            else {
+	                                item.node.removeAttribute(key);
+	                            }
+	                        }
+	                    });
+	                });
+	                // 再次更新动画属性再进行判断
+	                if (node.nodeName === 'path' && checkAnimateAttr(getAnimateAttr(node), attrName)) {
+	                    noAnimateD = false;
+	                }
+	            }
+	            // 既没有 d 属性也没有动画 d 属性的 path 元素可以移除
+	            // textPath 不适用，还需要判断 href 和 xlink:href 且 href 指向了正确的目标
+	            // animateMotion 不适用，还需要判断是否有 mpath 子元素，且 mpath 指向了正确的目标
+	            if (noAttrD && noAnimateD && node.nodeName === 'path') {
+	                rmNode(node);
+	            }
+	        }, dom);
+	    }
+	    resolve();
+	});
+
+	const valueIsEqual = (attrDefine, value1, value2) => {
+	    if (value1 === value2) {
+	        return true;
+	    }
+	    if (attrDefine.maybeColor) {
+	        const color1 = execColor(value1);
+	        const color2 = execColor(value2);
+	        color1.origin = '';
+	        color2.origin = '';
+	        if (ramda.equals(color1, color2)) {
+	            return true;
+	        }
+	    }
+	    if (attrDefine.maybeSizeNumber || attrDefine.maybeAccurateNumber) {
+	        const nums2 = execNumberList(value2);
+	        if (nums2.length > 0 && ramda.equals(execNumberList(value1), nums2)) {
+	            return true;
+	        }
+	    }
+	    return false;
+	};
+	const attrIsEqual = (attrDefine, value, nodeName) => {
+	    if (typeof attrDefine.initValue === 'string') {
+	        return valueIsEqual(attrDefine, value, attrDefine.initValue);
+	    }
+	    else {
+	        const initValue = attrDefine.initValue;
+	        for (let ii = 0, il = initValue.length; ii < il; ii++) {
+	            if (initValue[ii].tag.includes(nodeName) && valueIsEqual(attrDefine, value, initValue[ii].val)) {
+	                return true;
+	            }
+	        }
+	    }
+	    return false;
+	};
+
+	// rm-attirbute 不再验证 css 类的属性，只关注该 css 属性是否是 svg 所支持的
+	const rmAttribute = async (rule, dom) => new Promise(resolve => {
+	    if (rule[0]) {
+	        const { rmDefault, keepEvent, keepAria, } = rule[1];
+	        traversalNode(isTag, node => {
+	            if (rmDefault) {
+	                execStyleTree(dom);
+	            }
+	            const tagDefine = regularTag[node.nodeName];
+	            // href 和 xlink:href 不能并存，如果并存，应该移除后者
+	            if (node.hasAttribute('href') && node.hasAttribute('xlink:href')) {
+	                node.removeAttribute('xlink:href');
+	            }
+	            for (let i = node.attributes.length; i--;) {
+	                const attr = node.attributes[i];
+	                const attrDefine = regularAttr[attr.fullname];
+	                const value = attr.value.trim();
+	                if (attrDefine.isUndef) { // 非标准属性
+	                    let isUndef = true;
+	                    if ((keepEvent && eventAttributes.includes(attr.fullname)) // 事件属性是否保留
+	                        ||
+	                            (keepAria && ariaAttributes.includes(attr.fullname)) // aria 属性是否保留
+	                    ) {
+	                        isUndef = false;
+	                    }
+	                    if (isUndef) {
+	                        node.removeAttribute(attr.fullname);
+	                        continue;
+	                    }
+	                }
+	                else {
+	                    if (!value // 空属性
+	                        ||
+	                            (!attrDefine.couldBeStyle && !attr.fullname.includes('xmlns') && !tagDefine.ownAttributes.includes(attr.fullname)) // 属性和元素不匹配
+	                        ||
+	                            !legalValue(attrDefine, attr, node.nodeName) // 不合法的值
+	                    ) {
+	                        node.removeAttribute(attr.fullname);
+	                        continue;
+	                    }
+	                }
+	                if (rmDefault) {
+	                    // 如果父元素上有同名的样式类属性，则不能移除和默认值相同的属性
+	                    const parentStyle = node.parentNode.styles;
+	                    if (attrDefine.inherited && parentStyle && hasProp(parentStyle, attr.fullname)) {
+	                        continue;
+	                    }
+	                    if (attrIsEqual(attrDefine, value, node.nodeName)) {
+	                        node.removeAttribute(attr.fullname);
+	                    }
+	                }
+	                // use 元素的宽高不能为负
+	                if (node.nodeName === 'use') {
+	                    if (attr.fullname === 'width' || attr.fullname === 'height') {
+	                        if (+value < 0) {
+	                            node.removeAttribute(attr.fullname);
+	                        }
+	                    }
+	                }
+	            }
+	        }, dom);
+	    }
+	    resolve();
+	});
+
+	const rmComments = async (rule, dom) => new Promise(resolve => {
+	    if (rule[0]) {
+	        traversalNode(ramda.propEq('nodeType', NodeType.Comments), rmNode, dom);
+	    }
+	    resolve();
+	});
+
+	const rmDocType = async (rule, dom) => new Promise(resolve => {
+	    if (rule[0]) {
+	        traversalNode(ramda.propEq('nodeType', NodeType.DocType), rmNode, dom);
+	    }
+	    resolve();
+	});
+
+	// 根据条件获取祖先元素
+	const getAncestor = (tag, checkFn) => {
+	    let _tag = tag;
+	    if (checkFn(_tag)) {
+	        return _tag;
+	    }
+	    while (_tag.parentNode) {
+	        _tag = _tag.parentNode;
+	        if (checkFn(_tag)) {
+	            return _tag;
+	        }
+	    }
+	    return null;
+	};
+
+	// 检测数值类属性
+	const checkNumberAttr = (node, key, allowEmpty, allowAuto, allowZero, animateAttrs) => {
+	    const val = getAttr(node, key, '');
+	    // 是否允许为空
+	    if (!val)
+	        return allowEmpty;
+	    // 是否允许 auto
+	    if (val === 'auto')
+	        return allowAuto;
+	    // 是否必须大于 0
+	    const compare = allowZero ? ramda.gte : ramda.gt;
+	    if (compare(parseFloat(val), 0) || checkAnimateAttr(animateAttrs, key, () => compare(parseFloat(val), 0))) {
+	        return true;
+	    }
+	    return false;
+	};
+	const checkUse = (node, dom) => {
+	    if (!node.hasAttribute('href') && !node.hasAttribute('xlink:href')) {
+	        rmNode(node);
+	    }
+	    else {
+	        const value = (node.getAttribute('href') || node.getAttribute('xlink:href'));
+	        const iri = IRIFullMatch.exec(value);
+	        if (iri) {
+	            const id = iri[1];
+	            // 不允许引用自身或祖先元素
+	            if (getAncestor(node, (n) => n.getAttribute('id') === id)) {
+	                rmNode(node);
+	                return;
+	            }
+	            // 引用了不存在的元素
+	            if (!getById(value, dom)) {
+	                rmNode(node);
+	            }
+	        }
+	        else {
+	            rmNode(node);
+	        }
+	    }
+	};
+	const numberMap = {
+	    pattern: {
+	        attrs: ['width', 'height'],
+	        allowEmpty: false,
+	        allowAuto: false,
+	        allowZero: false,
+	    },
+	    mask: {
+	        attrs: ['width', 'height'],
+	        allowEmpty: true,
+	        allowAuto: true,
+	        allowZero: false,
+	    },
+	    marker: {
+	        attrs: ['markerWidth', 'markerHeight'],
+	        allowEmpty: true,
+	        allowAuto: true,
+	        allowZero: false,
+	    },
+	    image: {
+	        attrs: ['width', 'height'],
+	        allowEmpty: true,
+	        allowAuto: true,
+	        allowZero: false,
+	    },
+	};
+	const rmHidden = async (rule, dom) => new Promise(resolve => {
+	    if (rule[0]) {
+	        execStyleTree(dom);
+	        // tslint:disable-next-line: cyclomatic-complexity
+	        traversalNode(isTag, node => {
+	            // 未包含子节点的文本容器视为隐藏节点
+	            if (!node.childNodes.length && regularTag[node.nodeName].containTextNode) {
+	                rmNode(node);
+	                return;
+	            }
+	            // textPath 如果没有 path 属性，则 href 和 xlink:href 必须指向 path 或 shape 元素
+	            if (node.nodeName === 'textPath') {
+	                if (!node.hasAttribute('path')) {
+	                    const id = node.getAttribute('href') || node.getAttribute('xlink:href');
+	                    if (!id) {
+	                        rmNode(node);
+	                        return;
+	                    }
+	                    const target = getById(id, dom);
+	                    if (!target) {
+	                        rmNode(node);
+	                        return;
+	                    }
+	                    if (!shapeElements.includes(target.nodeName)) {
+	                        rmNode(node);
+	                        return;
+	                    }
+	                }
+	            }
+	            const styles = node.styles;
+	            const animateAttrs = getAnimateAttr(node);
+	            const notNone = ramda.complement(ramda.equals('none'));
+	            if (hasProp(styles, 'display')
+	                &&
+	                    styles.display.value === 'none'
+	                &&
+	                    !['script', 'style', 'mpath'].concat(filterPrimitiveElements, animationElements).includes(node.nodeName)
+	                &&
+	                    // 增加对动画的验证，对那些 display 为 none，但是动画会修改 display 的元素也不会进行移除
+	                    !checkAnimateAttr(animateAttrs, 'display', notNone)) {
+	                rmNode(node);
+	                return;
+	            }
+	            // 没有填充和描边的形状，不一定可以被移除，要再判断一下自身或父元素是否有 id
+	            if (shapeElements.includes(node.nodeName)) {
+	                const noFill = hasProp(styles, 'fill') && styles.fill.value === 'none' && !checkAnimateAttr(animateAttrs, 'fill', notNone);
+	                const noStroke = (!hasProp(styles, 'stroke') || styles.stroke.value === 'none') && !checkAnimateAttr(animateAttrs, 'stroke', notNone);
+	                if (noFill && noStroke && !getAncestor(node, (n) => n.hasAttribute('id'))) {
+	                    rmNode(node);
+	                    return;
+	                }
+	            }
+	            if (hasProp(numberMap, node.nodeName)) {
+	                const nubmerItem = numberMap[node.nodeName];
+	                for (let i = nubmerItem.attrs.length; i--;) {
+	                    if (!checkNumberAttr(node, nubmerItem.attrs[i], nubmerItem.allowEmpty, nubmerItem.allowAuto, nubmerItem.allowZero, animateAttrs)) {
+	                        rmNode(node);
+	                        return;
+	                    }
+	                }
+	            }
+	            if (node.nodeName === 'use') {
+	                checkUse(node, dom);
+	            }
+	        }, dom);
+	    }
+	    resolve();
+	});
+
+	const rmIrregularNesting = async (rule, dom) => new Promise(resolve => {
+	    if (rule[0]) {
+	        const { ignore } = rule[1];
+	        const notIgnore = (node) => ramda.not(ramda.any(ramda.equals(ramda.prop('nodeName', node)), ignore));
+	        traversalNode(ramda.both(isTag, notIgnore), node => {
+	            let legalRule = regularTag[node.nodeName].legalChildElements;
+	            // noself 表示不允许嵌套自身
+	            const noself = legalRule.noself;
+	            // transparent 表示参照最近的非 switch 上级元素的规则
+	            if (legalRule.transparent) {
+	                const parent = getAncestor(node.parentNode, (n) => n.nodeName !== 'switch');
+	                legalRule = regularTag[parent.nodeName].legalChildElements;
+	            }
+	            for (let i = node.childNodes.length; i--;) {
+	                const childNode = node.childNodes[i];
+	                // 只针对 tag 类的子节点作处理
+	                if (!isTag(childNode)) {
+	                    continue;
+	                }
+	                if (noself && childNode.nodeName === node.nodeName) { // 不允许嵌套自身
+	                    rmNode(childNode);
+	                }
+	                else if (legalRule.any) {
+	                    // any 表示可以任意嵌套
+	                    continue;
+	                }
+	                else if (legalRule.childElements && !legalRule.childElements.includes(childNode.nodeName)) { // 不在嵌套列表中的情况
+	                    rmNode(childNode);
+	                }
+	            }
+	        }, dom, true);
+	    }
+	    resolve();
+	});
+
+	const rmIrregularTag = async (rule, dom) => new Promise(resolve => {
+	    if (rule[0]) {
+	        const { ignore } = rule[1];
+	        const notIgnore = (node) => ramda.not(ramda.any(ramda.equals(ramda.prop('nodeName', node)), ignore));
+	        traversalNode(ramda.both(isTag, notIgnore), node => {
+	            if (regularTag[node.nodeName].isUndef) {
+	                rmNode(node);
+	            }
+	        }, dom);
+	    }
+	    resolve();
+	});
+
+	const pxReg = new RegExp(`(^|\\(|\\s|,|{|;|:)(${numberPattern})px(?=$|\\)|\\s|,|;|})`, 'gi');
+	const rmPx = async (rule, dom) => new Promise(resolve => {
+	    if (rule[0]) {
+	        traversalNode(isTag, node => {
+	            node.attributes.forEach(attr => {
+	                if (attr.fullname === 'style') {
+	                    const style = execStyle(attr.value);
+	                    style.forEach(s => {
+	                        if (regularAttr[s.fullname].maybeSizeNumber || regularAttr[s.fullname].maybeAccurateNumber) {
+	                            pxReg.lastIndex = 0;
+	                            // 移除 px ，同时移除 0 值的单位
+	                            s.value = s.value.replace(pxReg, '$1$2').replace(/(^|\D)0[a-z]+/gi, '$10');
+	                        }
+	                    });
+	                    attr.value = stringifyStyle(style);
+	                }
+	                else {
+	                    if (regularAttr[attr.fullname].maybeSizeNumber || regularAttr[attr.fullname].maybeAccurateNumber) {
+	                        pxReg.lastIndex = 0;
+	                        // 移除 px ，同时移除 0 值的单位
+	                        attr.value = attr.value.replace(pxReg, '$1$2').replace(/(^|\D)0[a-z]+/gi, '$10');
+	                    }
+	                }
+	            });
+	        }, dom);
+	        if (dom.stylesheet) {
+	            // 缩短 style 标签内的数值
+	            const parsedCss = dom.stylesheet.stylesheet;
+	            traversalObj(ramda.both(ramda.has('property'), ramda.has('value')), (cssRule) => {
+	                cssRule.value = cssRule.value.replace(pxReg, '$1$2');
+	            }, parsedCss.rules);
+	        }
+	    }
+	    resolve();
+	});
+
+	const rmUnnecessary = async (rule, dom) => new Promise(resolve => {
+	    if (rule[0]) {
+	        const { tags } = rule[1];
+	        if (tags.length) {
+	            traversalNode(node => tags.includes(node.nodeName) && unnecessaryElements.includes(node.nodeName), rmNode, dom);
+	        }
+	    }
+	    resolve();
+	});
+
+	const rmVersion = async (rule, dom) => new Promise(resolve => {
+	    if (rule[0]) {
+	        traversalNode(ramda.propEq('nodeName', 'svg'), node => {
+	            node.removeAttribute('version');
+	        }, dom);
+	    }
+	    resolve();
+	});
+
+	const rmViewBox = async (rule, dom) => new Promise(resolve => {
+	    if (rule[0]) {
+	        traversalNode(node => node.hasAttribute('viewBox'), node => {
+	            const size = ['0', '0', '0', '0'];
+	            const viewBox = execNumberList(node.getAttribute('viewBox'));
+	            // viewBox 属性的长度必须为 4，且 width 和 height 不能为负
+	            if (viewBox.length !== 4 || viewBox[2] < 0 || viewBox[3] < 0) {
+	                node.removeAttribute('viewBox');
+	                return;
+	            }
+	            node.attributes.forEach(attr => {
+	                if (node.nodeName === 'marker') {
+	                    if (attr.fullname === 'markerWidth') {
+	                        size[2] = attr.value.replace(/px$/, '');
+	                    }
+	                    else if (attr.fullname === 'markerHeight') {
+	                        size[3] = attr.value.replace(/px$/, '');
+	                    }
+	                }
+	                else {
+	                    switch (attr.fullname) {
+	                        case 'x':
+	                            size[0] = attr.value.replace(/px$/, '');
+	                            break;
+	                        case 'y':
+	                            size[1] = attr.value.replace(/px$/, '');
+	                            break;
+	                        case 'width':
+	                            size[2] = attr.value.replace(/px$/, '');
+	                            break;
+	                        case 'height':
+	                            size[3] = attr.value.replace(/px$/, '');
+	                            break;
+	                    }
+	                }
+	            });
+	            // x、y、width、height 可以是不同的单位，只有当单位是 px 且和 viewBox 各个位置相等时，才可以移除 viewBox
+	            if (ramda.equals(size, viewBox.map(s => `${s}`))) {
+	                node.removeAttribute('viewBox');
+	            }
+	        }, dom);
+	    }
+	    resolve();
+	});
+
+	const rmXMLDecl = async (rule, dom) => new Promise(resolve => {
+	    if (rule[0]) {
+	        traversalNode(ramda.propEq('nodeType', NodeType.XMLDecl), rmNode, dom);
+	    }
+	    resolve();
+	});
+
+	const rmXMLNS = async (rule, dom) => new Promise(resolve => {
+	    if (rule[0]) {
+	        const traversalNode = (node, nsStack) => {
+	            if (isTag(node)) {
+	                const xmlnsObj = {};
+	                Object.assign(xmlnsObj, nsStack[nsStack.length - 1]);
+	                // 首先判断节点是否存在命名空间
+	                if (node.namespace) {
+	                    if (hasProp(xmlnsObj, node.namespace)) {
+	                        xmlnsObj[node.namespace].count++;
+	                    }
+	                    else {
+	                        rmNode(node);
+	                        return;
+	                    }
+	                }
+	                // 遍历节点属性的命名空间
+	                for (let i = node.attributes.length; i--;) {
+	                    const attr = node.attributes[i];
+	                    if (attr.namespace === 'xmlns') {
+	                        xmlnsObj[attr.name] = {
+	                            target: node,
+	                            count: 0,
+	                        };
+	                    }
+	                    else if (attr.namespace) {
+	                        if (hasProp(xmlnsObj, attr.namespace)) {
+	                            xmlnsObj[attr.namespace].count++;
+	                        }
+	                        else {
+	                            node.removeAttribute(attr.fullname);
+	                        }
+	                    }
+	                }
+	                // 压栈，并遍历子节点
+	                nsStack.push(xmlnsObj);
+	                node.childNodes.forEach(childNode => {
+	                    traversalNode(childNode, nsStack);
+	                });
+	                Object.keys(xmlnsObj).forEach(ns => {
+	                    if (xmlnsObj[ns].count === 0 && xmlnsObj[ns].target === node) {
+	                        node.removeAttribute(`xmlns:${ns}`);
+	                    }
+	                });
+	                nsStack.pop();
+	            }
+	        };
+	        dom.childNodes.forEach(node => {
+	            traversalNode(node, [{}]);
+	        });
+	    }
+	    resolve();
+	});
+
+	// 验证 animateMotion 的合法性
+	const checkAnimateMotion = (node, dom) => {
+	    return node.hasAttribute('path')
+	        ||
+	            node.childNodes.some(subNode => {
+	                if (subNode.nodeName !== 'mpath') {
+	                    return false;
+	                }
+	                const id = subNode.getAttribute('href') || subNode.getAttribute('xlink:href');
+	                if (!id) {
+	                    return false;
+	                }
+	                const target = getById(id, dom);
+	                if (!target) {
+	                    return false;
+	                }
+	                return shapeElements.includes(target.nodeName);
+	            });
+	};
+
+	const shortenAnimate = async (rule, dom) => new Promise(resolve => {
+	    if (rule[0]) {
+	        const { remove } = rule[1];
+	        // tslint:disable-next-line: cyclomatic-complexity
+	        traversalNode(node => animationElements.includes(node.nodeName), (node) => {
+	            if (remove) {
+	                rmNode(node);
+	                return;
+	            }
+	            // 不管 href 能不能找到目标，都移除该属性，改为设置成 target 的子元素
+	            const href = node.hasAttribute('href') ? node.getAttribute('href') : node.getAttribute('xlink:href');
+	            if (href) {
+	                const target = getById(href, dom);
+	                if (target) {
+	                    target.appendChild(node);
+	                }
+	            }
+	            node.removeAttribute('href');
+	            node.removeAttribute('xlink:href');
+	            // 处理 attributeName 属性
+	            if (animationAttrElements.includes(node.nodeName)) {
+	                // 先取出来 attributeName 属性
+	                const attributeName = node.getAttribute('attributeName') || '';
+	                if (!attributeName || !regularAttr[attributeName].animatable) {
+	                    // attributeName 指定了不能实现动画的属性，视为无效
+	                    rmNode(node);
+	                    return;
+	                }
+	                // attributeName 和父元素不匹配
+	                const parentName = node.parentNode.nodeName;
+	                if (!regularAttr[attributeName].applyTo.includes(parentName) && !regularTag[parentName].ownAttributes.includes(attributeName)) {
+	                    rmNode(node);
+	                    return;
+	                }
+	                // animateTransform 只能修改 tranform 类型的属性
+	                // https://svgwg.org/specs/animations/#SVGExtensionsToSMILAnimation
+	                if (node.nodeName === 'animateTransform' && attributeName !== 'transform' && attributeName !== 'patternTransform') {
+	                    rmNode(node);
+	                    return;
+	                }
+	                for (const attr of node.attributes) {
+	                    // 对动画属性 from、to、by、values 的值进行合法性验证
+	                    if (animationAttributes.includes(attr.fullname)) {
+	                        // 动画属性不合法
+	                        if ((attr.fullname !== 'values' && !legalValue(regularAttr[attributeName], attr))) {
+	                            node.removeAttribute(attr.fullname);
+	                            continue;
+	                        }
+	                        // values 是以分号分隔的，需要分隔后对每一项进行合法性验证
+	                        const values = attr.value.split(';');
+	                        if (values.every(val => !legalValue(regularAttr[attributeName], {
+	                            name: 'values',
+	                            fullname: 'values',
+	                            namespace: '',
+	                            value: val.trim(),
+	                        }))) {
+	                            node.removeAttribute(attr.fullname);
+	                        }
+	                    }
+	                }
+	                if (node.nodeName === 'set' && !node.getAttribute('to')) {
+	                    rmNode(node);
+	                    return;
+	                }
+	                if (!animationAttributes.some(key => node.hasAttribute(key))) {
+	                    rmNode(node);
+	                    return;
+	                }
+	            }
+	            // animateMotion 如果没有 path 属性，则必须包含有效的 mpath ，规则是 href 或 xlink:href 指向 path 或 shape 元素
+	            if (node.nodeName === 'animateMotion') {
+	                if (!checkAnimateMotion(node, dom)) {
+	                    rmNode(node);
+	                    return;
+	                }
+	            }
+	        }, dom);
+	    }
+	    resolve();
+	});
+
+	const letterList = 'abcdefghijklmnopqrstuvwxyz';
+	const numberList = '0123456789';
+	const startChar = `${letterList}${letterList.toUpperCase()}_`;
+	const nameChar = `${startChar}${numberList}-`;
+	const startLen = startChar.length;
+	const nameLen = nameChar.length;
+	const sList = startChar.split('');
+	let slen = startLen;
+	let pi = 0;
+	const createShortenID = (si) => {
+	    while (si >= slen) {
+	        sList.push(...nameChar.split('').map(s => sList[pi] + s));
+	        slen += nameLen;
+	        pi++;
+	    }
+	    return sList[si];
+	};
+
+	const classSelectorReg = /\.([^,*#>+~:{\s[.]+)/gi;
+	const shortenClass = async (rule, dom) => new Promise(resolve => {
+	    if (rule[0]) {
+	        const parsedCss = dom.stylesheet;
+	        if (parsedCss) {
+	            let si = 0;
+	            const classList = {};
+	            const shorten = (key) => {
+	                if (hasProp(classList, key)) {
+	                    return classList[key][0];
+	                }
+	                const sid = createShortenID(si++);
+	                classList[key] = [sid, false];
+	                return sid;
+	            };
+	            // 取出所有被引用的 class ，并缩短
+	            const cssRules = parsedCss.stylesheet;
+	            traversalObj(ramda.has('selectors'), (ruleItem) => {
+	                const selectors = ruleItem.selectors;
+	                if (selectors) {
+	                    selectors.forEach((selector, selectorIndex) => {
+	                        selectors[selectorIndex] = selector.replace(classSelectorReg, (m, p) => `.${shorten(p)}`);
+	                    });
+	                }
+	            }, cssRules.rules);
+	            // 查找 dom 树，找到被引用的 class ，替换为缩短后的值
+	            traversalNode(isTag, node => {
+	                const classAttr = node.getAttribute('class');
+	                if (classAttr !== null) {
+	                    const className = mixWhiteSpace(classAttr.trim()).split(/\s+/);
+	                    for (let ci = className.length; ci--;) {
+	                        if (hasProp(classList, className[ci])) {
+	                            const cName = classList[className[ci]][0];
+	                            classList[className[ci]][1] = true;
+	                            className[ci] = cName;
+	                        }
+	                        else {
+	                            className.splice(ci, 1);
+	                        }
+	                    }
+	                    if (className.length) {
+	                        node.setAttribute('class', className.join(' '));
+	                    }
+	                    else {
+	                        node.removeAttribute('class');
+	                    }
+	                }
+	            }, dom);
+	            // 最后移除不存在的 class 引用
+	            Object.values(classList).forEach(item => {
+	                if (item[1]) {
+	                    return;
+	                }
+	                const reg = new RegExp(`\\.${item[0]}(?=[,\\*#>+~:{\\s\\[\\.]|$)`);
+	                traversalObj(ramda.has('selectors'), (ruleItem, path) => {
+	                    const selectors = ruleItem.selectors;
+	                    if (selectors) {
+	                        for (let i = selectors.length; i--;) {
+	                            if (reg.test(selectors[i])) {
+	                                selectors.splice(i, 1);
+	                            }
+	                        }
+	                        if (!selectors.length) {
+	                            const parent = path[path.length - 1];
+	                            parent.splice(parent.indexOf(ruleItem), 1);
+	                        }
+	                    }
+	                }, cssRules.rules);
+	            });
+	        }
+	        else {
+	            // 如果不存在样式表，则直接移除所有的 class 属性
+	            traversalNode(isTag, node => {
+	                node.removeAttribute('class');
+	            }, dom);
+	        }
+	    }
+	    resolve();
+	});
+
+	const rgb2hsl = (rgb) => {
+	    const r = rgb.r / FF;
+	    const g = rgb.g / FF;
+	    const b = rgb.b / FF;
+	    const max = Math.max(r, g, b);
+	    const min = Math.min(r, g, b);
+	    const diff = max - min;
+	    const l = (max + min) / 2;
+	    const h = diff === 0 ?
+	        0 :
+	        max === r ?
+	            (g - b) / diff :
+	            max === g ?
+	                (b - r) / diff + 2 :
+	                (r - g) / diff + 4;
+	    const s = diff === 0 ?
+	        0 :
+	        l < HALF ?
+	            diff / (l * 2) :
+	            diff / (2 - l * 2);
+	    return { h: validNum(CIRC, (h + CIRC) % 6 * (CIRC / 6)), s: validNum(Hundred, s * Hundred), l: validNum(Hundred, l * Hundred) };
+	};
+
+	const fillIn = ramda.curry((digit, s) => s.length >= digit ? s : fillIn(digit, `0${s}`));
+
+	const HEX = 16;
+	const TEN = 10;
+	const toHex = (s) => parseInt(`${s}`, TEN).toString(HEX);
+
+	const operateHex = ramda.pipe(toHex, ramda.toLower, fillIn(2));
+	const alphaMap$1 = {
+	    '100': 255,
+	    '99': 252,
+	    '98': 250,
+	    '97': 247,
+	    '96': 245,
+	    '95': 242,
+	    '94': 240,
+	    '93': 237,
+	    '92': 235,
+	    '91': 232,
+	    '90': 230,
+	    '89': 227,
+	    '88': 224,
+	    '87': 222,
+	    '86': 219,
+	    '85': 217,
+	    '84': 214,
+	    '83': 212,
+	    '82': 209,
+	    '81': 207,
+	    '80': 204,
+	    '79': 201,
+	    '78': 199,
+	    '77': 196,
+	    '76': 194,
+	    '75': 191,
+	    '74': 189,
+	    '73': 186,
+	    '72': 184,
+	    '71': 181,
+	    '70': 179,
+	    '69': 176,
+	    '68': 173,
+	    '67': 171,
+	    '66': 168,
+	    '65': 166,
+	    '64': 163,
+	    '63': 161,
+	    '62': 158,
+	    '61': 156,
+	    '60': 153,
+	    '59': 150,
+	    '58': 148,
+	    '57': 145,
+	    '56': 143,
+	    '55': 140,
+	    '54': 138,
+	    '53': 135,
+	    '52': 133,
+	    '51': 130,
+	    '50': 128,
+	    '49': 125,
+	    '48': 122,
+	    '47': 120,
+	    '46': 117,
+	    '45': 115,
+	    '44': 112,
+	    '43': 110,
+	    '42': 107,
+	    '41': 105,
+	    '40': 102,
+	    '39': 99,
+	    '38': 97,
+	    '37': 94,
+	    '36': 92,
+	    '35': 89,
+	    '34': 87,
+	    '33': 84,
+	    '32': 82,
+	    '31': 79,
+	    '30': 77,
+	    '29': 74,
+	    '28': 71,
+	    '27': 69,
+	    '26': 66,
+	    '25': 64,
+	    '24': 61,
+	    '23': 59,
+	    '22': 56,
+	    '21': 54,
+	    '20': 51,
+	    '19': 48,
+	    '18': 46,
+	    '17': 43,
+	    '16': 41,
+	    '15': 38,
+	    '14': 36,
+	    '13': 33,
+	    '12': 31,
+	    '11': 28,
+	    '10': 26,
+	    '9': 23,
+	    '8': 20,
+	    '7': 18,
+	    '6': 15,
+	    '5': 13,
+	    '4': 10,
+	    '3': 8,
+	    '2': 5,
+	    '1': 3,
+	    '0': 0,
+	};
+	const shortenMap = {
+	    '#f0ffff': 'azure',
+	    '#f5f5dc': 'beige',
+	    '#ffe4c4': 'bisque',
+	    '#a52a2a': 'brown',
+	    '#ff7f50': 'coral',
+	    '#ffd700': 'gold',
+	    '#808080': 'gray',
+	    '#008000': 'green',
+	    '#4b0082': 'indigo',
+	    '#fffff0': 'ivory',
+	    '#f0e68c': 'khaki',
+	    '#faf0e6': 'linen',
+	    '#800000': 'maroon',
+	    '#000080': 'navy',
+	    '#808000': 'olive',
+	    '#ffa500': 'orange',
+	    '#da70d6': 'orchid',
+	    '#cd853f': 'peru',
+	    '#ffc0cb': 'pink',
+	    '#dda0dd': 'plum',
+	    '#800080': 'purple',
+	    '#f00': 'red',
+	    '#fa8072': 'salmon',
+	    '#a0522d': 'sienna',
+	    '#c0c0c0': 'silver',
+	    '#fffafa': 'snow',
+	    '#d2b48c': 'tan',
+	    '#008080': 'teal',
+	    '#ff6347': 'tomato',
+	    '#ee82ee': 'violet',
+	    '#f5deb3': 'wheat',
+	};
+	const shortenReg = new RegExp(`(?:${Object.keys(shortenMap).join('|')})(?=[^0-9a-f]|$)`, 'gi');
+	const formatColor = (rgba, str, digit) => {
+	    const color = execColor(str, digit);
+	    let s = color.origin;
+	    if (color.valid) {
+	        if (color.a < 1) {
+	            // tslint:disable:prefer-conditional-expression
+	            if (rgba) {
+	                s = `#${operateHex(color.r)}${operateHex(color.g)}${operateHex(color.b)}${ramda.has(`${color.a * Hundred}`, alphaMap$1) ? operateHex(alphaMap$1[`${color.a * Hundred}`]) : operateHex(Math.round(color.a * FF))}`;
+	            }
+	            else {
+	                if (color.r === 0 && color.g === 0 && color.b === 0 && color.a === 0) {
+	                    s = 'transparent';
+	                }
+	                else {
+	                    const hslColor = rgb2hsl(color);
+	                    const alpha = shortenAlpha(digit, color.a);
+	                    const rgb = `rgb(${color.r},${color.g},${color.b},${alpha})`;
+	                    const hsl = `hsl(${hslColor.h},${hslColor.s}%,${hslColor.l}%,${alpha})`;
+	                    s = hsl.length < rgb.length ? hsl : rgb;
+	                }
+	            }
+	        }
+	        else {
+	            s = `#${operateHex(color.r)}${operateHex(color.g)}${operateHex(color.b)}`;
+	        }
+	        s = s.replace(/#([0-9a-f])\1([0-9a-f])\2([0-9a-f])\3(?=[^0-9a-f]|$)/gi, '#$1$2$3');
+	        s = s.replace(shortenReg, $0 => `${shortenMap[$0]}`);
+	        if (rgba) {
+	            s = s.replace(/#([0-9a-f])\1([0-9a-f])\2([0-9a-f])\3([0-9a-f])\4(?=[^0-9a-f]|$)/gi, '#$1$2$3$4');
+	            s = s.replace(/^transparent$/i, '#0000');
+	        }
+	    }
+	    // 如果处理后结果不理想，还返回原始字符串
+	    if (s.length > color.origin.length) {
+	        return color.origin;
+	    }
+	    return s;
+	};
+	const shortenColor = async (rule, dom) => new Promise(resolve => {
+	    if (rule[0]) {
+	        const { rrggbbaa, opacityDigit } = rule[1];
+	        const digit = Math.min(opacityDigit, OPACITY_DIGIT);
+	        traversalNode(isTag, node => {
+	            node.attributes.forEach(attr => {
+	                if (regularAttr[attr.fullname].maybeColor) {
+	                    attr.value = formatColor(rrggbbaa, attr.value, digit);
+	                }
+	                else if (attr.fullname === 'style') {
+	                    const style = execStyle(attr.value);
+	                    style.forEach(s => {
+	                        if (regularAttr[s.fullname].maybeColor) {
+	                            s.value = formatColor(rrggbbaa, s.value, digit);
+	                        }
+	                    });
+	                    attr.value = stringifyStyle(style);
+	                }
+	            });
+	        }, dom);
+	        if (dom.stylesheet) {
+	            // 缩短 style 标签内的颜色
+	            const parsedCss = dom.stylesheet.stylesheet;
+	            traversalObj(ramda.both(ramda.has('property'), ramda.has('value')), (cssRule) => {
+	                if (regularAttr[cssRule.property].maybeColor) { // 可能为颜色的属性
+	                    cssRule.value = formatColor(rrggbbaa, cssRule.value, digit);
+	                }
+	            }, parsedCss.rules);
+	        }
+	    }
+	    resolve();
+	});
+
+	// 移除掉正、负号前面的逗号，移除掉0.前面的0，移除掉.1,.1或e1,.1这种case中间的逗号
+	const doShorten = ramda.curry((digit, val) => shortenNumberList(val.replace(numberGlobal, s => `${shortenNumber(toFixed(digit, parseFloat(s)))}`)));
+	const shortenDecimalDigits = async (rule, dom) => new Promise(resolve => {
+	    if (rule[0]) {
+	        const { sizeDigit, angelDigit } = rule[1];
+	        const fuzzyDigit = doShorten(sizeDigit);
+	        const accurateDigit = doShorten(angelDigit);
+	        const shortenValue = (key, value) => {
+	            const define = regularAttr[key];
+	            if (define.maybeAlpha) { // alpha 值采用特殊处理逻辑
+	                const alpha = execAlpha(value);
+	                if (typeof alpha === 'number') {
+	                    return shortenAlpha(angelDigit, alpha);
+	                }
+	            }
+	            else if (define.maybeSizeNumber) { // 可以模糊处理的数字
+	                return fuzzyDigit(value);
+	            }
+	            else if (define.maybeAccurateNumber) { // 需要较精确的数字
+	                return accurateDigit(value);
+	            }
+	            return value;
+	        };
+	        if (dom.stylesheet) {
+	            // 缩短 style 标签内的数值
+	            const parsedCss = dom.stylesheet.stylesheet;
+	            traversalObj(ramda.both(ramda.has('property'), ramda.has('value')), (cssRule) => {
+	                cssRule.value = shortenValue(cssRule.property, cssRule.value);
+	            }, parsedCss.rules);
+	        }
+	        traversalNode(isTag, node => {
+	            // 先取出来 attributeName 属性
+	            const attributeName = node.getAttribute('attributeName');
+	            // 缩短节点属性的数值
+	            node.attributes.forEach(attr => {
+	                numberGlobal.lastIndex = 0;
+	                if (animationAttributes.includes(attr.fullname) && animationAttrElements.includes(node.nodeName)) { // 动画处理的属性，需要根据 attributeName 属性判断
+	                    if (attributeName) {
+	                        attr.value = shortenValue(attributeName, attr.value);
+	                    }
+	                }
+	                else if (attr.fullname === 'style') { // css 样式处理，和属性类似
+	                    const style = execStyle(attr.value);
+	                    style.forEach(s => {
+	                        numberGlobal.lastIndex = 0;
+	                        s.value = shortenValue(s.fullname, s.value);
+	                    });
+	                    attr.value = stringifyStyle(style);
+	                }
+	                else {
+	                    attr.value = shortenValue(attr.fullname, attr.value);
+	                }
+	            });
+	        }, dom);
+	    }
+	    resolve();
+	});
+
+	const checkSub = (node, IDList, isDefs = false) => {
+	    let hasId = false;
+	    if (!isDefs) {
+	        const id = node.getAttribute('id');
+	        if (id) {
+	            if (IDList[id]) {
+	                hasId = true;
+	                IDList[id].tag = node;
+	            }
+	        }
+	    }
+	    if (!hasId) {
+	        for (let ci = node.childNodes.length; ci--;) {
+	            const childNode = node.childNodes[ci];
+	            if (isTag(childNode)) {
+	                checkSub(childNode, IDList);
+	            }
+	            else {
+	                rmNode(childNode);
+	            }
+	        }
+	        if (!node.childNodes.length) {
+	            rmNode(node);
+	        }
+	        else if (!isDefs) {
+	            node.parentNode.replaceChild(node, ...node.childNodes);
+	        }
+	    }
+	};
+	const checkDefsApply = (item, dom) => {
+	    const [node, attrName] = item.iri[0];
+	    // 只有 href 和 xlink:href 才能应用
+	    if (attrName !== 'href' && attrName !== 'xlink:href') {
+	        return;
+	    }
+	    switch (node.nodeName) {
+	        case 'use': {
+	            // TODO 有 x 和 y 的暂不做应用（实际效果应该相当于 translate，待验证）
+	            if (node.hasAttribute('x') || node.hasAttribute('y')) {
+	                return;
+	            }
+	            // 具有 viewport ，且 use 定义了宽高，不进行应用
+	            if (['svg', 'symbol'].includes(item.tag.nodeName) && (node.hasAttribute('width') || node.hasAttribute('height'))) {
+	                return;
+	            }
+	            const originStyle = {};
+	            const originAttr = {};
+	            for (const [key, val] of Object.entries(node.styles)) {
+	                // 如果 use 元素被 style 命中，不能进行应用
+	                if (val.from === 'styletag') {
+	                    return;
+	                }
+	                if (val.from === 'attr') {
+	                    originAttr[key] = val.value;
+	                }
+	                if (val.from === 'inline') {
+	                    originStyle[key] = val.value;
+	                }
+	            }
+	            const useTag = item.tag;
+	            node.parentNode.replaceChild(node, useTag);
+	            const styleArray = useTag.hasAttribute('style') ? execStyle(useTag.getAttribute('style')) : [];
+	            for (const [key, val] of Object.entries(originAttr)) {
+	                if (!useTag.hasAttribute(key) && !styleArray.some(sItem => sItem.fullname === key)) {
+	                    useTag.setAttribute(key, val);
+	                }
+	            }
+	            for (const [key, val] of Object.entries(originStyle)) {
+	                if (!useTag.hasAttribute(key) && !styleArray.some(sItem => sItem.fullname === key)) {
+	                    styleArray.push({
+	                        name: key,
+	                        fullname: key,
+	                        value: val,
+	                    });
+	                }
+	            }
+	            if (styleArray.length) {
+	                useTag.setAttribute('style', stringifyStyle(styleArray));
+	            }
+	            return;
+	        }
+	        case 'mpath': {
+	            const pathTag = item.tag;
+	            const mpathParent = node.parentNode;
+	            if (!shapeElements.includes(pathTag.nodeName)) {
+	                rmNode(node);
+	                rmNode(pathTag);
+	                if (!checkAnimateMotion(mpathParent, dom)) {
+	                    rmNode(mpathParent);
+	                }
+	                return;
+	            }
+	            // 只针对路径元素进行应用
+	            if (pathTag.nodeName === 'path') {
+	                const d = pathTag.getAttribute('d');
+	                if (d) {
+	                    mpathParent.setAttribute('path', d);
+	                    rmNode(node);
+	                    rmNode(pathTag);
+	                }
+	            }
+	            return;
+	        }
+	    }
+	};
+	const shortenDefs = async (rule, dom) => new Promise(resolve => {
+	    if (rule[0]) {
+	        let firstDefs;
+	        // 首先合并 defs 标签
+	        traversalNode(ramda.propEq('nodeName', 'defs'), node => {
+	            if (firstDefs) {
+	                for (const childNode of node.childNodes) {
+	                    // 合并时只把标签类元素挪过去
+	                    if (isTag(childNode)) {
+	                        firstDefs.appendChild(childNode);
+	                    }
+	                }
+	                rmNode(node);
+	            }
+	            else {
+	                firstDefs = node;
+	                for (let ci = node.childNodes.length; ci--;) {
+	                    const childNode = node.childNodes[ci];
+	                    // 只保留标签类的子元素
+	                    if (!isTag(childNode)) {
+	                        rmNode(childNode);
+	                    }
+	                }
+	            }
+	        }, dom);
+	        if (firstDefs) {
+	            // 取出所有被引用的 ID
+	            const IDList = {};
+	            traversalNode(isTag, node => {
+	                node.attributes.forEach(attr => {
+	                    if (regularAttr[attr.fullname].maybeFuncIRI) {
+	                        const firi = funcIRIToID.exec(attr.value);
+	                        if (firi) {
+	                            if (!IDList[firi[2]]) {
+	                                IDList[firi[2]] = {
+	                                    iri: [],
+	                                };
+	                            }
+	                            IDList[firi[2]].iri.push([node, attr.fullname]);
+	                        }
+	                    }
+	                    else if (regularAttr[attr.fullname].maybeIRI) {
+	                        const iri = IRIFullMatch.exec(attr.value);
+	                        if (iri) {
+	                            if (!IDList[iri[1]]) {
+	                                IDList[iri[1]] = {
+	                                    iri: [],
+	                                };
+	                            }
+	                            IDList[iri[1]].iri.push([node, attr.fullname]);
+	                        }
+	                    }
+	                });
+	            }, dom);
+	            checkSub(firstDefs, IDList, true);
+	            execStyleTree(dom);
+	            Object.values(IDList).forEach(item => {
+	                if (item.tag) {
+	                    // 有可能引用对象存在于 defs 内部，并且已被移除
+	                    for (let i = item.iri.length; i--;) {
+	                        const [tag] = item.iri[i];
+	                        // 判断是否已从文档中移除
+	                        if (!getAncestor(tag, (node) => node.nodeName === '#document')) {
+	                            item.iri.splice(i, 1);
+	                        }
+	                    }
+	                    if (!item.iri.length) {
+	                        rmNode(item.tag);
+	                    }
+	                    if (item.iri.length === 1) {
+	                        checkDefsApply(item, dom);
+	                    }
+	                }
+	            });
+	        }
+	    }
+	    resolve();
+	});
+
+	const feFuncAttr = ['tableValues', 'slope', 'intercept', 'amplitude', 'exponent', 'offset'];
+	const feTypeNeed = {
+	    identity: [],
+	    table: ['tableValues'],
+	    discrete: ['tableValues'],
+	    linear: ['slope', 'intercept'],
+	    gamma: ['amplitude', 'exponent', 'offset'],
+	};
+	const checkFeAttrs = (type, rmAttrs) => {
+	    if (hasProp(feTypeNeed, type)) {
+	        feTypeNeed[type].forEach(val => {
+	            const index = rmAttrs.indexOf(val);
+	            if (index !== -1) {
+	                rmAttrs.splice(index, 1);
+	            }
+	        });
+	    }
+	};
+	const shortenFilter = async (rule, dom) => new Promise(resolve => {
+	    if (rule[0]) {
+	        traversalNode(isTag, (node) => {
+	            if (filterPrimitiveElements.includes(node.nodeName) || node.nodeName === 'filter') {
+	                const width = node.getAttribute('width');
+	                const height = node.getAttribute('height');
+	                // 滤镜元素的 region 尺寸必须合法
+	                if ((width && parseFloat(width) <= 0) || (height && parseFloat(height) <= 0)) {
+	                    rmNode(node);
+	                    return;
+	                }
+	            }
+	            // filter 没有子元素没有意义
+	            if (node.nodeName === 'filter') {
+	                let hasFilterSub = false;
+	                node.childNodes.forEach(subNode => {
+	                    if (filterPrimitiveElements.includes(subNode.nodeName)) {
+	                        hasFilterSub = true;
+	                    }
+	                });
+	                if (!hasFilterSub) {
+	                    rmNode(node);
+	                    return;
+	                }
+	            }
+	            // feComponentTransfer 的同一个类型的 transferFunctionElement 子元素不允许多次出现
+	            if (node.nodeName === 'feComponentTransfer') {
+	                const funcUnique = {};
+	                for (let i = node.childNodes.length; i--;) {
+	                    const childNode = node.childNodes[i];
+	                    if (funcUnique[childNode.nodeName]) {
+	                        rmNode(childNode);
+	                        continue;
+	                    }
+	                    if (transferFunctionElements.includes(childNode.nodeName)) {
+	                        funcUnique[childNode.nodeName] = true;
+	                    }
+	                }
+	            }
+	            // transferFunctionElement 不同的 type 所需的属性不一样，其它不必要的属性都可以删掉
+	            // https://drafts.fxtf.org/filter-effects/#element-attrdef-fecomponenttransfer-type
+	            if (transferFunctionElements.includes(node.nodeName)) {
+	                const type = node.getAttribute('type') || '';
+	                const animateAttrs = getAnimateAttr(node).filter(item => item.attributeName === 'type');
+	                if (!type && !animateAttrs.length) {
+	                    rmNode(node);
+	                    return;
+	                }
+	                const rmAttrs = feFuncAttr.slice();
+	                // 保留当前 type 必备的属性
+	                checkFeAttrs(type, rmAttrs);
+	                // 遍历并保留每一个 animate type 的必备属性
+	                animateAttrs.forEach(item => {
+	                    item.values.forEach(val => {
+	                        checkFeAttrs(val, rmAttrs);
+	                    });
+	                });
+	                // 最后移除掉不必要的属性
+	                rmAttrs.forEach(attr => {
+	                    node.removeAttribute(attr);
+	                });
+	            }
+	        }, dom);
+	    }
+	    resolve();
+	});
+
+	const shortenStyle = (s) => mixWhiteSpace(s.trim()).replace(/\s*([@='"#.*+>~[\](){}:,;])\s*/g, '$1').replace(/;$/, '');
+
+	const idSelectorReg = /#([^,*#>+~:{\s[.]+)/gi;
+	const style2value = ramda.pipe(stringifyStyle, shortenStyle);
+	const shortenID = async (rule, dom) => new Promise(resolve => {
+	    if (rule[0]) {
+	        let si = 0;
+	        const IDList = {};
+	        const shorten = (node, attrname, key) => {
+	            if (hasProp(IDList, key)) {
+	                return IDList[key][0];
+	            }
+	            const sid = createShortenID(si++);
+	            IDList[key] = [sid, node, attrname];
+	            return sid;
+	        };
+	        let cssRules;
+	        // 取出 ID 选择器，并缩短
+	        if (dom.stylesheet) {
+	            cssRules = dom.stylesheet.stylesheet;
+	            traversalObj(ramda.has('selectors'), (ruleItem) => {
+	                const selectors = ruleItem.selectors;
+	                if (selectors) {
+	                    selectors.forEach((selector, selectorIndex) => {
+	                        selectors[selectorIndex] = selector.replace(idSelectorReg, (m, p) => `#${shorten(dom.styletag, null, p)}`);
+	                    });
+	                }
+	            }, cssRules.rules);
+	        }
+	        // 取出所有被属性引用的 ID ，并缩短
+	        traversalNode(isTag, node => {
+	            node.attributes.forEach(attr => {
+	                if (regularAttr[attr.fullname].maybeFuncIRI) {
+	                    const firi = funcIRIToID.exec(attr.value);
+	                    if (firi) {
+	                        attr.value = `url(#${shorten(node, attr.fullname, firi[2])})`;
+	                    }
+	                }
+	                else if (regularAttr[attr.fullname].maybeIRI) {
+	                    const iri = IRIFullMatch.exec(attr.value);
+	                    if (iri) {
+	                        attr.value = `#${shorten(node, attr.fullname, iri[1])}`;
+	                    }
+	                }
+	                else if (attr.fullname === 'style') {
+	                    const styleObj = execStyle(attr.value);
+	                    styleObj.forEach(styleItem => {
+	                        if (regularAttr[styleItem.fullname].maybeFuncIRI) {
+	                            const firi = funcIRIToID.exec(styleItem.value);
+	                            if (firi) {
+	                                styleItem.value = `url(#${shorten(node, `style|${styleItem.fullname}`, firi[2])})`;
+	                            }
+	                        }
+	                    });
+	                    attr.value = style2value(styleObj);
+	                }
+	            });
+	        }, dom);
+	        // 查找 dom 树，找到被引用的 ID ，替换为缩短后的值
+	        traversalNode(isTag, (node) => {
+	            const ID = node.getAttribute('id');
+	            if (ID !== null) {
+	                if (hasProp(IDList, ID)) {
+	                    const id = IDList[ID][0];
+	                    // tslint:disable-next-line:no-dynamic-delete
+	                    delete IDList[ID];
+	                    node.setAttribute('id', id);
+	                }
+	                else {
+	                    node.removeAttribute('id');
+	                }
+	            }
+	        }, dom);
+	        // 最后移除不存在的 ID 引用
+	        Object.values(IDList).forEach(item => {
+	            const attrName = item[2];
+	            if (typeof attrName === 'string') {
+	                if (attrName.startsWith('style|')) {
+	                    const styleObj = execStyle(item[1].getAttribute('style')).filter(styleItem => styleItem.fullname !== attrName.slice(6));
+	                    if (styleObj.length) {
+	                        item[1].setAttribute('style', style2value(styleObj));
+	                    }
+	                    else {
+	                        item[1].removeAttribute('style');
+	                    }
+	                }
+	                else {
+	                    item[1].removeAttribute(attrName);
+	                }
+	            }
+	            else {
+	                const reg = new RegExp(`#${item[0]}(?=[,\\*#>+~:{\\s\\[\\.]|$)`);
+	                traversalObj(ramda.has('selectors'), (ruleItem, path) => {
+	                    const selectors = ruleItem.selectors;
+	                    if (selectors) {
+	                        for (let i = selectors.length; i--;) {
+	                            if (reg.test(selectors[i])) {
+	                                selectors.splice(i, 1);
+	                            }
+	                        }
+	                        if (!selectors.length) {
+	                            const parent = path[path.length - 1];
+	                            parent.splice(parent.indexOf(ruleItem), 1);
+	                        }
+	                    }
+	                }, cssRules.rules);
+	            }
+	        });
+	    }
+	    resolve();
+	});
+
+	// 去除 style 标签最后的分号
+	const shortenTag = (s) => s.replace(/;}/g, '}');
+
+	const createNode = (node) => {
+	    let xml = '';
+	    const textContent = node.textContent;
+	    switch (node.nodeType) {
+	        case NodeType.Tag:
+	            xml += createTag(node);
+	            break;
+	        case NodeType.Text:
+	            xml += textContent;
+	            break;
+	        case NodeType.XMLDecl:
+	            xml += `<?xml${mixWhiteSpace(` ${textContent}`).replace(/\s(?="|=|$)/g, '')}?>`;
+	            break;
+	        case NodeType.Comments: {
+	            const comments = mixWhiteSpace(textContent).trim();
+	            if (comments) {
+	                xml += `<!--${comments}-->`;
+	            }
+	            break;
+	        }
+	        case NodeType.CDATA:
+	            if (!textContent.includes('<')) {
+	                xml += textContent;
+	            }
+	            else {
+	                xml += `<![CDATA[${textContent}]]>`;
+	            }
+	            break;
+	        case NodeType.DocType:
+	            xml += `<!DOCTYPE${mixWhiteSpace(` ${textContent.trim()}`)}>`;
+	            break;
+	    }
+	    return xml;
+	};
+	const createTag = (node) => {
+	    let xml = '';
+	    xml += `<${node.namespace ? `${node.namespace}:` : ''}${node.nodeName}`;
+	    if (node.attributes.length) {
+	        for (const { name, value, namespace } of node.attributes) {
+	            if (value.trim()) {
+	                xml += ` ${namespace ? `${namespace}:` : ''}${name}="${mixWhiteSpace(value.trim()).replace(/"/g, '&quot;')}"`;
+	            }
+	        }
+	    }
+	    if (node.childNodes.length) {
+	        xml += '>';
+	        node.childNodes.forEach(childNode => {
+	            xml += createNode(childNode);
+	        });
+	        xml += `</${node.namespace ? `${node.namespace}:` : ''}${node.nodeName}>`;
+	    }
+	    else {
+	        xml += '/>';
+	    }
+	    return xml;
+	};
+	const createXML = (dom) => {
+	    if (!dom) {
+	        return '';
+	    }
+	    let result = '';
+	    if (dom.stylesheet) {
+	        const cssText = shortenTag(css.stringify(dom.stylesheet, { compress: true }));
+	        if (cssText) {
+	            dom.styletag.childNodes[0].textContent = cssText;
+	        }
+	        else {
+	            rmNode(dom.styletag);
+	        }
+	    }
+	    dom.childNodes.forEach(node => {
+	        result += createNode(node);
+	    });
+	    return result;
+	};
+
+	const startWithNumber = new RegExp(`^(${numberPattern})`);
+	const notNone = ramda.complement(ramda.equals('none'));
+	const formatRect = (node) => {
+	    let width = getAttr(node, 'width', '0');
+	    let height = getAttr(node, 'height', '0');
+	    const widthExec = startWithNumber.exec(width);
+	    const heightExec = startWithNumber.exec(height);
+	    // 如果 width 或 height 不合规范，直接移除
+	    if (!widthExec || !heightExec || +widthExec[1] <= 0 || +heightExec[1] <= 0) {
+	        node.nodeName = 'remove';
+	        return;
+	    }
+	    // 如果 rx 或 ry 存在，不能转换为 path
+	    const rx = getAttr(node, 'rx', 'auto');
+	    const ry = getAttr(node, 'ry', 'auto');
+	    // rx 和 ry 相同，移除 ry
+	    if (rx === ry || ry === 'auto') {
+	        rmAttrs(node, ['ry']);
+	    }
+	    if (rx === 'auto') {
+	        rmAttrs(node, ['rx']);
+	    }
+	    const rxExec = startWithNumber.exec(rx);
+	    const ryExec = startWithNumber.exec(ry);
+	    if (rxExec && +rxExec[1] > 0 && (!ryExec || +ryExec[1] !== 0)) {
+	        return;
+	    }
+	    if (ryExec && +ryExec[1] > 0 && (!rxExec || +rxExec[1] !== 0)) {
+	        return;
+	    }
+	    let x = getAttr(node, 'x', '0');
+	    let y = getAttr(node, 'y', '0');
+	    // 如果不是 px 单位，不能转换为 path
+	    if (!pureNumOrWithPx.test(width) || !pureNumOrWithPx.test(height) || !pureNumOrWithPx.test(x) || !pureNumOrWithPx.test(y)) {
+	        return;
+	    }
+	    rmAttrs(node, ['x', 'y', 'width', 'height', 'rx', 'ry']);
+	    width = shortenNumber(+widthExec[1]);
+	    height = shortenNumber(+heightExec[1]);
+	    x = shortenNumber(+x.replace('px', ''));
+	    y = shortenNumber(+y.replace('px', ''));
+	    node.nodeName = 'path';
+	    // 此处考虑到宽和高的字节数差异，应该取较小的那种
+	    const hvh = shortenNumberList(`M${x},${y}h${width}v${height}h-${width}z`);
+	    const vhv = shortenNumberList(`M${x},${y}v${height}h${width}v-${height}z`);
+	    node.setAttribute('d', vhv.length < hvh.length ? vhv : hvh);
+	};
+	const formatLine = (node) => {
+	    const strokeWidth = getAttr(node, 'stroke-width', '1');
+	    const swExec = startWithNumber.exec(strokeWidth);
+	    const animateAttrs = getAnimateAttr(node);
+	    // 是否存在 marker 引用
+	    const hasMarker = getAttr(node, 'marker-start', 'none') !== 'none'
+	        || getAttr(node, 'marker-mid', 'none') !== 'none'
+	        || getAttr(node, 'marker-end', 'none') !== 'none'
+	        || checkAnimateAttr(animateAttrs, 'marker-start', notNone)
+	        || checkAnimateAttr(animateAttrs, 'marker-mid', notNone)
+	        || checkAnimateAttr(animateAttrs, 'marker-end', notNone);
+	    // 是否存在 stroke
+	    const hasStroke = (getAttr(node, 'stroke', 'none') !== 'none' || checkAnimateAttr(animateAttrs, 'stroke', notNone)) && (strokeWidth !== '0' || checkAnimateAttr(animateAttrs, 'stroke-width', ramda.complement(ramda.equals('0'))));
+	    // 如果 stroke 或 stroke-width 不合规范，直接移除
+	    if (!hasMarker && (!hasStroke || !swExec || +swExec[1] <= 0)) {
+	        node.nodeName = 'remove';
+	        return;
+	    }
+	    const shapeAttr = {
+	        x1: '0',
+	        y1: '0',
+	        x2: '0',
+	        y2: '0',
+	    };
+	    Object.keys(shapeAttr).forEach(key => {
+	        const value = node.getAttribute(key);
+	        if (value && startWithNumber.test(value)) {
+	            shapeAttr[key] = value;
+	        }
+	        node.removeAttribute(key);
+	    });
+	    // 是否存在 stroke-linecap
+	    const hasStrokeCap = getAttr(node, 'stroke-linecap', 'butt') !== 'butt' || checkAnimateAttr(animateAttrs, 'stroke-linecap', ramda.complement(ramda.equals('butt')));
+	    // 如果没有发生移动，直接移除
+	    if (shapeAttr.x1 === shapeAttr.x2 && shapeAttr.y1 === shapeAttr.y2 && !hasMarker && (!hasStroke || !hasStrokeCap)) {
+	        node.nodeName = 'remove';
+	        return;
+	    }
+	    // 如果不是 px 单位，不能转换为 path
+	    if (pureNumOrWithPx.test(shapeAttr.x1) && pureNumOrWithPx.test(shapeAttr.y1) && pureNumOrWithPx.test(shapeAttr.x2) && pureNumOrWithPx.test(shapeAttr.y2)) {
+	        node.nodeName = 'path';
+	        node.setAttribute('d', shortenNumberList(`M${+shapeAttr.x1},${+shapeAttr.y1},${+shapeAttr.x2},${+shapeAttr.y2}`));
+	    }
+	};
+	const formatPoly = (thinning, node, addZ) => {
+	    node.nodeName = 'path';
+	    let d = '';
+	    if (node.hasAttribute('points')) {
+	        let points = execNumberList(node.getAttribute('points'));
+	        const animateAttrs = getAnimateAttr(node);
+	        // 是否存在 marker 引用
+	        const hasMarker = getAttr(node, 'marker-start', 'none') !== 'none'
+	            || getAttr(node, 'marker-mid', 'none') !== 'none'
+	            || getAttr(node, 'marker-end', 'none') !== 'none'
+	            || checkAnimateAttr(animateAttrs, 'marker-start', notNone)
+	            || checkAnimateAttr(animateAttrs, 'marker-mid', notNone)
+	            || checkAnimateAttr(animateAttrs, 'marker-end', notNone);
+	        // 是否存在 stroke
+	        const hasStroke = (getAttr(node, 'stroke', 'none') !== 'none' || checkAnimateAttr(animateAttrs, 'stroke', notNone)) && (getAttr(node, 'stroke-width', '1') !== '0' || checkAnimateAttr(animateAttrs, 'stroke-width', ramda.complement(ramda.equals('0'))));
+	        // 是否存在 stroke-linecap
+	        const hasStrokeCap = getAttr(node, 'stroke-linecap', 'butt') !== 'butt' || checkAnimateAttr(animateAttrs, 'stroke-linecap', ramda.complement(ramda.equals('butt')));
+	        if (points.length % 2 === 1) {
+	            points.pop();
+	        }
+	        if (thinning) {
+	            points = douglasPeucker(thinning, points);
+	        }
+	        node.removeAttribute('points');
+	        // 有两个以上节点，或者具有 marker 或者是具有 stroke-linecap 的 polygon
+	        if (points.length > 2 || hasMarker || (hasStroke && hasStrokeCap && addZ)) {
+	            d = shortenNumberList(`M${points.map(shortenNumber).join(',')}`);
+	            if (addZ) {
+	                d += 'z';
+	            }
+	        }
+	    }
+	    if (d) {
+	        node.setAttribute('d', d);
+	    }
+	    else {
+	        // 没有节点或者没有 points 属性，直接移除当前 node
+	        node.nodeName = 'remove';
+	    }
+	};
+	const ellipseToCircle = (node, r) => {
+	    node.nodeName = 'circle';
+	    node.setAttribute('r', r.replace(numberGlobal, s => shortenNumber(+s)));
+	    rmAttrs(node, ['rx', 'ry']);
+	};
+	const formatEllipse = (node) => {
+	    let rx = getAttr(node, 'rx', 'auto');
+	    let ry = getAttr(node, 'ry', 'auto');
+	    if (rx === 'auto') {
+	        rx = ry;
+	    }
+	    if (ry === 'auto') {
+	        ry = rx;
+	    }
+	    const rxExec = startWithNumber.exec(rx);
+	    const ryExec = startWithNumber.exec(ry);
+	    // 如果 rx 或 ry 不合规范，直接移除
+	    if (!rxExec || !ryExec || +rxExec[1] <= 0 || +ryExec[1] <= 0) {
+	        node.nodeName = 'remove';
+	        return;
+	    }
+	    if (rx === ry) {
+	        ellipseToCircle(node, rx);
+	    }
+	};
+	const formatCircle = (node) => {
+	    const r = getAttr(node, 'r', '');
+	    const rExec = startWithNumber.exec(r);
+	    if (!rExec || +rExec[1] <= 0) {
+	        node.nodeName = 'remove';
+	    }
+	};
+	const shortenShape = async (rule, dom) => new Promise(resolve => {
+	    if (rule[0]) {
+	        execStyleTree(dom);
+	        const { thinning, } = rule[1];
+	        traversalNode(node => shapeElements.includes(node.nodeName), (node) => {
+	            const cloneNode = node.cloneNode();
+	            cloneNode.styles = node.styles;
+	            switch (node.nodeName) {
+	                case 'rect':
+	                    formatRect(cloneNode);
+	                    break;
+	                case 'line':
+	                    formatLine(cloneNode);
+	                    break;
+	                case 'polyline':
+	                    formatPoly(thinning, cloneNode, false);
+	                    break;
+	                case 'polygon':
+	                    formatPoly(thinning, cloneNode, true);
+	                    break;
+	                case 'ellipse':
+	                    formatEllipse(cloneNode);
+	                    break;
+	                case 'circle':
+	                    formatCircle(cloneNode);
+	                    break;
+	                default:
+	                    // 路径只要判断 d 属性是否存在即可
+	                    cloneNode.nodeName = node.getAttribute('d') ? 'notneed' : 'remove';
+	                    break;
+	            }
+	            if (cloneNode.nodeName === 'remove') {
+	                rmNode(node);
+	            }
+	            else if (cloneNode.nodeName !== node.nodeName && createTag(cloneNode).length <= createTag(node).length) {
+	                Object.assign(node, cloneNode);
+	            }
+	        }, dom);
+	    }
+	    resolve();
+	});
+
+	// TODO：目前只验证了 href 和 xlink:href，其它 IRI 或 funcIRI 属性是否也需要验证？
+	// 遇到引用属性，还需要递归验证被引用对象是否可应用样式
+	const getXlink = (styleDefine, idStr, dom, unique, fromStyleTag) => check$2(styleDefine, getById(idStr, dom), dom, unique, fromStyleTag);
+	// 定义一个特殊的遍历方法，只接收一个 condition 方法，只有该方法返回 true 才继续遍历子元素
+	const traversal$2 = (condition, node) => {
+	    // 此处不能用 forEach ，for 循环可以避免当前节点被移除导致下一个节点不会被遍历到的问题
+	    for (const childNode of node.childNodes) {
+	        if (condition(childNode) && childNode.childNodes && childNode.childNodes.length) {
+	            traversal$2(condition, childNode);
+	        }
+	    }
+	};
+	const check$2 = (styleDefine, node, dom, unique, fromStyleTag) => {
+	    if (!node)
+	        return false;
+	    // 如果是检测 style 标签的样式，则只要遇到同名的 style 属性就返回 false
+	    if (fromStyleTag) {
+	        for (let i = node.attributes.length; i--;) {
+	            const attr = node.attributes[i];
+	            if (attr.fullname === 'style') {
+	                const childStyle = execStyle(attr.value);
+	                if (childStyle.some(style => style.fullname === styleDefine.name)) {
+	                    return false;
+	                }
+	            }
+	        }
+	    }
+	    if (styleDefine.applyTo.includes(node.nodeName))
+	        return true;
+	    // 因为递归可能存在循环引用，所以需要排重
+	    if (unique.includes(node)) {
+	        return false;
+	    }
+	    unique.push(node);
+	    let result = false;
+	    if (node.hasAttribute('href')) {
+	        result = getXlink(styleDefine, node.getAttribute('href'), dom, unique, false);
+	    }
+	    else if (node.hasAttribute('xlink:href')) {
+	        result = getXlink(styleDefine, node.getAttribute('xlink:href'), dom, unique, false);
+	    }
+	    // 已经命中就不需要再继续了
+	    if (result)
+	        return true;
+	    // 逻辑在判断函数里做，不在回调函数里做
+	    traversal$2((childNode) => {
+	        // 已经命中就不再继续
+	        if (result)
+	            return false;
+	        // 只验证元素节点
+	        if (!isTag(childNode))
+	            return false;
+	        // 因为递归可能存在循环引用，所以需要排重
+	        if (unique.includes(childNode))
+	            return false;
+	        unique.push(childNode);
+	        // 检查属性看是否被覆盖，是就不再继续
+	        for (let i = childNode.attributes.length; i--;) {
+	            const attr = childNode.attributes[i];
+	            if (attr.fullname === 'style') {
+	                const childStyle = execStyle(attr.value);
+	                if (childStyle.some(style => style.fullname === styleDefine.name)) {
+	                    return false;
+	                }
+	            }
+	            else if (attr.fullname === styleDefine.name) {
+	                return false;
+	            }
+	        }
+	        // 通过前面的验证，并符合样式应用条件，就找到了命中的结果
+	        if (styleDefine.applyTo.includes(childNode.nodeName)) {
+	            result = true;
+	            return false; // 已经有命中的结果就不必再遍历了
+	        }
+	        else { // 否则继续遍历子元素
+	            // 没有命中，但具有 IRI 引用，则继续
+	            if (childNode.hasAttribute('href')) {
+	                if (getXlink(styleDefine, childNode.getAttribute('href'), dom, unique, fromStyleTag)) {
+	                    result = true;
+	                    return false;
+	                }
+	            }
+	            else if (childNode.hasAttribute('xlink:href')) {
+	                if (getXlink(styleDefine, childNode.getAttribute('xlink:href'), dom, unique, fromStyleTag)) {
+	                    result = true;
+	                    return false;
+	                }
+	            }
+	            return true;
+	        }
+	    }, node);
+	    return result;
+	};
+	// 深度分析，判断样式继承链上是否存在可应用对象
+	const checkApply = (styleDefine, node, dom, fromStyleTag = false) => check$2(styleDefine, node, dom, [], fromStyleTag);
+
+	/*
+	 * 遍历所有的 Node 节点，并对符合条件的节点执行操作，异步版本
+	 * @param { function } 条件
+	 * @param { function } 回调
+	 * @param { Node } 目标节点
+	 */
+	const traversalNodeAsync = async (condition, cb, node) => new Promise((resolve, reject) => {
+	    if (node.childNodes && node.childNodes.length) {
+	        const list = [];
+	        for (const childNode of node.childNodes) {
+	            if (condition(childNode)) {
+	                list.push(new Promise(resv => {
+	                    Promise.resolve().then(async () => {
+	                        await cb(childNode);
+	                        if (childNode.parentNode === node) {
+	                            await traversalNodeAsync(condition, cb, childNode);
+	                        }
+	                        resv();
+	                    });
+	                }));
+	            }
+	            else {
+	                list.push(new Promise(resv => {
+	                    Promise.resolve().then(async () => {
+	                        await traversalNodeAsync(condition, cb, childNode);
+	                        resv();
+	                    });
+	                }));
+	            }
+	        }
+	        Promise.all(list).then(() => {
+	            resolve();
+	        }, reject); // tslint:disable-line no-floating-promises
+	    }
+	    else {
+	        resolve();
+	    }
+	});
+
+	// 属性转 style 的临界值
+	const styleThreshold = 4;
+	const style2value$1 = ramda.pipe(stringifyStyle, shortenStyle);
+	// 一些元素的某些属性不能被转为 style
+	const cantTrans = (define, attrName) => define.onlyAttr && define.onlyAttr.includes(attrName);
+	const checkAttr$2 = async (node, dom, rmDefault) => new Promise(resolve => {
+	    execStyleTree(dom);
+	    const attrObj = {}; // 存储所有样式和可以转为样式的属性
+	    const tagDefine = regularTag[node.nodeName];
+	    // 逆序循环，并从后向前移除属性
+	    for (let i = node.attributes.length; i--;) {
+	        const attr = node.attributes[i];
+	        const attrDefine = regularAttr[attr.fullname];
+	        if (attr.fullname === 'style') {
+	            const styleObj = execStyle(attr.value);
+	            const styleUnique = {};
+	            // 逆序循环，因为 CSS 的优先级是从后往前覆盖的
+	            for (let si = styleObj.length; si--;) {
+	                const styleItem = styleObj[si];
+	                const styleDefine = regularAttr[styleItem.fullname];
+	                if (!styleDefine.couldBeStyle // 不能做样式
+	                    ||
+	                        styleUnique[styleItem.fullname] // 排重
+	                    ||
+	                        !checkApply(styleDefine, node, dom) // 样式继承链上不存在可应用对象
+	                ) {
+	                    continue;
+	                }
+	                // 标记一下是否存在不能和属性互转的样式
+	                const onlyCss = styleDefine.cantTrans || cantTrans(tagDefine, styleItem.fullname);
+	                // 如果存在同名属性，要把被覆盖的属性移除掉
+	                // 之所以要判断 attrObj 是否存在 key，是为了保证只移除已遍历过的属性（此处不考虑同名属性，同名属性无法通过 xml-parser 的解析规则）
+	                if (!onlyCss && ramda.has(styleItem.fullname, attrObj)) {
+	                    node.removeAttribute(styleItem.fullname);
+	                }
+	                if (rmDefault) {
+	                    // 如果父元素上有同名的样式类属性，则不能移除和默认值相同的属性
+	                    const parentStyle = node.parentNode.styles;
+	                    if (!styleDefine.inherited || !parentStyle || !hasProp(parentStyle, styleItem.fullname)) {
+	                        if (attrIsEqual(styleDefine, styleItem.value, node.nodeName)) {
+	                            continue;
+	                        }
+	                    }
+	                }
+	                styleUnique[styleItem.fullname] = true;
+	                attrObj[styleItem.fullname] = {
+	                    value: styleItem.value,
+	                    fromStyle: true,
+	                    onlyCss,
+	                };
+	            }
+	            if (styleObj.length) {
+	                attr.value = style2value$1(styleObj);
+	            }
+	            else {
+	                node.removeAttribute(attr.fullname);
+	            }
+	        }
+	        else if (attrDefine.couldBeStyle) {
+	            if (attrDefine.cantBeAttr // 有一些样式不能被设置为属性
+	            ) {
+	                node.removeAttribute(attr.fullname);
+	                continue;
+	            }
+	            if (attrDefine.cantTrans || cantTrans(tagDefine, attr.fullname)) { // 有一些元素的某些属性不能被转为 style，此类属性也不宜再按照 css 属性来验证
+	                continue;
+	            }
+	            if (rmDefault) {
+	                // 如果父元素上有同名的样式类属性，则不能移除和默认值相同的属性
+	                const parentStyle = node.parentNode.styles;
+	                if (!attrDefine.inherited || !parentStyle || !hasProp(parentStyle, attr.fullname)) {
+	                    if (attrIsEqual(attrDefine, attr.value, node.nodeName)) {
+	                        node.removeAttribute(attr.fullname);
+	                        continue;
+	                    }
+	                }
+	            }
+	            // 如果样式无法应用到当前元素，且所有子元素都无法应用或已覆盖，则可以移除
+	            if (!attrDefine.applyTo.includes(node.nodeName) && attrDefine.inherited) {
+	                const subTags = node.childNodes.filter(subNode => isTag(subNode) && subNode.styles);
+	                if (subTags.length && subTags.every(subTag => subTag.styles[attr.fullname].from !== 'inherit' || !checkApply(attrDefine, subTag, dom))) {
+	                    node.removeAttribute(attr.fullname);
+	                    continue;
+	                }
+	            }
+	            if (hasProp(attrObj, attr.fullname) // 已被 style 属性覆盖
+	                ||
+	                    !checkApply(attrDefine, node, dom) // 样式继承链上不存在可应用对象
+	            ) {
+	                node.removeAttribute(attr.fullname);
+	            }
+	            else {
+	                attrObj[attr.fullname] = {
+	                    value: attr.value,
+	                };
+	            }
+	        }
+	        else {
+	            const attributeName = node.getAttribute('attributeName') || '';
+	            if (animationAttributes.includes(attr.fullname) // 动画属性 from、to、by、values
+	                &&
+	                    animationAttrElements.includes(node.nodeName) // 存在于动画元素上
+	                &&
+	                    attr.fullname !== 'values'
+	                &&
+	                    attributeName) {
+	                const animateDefine = regularAttr[attributeName];
+	                if (animateDefine.couldBeStyle) {
+	                    attrObj[attributeName] = {
+	                        value: attr.value,
+	                        animateAttr: attr.fullname,
+	                    };
+	                }
+	            }
+	        }
+	    }
+	    // 	// 在此处进行样式合法性验证
+	    // 	let cssString = 'g{';
+	    // 	Object.entries(attrObj).forEach(([key, { value }]) => {
+	    // 		cssString += `${key}:${value};
+	    // `;
+	    // 	});
+	    // 	cssString += '}';
+	    // 	// 双重合法性验证
+	    // const result = await legalCss(cssString);
+	    // if (!result.validity) {
+	    // 	result.errors.forEach(err => {
+	    // 		if (err.type === 'zero') {
+	    // 			return;
+	    // 		}
+	    // 		const key = Object.keys(attrObj)[err.line - 1] as string | undefined;
+	    // 		if (key && err.message.includes(key)) { // cssValidator 有时候会报错行数，需要确保规则对得上
+	    // 			const styleItem = attrObj[key];
+	    // 			const styleDefine = regularAttr[key];
+	    // 			// css 验证失败，还需要进行一次 svg-slimming 的合法性验证，确保没有问题
+	    // 			if (!styleDefine.legalValues.length || !legalValue(styleDefine, {
+	    // 				fullname: key,
+	    // 				value: styleItem.value,
+	    // 				name: '',
+	    // 			})) {
+	    // 				styleItem.value = '';
+	    // 			}
+	    // 		}
+	    // 	});
+	    // }
+	    // 只做基本验证
+	    Object.keys(attrObj).forEach(key => {
+	        const styleItem = attrObj[key];
+	        const styleDefine = regularAttr[key];
+	        if (!styleDefine.cantTrans && !legalValue(styleDefine, {
+	            fullname: key,
+	            value: styleItem.value,
+	            name: '',
+	        })) {
+	            styleItem.value = '';
+	        }
+	    });
+	    Object.entries(attrObj).forEach(([key, attrItem]) => {
+	        if (attrItem.animateAttr) { // 对于动画属性，验证完合法性后就应该移除缓存
+	            if (!attrItem.value) {
+	                node.removeAttribute(attrItem.animateAttr);
+	            }
+	            delete attrObj[key]; // tslint:disable-line no-dynamic-delete
+	        }
+	        else {
+	            if (!attrItem.value) {
+	                delete attrObj[key]; // tslint:disable-line no-dynamic-delete
+	                node.removeAttribute(key);
+	            }
+	        }
+	    });
+	    if (!Object.values(attrObj).some(val => val.fromStyle)) {
+	        node.removeAttribute('style');
+	    }
+	    // 进行动画属性的合法性验证
+	    resolve({
+	        attrObj,
+	        tagDefine,
+	    });
+	});
+	const shortenStyleAttr = async (rule, dom) => new Promise(resolve => {
+	    if (rule[0]) {
+	        const { exchange, rmDefault } = rule[1];
+	        const hasStyleTag = !!dom.styletag;
+	        traversalNodeAsync(isTag, async (node) => checkAttr$2(node, dom, rmDefault).then(({ attrObj, }) => {
+	            // TODO css all 属性命中后要清空样式
+	            // TODO 连锁属性的判断
+	            if (!hasStyleTag || exchange) {
+	                // [warning] svg 的样式覆盖规则是 style 属性 > style 标签 > 属性，所以以下代码可能导致不正确的样式覆盖！
+	                // 如果存在只能放在 css 中的属性，则强制属性转 style @v1.5.0+
+	                if (Object.values(attrObj).some(val => val.onlyCss) || Object.keys(attrObj).length > styleThreshold) {
+	                    // 属性转 style
+	                    Object.entries(attrObj).forEach(([key, val]) => {
+	                        if (!val.onlyCss) {
+	                            node.removeAttribute(key);
+	                        }
+	                    });
+	                    // 执行一次 reverse 把顺序反转过来
+	                    node.setAttribute('style', style2value$1(Object.keys(attrObj).reverse().map(key => {
+	                        return {
+	                            name: key,
+	                            fullname: key,
+	                            value: attrObj[key].value,
+	                        };
+	                    })));
+	                }
+	                else {
+	                    // style 转属性
+	                    node.removeAttribute('style');
+	                    // 执行一次 reverse 把顺序反转过来
+	                    Object.keys(attrObj).reverse().forEach(name => {
+	                        node.setAttribute(name, attrObj[name].value);
+	                    });
+	                }
+	            }
+	        }), dom).then(() => {
+	            resolve();
+	        });
+	    }
+	    else {
+	        resolve();
+	    }
+	});
+
+	const rmCSSNode$1 = (cssNode, plist) => {
+	    const index = plist.indexOf(cssNode);
+	    if (index !== -1) {
+	        plist.splice(index, 1);
+	    }
+	};
+	const shortenStyleTag = async (rule, dom) => new Promise(resolve => {
+	    if (rule[0] && dom.stylesheet) {
+	        const { deepShorten, rmDefault } = rule[1];
+	        const cssRules = dom.stylesheet.stylesheet;
+	        // 遍历 style 解析对象，取得包含 css 定义的值
+	        traversalObj(ramda.propEq('type', 'declaration'), (cssNode, parents) => {
+	            const attrDefine = regularAttr[cssNode.property];
+	            if (!attrDefine.couldBeStyle) {
+	                rmCSSNode$1(cssNode, parents[parents.length - 1]);
+	            }
+	            else if (rmDefault) {
+	                // 仅验证只有一种默认值的情况
+	                if (typeof attrDefine.initValue === 'string' && valueIsEqual(attrDefine, cssNode.value, attrDefine.initValue)) {
+	                    rmCSSNode$1(cssNode, parents[parents.length - 1]);
+	                }
+	            }
+	        }, cssRules.rules, true);
+	        // TODO css all 属性命中后要清空样式
+	        // TODO 连锁属性的判断
+	        // TODO 直接把 style 应用到元素
+	        // 深度优化
+	        if (deepShorten) {
+	            const selectorUnique = {};
+	            const declareUnique = {};
+	            for (let i = 0, l = cssRules.rules.length; i < l; i++) {
+	                const styleRule = cssRules.rules[i];
+	                // TODO 目前只针对顶层的规则类，其实还可以进一步优化
+	                if (styleRule.type === 'rule') {
+	                    const theSelectors = styleRule.selectors;
+	                    const declarations = styleRule.declarations;
+	                    // 记录命中对象但存在无效属性的情况
+	                    const usedRule = {};
+	                    // 移除无效的选择器
+	                    for (let si = theSelectors.length; si--;) {
+	                        const matchNodes = getBySelector(dom, execSelector(theSelectors[si]));
+	                        if (!matchNodes.length) {
+	                            theSelectors.splice(si, 1);
+	                        }
+	                        else {
+	                            let anyMatch = false;
+	                            for (let mi = declarations.length; mi--;) {
+	                                const ruleItem = declarations[mi];
+	                                const property = ruleItem.property;
+	                                // 判断每一条属性与每一个命中元素的匹配情况
+	                                if (matchNodes.some(matchNode => checkApply(regularAttr[property], matchNode, dom, true))) {
+	                                    // 只要有一条匹配存在，就证明该选择器有效
+	                                    anyMatch = true;
+	                                    // 同时标记该属性有效
+	                                    usedRule[property] = true;
+	                                }
+	                            }
+	                            if (!anyMatch) {
+	                                theSelectors.splice(si, 1);
+	                            }
+	                        }
+	                    }
+	                    // 验证属性的有效性，移除无效的属性
+	                    for (let ci = declarations.length; ci--;) {
+	                        if (!usedRule[declarations[ci].property]) {
+	                            declarations.splice(ci, 1);
+	                        }
+	                    }
+	                    // 如果选择器列表经过筛选后为空，则移除该条规则
+	                    if (!theSelectors.length) {
+	                        cssRules.rules.splice(i, 1);
+	                        i--;
+	                        l--;
+	                        continue;
+	                    }
+	                    // 合并相同选择器
+	                    theSelectors.sort((a, b) => a < b ? -1 : 1);
+	                    styleRule.selectors = theSelectors.map(s => mixWhiteSpace(s.trim()));
+	                    const selectorKey = styleRule.selectors.join(',');
+	                    if (hasProp(selectorUnique, selectorKey)) {
+	                        const uDeclarations = selectorUnique[selectorKey].declarations.concat(styleRule.declarations);
+	                        // 合并之后依然要排重
+	                        const declared = {};
+	                        for (let j = uDeclarations.length; j--;) {
+	                            if (declared[uDeclarations[j].property]) {
+	                                uDeclarations.splice(j, 1);
+	                            }
+	                            else {
+	                                declared[uDeclarations[j].property] = true;
+	                            }
+	                        }
+	                        selectorUnique[selectorKey].declarations = uDeclarations;
+	                        cssRules.rules.splice(i, 1);
+	                        i--;
+	                        l--;
+	                        continue;
+	                    }
+	                    else {
+	                        selectorUnique[selectorKey] = styleRule;
+	                    }
+	                    // 合并相同规则
+	                    styleRule.declarations.sort((a, b) => a.property < b.property ? -1 : 1);
+	                    const declareKey = styleRule.declarations.map((d) => `${d.property}:${d.value}`).join(';');
+	                    if (hasProp(declareUnique, declareKey)) {
+	                        const selectors = declareUnique[declareKey].selectors.concat(styleRule.selectors);
+	                        const selected = {};
+	                        for (let j = selectors.length; j--;) {
+	                            if (selected[selectors[j]]) {
+	                                selectors.splice(j, 1);
+	                            }
+	                            else {
+	                                selected[selectors[j]] = true;
+	                            }
+	                        }
+	                        declareUnique[declareKey].selectors = selectors;
+	                        cssRules.rules.splice(i, 1);
+	                        i--;
+	                        l--;
+	                        continue;
+	                    }
+	                    else {
+	                        declareUnique[declareKey] = styleRule;
+	                    }
+	                }
+	            }
+	        }
+	    }
+	    resolve();
+	});
+
+	// default rules
+	const rules = [
+	    [true, rmUseless],
+	    [true, combineStyle],
+	    [true, combineScript],
+	    [false, rmXMLDecl, 'rm-xml-decl'],
+	    [false, rmVersion, 'rm-version'],
+	    [false, rmDocType, 'rm-doctype'],
+	    [false, rmComments, 'rm-comments'],
+	    [false, rmIrregularTag, 'rm-irregular-tag'],
+	    [false, rmIrregularNesting, 'rm-irregular-nesting'],
+	    [false, rmUnnecessary, 'rm-unnecessary'],
+	    [false, rmViewBox, 'rm-viewbox'],
+	    [false, shortenAnimate, 'shorten-animate'],
+	    [false, shortenFilter, 'shorten-filter'],
+	    [false, shortenClass, 'shorten-class'],
+	    [false, collapseTextwrap, 'collapse-textwrap'],
+	    [false, rmHidden, 'rm-hidden'],
+	    [false, shortenStyleAttr, 'shorten-style-attr'],
+	    [false, rmPx, 'rm-px'],
+	    [false, rmAttribute, 'rm-attribute'],
+	    [false, shortenDefs, 'shorten-defs'],
+	    [false, shortenID, 'shorten-id'],
+	    [false, shortenShape, 'shorten-shape'],
+	    [false, combinePath, 'combine-path'],
+	    [false, computePath, 'compute-path'],
+	    [false, collapseG, 'collapse-g'],
+	    [false, combineTransform, 'combine-transform'],
+	    [false, shortenDecimalDigits, 'shorten-decimal-digits'],
+	    [false, shortenColor, 'shorten-color'],
+	    [false, shortenStyleTag, 'shorten-style-tag'],
+	    [true, combineTextNode],
+	    [false, rmXMLNS, 'rm-xmlns'],
+	];
+
+	const config = {
+	    // 合并 g 标签
+	    'collapse-g': [true],
+	    // 塌陷无意义的文本节点
+	    'collapse-textwrap': [true],
+	    // 合并 path 标签
+	    'combine-path': [true, {
+	            disregardFill: false,
+	            disregardOpacity: false,
+	            keyOrder: ['disregardFill', 'disregardOpacity'],
+	        }],
+	    // 分析并合并 transform 属性
+	    'combine-transform': [true, {
+	            angelDigit: DEFAULT_ACCURATE_DIGIT,
+	            sizeDigit: DEFAULT_SIZE_DIGIT,
+	            trifuncDigit: DEFAULT_MATRIX_DIGIT,
+	            keyOrder: ['trifuncDigit', 'sizeDigit', 'angelDigit'],
+	        }],
+	    // 计算 path 的 d 属性，使之变得更短
+	    'compute-path': [true, {
+	            angelDigit: DEFAULT_ACCURATE_DIGIT,
+	            sizeDigit: DEFAULT_SIZE_DIGIT,
+	            straighten: 0,
+	            thinning: 0,
+	            keyOrder: ['removed thinning switch@v1.5.0', 'thinning', 'size', 'angelDigit', 'straighten'],
+	        }],
+	    // 移除非规范的属性
+	    'rm-attribute': [true, {
+	            keepAria: false,
+	            keepEvent: false,
+	            rmDefault: true,
+	            keyOrder: ['rmDefault', 'keepEvent', 'keepAria'],
+	        }],
+	    // 移除注释
+	    'rm-comments': [true],
+	    // 移除 DOCTYPE 声明
+	    'rm-doctype': [true],
+	    // 移除隐藏对象
+	    'rm-hidden': [true],
+	    // 移除不规范嵌套的标签
+	    'rm-irregular-nesting': [true, {
+	            ignore: [],
+	            keyOrder: ['ignore'],
+	        }],
+	    // 移除非规范的标签
+	    // 配置不移除的非规范标签
+	    'rm-irregular-tag': [true, {
+	            ignore: [],
+	            keyOrder: ['ignore'],
+	        }],
+	    // 移除 px 单位
+	    'rm-px': [true],
+	    // 移除不必要的标签
+	    // 配置需要移除的标签列表
+	    'rm-unnecessary': [true, {
+	            tags: ['desc', 'discard', 'foreignObject', 'video', 'audio', 'iframe', 'canvas', 'metadata', 'script', 'title', 'unknown', 'image'],
+	            keyOrder: ['tags'],
+	        }],
+	    // 移除 svg 标签的 version 属性
+	    'rm-version': [true],
+	    // 是否强制移除 viewBox 属性
+	    'rm-viewbox': [true],
+	    // 移除 xml 声明
+	    'rm-xml-decl': [true],
+	    // 如有必要，移除 xml 命名空间
+	    'rm-xmlns': [true],
+	    // 缩短动画元素
+	    'shorten-animate': [true, {
+	            remove: false,
+	        }],
+	    // 缩短 className ，并移除不被引用的 className
+	    'shorten-class': [true],
+	    // 缩短颜色
+	    'shorten-color': [true, {
+	            opacityDigit: OPACITY_DIGIT,
+	            rrggbbaa: false,
+	            keyOrder: ['rrggbbaa', 'opacityDigit'],
+	        }],
+	    // 缩短小数点后位数
+	    'shorten-decimal-digits': [true, {
+	            angelDigit: DEFAULT_ACCURATE_DIGIT,
+	            sizeDigit: DEFAULT_SIZE_DIGIT,
+	            keyOrder: ['sizeDigit', 'angelDigit'],
+	        }],
+	    // 合并所有的 defs ，移除无效的 defs 定义
+	    'shorten-defs': [true],
+	    // 移除无效的滤镜元素，移除不必要的滤镜元素属性
+	    'shorten-filter': [true],
+	    // 缩短 ID ，并移除不被引用的 ID
+	    'shorten-id': [true],
+	    // 缩短 shape 类型的节点
+	    'shorten-shape': [true, {
+	            thinning: 0,
+	            keyOrder: ['thinning'],
+	        }],
+	    // 缩短 style 属性
+	    'shorten-style-attr': [true, {
+	            exchange: false,
+	            rmDefault: true,
+	            keyOrder: ['exchange'],
+	        }],
+	    // 缩短 style 标签的内容（合并相同规则、移除无效样式）
+	    // 深度分析，移除无效选择器、合并相同的选择器、合并相同规则
+	    'shorten-style-tag': [true, {
+	            deepShorten: true,
+	            rmDefault: true,
+	            keyOrder: ['deepShorten'],
+	        }],
+	};
+
+	const mergeUserVal = (v, _v) => {
+	    if (Array.isArray(v)) {
+	        // 数组只要字符串项
+	        if (Array.isArray(_v)) {
+	            return _v.filter(s => typeof s === 'string');
+	        }
+	    }
+	    else if (typeof v === typeof _v) {
+	        if (typeof _v === 'number') {
+	            // 数值项要忽略 NaN、Infinity 和负数，并下取整
+	            // 数值精度最多保留 8 位
+	            if (_v >= 0 && _v !== Infinity) {
+	                return Math.floor(_v);
+	            }
+	        }
+	        else {
+	            return _v;
+	        }
+	    }
+	    return v;
+	};
+	const mergeConfig = (userConfig) => {
+	    const finalConfig = {};
+	    // 首先把默认规则深拷贝合并过来
+	    for (const [key, val] of Object.entries(config)) {
+	        finalConfig[key] = [val[0]];
+	        if (val[1]) {
+	            const option = { keyOrder: val[1].keyOrder };
+	            for (const [k, v] of Object.entries(val[1])) {
+	                option[k] = Array.isArray(v) ? v.slice() : v;
+	            }
+	            finalConfig[key][1] = option;
+	        }
+	    }
+	    if (typeof userConfig === 'object' && userConfig) {
+	        for (const [key, val] of Object.entries(userConfig)) {
+	            // 只合并存在的值
+	            if (hasProp(finalConfig, key)) {
+	                const conf = finalConfig[key];
+	                // 布尔值直接设置开关位置
+	                if (typeof val === 'boolean') {
+	                    conf[0] = val;
+	                }
+	                else if (Array.isArray(val) && typeof val[0] === 'boolean') {
+	                    // 如果开关位置不是布尔值，后续直接抛弃处理
+	                    conf[0] = val[0];
+	                    // 默认配置如果没有 option 则不必再验证，如果没有打开配置项，后续也不必再验证
+	                    if (conf[0] && conf[1]) {
+	                        if (typeof val[1] === 'object' && val[1] && !Array.isArray(val[1])) {
+	                            // 如果拿到的是 IConfigOption 类型
+	                            for (const [k, v] of Object.entries(val[1])) {
+	                                if (k !== 'keyOrder' && hasProp(conf[1], k)) {
+	                                    conf[1][k] = mergeUserVal(conf[1][k], v);
+	                                }
+	                            }
+	                        }
+	                        else {
+	                            for (const k of Object.keys(conf[1])) {
+	                                if (k !== 'keyOrder') {
+	                                    const index = conf[1].keyOrder.indexOf(k) + 1;
+	                                    conf[1][k] = mergeUserVal(conf[1][k], val[index]);
+	                                }
+	                            }
+	                        }
+	                    }
+	                }
+	            }
+	        }
+	    }
+	    return finalConfig;
+	};
+
+	const exportFunc = async (data, userConfig = null) => new Promise((resolve, reject) => {
+	    Parser(data).then(async (dom) => {
+	        const finalConfig = mergeConfig(userConfig);
+	        for (const item of rules) {
+	            if (item[0]) {
+	                await (item[1])(dom);
+	            }
+	            else {
+	                await (item[1])(finalConfig[item[2]], dom);
+	            }
+	        }
+	        resolve(createXML(dom));
+	    }, reject);
+	});
+	exportFunc.xmlParser = Parser;
+	exportFunc.NodeType = NodeType;
+
+	return exportFunc;
+
+})));

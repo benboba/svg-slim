@@ -60,7 +60,7 @@ export const shorten = (m: IMatrixFunc, digit1: number = DEFAULT_MATRIX_DIGIT, d
 			}
 			break;
 
-		default:
+		default: {
 			const _res = simplify(m, digit1, digit2);
 			if (_res.type === 'matrix') {
 				_res.val.forEach((v, i) => {
@@ -70,6 +70,7 @@ export const shorten = (m: IMatrixFunc, digit1: number = DEFAULT_MATRIX_DIGIT, d
 			} else {
 				return shorten(_res, digit1, digit2, digit3);
 			}
+		}
 	}
 	return res;
 };

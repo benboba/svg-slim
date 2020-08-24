@@ -3,6 +3,7 @@ import { CIRC, FF, GRAD, Hex, Hundred, OPACITY_DIGIT, RAD } from '../const';
 import { angel, numberPattern } from '../const/syntax';
 import { shortenAlpha } from '../math/shorten-alpha';
 import { valid, validNum, validOpacity } from '../math/valid';
+import { hasProp } from '../utils/has-prop';
 import { shortenFunc } from '../utils/shorten-func';
 import { hsl2rgb } from './hsl2rgb';
 import { keywords } from './keywords';
@@ -118,7 +119,7 @@ const alphaMap = {
 export const execColor = (color: string, digit = OPACITY_DIGIT): IRGBColor => {
 	// 首先对原始字符串进行基本的格式处理和类型转换
 	let _color = color.trim();
-	if (keywords.hasOwnProperty(_color)) {
+	if (hasProp(keywords, _color)) {
 		// 关键字转为 16 位色
 		_color = keywords[_color as keyof typeof keywords];
 	} else if (/^(?:rgb|hsl)a?\s*\(/.test(_color)) {
@@ -145,20 +146,22 @@ export const execColor = (color: string, digit = OPACITY_DIGIT): IRGBColor => {
 				result.g = parseInt(`0x${hex[1]}${hex[1]}`, Hex);
 				result.b = parseInt(`0x${hex[2]}${hex[2]}`, Hex);
 				break;
-			case 4:
+			case 4: {
 				result.r = parseInt(`0x${hex[0]}${hex[0]}`, Hex);
 				result.g = parseInt(`0x${hex[1]}${hex[1]}`, Hex);
 				result.b = parseInt(`0x${hex[2]}${hex[2]}`, Hex);
 				const alpha4 = parseInt(`0x${hex[3]}${hex[3]}`, Hex);
 				result.a = has(`${alpha4}`, alphaMap) ? alphaMap[`${alpha4}` as keyof typeof alphaMap] / Hundred : alpha4 / FF;
 				break;
-			case 8:
+			}
+			case 8: {
 				result.r = parseInt(`0x${hex[0]}${hex[1]}`, Hex);
 				result.g = parseInt(`0x${hex[2]}${hex[3]}`, Hex);
 				result.b = parseInt(`0x${hex[4]}${hex[5]}`, Hex);
 				const alpha8 = parseInt(`0x${hex[6]}${hex[7]}`, Hex);
 				result.a = has(`${alpha8}`, alphaMap) ? alphaMap[`${alpha8}` as keyof typeof alphaMap] / Hundred : alpha8 / FF;
 				break;
+			}
 			default:
 				result.r = parseInt(`0x${hex[0]}${hex[1]}`, Hex);
 				result.g = parseInt(`0x${hex[2]}${hex[3]}`, Hex);

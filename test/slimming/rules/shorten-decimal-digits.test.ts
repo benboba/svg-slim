@@ -1,8 +1,8 @@
-import chai = require('chai');
+const chai = require('chai');
 const should = chai.should();
 import { shortenDecimalDigits } from '../../../src/slimming/rules/shorten-decimal-digits';
 import { combineStyle } from '../../../src/slimming/default-rules/combine-style';
-import { parse } from '../../../src/xml-parser/app';
+import { parse } from '../../../src/xml-parser';
 import { createXML } from '../../../src/slimming/xml/create';
 
 

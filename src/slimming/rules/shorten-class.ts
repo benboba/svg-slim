@@ -1,26 +1,27 @@
 import { Rule, StyleRules } from 'css';
 import { has } from 'ramda';
 import { createShortenID } from '../algorithm/create-shorten-id';
+import { hasProp } from '../utils/has-prop';
 import { mixWhiteSpace } from '../utils/mix-white-space';
 import { traversalObj } from '../utils/traversal-obj';
 import { isTag } from '../xml/is-tag';
 import { traversalNode } from '../xml/traversal-node';
 
-const classSelectorReg = /\.([^,\*#>+~:{\s\[\.]+)/gi;
+const classSelectorReg = /\.([^,*#>+~:{\s[.]+)/gi;
 
 // [原始 className]: [短 className, 是否被引用过]
 interface IClassList {
 	[propName: string]: [string, boolean];
 }
 
-export const shortenClass = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise((resolve, reject) => {
+export const shortenClass = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 		const parsedCss = dom.stylesheet;
 		if (parsedCss) {
 			let si = 0;
 			const classList: IClassList = {};
 			const shorten = (key: string) => {
-				if (classList.hasOwnProperty(key)) {
+				if (hasProp(classList, key)) {
 					return classList[key][0];
 				}
 				const sid = createShortenID(si++);
@@ -46,7 +47,7 @@ export const shortenClass = async (rule: TFinalConfigItem, dom: IDomNode): Promi
 					const className = mixWhiteSpace(classAttr.trim()).split(/\s+/);
 
 					for (let ci = className.length; ci--;) {
-						if (classList.hasOwnProperty(className[ci])) {
+						if (hasProp(classList, className[ci])) {
 							const cName = classList[className[ci]][0];
 							classList[className[ci]][1] = true;
 							className[ci] = cName;

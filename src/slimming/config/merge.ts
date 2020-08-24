@@ -1,3 +1,4 @@
+import { hasProp } from '../utils/has-prop';
 import { config } from './config';
 
 const mergeUserVal = (v: TConfigItem, _v: unknown): TConfigItem => {
@@ -36,7 +37,7 @@ export const mergeConfig = (userConfig: unknown) => {
 	if (typeof userConfig === 'object' && userConfig) {
 		for (const [key, val] of Object.entries(userConfig)) {
 			// 只合并存在的值
-			if (finalConfig.hasOwnProperty(key)) {
+			if (hasProp(finalConfig, key)) {
 				const conf = finalConfig[key];
 				// 布尔值直接设置开关位置
 				if (typeof val === 'boolean') {
@@ -48,8 +49,8 @@ export const mergeConfig = (userConfig: unknown) => {
 					if (conf[0] && conf[1]) {
 						if (typeof val[1] === 'object' && val[1] && !Array.isArray(val[1])) {
 							// 如果拿到的是 IConfigOption 类型
-							for (const [k, v] of Object.entries(val[1] as object)) {
-								if (k !== 'keyOrder' && conf[1].hasOwnProperty(k)) {
+							for (const [k, v] of Object.entries(val[1])) {
+								if (k !== 'keyOrder' && hasProp(conf[1], k)) {
 									conf[1][k] = mergeUserVal(conf[1][k], v);
 								}
 							}

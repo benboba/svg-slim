@@ -10,7 +10,7 @@ import { traversalNode } from '../xml/traversal-node';
 
 const pxReg = new RegExp(`(^|\\(|\\s|,|{|;|:)(${numberPattern})px(?=$|\\)|\\s|,|;|})`, 'gi');
 
-export const rmPx = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise((resolve, reject) => {
+export const rmPx = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 		traversalNode<ITagNode>(isTag, node => {
 			node.attributes.forEach(attr => {

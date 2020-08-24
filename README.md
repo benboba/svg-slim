@@ -46,7 +46,7 @@ Where svgcode is svg text in string format and config is user-defined optimized 
 | ---- | ---- | ---- | ---- |
 | Basic | svg parsing | Built-in parser xml-parser | sax |
 | Basic | Non-svg xml node processing logic | Remove | Report error |
-| Basic | Oversized svg processing | × | √ |
+| Basic | Oversized svg processing | 1.5.3 | √ |
 | Basic | Compressing Redundant Blanks | √ | √ |
 | Basic | Remove Comments | √ | √ |
 | Basic | Remove xml declaration and doctype | √ | √ |
@@ -567,7 +567,7 @@ E.g:
 <animate attributeName="x" to="abc"/><!-- the value of to does not match x -->
 ```
 
-The above elements will be removed after optimization
+After optimization, the above elements will be deleted.
 
 ### shorten-class
 
@@ -822,8 +822,7 @@ E.g:
 <rect fill="red" style="fill:blue;background:red;"/>
 ```
 
-After optimization will become (the fill attribute will be overwritten by the definition of the same name in the style, so it is removed, and the background is not a standard svg style, so it is removed)
-:
+After optimization will become (the fill attribute will be overwritten by the definition of the same name in the style, so it is removed, and the background is not a standard svg style, so it is removed):
 ```xml
 <rect style="fill:blue;"/>
 ```

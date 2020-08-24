@@ -1,4 +1,4 @@
-import chai = require('chai');
+const chai = require('chai');
 const should = chai.should();
 import { execSelector } from '../../../src/slimming/style/exec-selector';
 

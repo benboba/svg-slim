@@ -1,7 +1,7 @@
-import chai = require('chai');
+const chai = require('chai');
 const should = chai.should();
 import { getAnimateAttr, checkAnimateAttr, findAnimateAttr } from '../../../src/slimming/xml/get-animate-attr';
-import { parse } from '../../../src/xml-parser/app';
+import { parse } from '../../../src/xml-parser';
 
 describe('xml/get-animate-attr', () => {
 	it('get-animate-attr', async () => {

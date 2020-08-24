@@ -1,9 +1,19 @@
 # 更新日志
 
-## 2020.05. v1.5.4
+## 2020.08. v1.6.0 **breaking change**
+
+### 综合
+
+* 使用 rollup 代替 webpack 打包
+* 使用 eslint + typescript-eslint 代替 tslint
+* [**breaking change**] 不再打包压缩文件 svg-slimming.min.js 和 xml-parser.min.js
+* 增加 svg-slimming.mjs 和 xml-parser.mjs
+* [**breaking change**] 不再从 dist 目录发布项目，而是直接从根目录发布
+* 调整了目录结构
 
 ### svg-slimming
 
+* 增加大量 CSS 属性的规则验证
 * 修正了对于枚举类属性的验证规则，之前由于未进行全字匹配会存在一定的误判
 * shorten-defs 现在会移除掉已经不存在子元素的 defs 节点
 * 由于在 ie/edge 下表现异常，暂时移除 geometry 类属性（x、y、width、height、r、rx、ry、cx、cy）转 style 的逻辑

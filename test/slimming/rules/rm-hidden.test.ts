@@ -1,7 +1,7 @@
-import chai = require('chai');
+const chai = require('chai');
 const should = chai.should();
 import { rmHidden } from '../../../src/slimming/rules/rm-hidden';
-import { parse } from '../../../src/xml-parser/app';
+import { parse } from '../../../src/xml-parser';
 import { createXML } from '../../../src/slimming/xml/create';
 
 describe('rules/rm-hidden', () => {

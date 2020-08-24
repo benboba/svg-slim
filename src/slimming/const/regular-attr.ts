@@ -1,5 +1,6 @@
+import { cssAll, cssTimeFullMatch, cubicBezierFunc, stepsFunc, cssEasingFunction } from './css-value';
 import { containerElements, filterPrimitiveElements, gradientElements, graphicsElements, newViewportsElements, shapeElements, textContentElements } from './definitions';
-import { alignX, alignY, animateTransformType, blendMode, calcMode, channel, crossOrigin, dur, edgeMode, feColorMatrixType, feFuncType, feTurbulenceType, inVal, isolationMode, lengthAdjust, markerUnit, method, operater, operater1, orient, referrer, restart, spreadMethod, target, units } from './enum';
+import { alignmentBaseline, alignX, alignY, animateTransformType, blendMode, calcMode, channel, crossOrigin, dur, edgeMode, feColorMatrixType, feFuncType, feTurbulenceType, inVal, isolationMode, lengthAdjust, markerUnit, method, operater, operater1, orient, referrer, restart, spreadMethod, target, units } from './enum';
 import { angelFullMatch, clockFullMatch, controlPointsFullMatch, cssNameFullMatch, cssNameSpaceSeparatedFullMatch, indentFullMatch, integerFullMatch, langFullMatch, lengthPairFullMatch, lengthPairListFullMatch, lengthPercentageFullMatch, lengthPercentageListFullMatch, mediaTypeFullMatch, nameFullMatch, numberFullMatch, numberListFullMatch, numberOptionalFullMatch, numberSemiSepatatedFullMatch, pathFullMatch, percentageFullMatch, preservAspectRatioFullMatch, timeListFullMatch, transformListFullMatch, URIFullMatch, viewBoxFullMatch } from './syntax';
 
 const shapeAndText = shapeElements.concat(textContentElements);
@@ -1745,7 +1746,10 @@ const _regularAttr: IRegularAttrDefine = {
 		couldBeStyle: true,
 		inherited: true,
 		animatable: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			value: alignmentBaseline,
+		}],
 		initValue: 'baseline',
 		applyTo: ['tspan', 'textPath'],
 	},
@@ -1754,7 +1758,10 @@ const _regularAttr: IRegularAttrDefine = {
 		couldBeStyle: true,
 		cantTrans: true,
 		cantBeAttr: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			value: cssAll,
+		}],
 		initValue: '',
 		applyTo: useContainerGraphics,
 	},
@@ -1763,7 +1770,10 @@ const _regularAttr: IRegularAttrDefine = {
 		couldBeStyle: true,
 		cantTrans: true,
 		cantBeAttr: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'reg',
+			value: cssNameFullMatch,
+		}],
 		initValue: 'none',
 		applyTo: useContainerGraphics,
 	},
@@ -1773,7 +1783,10 @@ const _regularAttr: IRegularAttrDefine = {
 		couldBeStyle: true,
 		cantTrans: true,
 		cantBeAttr: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'reg',
+			value: cssTimeFullMatch,
+		}],
 		initValue: '0',
 		applyTo: useContainerGraphics,
 	},
@@ -1783,7 +1796,16 @@ const _regularAttr: IRegularAttrDefine = {
 		couldBeStyle: true,
 		cantTrans: true,
 		cantBeAttr: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			value: cssEasingFunction,
+		}, {
+			type: 'func',
+			value: cubicBezierFunc,
+		}, {
+			type: 'func',
+			value: stepsFunc,
+		}],
 		initValue: 'ease',
 		applyTo: useContainerGraphics,
 	},

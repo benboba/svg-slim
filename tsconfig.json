@@ -1,15 +1,17 @@
 {
 	"compilerOptions": {
 		"target": "esnext",
-		"module": "commonjs",
+		"module": "esnext",
 		"moduleResolution": "node",
 		"baseUrl": ".",
 		"strict": true,
+		"allowSyntheticDefaultImports": true,
 		"paths": {
 			"ramda": [
 				"location-of-types/npm-ramda-package/index"
 			]
-		}
+		},
+		"declaration": true
 	},
 	"include": [
 		"src/**/*",

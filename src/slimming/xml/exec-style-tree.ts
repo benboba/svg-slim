@@ -3,6 +3,7 @@ import { regularAttr } from '../const/regular-attr';
 import { execStyle } from '../style/exec';
 import { execSelector } from '../style/exec-selector';
 import { getSelectorPriority, overrideAble } from '../style/seletor-priority';
+import { hasProp } from '../utils/has-prop';
 import { getById } from './get-by-id';
 import { getBySelector } from './get-by-selector';
 import { isTag } from './is-tag';
@@ -73,7 +74,7 @@ const check = (dom: IDomNode, styleItems: IStyleItem[]) => {
 		if (parentNode && parentNode.styles) {
 			// 可能从父元素继承的样式
 			Object.keys(parentNode.styles).forEach(key => {
-				if (!nodeStyle.hasOwnProperty(key) && regularAttr[key].inherited) {
+				if (!hasProp(nodeStyle, key) && regularAttr[key].inherited) {
 					nodeStyle[key] = {
 						value: (parentNode.styles as IStyleObj)[key].value,
 						from: 'inherit',
@@ -90,7 +91,7 @@ const check = (dom: IDomNode, styleItems: IStyleItem[]) => {
 				xlinkObj.styles = styleObj;
 			}
 			Object.keys(nodeStyle).forEach(key => {
-				if (!styleObj.hasOwnProperty(key)) {
+				if (!hasProp(styleObj, key)) {
 					styleObj[key] = {
 						value: nodeStyle[key].value,
 						from: 'inherit',
