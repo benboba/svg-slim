@@ -3,7 +3,7 @@ import { attrModifier, selectorUnitCombinator } from './define';
 
 export const execSelector = (selector: string): ISelector[] => {
 	const selectors: ISelector[] = [];
-	const selectorUnitReg = new RegExp(`^([^\\s>+~#\\.\\[:]+|\\*)?((?:${idChar}|${classChar}|${attrChar}|${pseudoChar})*)([\\s>+~]+|$)`);
+	const selectorUnitReg = new RegExp(`^((?:[^\\s>+~#\\.\\[:]+|\\*)?)((?:${idChar}|${classChar}|${attrChar}|${pseudoChar})*)([\\s>+~]+|$)`);
 	let selectorStr = selector;
 	let selectorExec = selectorUnitReg.exec(selectorStr);
 	while (selectorExec && selectorExec[0].length) {

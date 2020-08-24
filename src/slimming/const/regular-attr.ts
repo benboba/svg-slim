@@ -149,7 +149,7 @@ const _regularAttr: IRegularAttrDefine = {
 	},
 	'cx': {
 		name: 'cx',
-		couldBeStyle: true,
+		// couldBeStyle: true,
 		animatable: true,
 		maybeSizeNumber: true,
 		legalValues: [{
@@ -167,7 +167,7 @@ const _regularAttr: IRegularAttrDefine = {
 	},
 	'cy': {
 		name: 'cy',
-		couldBeStyle: true,
+		// couldBeStyle: true,
 		animatable: true,
 		maybeSizeNumber: true,
 		legalValues: [{
@@ -403,7 +403,7 @@ const _regularAttr: IRegularAttrDefine = {
 	},
 	'height': {
 		name: 'height',
-		couldBeStyle: true,
+		// couldBeStyle: true,
 		animatable: true,
 		maybeSizeNumber: true,
 		legalValues: [{
@@ -963,7 +963,7 @@ const _regularAttr: IRegularAttrDefine = {
 	},
 	'r': {
 		name: 'r',
-		couldBeStyle: true,
+		// couldBeStyle: true,
 		animatable: true,
 		maybeSizeNumber: true,
 		legalValues: [{
@@ -1115,7 +1115,7 @@ const _regularAttr: IRegularAttrDefine = {
 	},
 	'rx': {
 		name: 'rx',
-		couldBeStyle: true,
+		// couldBeStyle: true,
 		animatable: true,
 		maybeSizeNumber: true,
 		legalValues: [{
@@ -1130,7 +1130,7 @@ const _regularAttr: IRegularAttrDefine = {
 	},
 	'ry': {
 		name: 'ry',
-		couldBeStyle: true,
+		// couldBeStyle: true,
 		animatable: true,
 		maybeSizeNumber: true,
 		legalValues: [{
@@ -1468,7 +1468,7 @@ const _regularAttr: IRegularAttrDefine = {
 	},
 	'width': {
 		name: 'width',
-		couldBeStyle: true,
+		// couldBeStyle: true,
 		animatable: true,
 		maybeSizeNumber: true,
 		legalValues: [{
@@ -1495,7 +1495,7 @@ const _regularAttr: IRegularAttrDefine = {
 	},
 	'x': {
 		name: 'x',
-		couldBeStyle: true,
+		// couldBeStyle: true,
 		animatable: true,
 		maybeSizeNumber: true,
 		legalValues: [{
@@ -1629,7 +1629,7 @@ const _regularAttr: IRegularAttrDefine = {
 	},
 	'y': {
 		name: 'y',
-		couldBeStyle: true,
+		// couldBeStyle: true,
 		animatable: true,
 		maybeSizeNumber: true,
 		legalValues: [{

@@ -202,6 +202,11 @@ export const shortenDefs = async (rule: TFinalConfigItem, dom: IDomNode): Promis
 					}
 				}
 			});
+
+			// 当 defs 没有子元素后，进行移除
+			if (!firstDefs.childNodes.length) {
+				rmNode(firstDefs);
+			}
 		}
 	}
 	resolve();
