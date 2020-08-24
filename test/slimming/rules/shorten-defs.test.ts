@@ -119,4 +119,22 @@ describe('rules/shorten-defs', () => {
 		await shortenDefs([true], dom);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><defs><rect id="b"/><path id="c"/></defs><svg id="a" style="fill-rule:even-odd;opacity:.5" fill="red"/><animateMotion><mpath href="#b"/><mpath href="#c"/></animateMotion><animateMotion path="M0,0H100"/><rect id="f" style="fill:blue;opacity:.6"/></svg>');
 	});
+
+	it('check clear defs', async () => {
+		const xml = `<svg>
+			<defs>
+				<svg id="a" style="fill-rule:even-odd"/>
+				<path id="d" d="M0,0H100"/>
+				<text id="e"/>
+				<rect id="f" style="fill:blue;opacity:.6"/>
+			</defs>
+			<use href="#a" fill="red" style="opacity:.5"/>
+			<animateMotion><mpath href="#b"/><mpath href="#c"/><mpath href="#e"/></animateMotion>
+			<animateMotion><mpath href="#d"/></animateMotion>
+			<use href="#f" fill="red" style="opacity:.5"/>
+		</svg>`;
+		const dom = await parse(xml) as ITagNode;
+		await shortenDefs([true], dom);
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><svg id="a" style="fill-rule:even-odd;opacity:.5" fill="red"/><animateMotion path="M0,0H100"/><rect id="f" style="fill:blue;opacity:.6"/></svg>');
+	});
 });

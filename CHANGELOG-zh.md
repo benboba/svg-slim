@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2020.05. v1.5.4
+
+### svg-slimming
+
+* 修正了对于枚举类属性的验证规则，之前由于未进行全字匹配会存在一定的误判
+* shorten-defs 现在会移除掉已经不存在子元素的 defs 节点
+* 由于在 ie/edge 下表现异常，暂时移除 geometry 类属性（x、y、width、height、r、rx、ry、cx、cy）转 style 的逻辑
+
 ## 2020.03.20 v1.5.3
 
 ### svg-slimming

@@ -122,8 +122,10 @@ export class Node implements INode {
 	hasAttribute(name: string, namespace?: string): boolean {
 		if (this.attributes) {
 			for (const attr of this.attributes) {
-				if ((!namespace && attr.fullname === name) || (attr.name === name && attr.namespace === namespace)) {
-					return true;
+				if (!namespace) {
+					return attr.fullname === name;
+				} else {
+					return attr.name === name && attr.namespace === namespace;
 				}
 			}
 		}
@@ -133,8 +135,14 @@ export class Node implements INode {
 	getAttribute(name: string, namespace?: string): string | null {
 		if (this.attributes) {
 			for (const attr of this.attributes) {
-				if ((!namespace && attr.fullname === name) || (attr.name === name && attr.namespace === namespace)) {
-					return attr.value;
+				if (!namespace) {
+					if (attr.fullname === name) {
+						return attr.value;
+					}
+				} else {
+					if (attr.name === name && attr.namespace === namespace) {
+						return attr.value;
+					}
 				}
 			}
 		}
@@ -144,9 +152,16 @@ export class Node implements INode {
 	setAttribute(name: string, value: string, namespace?: string): void {
 		if (this.attributes) {
 			for (const attr of this.attributes) {
-				if ((!namespace && attr.fullname === name) || (attr.name === name && attr.namespace === namespace)) {
-					attr.value = value;
-					return;
+				if (!namespace) {
+					if (attr.fullname === name) {
+						attr.value = value;
+						return;
+					}
+				} else {
+					if (attr.name === name && attr.namespace === namespace) {
+						attr.value = value;
+						return;
+					}
 				}
 			}
 
@@ -167,9 +182,16 @@ export class Node implements INode {
 		if (this.attributes) {
 			for (let i = this.attributes.length; i--;) {
 				const attr = this.attributes[i];
-				if ((!namespace && attr.fullname === name) || (attr.name === name && attr.namespace === namespace)) {
-					this.attributes.splice(i, 1);
-					break;
+				if (!namespace) {
+					if (attr.fullname === name) {
+						this.attributes.splice(i, 1);
+						return;
+					}
+				} else {
+					if (attr.name === name && attr.namespace === namespace) {
+						this.attributes.splice(i, 1);
+						return;
+					}
 				}
 			}
 		}
