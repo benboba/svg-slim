@@ -1,7 +1,7 @@
-import chai = require('chai');
+const chai = require('chai');
 const should = chai.should();
 import { matchSelector } from '../../../src/slimming/style/match-selector';
-import { parse } from '../../../src/xml-parser/app';
+import { parse } from '../../../src/xml-parser';
 
 describe('style/match-selector', () => {
 	it('参数缺失的情况', () => {

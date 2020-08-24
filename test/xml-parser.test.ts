@@ -1,9 +1,9 @@
 // tslint:disable
-import chai = require('chai');
+const chai = require('chai');
 const should = chai.should();
 const expect = chai.expect;
-import { parse, NodeType } from '../../src/xml-parser/app';
-import { Node } from '../../src/xml-parser/node';
+import { parse, NodeType } from '../src/xml-parser';
+import { Node } from '../src/xml-parser/node';
 
 describe('XML_PARSER', () => {
 	it('解析超大文档', async () => {

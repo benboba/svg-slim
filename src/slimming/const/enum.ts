@@ -47,3 +47,5 @@ export const feTurbulenceType = 'fractalNoise|turbulence';
 export const channel = 'R|G|B|A';
 
 export const isolationMode = 'auto|isolate';
+
+export const alignmentBaseline = 'auto|baseline|before-edge|text-before-edge|middle|central|after-edge|text-after-edge|ideographic|alphabetic|hanging|mathematical';

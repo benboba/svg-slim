@@ -1,13 +1,13 @@
-import { animationElements, animationAttributes, animationAttrElements, shapeElements } from '../const/definitions';
+import { checkAnimateMotion } from '../animate/check-animate-motion';
+import { animationAttrElements, animationAttributes, animationElements } from '../const/definitions';
+import { regularAttr } from '../const/regular-attr';
+import { regularTag } from '../const/regular-tag';
+import { legalValue } from '../validate/legal-value';
+import { getById } from '../xml/get-by-id';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
-import { getById } from '../xml/get-by-id';
-import { regularAttr } from '../const/regular-attr';
-import { legalValue } from '../validate/legal-value';
-import { regularTag } from '../const/regular-tag';
-import { checkAnimateMotion } from '../animate/check-animate-motion';
 
-export const shortenAnimate = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise((resolve, reject) => {
+export const shortenAnimate = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 		const { remove } = rule[1] as { remove: boolean };
 		// tslint:disable-next-line: cyclomatic-complexity

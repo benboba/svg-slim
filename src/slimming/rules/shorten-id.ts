@@ -3,14 +3,15 @@ import { has, pipe } from 'ramda';
 import { createShortenID } from '../algorithm/create-shorten-id';
 import { regularAttr } from '../const/regular-attr';
 import { funcIRIToID, IRIFullMatch } from '../const/syntax';
+import { execStyle } from '../style/exec';
+import { shortenStyle } from '../style/shorten';
+import { stringifyStyle } from '../style/stringify';
+import { hasProp } from '../utils/has-prop';
 import { traversalObj } from '../utils/traversal-obj';
 import { isTag } from '../xml/is-tag';
 import { traversalNode } from '../xml/traversal-node';
-import { execStyle } from '../style/exec';
-import { stringifyStyle } from '../style/stringify';
-import { shortenStyle } from '../style/shorten';
 
-const idSelectorReg = /#([^,\*#>+~:{\s\[\.]+)/gi;
+const idSelectorReg = /#([^,*#>+~:{\s[.]+)/gi;
 const style2value = pipe(stringifyStyle, shortenStyle);
 
 // [原始 id]: [短 id, 所属节点, 唯一 key]
@@ -18,12 +19,12 @@ interface IIDCache {
 	[propName: string]: [string, INode, string | null];
 }
 
-export const shortenID = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise((resolve, reject) => {
+export const shortenID = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 		let si = 0;
 		const IDList: IIDCache = {};
 		const shorten = (node: INode, attrname: string | null, key: string) => {
-			if (IDList.hasOwnProperty(key)) {
+			if (hasProp(IDList, key)) {
 				return IDList[key][0];
 			}
 			const sid = createShortenID(si++);
@@ -78,7 +79,7 @@ export const shortenID = async (rule: TFinalConfigItem, dom: IDomNode): Promise<
 		traversalNode(isTag, (node: INode) => {
 			const ID = node.getAttribute('id');
 			if (ID !== null) {
-				if (IDList.hasOwnProperty(ID)) {
+				if (hasProp(IDList, ID)) {
 					const id = IDList[ID][0];
 					// tslint:disable-next-line:no-dynamic-delete
 					delete IDList[ID];

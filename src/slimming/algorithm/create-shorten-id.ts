@@ -13,7 +13,7 @@ let pi = 0;
 
 export const createShortenID = (si: number): string => {
 	while (si >= slen) {
-		sList.push.apply(sList, nameChar.split('').map(s => sList[pi] + s));
+		sList.push(...nameChar.split('').map(s => sList[pi] + s));
 		slen += nameLen;
 		pi++;
 	}

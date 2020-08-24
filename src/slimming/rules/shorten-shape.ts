@@ -179,7 +179,7 @@ const ellipseToCircle = (node: ITagNode, r: string) => {
 	rmAttrs(node, ['rx', 'ry']);
 };
 
-const formatEllipse = (node: ITagNode, originNode: ITagNode) => {
+const formatEllipse = (node: ITagNode) => {
 	let rx = getAttr(node, 'rx', 'auto');
 	let ry = getAttr(node, 'ry', 'auto');
 	if (rx === 'auto') {
@@ -203,7 +203,7 @@ const formatEllipse = (node: ITagNode, originNode: ITagNode) => {
 	}
 };
 
-const formatCircle = (node: ITagNode, originNode: ITagNode) => {
+const formatCircle = (node: ITagNode) => {
 	const r = getAttr(node, 'r', '');
 	const rExec = startWithNumber.exec(r);
 	if (!rExec || +rExec[1] <= 0) {
@@ -211,7 +211,7 @@ const formatCircle = (node: ITagNode, originNode: ITagNode) => {
 	}
 };
 
-export const shortenShape = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise((resolve, reject) => {
+export const shortenShape = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 		execStyleTree(dom as ITagNode);
 		const {
@@ -237,10 +237,10 @@ export const shortenShape = async (rule: TFinalConfigItem, dom: INode): Promise<
 					formatPoly(thinning, cloneNode, true);
 					break;
 				case 'ellipse':
-					formatEllipse(cloneNode, node);
+					formatEllipse(cloneNode);
 					break;
 				case 'circle':
-					formatCircle(cloneNode, node);
+					formatCircle(cloneNode);
 					break;
 				default:
 					// 路径只要判断 d 属性是否存在即可

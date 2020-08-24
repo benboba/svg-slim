@@ -1,4 +1,4 @@
-import chai = require('chai');
+const chai = require('chai');
 const should = chai.should();
 import { rmComments } from '../../../src/slimming/rules/rm-comments';
 import { rmDocType } from '../../../src/slimming/rules/rm-doctype';
@@ -7,7 +7,7 @@ import { rmPx } from '../../../src/slimming/rules/rm-px';
 import { rmUnnecessary } from '../../../src/slimming/rules/rm-unnecessary';
 import { rmVersion } from '../../../src/slimming/rules/rm-version';
 import { rmXMLDecl } from '../../../src/slimming/rules/rm-xml-decl';
-import { parse } from '../../../src/xml-parser/app';
+import { parse } from '../../../src/xml-parser';
 import { createXML } from '../../../src/slimming/xml/create';
 import { combineStyle } from '../../../src/slimming/default-rules/combine-style';
 

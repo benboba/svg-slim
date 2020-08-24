@@ -1,7 +1,7 @@
-import chai = require('chai');
+const chai = require('chai');
 const should = chai.should();
 import { combinePath } from '../../../src/slimming/rules/combine-path';
-import { parse } from '../../../src/xml-parser/app';
+import { parse } from '../../../src/xml-parser';
 import { createXML } from '../../../src/slimming/xml/create';
 
 describe('rules/combine-path', () => {
