@@ -1,7 +1,7 @@
 import { attrChar, classChar, idChar, pseudoChar } from '../const/regs';
 import { attrModifier, selectorUnitCombinator } from './define';
 
-export const execSelector = (selector: string): ISelector[] => {
+export const parseSelector = (selector: string): ISelector[] => {
 	const selectors: ISelector[] = [];
 	const selectorUnitReg = new RegExp(`^((?:[^\\s>+~#\\.\\[:]+|\\*)?)((?:${idChar}|${classChar}|${attrChar}|${pseudoChar})*)([\\s>+~]+|$)`);
 	let selectorStr = selector;
@@ -34,7 +34,6 @@ export const execSelector = (selector: string): ISelector[] => {
 							});
 						} else {
 							// 取出等号修饰符
-							// tslint:disable-next-line strict-type-predicates
 							if (typeof attrModifier[attrStr[eqIndex - 1] as keyof typeof attrModifier] === 'number') {
 								selectorUnit.attr.push({
 									key: attrStr.slice(0, eqIndex - 1),
@@ -79,7 +78,6 @@ export const execSelector = (selector: string): ISelector[] => {
 		}
 		if (selectorExec[3]) {
 			const combinator = selectorExec[3].trim();
-			// tslint:disable-next-line strict-type-predicates
 			if (typeof selectorUnitCombinator[combinator as keyof typeof selectorUnitCombinator] === 'number') {
 				selectorUnit.combinator = selectorUnitCombinator[combinator as keyof typeof selectorUnitCombinator] as number;
 			}

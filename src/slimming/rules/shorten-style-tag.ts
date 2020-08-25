@@ -2,7 +2,7 @@ import { Declaration, Node, Rule, StyleRules } from 'css';
 import { propEq } from 'ramda';
 import { regularAttr } from '../const/regular-attr';
 import { checkApply } from '../style/check-apply';
-import { execSelector } from '../style/exec-selector';
+import { parseSelector } from '../style/parse-selector';
 import { hasProp } from '../utils/has-prop';
 import { mixWhiteSpace } from '../utils/mix-white-space';
 import { traversalObj } from '../utils/traversal-obj';
@@ -20,7 +20,7 @@ const rmCSSNode = (cssNode: Node, plist: Node[]) => {
 	}
 };
 
-export const shortenStyleTag = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
+export const shortenStyleTag = async (rule: TRulesConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
 	if (rule[0] && dom.stylesheet) {
 		const { deepShorten, rmDefault } = rule[1] as { deepShorten: boolean; rmDefault: boolean };
 		const cssRules: StyleRules = dom.stylesheet.stylesheet as StyleRules;
@@ -55,7 +55,7 @@ export const shortenStyleTag = async (rule: TFinalConfigItem, dom: IDomNode): Pr
 					const usedRule: IUnique = {};
 					// 移除无效的选择器
 					for (let si = theSelectors.length; si--;) {
-						const matchNodes = getBySelector(dom, execSelector(theSelectors[si]));
+						const matchNodes = getBySelector(dom, parseSelector(theSelectors[si]));
 						if (!matchNodes.length) {
 							theSelectors.splice(si, 1);
 						} else {

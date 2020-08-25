@@ -1,3 +1,5 @@
+import { getShorter } from './get-shorter';
+
 export const toScientific = (s: number): string => {
 	const sStr = s.toString();
 	let _s = sStr;
@@ -7,5 +9,5 @@ export const toScientific = (s: number): string => {
 		e++;
 	}
 	_s = `${_s}e${e}`;
-	return _s.length <= sStr.length ? _s : sStr;
+	return getShorter(_s, sStr);
 };

@@ -2,16 +2,17 @@ import { complement, equals } from 'ramda';
 import { douglasPeucker as DP } from '../algorithm/douglas-peucker';
 import { shapeElements } from '../const/definitions';
 import { numberGlobal, numberPattern, pureNumOrWithPx } from '../const/syntax';
-import { execNumberList } from '../utils/exec-numberlist';
+import { parseNumberList } from '../utils/parse-numberlist';
 import { shortenNumber } from '../utils/shorten-number';
 import { shortenNumberList } from '../utils/shorten-number-list';
 import { createTag } from '../xml/create';
-import { execStyleTree } from '../xml/exec-style-tree';
+import { parseStyleTree } from '../xml/parse-style-tree';
 import { checkAnimateAttr, getAnimateAttr } from '../xml/get-animate-attr';
 import { getAttr } from '../xml/get-attr';
 import { rmAttrs } from '../xml/rm-attrs';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
+import { getShorter } from '../utils/get-shorter';
 
 const startWithNumber = new RegExp(`^(${numberPattern})`);
 const notNone = complement(equals('none'));
@@ -67,7 +68,7 @@ const formatRect = (node: ITagNode) => {
 	// 此处考虑到宽和高的字节数差异，应该取较小的那种
 	const hvh = shortenNumberList(`M${x},${y}h${width}v${height}h-${width}z`);
 	const vhv = shortenNumberList(`M${x},${y}v${height}h${width}v-${height}z`);
-	node.setAttribute('d', vhv.length < hvh.length ? vhv : hvh);
+	node.setAttribute('d', getShorter(vhv, hvh));
 
 };
 
@@ -132,7 +133,7 @@ const formatPoly = (thinning: number, node: ITagNode, addZ: boolean) => {
 	node.nodeName = 'path';
 	let d = '';
 	if (node.hasAttribute('points')) {
-		let points = execNumberList(node.getAttribute('points') as string);
+		let points = parseNumberList(node.getAttribute('points') as string);
 		const animateAttrs = getAnimateAttr(node);
 		// 是否存在 marker 引用
 		const hasMarker = getAttr(node, 'marker-start', 'none') !== 'none'
@@ -211,9 +212,9 @@ const formatCircle = (node: ITagNode) => {
 	}
 };
 
-export const shortenShape = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
+export const shortenShape = async (rule: TRulesConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
-		execStyleTree(dom as ITagNode);
+		parseStyleTree(dom as ITagNode);
 		const {
 			thinning,
 		} = rule[1] as {

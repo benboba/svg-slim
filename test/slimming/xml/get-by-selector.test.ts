@@ -5,7 +5,7 @@ import { parse } from '../../../src/xml-parser';
 
 
 describe('xml/get-by-selector', () => {
-	it('exec style tree', async () => {
+	it('parse style tree', async () => {
 		const dom = await parse(`<svg>
 		<g><ellipse/><rect/><rect/></g>
 		</svg>`) as ITagNode;

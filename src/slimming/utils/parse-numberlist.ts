@@ -1,6 +1,6 @@
 import { numberGlobal, numberListFullMatch } from '../const/syntax';
 
-export const execNumberList = (s: string): number[] => {
+export const parseNumberList = (s: string): number[] => {
 	const result: number[] = [];
 	// 首先全字匹配字符串，不符合的直接退出
 	if (numberListFullMatch.test(s)) {

@@ -47,7 +47,7 @@ const doCollapse = (dom: INode) => {
 	}, dom);
 };
 
-export const collapseG = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
+export const collapseG = async (rule: TRulesConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 		doCollapse(dom);
 	}

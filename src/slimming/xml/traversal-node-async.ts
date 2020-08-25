@@ -11,7 +11,7 @@ export const traversalNodeAsync = async <T extends INode>(condition: (n: INode) 
 		for (const childNode of node.childNodes) {
 			if (condition(childNode)) {
 				list.push(new Promise<void>(resv => {
-					Promise.resolve().then(async () => { // tslint:disable-line no-floating-promises
+					Promise.resolve().then(async () => {
 						await cb(childNode as T);
 						if (childNode.parentNode === node) {
 							await traversalNodeAsync(condition, cb, childNode);
@@ -21,7 +21,7 @@ export const traversalNodeAsync = async <T extends INode>(condition: (n: INode) 
 				}));
 			} else {
 				list.push(new Promise<void>(resv => {
-					Promise.resolve().then(async () => { // tslint:disable-line no-floating-promises
+					Promise.resolve().then(async () => {
 						await traversalNodeAsync(condition, cb, childNode);
 						resv();
 					});
@@ -30,7 +30,7 @@ export const traversalNodeAsync = async <T extends INode>(condition: (n: INode) 
 		}
 		Promise.all<void>(list).then(() => {
 			resolve();
-		}, reject); // tslint:disable-line no-floating-promises
+		}, reject);
 	} else {
 		resolve();
 	}

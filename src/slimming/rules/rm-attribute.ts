@@ -4,12 +4,12 @@ import { regularTag } from '../const/regular-tag';
 import { hasProp } from '../utils/has-prop';
 import { legalValue } from '../validate/legal-value';
 import { attrIsEqual } from '../xml/attr-is-equal';
-import { execStyleTree } from '../xml/exec-style-tree';
+import { parseStyleTree } from '../xml/parse-style-tree';
 import { isTag } from '../xml/is-tag';
 import { traversalNode } from '../xml/traversal-node';
 
 // rm-attirbute 不再验证 css 类的属性，只关注该 css 属性是否是 svg 所支持的
-export const rmAttribute = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
+export const rmAttribute = async (rule: TRulesConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 
 		const {
@@ -22,9 +22,9 @@ export const rmAttribute = async (rule: TFinalConfigItem, dom: INode): Promise<n
 			keepAria: boolean;
 		};
 
-		traversalNode<ITagNode>(isTag, node => { // tslint:disable-line cyclomatic-complexity
+		traversalNode<ITagNode>(isTag, node => {
 			if (rmDefault) {
-				execStyleTree(dom as ITagNode);
+				parseStyleTree(dom as ITagNode);
 			}
 
 			const tagDefine: IRegularTag = regularTag[node.nodeName];

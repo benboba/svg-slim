@@ -1,8 +1,8 @@
-import { execStyle } from '../style/exec';
+import { parseStyle } from '../style/parse';
 import { stringifyStyle } from '../style/stringify';
 
 export const rmAttrs = (node: ITagNode, attrs: string[]) => {
-	let styleVal = execStyle(node.getAttribute('style') || '');
+	let styleVal = parseStyle(node.getAttribute('style') || '');
 	for (const key of attrs) {
 		node.removeAttribute(key);
 		styleVal = styleVal.filter(attr => attr.fullname !== key);

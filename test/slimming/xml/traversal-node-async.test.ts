@@ -8,7 +8,7 @@ import { isTag } from '../../../src/slimming/xml/is-tag';
 
 
 describe('xml/traversal-node-asycn', () => {
-	it('exec style tree', async () => {
+	it('parse style tree', async () => {
 		const dom = await parse(`<svg>
 		<g><ellipse/><rect/><rect/></g>
 		</svg>`) as ITagNode;

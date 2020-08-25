@@ -2,7 +2,7 @@ import { Declaration, StyleRules } from 'css';
 import { both, has } from 'ramda';
 import { regularAttr } from '../const/regular-attr';
 import { numberPattern } from '../const/syntax';
-import { execStyle } from '../style/exec';
+import { parseStyle } from '../style/parse';
 import { stringifyStyle } from '../style/stringify';
 import { traversalObj } from '../utils/traversal-obj';
 import { isTag } from '../xml/is-tag';
@@ -10,12 +10,12 @@ import { traversalNode } from '../xml/traversal-node';
 
 const pxReg = new RegExp(`(^|\\(|\\s|,|{|;|:)(${numberPattern})px(?=$|\\)|\\s|,|;|})`, 'gi');
 
-export const rmPx = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
+export const rmPx = async (rule: TRulesConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 		traversalNode<ITagNode>(isTag, node => {
 			node.attributes.forEach(attr => {
 				if (attr.fullname === 'style') {
-					const style = execStyle(attr.value);
+					const style = parseStyle(attr.value);
 					style.forEach(s => {
 						if (regularAttr[s.fullname].maybeSizeNumber || regularAttr[s.fullname].maybeAccurateNumber) {
 							pxReg.lastIndex = 0;

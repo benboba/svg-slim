@@ -1,4 +1,3 @@
-// tslint:disable max-file-line-count
 import { APOS_LEN, APOS_RX, APOS_RY, APOS_X, APOS_Y, DEFAULT_MATRIX_DIGIT } from '../const';
 import { transformAttributes } from '../const/definitions';
 import { regularAttr } from '../const/regular-attr';
@@ -7,22 +6,23 @@ import { multiply } from '../math/multiply';
 import { plus } from '../math/plus';
 import { toFixed } from '../math/tofixed';
 import { combineMatrix } from '../matrix/combine';
-import { execMatrix } from '../matrix/exec';
 import { Matrix } from '../matrix/matrix';
 import { merge } from '../matrix/merge';
+import { parseMatrix } from '../matrix/parse';
 import { stringify } from '../matrix/stringify';
 import { doCompute } from '../path/do-compute';
-import { execPath } from '../path/exec';
+import { parsePath } from '../path/parse';
 import { stringifyPath } from '../path/stringify';
-import { execStyle } from '../style/exec';
+import { parseStyle } from '../style/parse';
 import { stringifyStyle } from '../style/stringify';
-import { execNumberList } from '../utils/exec-numberlist';
+import { getShorter } from '../utils/get-shorter';
+import { parseNumberList } from '../utils/parse-numberlist';
 import { shortenNumber } from '../utils/shorten-number';
 import { shortenNumberList } from '../utils/shorten-number-list';
-import { execStyleTree } from '../xml/exec-style-tree';
 import { checkAnimateAttr, getAnimateAttr } from '../xml/get-animate-attr';
 import { getAttr } from '../xml/get-attr';
 import { isTag } from '../xml/is-tag';
+import { parseStyleTree } from '../xml/parse-style-tree';
 import { rmAttrs } from '../xml/rm-attrs';
 import { traversalNode } from '../xml/traversal-node';
 
@@ -53,7 +53,7 @@ const checkAttr = (node: ITagNode, attrname: string, val: string) => {
 		node.removeAttribute(attrname);
 		const attrDefine: IRegularAttr = regularAttr[attrname];
 		if (attrDefine.couldBeStyle && node.hasAttribute('style')) {
-			const styleAttr = execStyle(node.getAttribute('style') as string);
+			const styleAttr = parseStyle(node.getAttribute('style') as string);
 			styleAttr.some(sAttr => {
 				if (sAttr.fullname === attrname) {
 					sAttr.value = val;
@@ -78,10 +78,10 @@ const applyTextTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: I
 	const dy = node.getAttribute('dy') || '0';
 	// 必须是纯数值列表
 	if (pureNumOrWithPxList.test(dx) && pureNumOrWithPxList.test(dy)) {
-		const dxs = execNumberList(dx);
+		const dxs = parseNumberList(dx);
 		checkAttr(node, 'dx', applyNumberList(plus, dxs, matrix.val[0]));
 		if (matrix.val[1]) {
-			const dys = execNumberList(dy);
+			const dys = parseNumberList(dy);
 			checkAttr(node, 'dy', applyNumberList(plus, dys, matrix.val[1]));
 		}
 		node.removeAttribute('transform');
@@ -90,7 +90,7 @@ const applyTextTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: I
 	return false;
 };
 
-const applyRectTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: IAnimateAttr[], hasStroke: boolean, hasMarker: boolean) => { // tslint:disable-line cyclomatic-complexity
+const applyRectTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: IAnimateAttr[], hasStroke: boolean, hasMarker: boolean) => {
 	const x = getAttr(node, 'x', '0');
 	const y = getAttr(node, 'y', '0');
 	const width = getAttr(node, 'width', '0');
@@ -106,7 +106,6 @@ const applyRectTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: I
 		rx = '0';
 		ry = '0';
 	}
-	// todo 暂不支持 animate
 	if (!pureNumOrWithPx.test(x) || !pureNumOrWithPx.test(y) || checkAnimateAttr(animateAttrs, 'x') || checkAnimateAttr(animateAttrs, 'y')) {
 		return false;
 	}
@@ -349,7 +348,7 @@ const applyCircleTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs:
 	}
 };
 
-const applyEllipseTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: IAnimateAttr[], hasStroke: boolean, hasMarker: boolean) => { // tslint:disable-line cyclomatic-complexity
+const applyEllipseTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: IAnimateAttr[], hasStroke: boolean, hasMarker: boolean) => {
 	const cx = getAttr(node, 'cx', '0');
 	const cy = getAttr(node, 'cy', '0');
 	let rx = getAttr(node, 'rx', 'auto');
@@ -472,7 +471,7 @@ const applyPolyTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: I
 	}
 
 	let pointVal = node.getAttribute('points') || '';
-	const points = execNumberList(pointVal);
+	const points = parseNumberList(pointVal);
 	// points 数量必须是偶数
 	if (points.length % 2 === 1) {
 		points.pop();
@@ -534,13 +533,13 @@ const applyPolyTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: I
 	}
 };
 
-const applyPathTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: IAnimateAttr[], hasStroke: boolean, hasMarker: boolean, minStr: string) => { // tslint:disable-line cyclomatic-complexity
+const applyPathTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: IAnimateAttr[], hasStroke: boolean, hasMarker: boolean, minStr: string) => {
 	if (checkAnimateAttr(animateAttrs, 'd')) {
 		return false;
 	}
 
 	const d = node.getAttribute('d') || '';
-	const pathResult = doCompute(execPath(d));
+	const pathResult = doCompute(parsePath(d));
 
 	if (matrix.type === 'translate') {
 		const tx = matrix.val[0];
@@ -806,9 +805,9 @@ const applyTransform = (node: ITagNode, matrix: IMatrixFunc, minStr: string) => 
 	}
 };
 
-export const combineTransform = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
+export const combineTransform = async (rule: TRulesConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
-		execStyleTree(dom as ITagNode);
+		parseStyleTree(dom as ITagNode);
 		// digit1 = 矩阵前 4 位的精度，digit2 = 矩阵后 2 位的精度
 		const {
 			trigDigit,
@@ -824,7 +823,7 @@ export const combineTransform = async (rule: TFinalConfigItem, dom: INode): Prom
 				const attr = node.attributes[i];
 				if (transformAttributes.includes(attr.name)) {
 					const transform: IMatrixFunc[] = [];
-					execMatrix(attr.value.trim()).forEach(mFunc => {
+					parseMatrix(attr.value.trim()).forEach(mFunc => {
 						const lastFunc = transform[transform.length - 1];
 						if (transform.length && lastFunc.type === mFunc.type) {
 							const mergeFunc = merge(lastFunc, mFunc, trigDigit, sizeDigit, angelDigit);
@@ -842,7 +841,7 @@ export const combineTransform = async (rule: TFinalConfigItem, dom: INode): Prom
 						const matrix = combineMatrix(transform, trigDigit, sizeDigit, angelDigit);
 						const transformStr = stringify(transform, trigDigit, sizeDigit, angelDigit);
 						const matrixStr = stringify([matrix], trigDigit, sizeDigit, angelDigit);
-						const minStr = (matrixStr.length < transformStr.length) ? matrixStr : transformStr;
+						const minStr = getShorter(matrixStr, transformStr);
 						if (matrix.noEffect) {
 							node.removeAttribute(attr.fullname);
 							return;

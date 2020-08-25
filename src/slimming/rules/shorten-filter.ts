@@ -25,7 +25,7 @@ const checkFeAttrs = (type: string, rmAttrs: string[]) => {
 	}
 };
 
-export const shortenFilter = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
+export const shortenFilter = async (rule: TRulesConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 		traversalNode(isTag, (node: ITagNode) => {
 			if (filterPrimitiveElements.includes(node.nodeName) || node.nodeName === 'filter') {

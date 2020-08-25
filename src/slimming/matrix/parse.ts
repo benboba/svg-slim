@@ -1,4 +1,4 @@
-import { execNumberList } from '../utils/exec-numberlist';
+import { parseNumberList } from '../utils/parse-numberlist';
 import { numberPattern, commaWsp } from '../const/syntax';
 
 const matrixSingle = `(translate|scale|rotate|skewX|skewY|matrix)\\s*\\(\\s*(${numberPattern}(?:${commaWsp}${numberPattern})*)\\s*\\)`;
@@ -7,7 +7,7 @@ const matrixFullReg = new RegExp(`^${matrixSingle}(?:${commaWsp}${matrixSingle})
 
 const matrixValLen = 6;
 
-export const execMatrix = (str: string): IMatrixFunc[] => {
+export const parseMatrix = (str: string): IMatrixFunc[] => {
 	const result: IMatrixFunc[] = [];
 
 	// 首先全字匹配完整的字符串，不匹配的直接退出
@@ -17,7 +17,7 @@ export const execMatrix = (str: string): IMatrixFunc[] => {
 
 		let match = matrixReg.exec(str);
 		while (match !== null) {
-			const val = execNumberList(match[2]);
+			const val = parseNumberList(match[2]);
 			// 验证参数的个数是否合法，不合法的直接退出
 			if (match[1] === 'translate' || match[1] === 'scale') {
 				if (val.length > 2) {

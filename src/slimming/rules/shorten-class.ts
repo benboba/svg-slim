@@ -14,7 +14,7 @@ interface IClassList {
 	[propName: string]: [string, boolean];
 }
 
-export const shortenClass = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
+export const shortenClass = async (rule: TRulesConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 		const parsedCss = dom.stylesheet;
 		if (parsedCss) {

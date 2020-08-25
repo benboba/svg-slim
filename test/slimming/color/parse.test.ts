@@ -1,10 +1,10 @@
 const chai = require('chai');
 const should = chai.should();
-import { execColor } from '../../../src/slimming/color/exec';
+import { parseColor } from '../../../src/slimming/color/parse';
 
 describe('颜色解析', () => {
 	it('keywords', () => {
-		execColor('red').should.deep.equal({
+		parseColor('red').should.deep.equal({
 			r: 255,
 			g: 0,
 			b: 0,
@@ -13,7 +13,7 @@ describe('颜色解析', () => {
 			valid: true,
 		});
 
-		execColor('yellow').should.deep.equal({
+		parseColor('yellow').should.deep.equal({
 			r: 255,
 			g: 255,
 			b: 0,
@@ -24,7 +24,7 @@ describe('颜色解析', () => {
 	});
 
 	it('hex', () => {
-		execColor('#336699').should.deep.equal({
+		parseColor('#336699').should.deep.equal({
 			r: 51,
 			g: 102,
 			b: 153,
@@ -33,7 +33,7 @@ describe('颜色解析', () => {
 			valid: true,
 		});
 
-		execColor('#369').should.deep.equal({
+		parseColor('#369').should.deep.equal({
 			r: 51,
 			g: 102,
 			b: 153,
@@ -42,7 +42,7 @@ describe('颜色解析', () => {
 			valid: true,
 		});
 
-		execColor('#0006').should.deep.equal({
+		parseColor('#0006').should.deep.equal({
 			r: 0,
 			g: 0,
 			b: 0,
@@ -51,7 +51,7 @@ describe('颜色解析', () => {
 			valid: true,
 		});
 
-		execColor('#0004').should.deep.equal({
+		parseColor('#0004').should.deep.equal({
 			r: 0,
 			g: 0,
 			b: 0,
@@ -60,7 +60,7 @@ describe('颜色解析', () => {
 			valid: true,
 		});
 
-		execColor('#000000fe').should.deep.equal({
+		parseColor('#000000fe').should.deep.equal({
 			r: 0,
 			g: 0,
 			b: 0,
@@ -69,7 +69,7 @@ describe('颜色解析', () => {
 			valid: true,
 		});
 
-		execColor('#ff000080').should.deep.equal({
+		parseColor('#ff000080').should.deep.equal({
 			r: 255,
 			g: 0,
 			b: 0,
@@ -78,7 +78,7 @@ describe('颜色解析', () => {
 			valid: true,
 		});
 
-		execColor('#ff00007f').should.deep.equal({
+		parseColor('#ff00007f').should.deep.equal({
 			r: 255,
 			g: 0,
 			b: 0,
@@ -87,7 +87,7 @@ describe('颜色解析', () => {
 			valid: true,
 		});
 
-		execColor('#ff000081').should.deep.equal({
+		parseColor('#ff000081').should.deep.equal({
 			r: 255,
 			g: 0,
 			b: 0,
@@ -96,7 +96,7 @@ describe('颜色解析', () => {
 			valid: true,
 		});
 
-		execColor('#ab').should.deep.equal({
+		parseColor('#ab').should.deep.equal({
 			r: 0,
 			g: 0,
 			b: 0,
@@ -107,7 +107,7 @@ describe('颜色解析', () => {
 	});
 
 	it('rgb & rgba', () => {
-		execColor('rrgb(255,0,0)').should.deep.equal({
+		parseColor('rrgb(255,0,0)').should.deep.equal({
 			r: 0,
 			g: 0,
 			b: 0,
@@ -116,7 +116,7 @@ describe('颜色解析', () => {
 			valid: false,
 		});
 
-		execColor('rgb(255,0,0)').should.deep.equal({
+		parseColor('rgb(255,0,0)').should.deep.equal({
 			r: 255,
 			g: 0,
 			b: 0,
@@ -125,7 +125,7 @@ describe('颜色解析', () => {
 			valid: true,
 		});
 
-		execColor('rgb(500,-1,0.99)').should.deep.equal({
+		parseColor('rgb(500,-1,0.99)').should.deep.equal({
 			r: 255,
 			g: 0,
 			b: 1,
@@ -134,7 +134,7 @@ describe('颜色解析', () => {
 			valid: true,
 		});
 
-		execColor('rgb(0,0%,0)').should.deep.equal({
+		parseColor('rgb(0,0%,0)').should.deep.equal({
 			r: 0,
 			g: 0,
 			b: 0,
@@ -143,7 +143,7 @@ describe('颜色解析', () => {
 			valid: false,
 		});
 
-		execColor('rgb(0,0,0,10%)').should.deep.equal({
+		parseColor('rgb(0,0,0,10%)').should.deep.equal({
 			r: 0,
 			g: 0,
 			b: 0,
@@ -152,7 +152,7 @@ describe('颜色解析', () => {
 			valid: true,
 		});
 
-		execColor('rgba(100%,50,50%,0.1)').should.deep.equal({
+		parseColor('rgba(100%,50,50%,0.1)').should.deep.equal({
 			r: 0,
 			g: 0,
 			b: 0,
@@ -161,7 +161,7 @@ describe('颜色解析', () => {
 			valid: false,
 		});
 
-		execColor('rgba(100%,50%,50%,100)').should.deep.equal({
+		parseColor('rgba(100%,50%,50%,100)').should.deep.equal({
 			r: 255,
 			g: 128,
 			b: 128,
@@ -172,7 +172,7 @@ describe('颜色解析', () => {
 	});
 
 	it('hsl & hsla', () => {
-		execColor('hsl(0,0%,0%)').should.deep.equal({
+		parseColor('hsl(0,0%,0%)').should.deep.equal({
 			r: 0,
 			g: 0,
 			b: 0,
@@ -181,7 +181,7 @@ describe('颜色解析', () => {
 			valid: true,
 		});
 
-		execColor('hsl(1%,0%,0%)').should.deep.equal({
+		parseColor('hsl(1%,0%,0%)').should.deep.equal({
 			r: 0,
 			g: 0,
 			b: 0,
@@ -190,7 +190,7 @@ describe('颜色解析', () => {
 			valid: false,
 		});
 
-		execColor('hsl(1,0,0)').should.deep.equal({
+		parseColor('hsl(1,0,0)').should.deep.equal({
 			r: 0,
 			g: 0,
 			b: 0,
@@ -199,7 +199,7 @@ describe('颜色解析', () => {
 			valid: false,
 		});
 
-		execColor('hsl(1circle,0,0)').should.deep.equal({
+		parseColor('hsl(1circle,0,0)').should.deep.equal({
 			r: 0,
 			g: 0,
 			b: 0,
@@ -208,7 +208,7 @@ describe('颜色解析', () => {
 			valid: false,
 		});
 
-		execColor('hsl(0deg,0%,100%)').should.deep.equal({
+		parseColor('hsl(0deg,0%,100%)').should.deep.equal({
 			r: 255,
 			g: 255,
 			b: 255,
@@ -217,7 +217,7 @@ describe('颜色解析', () => {
 			valid: true,
 		});
 
-		execColor('hsla(180deg,50%,50%,50%)').should.deep.equal({
+		parseColor('hsla(180deg,50%,50%,50%)').should.deep.equal({
 			r: 64,
 			g: 191,
 			b: 191,
@@ -226,7 +226,7 @@ describe('颜色解析', () => {
 			valid: true,
 		});
 
-		execColor('hsl(1.5rad,50%,50%,0.1)').should.deep.equal({
+		parseColor('hsl(1.5rad,50%,50%,0.1)').should.deep.equal({
 			r: 136,
 			g: 191,
 			b: 64,
@@ -235,7 +235,7 @@ describe('颜色解析', () => {
 			valid: true,
 		});
 
-		execColor('hsla(1.32432turn,50%,50%)').should.deep.equal({
+		parseColor('hsla(1.32432turn,50%,50%)').should.deep.equal({
 			r: 71,
 			g: 191,
 			b: 64,
@@ -244,7 +244,7 @@ describe('颜色解析', () => {
 			valid: true,
 		});
 
-		execColor('hsl(500grad,10%,70%)').should.deep.equal({
+		parseColor('hsl(500grad,10%,70%)').should.deep.equal({
 			r: 179,
 			g: 186,
 			b: 171,

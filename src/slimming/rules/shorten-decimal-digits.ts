@@ -3,10 +3,10 @@ import { both, curry, has } from 'ramda';
 import { animationAttrElements, animationAttributes } from '../const/definitions';
 import { regularAttr } from '../const/regular-attr';
 import { numberGlobal } from '../const/syntax';
-import { execAlpha } from '../math/exec-alpha';
+import { parseAlpha } from '../math/parse-alpha';
 import { shortenAlpha } from '../math/shorten-alpha';
 import { toFixed } from '../math/tofixed';
-import { execStyle } from '../style/exec';
+import { parseStyle } from '../style/parse';
 import { stringifyStyle } from '../style/stringify';
 import { shortenNumber } from '../utils/shorten-number';
 import { shortenNumberList } from '../utils/shorten-number-list';
@@ -17,7 +17,7 @@ import { traversalNode } from '../xml/traversal-node';
 // 移除掉正、负号前面的逗号，移除掉0.前面的0，移除掉.1,.1或e1,.1这种case中间的逗号
 const doShorten = curry((digit: number, val: string) => shortenNumberList(val.replace(numberGlobal, s => `${shortenNumber(toFixed(digit, parseFloat(s)))}`)));
 
-export const shortenDecimalDigits = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
+export const shortenDecimalDigits = async (rule: TRulesConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 		const { sizeDigit, angelDigit } = rule[1] as { sizeDigit: number; angelDigit: number };
 
@@ -27,7 +27,7 @@ export const shortenDecimalDigits = async (rule: TFinalConfigItem, dom: IDomNode
 		const shortenValue = (key: string, value: string) => {
 			const define = regularAttr[key];
 			if (define.maybeAlpha) { // alpha 值采用特殊处理逻辑
-				const alpha = execAlpha(value);
+				const alpha = parseAlpha(value);
 				if (typeof alpha === 'number') {
 					return shortenAlpha(angelDigit, alpha);
 				}
@@ -59,7 +59,7 @@ export const shortenDecimalDigits = async (rule: TFinalConfigItem, dom: IDomNode
 						attr.value = shortenValue(attributeName, attr.value);
 					}
 				} else if (attr.fullname === 'style') { // css 样式处理，和属性类似
-					const style = execStyle(attr.value);
+					const style = parseStyle(attr.value);
 					style.forEach(s => {
 						numberGlobal.lastIndex = 0;
 						s.value = shortenValue(s.fullname, s.value);

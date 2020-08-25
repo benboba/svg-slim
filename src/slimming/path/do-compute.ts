@@ -20,7 +20,6 @@ const qArgLen = 4;
 export const doCompute = (pathArr: IPathItem[][]) => {
 	const result: IPathResultItem[][] = [];
 	let pos: number[] = [0, 0];
-	// tslint:disable-next-line:cyclomatic-complexity
 	for (const subPath of pathArr) {
 		const pathResult: IPathResultItem[] = [];
 		for (const pathItem of subPath) {
