@@ -3,7 +3,7 @@ import { has, pipe } from 'ramda';
 import { createShortenID } from '../algorithm/create-shorten-id';
 import { regularAttr } from '../const/regular-attr';
 import { funcIRIToID, IRIFullMatch } from '../const/syntax';
-import { execStyle } from '../style/exec';
+import { parseStyle } from '../style/parse';
 import { shortenStyle } from '../style/shorten';
 import { stringifyStyle } from '../style/stringify';
 import { hasProp } from '../utils/has-prop';
@@ -19,7 +19,7 @@ interface IIDCache {
 	[propName: string]: [string, INode, string | null];
 }
 
-export const shortenID = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
+export const shortenID = async (rule: TRulesConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 		let si = 0;
 		const IDList: IIDCache = {};
@@ -61,7 +61,7 @@ export const shortenID = async (rule: TFinalConfigItem, dom: IDomNode): Promise<
 						attr.value = `#${shorten(node, attr.fullname, iri[1])}`;
 					}
 				} else if (attr.fullname === 'style') {
-					const styleObj = execStyle(attr.value);
+					const styleObj = parseStyle(attr.value);
 					styleObj.forEach(styleItem => {
 						if (regularAttr[styleItem.fullname].maybeFuncIRI) {
 							const firi = funcIRIToID.exec(styleItem.value);
@@ -81,7 +81,6 @@ export const shortenID = async (rule: TFinalConfigItem, dom: IDomNode): Promise<
 			if (ID !== null) {
 				if (hasProp(IDList, ID)) {
 					const id = IDList[ID][0];
-					// tslint:disable-next-line:no-dynamic-delete
 					delete IDList[ID];
 					node.setAttribute('id', id);
 				} else {
@@ -95,7 +94,7 @@ export const shortenID = async (rule: TFinalConfigItem, dom: IDomNode): Promise<
 			const attrName = item[2];
 			if (typeof attrName === 'string') {
 				if (attrName.startsWith('style|')) {
-					const styleObj = execStyle(item[1].getAttribute('style') as string).filter(styleItem => styleItem.fullname !== attrName.slice(6));
+					const styleObj = parseStyle(item[1].getAttribute('style') as string).filter(styleItem => styleItem.fullname !== attrName.slice(6));
 					if (styleObj.length) {
 						item[1].setAttribute('style', style2value(styleObj));
 					} else {

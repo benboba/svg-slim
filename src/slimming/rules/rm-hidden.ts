@@ -3,7 +3,7 @@ import { animationElements, filterPrimitiveElements, shapeElements } from '../co
 import { regularTag } from '../const/regular-tag';
 import { IRIFullMatch } from '../const/syntax';
 import { hasProp } from '../utils/has-prop';
-import { execStyleTree } from '../xml/exec-style-tree';
+import { parseStyleTree } from '../xml/parse-style-tree';
 import { getAncestor } from '../xml/get-ancestor';
 import { checkAnimateAttr, getAnimateAttr } from '../xml/get-animate-attr';
 import { getAttr } from '../xml/get-attr';
@@ -91,11 +91,10 @@ const numberMap: INumberMap = {
 	},
 };
 
-export const rmHidden = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
+export const rmHidden = async (rule: TRulesConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
-		execStyleTree(dom as ITagNode);
+		parseStyleTree(dom as ITagNode);
 
-		// tslint:disable-next-line: cyclomatic-complexity
 		traversalNode<ITagNode>(isTag, node => {
 
 			// 未包含子节点的文本容器视为隐藏节点

@@ -1,6 +1,6 @@
 import { getById } from '../xml/get-by-id';
 import { isTag } from '../xml/is-tag';
-import { execStyle } from './exec';
+import { parseStyle } from './parse';
 
 // TODO：目前只验证了 href 和 xlink:href，其它 IRI 或 funcIRI 属性是否也需要验证？
 // 遇到引用属性，还需要递归验证被引用对象是否可应用样式
@@ -30,7 +30,7 @@ const check = (styleDefine: IRegularAttr, node: ITagNode | undefined, dom: INode
 		for (let i = node.attributes.length; i--;) {
 			const attr = node.attributes[i];
 			if (attr.fullname === 'style') {
-				const childStyle = execStyle(attr.value);
+				const childStyle = parseStyle(attr.value);
 				if (childStyle.some(style => style.fullname === styleDefine.name)) {
 					return false;
 				}
@@ -74,7 +74,7 @@ const check = (styleDefine: IRegularAttr, node: ITagNode | undefined, dom: INode
 		for (let i = childNode.attributes.length; i--;) {
 			const attr = childNode.attributes[i];
 			if (attr.fullname === 'style') {
-				const childStyle = execStyle(attr.value);
+				const childStyle = parseStyle(attr.value);
 				if (childStyle.some(style => style.fullname === styleDefine.name)) {
 					return false;
 				}

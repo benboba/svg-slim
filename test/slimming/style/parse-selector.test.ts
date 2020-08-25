@@ -1,12 +1,12 @@
 const chai = require('chai');
 const should = chai.should();
-import { execSelector } from '../../../src/slimming/style/exec-selector';
+import { parseSelector } from '../../../src/slimming/style/parse-selector';
 
 
-describe('style/exec-selector', () => {
-	it('exec selectors', () => {
+describe('style/parse-selector', () => {
+	it('parse selectors', () => {
 		const selectors = '*.a #b c::d + e:f(h) ~ g[i="j"][k^=l][m]';
-		execSelector(selectors).should.deep.equal([
+		parseSelector(selectors).should.deep.equal([
             {
                 attr: [],
                 class: ['a'],

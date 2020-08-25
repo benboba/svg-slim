@@ -5,4 +5,5 @@ module.exports = {
 	'full-trace': true,
 	'recursive': true,
 	'require': ['ts-node/register', 'source-map-support/register'],
+	'timeout': 10000,
 };

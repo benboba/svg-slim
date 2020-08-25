@@ -1,7 +1,7 @@
 import { Declaration, Rule, StyleRules } from 'css';
 import { regularAttr } from '../const/regular-attr';
-import { execStyle } from '../style/exec';
-import { execSelector } from '../style/exec-selector';
+import { parseStyle } from '../style/parse';
+import { parseSelector } from '../style/parse-selector';
 import { getSelectorPriority, overrideAble } from '../style/seletor-priority';
 import { hasProp } from '../utils/has-prop';
 import { getById } from './get-by-id';
@@ -30,7 +30,7 @@ const check = (dom: IDomNode, styleItems: IStyleItem[]) => {
 		node.attributes.forEach(attr => {
 			if (attr.fullname === 'style') {
 				// 行内样式优先级最高
-				const styles = execStyle(attr.value);
+				const styles = parseStyle(attr.value);
 				styles.forEach(style => {
 					nodeStyle[style.name] = {
 						value: style.value,
@@ -43,7 +43,6 @@ const check = (dom: IDomNode, styleItems: IStyleItem[]) => {
 			} else if (regularAttr[attr.fullname].couldBeStyle) {
 				// 属性优先级最低，但可以覆盖继承
 				const styleDefine = nodeStyle[attr.fullname];
-				// tslint:disable-next-line
 				if (!styleDefine || styleDefine.from === 'inherit') {
 					nodeStyle[attr.fullname] = {
 						value: attr.value,
@@ -58,7 +57,6 @@ const check = (dom: IDomNode, styleItems: IStyleItem[]) => {
 			if (styleItem.nodes.includes(node)) {
 				styleItem.styles.forEach(style => {
 					const styleDefine = nodeStyle[style.name];
-					// tslint:disable-next-line
 					if (!styleDefine || styleDefine.from === 'attr' || styleDefine.from === 'inherit' || (styleDefine.from === 'styletag' && styleDefine.selectorPriority && overrideAble(styleItem.selectorPriority, styleDefine.selectorPriority))) {
 						nodeStyle[style.name] = {
 							value: style.value,
@@ -104,7 +102,7 @@ const check = (dom: IDomNode, styleItems: IStyleItem[]) => {
 };
 
 // 解析样式树，为每个节点增加 styles 属性，标记当前节点生效的样式信息
-export const execStyleTree = (dom: IDomNode) => {
+export const parseStyleTree = (dom: IDomNode) => {
 	// 首先清理掉曾经被解析过的样式树
 	traversalNode<ITagNode>(isTag, node => {
 		if (node.styles) {
@@ -131,7 +129,7 @@ export const execStyleTree = (dom: IDomNode) => {
 				});
 
 				for (let si = styleRule.selectors.length; si--;) {
-					const selector = execSelector(styleRule.selectors[si]);
+					const selector = parseSelector(styleRule.selectors[si]);
 					const selectorPriority = getSelectorPriority(selector);
 					const nodes = getBySelector(dom, selector);
 					if (nodes.length) {

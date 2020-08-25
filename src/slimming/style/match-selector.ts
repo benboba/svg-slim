@@ -50,7 +50,6 @@ const checkAttr = (node: INode, selector: ISelector): boolean => {
 					}
 					break;
 				// 结尾字符匹配
-				// tslint:disable-next-line:no-string-literal
 				case attrModifier['$']:
 					if (attr.lastIndexOf(attrSelector.value) !== attr.length - attrSelector.value.length) {
 						return false;

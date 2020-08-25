@@ -5,8 +5,8 @@ import { isTag } from '../xml/is-tag';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
 import { getAncestor } from '../xml/get-ancestor';
-import { execStyleTree } from '../xml/exec-style-tree';
-import { execStyle } from '../style/exec';
+import { parseStyleTree } from '../xml/parse-style-tree';
+import { parseStyle } from '../style/parse';
 import { stringifyStyle } from '../style/stringify';
 import { shapeElements } from '../const/definitions';
 import { checkAnimateMotion } from '../animate/check-animate-motion';
@@ -80,7 +80,7 @@ const checkDefsApply = (item: IIDCacheITem, dom: IDomNode) => {
 			}
 			const useTag = item.tag as ITagNode;
 			(node.parentNode as ITagNode).replaceChild(node, useTag);
-			const styleArray: IAttr[] = useTag.hasAttribute('style') ? execStyle(useTag.getAttribute('style') as string) : [];
+			const styleArray: IAttr[] = useTag.hasAttribute('style') ? parseStyle(useTag.getAttribute('style') as string) : [];
 			for (const [key, val] of Object.entries(originAttr)) {
 				if (!useTag.hasAttribute(key) && !styleArray.some(sItem => sItem.fullname === key)) {
 					useTag.setAttribute(key, val);
@@ -127,7 +127,7 @@ const checkDefsApply = (item: IIDCacheITem, dom: IDomNode) => {
 	}
 };
 
-export const shortenDefs = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
+export const shortenDefs = async (rule: TRulesConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 		let firstDefs: ITagNode | undefined;
 
@@ -183,7 +183,7 @@ export const shortenDefs = async (rule: TFinalConfigItem, dom: IDomNode): Promis
 			}, dom);
 
 			checkSub(firstDefs, IDList, true);
-			execStyleTree(dom);
+			parseStyleTree(dom);
 
 			(Object.values(IDList) as IIDCacheITem[]).forEach(item => {
 				if (item.tag) {

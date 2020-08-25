@@ -7,10 +7,9 @@ import { getById } from '../xml/get-by-id';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
 
-export const shortenAnimate = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
+export const shortenAnimate = async (rule: TRulesConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 		const { remove } = rule[1] as { remove: boolean };
-		// tslint:disable-next-line: cyclomatic-complexity
 		traversalNode(node => animationElements.includes(node.nodeName), (node: ITagNode) => {
 			if (remove) {
 				rmNode(node);

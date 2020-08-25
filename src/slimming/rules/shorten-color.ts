@@ -1,13 +1,14 @@
 import { Declaration, StyleRules } from 'css';
 import { both, has, pipe, toLower } from 'ramda';
-import { execColor } from '../color/exec';
+import { parseColor } from '../color/parse';
 import { rgb2hsl } from '../color/rgb2hsl';
 import { FF, Hundred, OPACITY_DIGIT } from '../const';
 import { regularAttr } from '../const/regular-attr';
 import { shortenAlpha } from '../math/shorten-alpha';
-import { execStyle } from '../style/exec';
+import { parseStyle } from '../style/parse';
 import { stringifyStyle } from '../style/stringify';
 import { fillIn } from '../utils/fillin';
+import { getShorter } from '../utils/get-shorter';
 import { toHex } from '../utils/tohex';
 import { traversalObj } from '../utils/traversal-obj';
 import { isTag } from '../xml/is-tag';
@@ -156,12 +157,11 @@ const shortenMap = {
 const shortenReg = new RegExp(`(?:${Object.keys(shortenMap).join('|')})(?=[^0-9a-f]|$)`, 'gi');
 
 const formatColor = (rgba: boolean, str: string, digit: number): string => {
-	const color = execColor(str, digit);
+	const color = parseColor(str, digit);
 	let s = color.origin;
 
 	if (color.valid) {
 		if (color.a < 1) {
-			// tslint:disable:prefer-conditional-expression
 			if (rgba) {
 				s = `#${operateHex(color.r)}${operateHex(color.g)}${operateHex(color.b)}${has(`${color.a * Hundred}`, alphaMap) ? operateHex(alphaMap[`${color.a * Hundred}` as keyof typeof alphaMap]) : operateHex(Math.round(color.a * FF))}`;
 			} else {
@@ -172,7 +172,7 @@ const formatColor = (rgba: boolean, str: string, digit: number): string => {
 					const alpha = shortenAlpha(digit, color.a);
 					const rgb = `rgb(${color.r},${color.g},${color.b},${alpha})`;
 					const hsl = `hsl(${hslColor.h},${hslColor.s}%,${hslColor.l}%,${alpha})`;
-					s = hsl.length < rgb.length ? hsl : rgb;
+					s = getShorter(hsl, rgb);
 				}
 			}
 		} else {
@@ -193,7 +193,7 @@ const formatColor = (rgba: boolean, str: string, digit: number): string => {
 	return s;
 };
 
-export const shortenColor = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
+export const shortenColor = async (rule: TRulesConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 		const { rrggbbaa, opacityDigit } = rule[1] as { rrggbbaa: boolean; opacityDigit: number };
 		const digit = Math.min(opacityDigit, OPACITY_DIGIT);
@@ -202,7 +202,7 @@ export const shortenColor = async (rule: TFinalConfigItem, dom: IDomNode): Promi
 				if (regularAttr[attr.fullname].maybeColor) {
 					attr.value = formatColor(rrggbbaa, attr.value, digit);
 				} else if (attr.fullname === 'style') {
-					const style = execStyle(attr.value);
+					const style = parseStyle(attr.value);
 					style.forEach(s => {
 						if (regularAttr[s.fullname].maybeColor) {
 							s.value = formatColor(rrggbbaa, s.value, digit);

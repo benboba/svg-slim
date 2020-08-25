@@ -1,11 +1,11 @@
 const chai = require('chai');
 const should = chai.should();
 import { merge } from '../../../src/slimming/matrix/merge';
-import { execMatrix } from '../../../src/slimming/matrix/exec';
+import { parseMatrix } from '../../../src/slimming/matrix/parse';
 
 describe('matrix/merge', () => {
 	it('merge translate', () => {
-        const mList = execMatrix('translate(0, 100)translate(25,-1)translate(15)translate(-15)');
+        const mList = parseMatrix('translate(0, 100)translate(25,-1)translate(15)translate(-15)');
         merge(mList[0], mList[1]).should.deep.equal({
             type: 'translate',
             val: [25, 99],
@@ -18,19 +18,19 @@ describe('matrix/merge', () => {
     });
 
 	it('merge scale', () => {
-        const mList = execMatrix('scale(3e1) ,   scale(.1, .2)');
+        const mList = parseMatrix('scale(3e1) ,   scale(.1, .2)');
         merge(mList[0], mList[1]).should.deep.equal({
             type: 'scale',
             val: [3, 6],
         });
 
-        const mList1 = execMatrix('scale(3, 5)    scale(1.2)');
+        const mList1 = parseMatrix('scale(3, 5)    scale(1.2)');
         merge(mList1[0], mList1[1]).should.deep.equal({
             type: 'scale',
             val: [3.6, 6],
         });
 
-        const mList2 = execMatrix('scale(2, 0.5)    scale(.5 2)');
+        const mList2 = parseMatrix('scale(2, 0.5)    scale(.5 2)');
         merge(mList2[0], mList2[1]).should.deep.equal({
             type: 'scale',
             val: [1],
@@ -39,7 +39,7 @@ describe('matrix/merge', () => {
 	});
 
 	it('merge rotate', () => {
-        const mList = execMatrix('rotate(35)rotate(-5.5)');
+        const mList = parseMatrix('rotate(35)rotate(-5.5)');
         merge(mList[0], mList[1]).should.deep.equal({
             type: 'rotate',
             val: [29.5],
@@ -47,13 +47,13 @@ describe('matrix/merge', () => {
 	});
 
 	it('merge 3-value rotate', () => {
-		const mList1 = execMatrix('rotate(30, 20, 20)    rotate(-20, 20, 20)');
+		const mList1 = parseMatrix('rotate(30, 20, 20)    rotate(-20, 20, 20)');
 		merge(mList1[0], mList1[1]).should.deep.equal({
 			type: 'rotate',
 			val: [10, 20, 20],
         });
 
-		const mList2 = execMatrix('rotate(30, 20, 20)    rotate(-20)');
+		const mList2 = parseMatrix('rotate(30, 20, 20)    rotate(-20)');
 		merge(mList2[0], mList2[1]).should.deep.equal({
 			type: 'rotate',
 			val: [10, 48.18, 68.8],
@@ -61,7 +61,7 @@ describe('matrix/merge', () => {
 	});
 
 	it('merge skewX', () => {
-        const mList = execMatrix('skewX(20)skewX(-20)');
+        const mList = parseMatrix('skewX(20)skewX(-20)');
         merge(mList[0], mList[1]).should.deep.equal({
             type: 'translate',
             val: [0],
@@ -70,7 +70,7 @@ describe('matrix/merge', () => {
 	});
 
 	it('merge skewY', () => {
-        const mList = execMatrix('skewY(15)skewY(-20)');
+        const mList = parseMatrix('skewY(15)skewY(-20)');
         merge(mList[0], mList[1]).should.deep.equal({
             type: 'skewY',
             val: [-5.48],
@@ -78,7 +78,7 @@ describe('matrix/merge', () => {
 	});
 
 	it('merge matrix', () => {
-        const mList = execMatrix('matrix(0.8660254037844387, 0.49999999999999994, -0.3472963553338606, 0.9541888941386711, 17.830375185938504, 22.99607783552538)  matrix(1.5, 0, 0, 1.5, 0.2, -15.35)');
+        const mList = parseMatrix('matrix(0.8660254037844387, 0.49999999999999994, -0.3472963553338606, 0.9541888941386711, 17.830375185938504, 22.99607783552538)  matrix(1.5, 0, 0, 1.5, 0.2, -15.35)');
         merge(mList[0], mList[1]).should.deep.equal({
             type: 'matrix',
             val: [1.299, 0.75, -0.521, 1.431, 23.33, 8.45],

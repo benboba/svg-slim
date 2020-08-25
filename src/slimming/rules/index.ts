@@ -33,7 +33,7 @@ import { shortenStyleAttr } from './shorten-style-attr';
 import { shortenStyleTag } from './shorten-style-tag';
 
 // [isDefaultRule: boolean, ruleHandler: Function, configKey?: string]
-type RuleItem = [true, (dom: IDomNode) => Promise<null>] | [false, (rule: TFinalConfigItem, dom: IDomNode) => Promise<null>, string];
+type RuleItem = [true, (dom: IDomNode) => Promise<null>] | [false, (rule: TRulesConfigItem, dom: IDomNode) => Promise<null>, string];
 
 export const rules: RuleItem[] = [
 	[true, rmUseless],

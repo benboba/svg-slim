@@ -13,20 +13,26 @@ declare interface IUnknownObj {
 	[attr: string]: unknown;
 }
 
-declare type TConfigItem = boolean | number | string[];
+declare type TBaseObj = Record<string, unknown>;
 
-declare interface IConfigOption {
-	[propName: string]: TConfigItem;
+declare type TRulesConfigVal = boolean | number | string[];
+
+declare interface IRulesConfigOption {
+	[propName: string]: TRulesConfigVal;
 }
 
-declare type TFinalConfigItem = [boolean, IConfigOption?];
+declare type TRulesConfigItem = [boolean, IRulesConfigOption?];
 
 declare interface IConfig {
-	[propName: string]: boolean | TConfigItem[] | TFinalConfigItem;
-}
-
-declare interface IFinalConfig {
-	[propName: string]: TFinalConfigItem;
+	rules: {
+		[propName: string]: TRulesConfigItem;
+	};
+	env: {
+		[envName: string]: number | string;
+	};
+	params: {
+		[key: string]: boolean | number;
+	}
 }
 
 declare interface IMatrixFunc {

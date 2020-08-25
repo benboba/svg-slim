@@ -1,11 +1,11 @@
 import { APOS_LARGE, APOS_LEN, APOS_SWEEP } from '../const';
 import { numberSequence } from '../const/syntax';
-import { execNumberList } from '../utils/exec-numberlist';
-import { execArc } from './exec-arc';
+import { parseNumberList } from '../utils/parse-numberlist';
+import { parseArc } from './parse-arc';
 
 const pathReg = new RegExp(`([mzlhvcsqta])\\s*((?:${numberSequence})?)(.*?)(?=[mzlhvcsqta]|$)`, 'gim');
 
-export const execPath = (str: string): IPathItem[][] => {
+export const parsePath = (str: string): IPathItem[][] => {
 	const result: IPathItem[][] = [];
 	let temp: IPathItem[] = [];
 
@@ -21,7 +21,7 @@ export const execPath = (str: string): IPathItem[][] => {
 		}
 		let val: number[] = [];
 		if (match[2]) {
-			val = type === 'a' ? execArc(match[2]) : execNumberList(match[2]);
+			val = type === 'a' ? parseArc(match[2]) : parseNumberList(match[2]);
 		}
 		switch (type) {
 			// 平移的参数必须为偶数

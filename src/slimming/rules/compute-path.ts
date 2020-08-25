@@ -4,10 +4,10 @@ import { LineTypes } from '../const';
 import { plus } from '../math/plus';
 import { checkSubPath } from '../path/check-sub-paths';
 import { doCompute } from '../path/do-compute';
-import { execPath } from '../path/exec';
+import { parsePath } from '../path/parse';
 import { straighten as straightenPath } from '../path/straighten';
 import { stringifyPath } from '../path/stringify';
-import { execStyleTree } from '../xml/exec-style-tree';
+import { parseStyleTree } from '../xml/parse-style-tree';
 import { getAttr } from '../xml/get-attr';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
@@ -84,7 +84,7 @@ const processPath = (dVal: string, hasMarker: boolean, hasStroke: boolean, hasSt
 	straighten: number;
 }) => {
 	// 先运算一次 doCompute，拿到每条指令的 from 坐标
-	let pathResult = doCompute(execPath(dVal));
+	let pathResult = doCompute(parsePath(dVal));
 
 	// 如果存在 marker 引用，多余的优化都不能做
 	if (!hasMarker) {
@@ -108,9 +108,9 @@ const processPath = (dVal: string, hasMarker: boolean, hasStroke: boolean, hasSt
 	}
 };
 
-export const computePath = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
+export const computePath = async (rule: TRulesConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
-		execStyleTree(dom as IDomNode);
+		parseStyleTree(dom as IDomNode);
 		traversalNode<ITagNode>(anyPass([propEq('nodeName', 'path'), propEq('nodeName', 'animateMotion'), propEq('nodeName', 'textPath')]), node => {
 			const option = rule[1] as {
 				thinning: number;

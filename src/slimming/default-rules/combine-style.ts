@@ -140,9 +140,9 @@ export const combineStyle = async (dom: IDomNode): Promise<null> => new Promise(
 	}
 
 	if (ruleParents.length) {
-		// (async () => { // tslint:disable-line no-floating-promises
+		// (async () => {
 		for (const [rule, parent] of ruleParents) {
-		// 				if (typeof document === 'undefined') { // tslint:disable-line strict-type-predicates
+		// 				if (typeof document === 'undefined') {
 		// 					let cssString = 'text,rect{';
 		// 					rule.declarations.forEach(d => {
 		// 						cssString += `${d.property}:${d.value};

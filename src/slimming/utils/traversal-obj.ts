@@ -7,6 +7,8 @@
  * @param { boolean } 是否深度优先，是的话会先遍历子元素
  */
 
+import { isObj } from "./is-obj";
+
 const traversal = <T>(condition: (o: T | T[]) => boolean, cb: (o: T, p: Array<T | T[]>) => void, obj: T | T[], path: Array<T | T[]>, visited: Array<T | T[]>, deep: boolean) => {
 	if (visited.includes(obj)) {
 		return;
@@ -29,8 +31,9 @@ const traversal = <T>(condition: (o: T | T[]) => boolean, cb: (o: T, p: Array<T 
 		}
 	} else {
 		for (const key in obj) {
-			if (typeof obj[key] === 'object') { // tslint:disable-line strict-type-predicates
-				traversal(condition, cb, obj[key] as unknown as T | T[], path, visited, deep);
+			const objK = obj[key];
+			if (isObj<T | T[]>(objK)) {
+				traversal(condition, cb, objK, path, visited, deep);
 			}
 		}
 	}

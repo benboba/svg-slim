@@ -5,6 +5,7 @@ import { parse } from '../../../src/xml-parser';
 import { createXML } from '../../../src/slimming/xml/create';
 
 describe('rules/combine-transform', () => {
+
 	it('rule false branch', async () => {
 		const xml = '<svg><rect transform="translate(0)scale(1)"/></svg>';
 		const dom = await parse(xml) as ITagNode;

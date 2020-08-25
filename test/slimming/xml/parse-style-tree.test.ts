@@ -1,22 +1,22 @@
 const chai = require('chai');
 const should = chai.should();
-import { execStyleTree } from '../../../src/slimming/xml/exec-style-tree';
+import { parseStyleTree } from '../../../src/slimming/xml/parse-style-tree';
 import { combineStyle } from '../../../src/slimming/default-rules/combine-style';
 import { parse } from '../../../src/xml-parser';
 
 
-describe('xml/exec-style-tree', () => {
+describe('xml/parse-style-tree', () => {
 	it('parse error', async () => {
 		const dom = await parse(`<svg>
 		<style></style>
 		<style>error</style>
 		</svg>`) as ITagNode;
 		await combineStyle(dom);
-		execStyleTree(dom);
+		parseStyleTree(dom);
 		Object.hasOwnProperty.call(dom, 'styles').should.equal(false);
 	});
 
-	it('exec style tree', async () => {
+	it('parse style tree', async () => {
 		const dom = await parse(`<svg>
 		<style>
 		@import 'a.css';
@@ -47,7 +47,7 @@ describe('xml/exec-style-tree', () => {
 		<g style="stroke:none;fill: blue;" fill="red"><text>123</text></g>
 		</svg>`) as ITagNode;
 		await combineStyle(dom);
-		execStyleTree(dom);
+		parseStyleTree(dom);
 		Object.hasOwnProperty.call(dom, 'styles').should.equal(false);
 	});
 });

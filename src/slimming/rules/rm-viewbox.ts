@@ -1,12 +1,12 @@
 import { equals } from 'ramda';
-import { execNumberList } from '../utils/exec-numberlist';
+import { parseNumberList } from '../utils/parse-numberlist';
 import { traversalNode } from '../xml/traversal-node';
 
-export const rmViewBox = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
+export const rmViewBox = async (rule: TRulesConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 		traversalNode<ITagNode>(node => node.hasAttribute('viewBox'), node => {
 			const size: string[] = ['0', '0', '0', '0'];
-			const viewBox: number[] = execNumberList(node.getAttribute('viewBox') as string);
+			const viewBox: number[] = parseNumberList(node.getAttribute('viewBox') as string);
 
 			// viewBox 属性的长度必须为 4，且 width 和 height 不能为负
 			if (viewBox.length !== 4 || viewBox[2] < 0 || viewBox[3] < 0) {

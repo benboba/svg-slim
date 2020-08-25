@@ -1,11 +1,11 @@
 // 合并属性和样式完全相同的路径
 import { has } from 'ramda';
-import { execColor } from '../color/exec';
-import { execAlpha } from '../math/exec-alpha';
+import { parseColor } from '../color/parse';
+import { parseAlpha } from '../math/parse-alpha';
 import { hasProp } from '../utils/has-prop';
 // import { doCompute } from '../path/do-compute';
-// import { execPath } from '../path/exec';
-import { execStyleTree } from '../xml/exec-style-tree';
+// import { parsePath } from '../path/parse';
+import { parseStyleTree } from '../xml/parse-style-tree';
 import { getAttr } from '../xml/get-attr';
 import { isTag } from '../xml/is-tag';
 import { rmNode } from '../xml/rm-node';
@@ -25,7 +25,7 @@ interface IPathChildren {
 // // TODO 验证路径是否相交
 // const checkPath = (str: string) => {
 // 	const paths: number[][] = [];
-// 	const pathItems = doCompute(execPath(str));
+// 	const pathItems = doCompute(parsePath(str));
 // 	let verify = true;
 // 	let currentPath: number[] = [];
 // 	pathItems.every(item => {
@@ -113,9 +113,9 @@ const canbeCombine = (node1: ITagNode, node2: ITagNode, attr: IAttr, combineFill
 	}
 
 	const styles = node1.styles as IStyleObj;
-	const noOpacity: boolean = !hasProp(styles, 'opacity') || execAlpha(styles.opacity.value) === 1;
-	const noStrokeOpacity: boolean = execColor(hasProp(styles, 'stroke') ? styles.stroke.value : '').a === 1 && (!hasProp(styles, 'stroke-opacity') || execAlpha(styles['stroke-opacity'].value) === 1);
-	const noFillOpacity: boolean = execColor(hasProp(styles, 'fill') ? styles.fill.value : '').a === 1 && (!hasProp(styles, 'fill-opacity') || execAlpha(styles['fill-opacity'].value) === 1);
+	const noOpacity: boolean = !hasProp(styles, 'opacity') || parseAlpha(styles.opacity.value) === 1;
+	const noStrokeOpacity: boolean = parseColor(hasProp(styles, 'stroke') ? styles.stroke.value : '').a === 1 && (!hasProp(styles, 'stroke-opacity') || parseAlpha(styles['stroke-opacity'].value) === 1);
+	const noFillOpacity: boolean = parseColor(hasProp(styles, 'fill') ? styles.fill.value : '').a === 1 && (!hasProp(styles, 'fill-opacity') || parseAlpha(styles['fill-opacity'].value) === 1);
 	// fill 为空
 	const noFill: boolean = hasProp(styles, 'fill') && styles.fill.value === 'none' && (combineOpacity || (noOpacity && noStrokeOpacity));
 	// 填充规则不能是 evenodd 必须是 nonzero
@@ -140,7 +140,7 @@ const getKey = (node: ITagNode): string => {
 	return `attr:${keyObj.attr}|inline:${keyObj.inline}|styletag:${keyObj.styletag}|inherit:${keyObj.inherit}`;
 };
 
-export const combinePath = async (rule: TFinalConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
+export const combinePath = async (rule: TRulesConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 		const {
 			disregardFill,
@@ -150,7 +150,7 @@ export const combinePath = async (rule: TFinalConfigItem, dom: INode): Promise<n
 			disregardOpacity: boolean;
 		};
 
-		execStyleTree(dom as ITagNode);
+		parseStyleTree(dom as ITagNode);
 
 		traversalNode<ITagNode>(isTag, node => {
 			const pathChildren: IPathChildren = {};

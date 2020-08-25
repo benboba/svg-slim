@@ -3,13 +3,13 @@ import { animationAttrElements, animationAttributes } from '../const/definitions
 import { regularAttr } from '../const/regular-attr';
 import { regularTag } from '../const/regular-tag';
 import { checkApply } from '../style/check-apply';
-import { execStyle } from '../style/exec';
+import { parseStyle } from '../style/parse';
 import { shortenStyle } from '../style/shorten';
 import { stringifyStyle } from '../style/stringify';
 import { hasProp } from '../utils/has-prop';
 import { legalValue } from '../validate/legal-value';
 import { attrIsEqual } from '../xml/attr-is-equal';
-import { execStyleTree } from '../xml/exec-style-tree';
+import { parseStyleTree } from '../xml/parse-style-tree';
 import { isTag } from '../xml/is-tag';
 import { traversalNodeAsync } from '../xml/traversal-node-async';
 
@@ -32,8 +32,8 @@ interface IStyleAttrObj {
 const checkAttr = async (node: ITagNode, dom: INode, rmDefault: boolean) => new Promise<{
 	attrObj: IStyleAttrObj;
 	tagDefine: IRegularTag;
-}>(resolve => { // tslint:disable-line cyclomatic-complexity
-	execStyleTree(dom as ITagNode);
+}>(resolve => {
+	parseStyleTree(dom as ITagNode);
 	const attrObj: IStyleAttrObj = {}; // 存储所有样式和可以转为样式的属性
 	const tagDefine = regularTag[node.nodeName];
 	// 逆序循环，并从后向前移除属性
@@ -41,7 +41,7 @@ const checkAttr = async (node: ITagNode, dom: INode, rmDefault: boolean) => new 
 		const attr = node.attributes[i];
 		const attrDefine = regularAttr[attr.fullname];
 		if (attr.fullname === 'style') {
-			const styleObj = execStyle(attr.value);
+			const styleObj = parseStyle(attr.value);
 			const styleUnique: IUnique = {};
 			// 逆序循环，因为 CSS 的优先级是从后往前覆盖的
 			for (let si = styleObj.length; si--;) {
@@ -204,10 +204,10 @@ const checkAttr = async (node: ITagNode, dom: INode, rmDefault: boolean) => new 
 			if (!attrItem.value) {
 				node.removeAttribute(attrItem.animateAttr);
 			}
-			delete attrObj[key]; // tslint:disable-line no-dynamic-delete
+			delete attrObj[key];
 		} else {
 			if (!attrItem.value) {
-				delete attrObj[key]; // tslint:disable-line no-dynamic-delete
+				delete attrObj[key];
 				node.removeAttribute(key);
 			}
 		}
@@ -223,14 +223,14 @@ const checkAttr = async (node: ITagNode, dom: INode, rmDefault: boolean) => new 
 	});
 });
 
-export const shortenStyleAttr = async (rule: TFinalConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
+export const shortenStyleAttr = async (rule: TRulesConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
 	if (rule[0]) {
 		const { exchange, rmDefault } = rule[1] as { exchange: boolean; rmDefault: boolean };
 		const hasStyleTag = !!dom.styletag;
 
 		traversalNodeAsync<ITagNode>(isTag, async node => checkAttr(node, dom, rmDefault).then(({
 			attrObj,
-		}) => { // tslint:disable-line no-floating-promises
+		}) => {
 			// TODO css all 属性命中后要清空样式
 			// TODO 连锁属性的判断
 			if (!hasStyleTag || exchange) {
