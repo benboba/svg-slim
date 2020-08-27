@@ -6,13 +6,6 @@ import { createXML } from '../../../src/slimming/xml/create';
 
 describe('rules/combine-transform', () => {
 
-	it('rule false branch', async () => {
-		const xml = '<svg><rect transform="translate(0)scale(1)"/></svg>';
-		const dom = await parse(xml) as ITagNode;
-		await combineTransform([false], dom);
-		createXML(dom).should.equal('<svg><rect transform="translate(0)scale(1)"/></svg>');
-	});
-
 	it('合并 Transform', async () => {
 		const xml = `<svg>
 		<text transform="scale(2) translate(100,100) skewX(-15) skewX(15) translate(-100-100) scale(0.5)">1</text>
@@ -23,8 +16,8 @@ describe('rules/combine-transform', () => {
 		<g transform="matrix(-0.988,0.156,0.156,0.988,-10,-10)"></g>
 		<pattern patternTransform="matrix(0.988,-0.156,0.156,0.988,0,0)"/>
 		</svg>`;
-		const dom = await parse(xml) as ITagNode;
-		await combineTransform([true, { trigDigit: 3, sizeDigit: 2, angelDigit: 2 }], dom);
+		const dom = await parse(xml) as IDomNode;
+		await combineTransform(dom, { params: { trifuncDigit: 3, sizeDigit: 2, angelDigit: 2 } });
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><text>1</text><text transform="scale(4)">2</text><text transform="matrix(0,1.32-1.32,0,13.2.13)">3</text><text transform="scale(2,3)">4</text><text>5</text><g transform="matrix(-.988.156.156.988-10-10)"/><pattern patternTransform="rotate(-8.97)"/></svg>');
 	});
 
@@ -35,8 +28,8 @@ describe('rules/combine-transform', () => {
 		<text transform="translate(15, 38.7) scale(-1, -1) translate(-15, -38.7)">3</text>
 		<text transform="translate(7.500000, 7.500000) rotate(-180.000000) translate(-7.500000, -7.500000)">4</text>
 		</svg>`;
-		const dom = await parse(xml) as ITagNode;
-		await combineTransform([true, { trigDigit: 3, sizeDigit: 2, angelDigit: 2 }], dom);
+		const dom = await parse(xml) as IDomNode;
+		await combineTransform(dom, { params: { trifuncDigit: 3, sizeDigit: 2, angelDigit: 2 } });
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><text transform="rotate(315,19.6,16.6)">1</text><text transform="rotate(-45,19.6,16.6)">2</text><text transform="rotate(180,15,38.7)">3</text><text transform="rotate(180,7.5,7.5)">4</text></svg>');
 	});
 
@@ -68,8 +61,8 @@ describe('rules/combine-transform', () => {
 		<path transform="scale(2)" stroke="red"/>
 		<path transform="skewX(90)" d="m0,0a5,5,1,0,1,10,10"/>
 		</svg>`;
-		const dom = await parse(xml) as ITagNode;
-		await combineTransform([true, { trigDigit: 3, sizeDigit: 2, angelDigit: 2 }], dom);
+		const dom = await parse(xml) as IDomNode;
+		await combineTransform(dom, { params: { trifuncDigit: 3, sizeDigit: 2, angelDigit: 2 } });
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><text transform="translate(1)" dx="2pt">3</text><rect transform="rotate(90)" marker-start="#a" rx="3" ry="2"/><rect transform="scale(1.5)" stroke="black"/><rect transform="rotate(-90)" ry="1rem"/><rect transform="rotate(45)"/><rect transform="matrix(2,0,1,2,5,5)" x="3"/><rect transform="skewX(45)"/><line transform="rotate(-90)" y2="1rem"/><line transform="rotate(90)" marker-start="#a"/><line transform="skewX(45)"/><circle transform="rotate(90)" marker-start="#a"/><circle transform="translate(1)" cy="1pt"/><circle transform="matrix(2,0,1,2,5,5)" r="5"/><circle transform="skewX(45)"/><ellipse transform="rotate(90)" marker-start="#a"/><ellipse transform="rotate(15)" rx="2" ry="3"/><ellipse transform="translate(1)" cy="1pt" rx="2" ry="3"/><ellipse transform="matrix(2,0,1,2,5,5)" rx="2" ry="3"/><ellipse transform="skewX(45)" rx="2" ry="3"/><ellipse transform="rotate(90)" rx="2" ry="30%"/><polygon transform="scale(2)" stroke="red"/><polygon transform="rotate(90)" marker-start="#a"/><path transform="rotate(90)" marker-start="#a"/><path transform="scale(2)" stroke="red"/><path transform="skewX(90)" d="m0,0a5,5,1,0,1,10,10"/></svg>');
 	});
 
@@ -105,8 +98,8 @@ describe('rules/combine-transform', () => {
 		<ellipse transform="matrix(2, 0,0,1,5,0)" rx="2" ry="4"/>
 		<ellipse transform="translate(1)" rx="3"/>
 		</svg>`;
-		const dom = await parse(xml) as ITagNode;
-		await combineTransform([true, { trigDigit: 3, sizeDigit: 2, angelDigit: 2 }], dom);
+		const dom = await parse(xml) as IDomNode;
+		await combineTransform(dom, { params: { trifuncDigit: 3, sizeDigit: 2, angelDigit: 2 } });
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><text dx="5" dy="6">1</text><text dx="8">2</text><rect ry="3" x="1"/><rect style="x:-60;y:100;width:50;height:100"/><rect x="-2" width="2" height="1" rx="1" ry="2"/><rect width="100" height="50" y="50"/><rect rx="2"/><rect width="6"/><rect rx="3" ry="6"/><rect x="11" y="5"/><rect x="5" y="5" rx="2" ry="1"/><line x1="1" x2="1"/><line y2="10"/><line x1="10"/><circle cx="1" cy="1"/><circle/><circle cx="10" cy="10"/><circle cx="6" r="10"/><ellipse cx="6" rx="10" ry="5"/><circle cx="5" r="10"/><ellipse cx="5" rx="10" ry="5"/><ellipse rx="3" ry="5" cx="1" cy="1"/><ellipse rx="5" ry="3"/><ellipse rx="3" ry="5" cy="20"/><ellipse rx="6" ry="10"/><circle r="4"/><ellipse cx="5" rx="10" ry="4"/><circle cx="5" r="4"/><circle r="3" cx="1"/></svg>');
 	});
 
@@ -132,8 +125,8 @@ describe('rules/combine-transform', () => {
 		<path transform="skewY(-75)" d="m100,100H-4V-4t0,0,4,4M-1,-49T49,4,5,5m0,0z"/>
 		<path transform="matrix(1.375,0.689,0.332,1.11,12.6,19.5)" d="m100,100H-4V-4t0,0,4,4M-1,-49T49,4,5,5m0,0z"/>
 		</svg>`;
-		const dom = await parse(xml) as ITagNode;
-		await combineTransform([true, { trigDigit: 3, sizeDigit: 2, angelDigit: 2 }], dom);
+		const dom = await parse(xml) as IDomNode;
+		await combineTransform(dom, { params: { trifuncDigit: 3, sizeDigit: 2, angelDigit: 2 } });
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><polyline points="1,2,2,3"/><polygon points="1,0,2,1"/><polyline points="0,0-1,1"/><polyline points="2,0,1-1"/><polygon points="0,0,2,2"/><polygon points="2,0,4,1"/><polygon transform="translate(1e5)" points="0,0,1,1,2,1,3,0,5,1,2,4"/><polygon transform="scale(985)" points="3,2,1,1,2,1,3,6,5,9,2,4"/><path d="m1,0h1e2v1e2a5,5,0,00-5-5zm5,5,3,3"/><path d="m101,101H-8V-8A5,5,0,006,6M0-98T99,9,6,6"/><path transform="translate(-1,1)" d="M1e9,1e9,1e9,0,0-1e9-1e9,0,0,1e9,1e9,0,0-1e9-1e9,0,0,1e9,1e9,0,0-1e9-1e9,0,0,1e9,1e9,0,0-1e9-1e9,0,0,1e9,1e9,0,0-1e9-1e9,0,0,1e9,1e9,0,0-1e9-1e9,0,0,1e9,1e9,0,0-1e9-1e9"/><path transform="scale(99)" d="M2e9,2e9,2e9,0,0-2e9-2e9,0,0,2e9,2e9,0,0-2e9-2e9,0,0,2e9,2e9,0,0-2e9-2e9,0,0,2e9,2e9,0,0-2e9-2e9,0,0,2e9,2e9,0,0-2e9-2e9,0,0,2e9,2e9,0,0-2e9-2e9,0,0,2e9,2e9,0,0-2e9-2e9"/><path d="m2e2,2e2H-8V-8A10,10,0,008,8M-2-98T98,8,10,10m0,0z"/><path d="m2e2,1e2H-8V-4A10,5,0,008,4M-2-49T98,4,10,5m0,0z"/><path transform="rotate(5)" d="m100,100h5,v5L-4,-4Q9,9,99,99q0,0,4,4l18,18z"/><path transform="rotate(30,15,15)" d="m100,100H-4V-4t0,0,4,4M-1,-49T49,4,5,5M0,0z"/><path transform="skewX(75)" d="m100,100h-40v-40T0,0,4,4M-1,-49T49,4,5,5m0,0z"/><path transform="skewY(-75)" d="m100,100H-4V-4t0,0,4,4M-1,-49T49,4,5,5m0,0z"/><path d="m183.3,199.4-143-71.66L5.77,12.3t0,0T12.6,19.5M-5.04-35.58t86.35,93.28T21.14,28.5m0,0z"/></svg>');
 	});
 
@@ -184,8 +177,8 @@ describe('rules/combine-transform', () => {
 				<animate attributeName="marker-end" to="5,5"/>
 			</path>
 		</svg>`;
-		const dom = await parse(xml) as ITagNode;
-		await combineTransform([true, { trigDigit: 3, sizeDigit: 2, angelDigit: 2 }], dom);
+		const dom = await parse(xml) as IDomNode;
+		await combineTransform(dom, { params: { trifuncDigit: 3, sizeDigit: 2, angelDigit: 2 } });
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><rect transform="translate(1,2)" stroke-width="0"><animate attributeName="y" to="5"/><animate attributeName="stroke" to="red"/><animate attributeName="stroke-width" to="3"/></rect><rect transform="rotate(90)"><animate attributeName="ry" to="5"/></rect><line transform="translate(1)"><animate attributeName="y2" to="5"/></line><circle transform="translate(1)"><animate attributeName="cx" to="5"/></circle><circle transform="scale(2)"><animate attributeName="r" to="5"/></circle><circle transform="matrix(2,0,0,2,5,5)" r="5"><animate attributeName="r" to="5"/></circle><ellipse transform="translate(1)"><animate attributeName="cx" to="5"/></ellipse><ellipse transform="scale(2)" rx="1" ry="2"><animate attributeName="ry" to="5"/></ellipse><ellipse transform="matrix(2,0,0,2,5,5)" rx="1" ry="2"><animate attributeName="ry" to="5"/></ellipse><polyline transform="translate(1)"><animate attributeName="points" to="5,5"/></polyline><path transform="translate(1)"><animate attributeName="d" to="5,5"/></path><path transform="scale(2)"><animate attributeName="marker-start" to="5,5"/></path><path transform="scale(2)"><animate attributeName="marker-mid" to="5,5"/></path><path transform="scale(2)"><animate attributeName="marker-end" to="5,5"/></path></svg>');
 	});
 });

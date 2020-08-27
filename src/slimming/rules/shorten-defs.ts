@@ -64,8 +64,8 @@ const checkDefsApply = (item: IIDCacheITem, dom: IDomNode) => {
 			if (['svg', 'symbol'].includes((item.tag as ITagNode).nodeName) && (node.hasAttribute('width') || node.hasAttribute('height'))) {
 				return;
 			}
-			const originStyle: IAttrObj = {};
-			const originAttr: IAttrObj = {};
+			const originStyle: TAttrObj = {};
+			const originAttr: TAttrObj = {};
 			for (const [key, val] of Object.entries(node.styles as IStyleObj)) {
 				// 如果 use 元素被 style 命中，不能进行应用
 				if (val.from === 'styletag') {
@@ -127,88 +127,86 @@ const checkDefsApply = (item: IIDCacheITem, dom: IDomNode) => {
 	}
 };
 
-export const shortenDefs = async (rule: TRulesConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
-	if (rule[0]) {
-		let firstDefs: ITagNode | undefined;
+export const shortenDefs = async (dom: IDomNode): Promise<void> => new Promise(resolve => {
+	let firstDefs: ITagNode | undefined;
 
-		// 首先合并 defs 标签
-		traversalNode<ITagNode>(propEq('nodeName', 'defs'), node => {
-			if (firstDefs) {
-				for (const childNode of node.childNodes) {
-					// 合并时只把标签类元素挪过去
-					if (isTag(childNode)) {
-						firstDefs.appendChild(childNode);
-					}
-				}
-				rmNode(node);
-			} else {
-				firstDefs = node;
-				for (let ci = node.childNodes.length; ci--;) {
-					const childNode = node.childNodes[ci];
-					// 只保留标签类的子元素
-					if (!isTag(childNode)) {
-						rmNode(childNode);
-					}
+	// 首先合并 defs 标签
+	traversalNode<ITagNode>(propEq('nodeName', 'defs'), node => {
+		if (firstDefs) {
+			for (const childNode of node.childNodes) {
+				// 合并时只把标签类元素挪过去
+				if (isTag(childNode)) {
+					firstDefs.appendChild(childNode);
 				}
 			}
-		}, dom);
+			rmNode(node);
+		} else {
+			firstDefs = node;
+			for (let ci = node.childNodes.length; ci--;) {
+				const childNode = node.childNodes[ci];
+				// 只保留标签类的子元素
+				if (!isTag(childNode)) {
+					rmNode(childNode);
+				}
+			}
+		}
+	}, dom);
 
-		if (firstDefs) {
-			// 取出所有被引用的 ID
-			const IDList: IIDCache = {};
-			traversalNode<ITagNode>(isTag, node => {
-				node.attributes.forEach(attr => {
-					if (regularAttr[attr.fullname].maybeFuncIRI) {
-						const firi = funcIRIToID.exec(attr.value);
-						if (firi) {
-							if (!IDList[firi[2]]) {
-								IDList[firi[2]] = {
-									iri: [],
-								};
-							}
-							(IDList[firi[2]] as IIDCacheITem).iri.push([node, attr.fullname]);
+	if (firstDefs) {
+		// 取出所有被引用的 ID
+		const IDList: IIDCache = {};
+		traversalNode<ITagNode>(isTag, node => {
+			node.attributes.forEach(attr => {
+				if (regularAttr[attr.fullname].maybeFuncIRI) {
+					const firi = funcIRIToID.exec(attr.value);
+					if (firi) {
+						if (!IDList[firi[2]]) {
+							IDList[firi[2]] = {
+								iri: [],
+							};
 						}
-					} else if (regularAttr[attr.fullname].maybeIRI) {
-						const iri = IRIFullMatch.exec(attr.value);
-						if (iri) {
-							if (!IDList[iri[1]]) {
-								IDList[iri[1]] = {
-									iri: [],
-								};
-							}
-							(IDList[iri[1]] as IIDCacheITem).iri.push([node, attr.fullname]);
+						(IDList[firi[2]] as IIDCacheITem).iri.push([node, attr.fullname]);
+					}
+				} else if (regularAttr[attr.fullname].maybeIRI) {
+					const iri = IRIFullMatch.exec(attr.value);
+					if (iri) {
+						if (!IDList[iri[1]]) {
+							IDList[iri[1]] = {
+								iri: [],
+							};
 						}
-					}
-				});
-			}, dom);
-
-			checkSub(firstDefs, IDList, true);
-			parseStyleTree(dom);
-
-			(Object.values(IDList) as IIDCacheITem[]).forEach(item => {
-				if (item.tag) {
-					// 有可能引用对象存在于 defs 内部，并且已被移除
-					for (let i = item.iri.length; i--;) {
-						const [tag] = item.iri[i];
-						// 判断是否已从文档中移除
-						if (!getAncestor(tag, (node: INode) => node.nodeName === '#document')) {
-							item.iri.splice(i, 1);
-						}
-					}
-					if (!item.iri.length) {
-						rmNode(item.tag);
-					}
-
-					if (item.iri.length === 1) {
-						checkDefsApply(item, dom);
+						(IDList[iri[1]] as IIDCacheITem).iri.push([node, attr.fullname]);
 					}
 				}
 			});
+		}, dom);
 
-			// 当 defs 没有子元素后，进行移除
-			if (!firstDefs.childNodes.length) {
-				rmNode(firstDefs);
+		checkSub(firstDefs, IDList, true);
+		parseStyleTree(dom);
+
+		(Object.values(IDList) as IIDCacheITem[]).forEach(item => {
+			if (item.tag) {
+				// 有可能引用对象存在于 defs 内部，并且已被移除
+				for (let i = item.iri.length; i--;) {
+					const [tag] = item.iri[i];
+					// 判断是否已从文档中移除
+					if (!getAncestor(tag, (node: INode) => node.nodeName === '#document')) {
+						item.iri.splice(i, 1);
+					}
+				}
+				if (!item.iri.length) {
+					rmNode(item.tag);
+				}
+
+				if (item.iri.length === 1) {
+					checkDefsApply(item, dom);
+				}
 			}
+		});
+
+		// 当 defs 没有子元素后，进行移除
+		if (!firstDefs.childNodes.length) {
+			rmNode(firstDefs);
 		}
 	}
 	resolve();

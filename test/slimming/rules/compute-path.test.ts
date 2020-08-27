@@ -5,13 +5,6 @@ import { parse } from '../../../src/xml-parser';
 import { createXML } from '../../../src/slimming/xml/create';
 
 describe('rules/compute-path', () => {
-	it('rule false branch', async () => {
-		const xml = '<svg><path d="M0,0V100,200,300,299,299" /></svg>';
-		const dom = await parse(xml) as ITagNode;
-		await computePath([false], dom);
-		createXML(dom).should.equal('<svg><path d="M0,0V100,200,300,299,299"/></svg>');
-	});
-
 	it('重新计算路径', async () => {
 		const xml = `<svg>
 		<path/>
@@ -23,8 +16,8 @@ describe('rules/compute-path', () => {
 		<path d="M0 0 Q0 100 100 100 Q 200 100 200 0 Z m0 0zZzZM100 100 m 30 30" />
 		<path d="M 0 0 C 50 0 50 100 100 100 150 100 150 50 150 0Z" />
 		</svg>`;
-		const dom = await parse(xml) as ITagNode;
-		await computePath([true, { thinning: 0, sizeDigit: 2, angelDigit: 2, straighten: 0 }], dom);
+		const dom = await parse(xml) as IDomNode;
+		await computePath(dom, { params: { thinning: 0, sizeDigit: 2, angelDigit: 2, straighten: 0 } });
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><path stroke="red" d="m1e2,1e2H10,20V10,20"/><path d="m0,0,1e2,2e2,2e2,99"/><path d="m5e5.1L-1-1,0,0h1e2v1e2H0z"/><path d="m80,80a45,45,0,0045,45,45,45,0,10-45-45z"/><path d="m0,0q0,1e2,1e2,1e2T2e2,0z"/><path d="m0,0c50,0,50,1e2,1e2,1e2s50-50,50-1e2z"/></svg>');
 	});
 
@@ -37,8 +30,8 @@ describe('rules/compute-path', () => {
 		<path d="M0,0L0,0,0,0,10,11,15,16,16,17,17,18,20,20T10,10"/>
 		<path d="M300,300L0,0,0,0,10,11,15,16,16,17,17,18,20,20S15,15,10,10"/>
 		</svg>`;
-		const dom = await parse(xml) as ITagNode;
-		await computePath([true, { thinning: 10, sizeDigit: 2, angelDigit: 2, straighten: 0 }], dom);
+		const dom = await parse(xml) as IDomNode;
+		await computePath(dom, { params: { thinning: 10, sizeDigit: 2, angelDigit: 2, straighten: 0 } });
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg stroke="red"><path d="m0,0v3e2-1"/><path d="m0,0h3e2-1"/><path d="m3e2,0H1e2,3e2h-1"/><path d="m0,3e2V1e2,3e2v-1"/><path d="m0,0,20,20L10,10"/><path d="m3e2,3e2L0,0,20,20,10,10"/></svg>');
 	});
 
@@ -50,8 +43,8 @@ describe('rules/compute-path', () => {
 		<path d="M0,0h100,200,100,50"/>
 		<path d="m0,0Q200,0,100,100Q200,0,0,0zM0,0C50,0,100,100,150,0,100,100,50,0,0,0z"/>
 		</svg>`;
-		const dom = await parse(xml) as ITagNode;
-		await computePath([true, { thinning: 0, sizeDigit: 2, angelDigit: 2, straighten: 0 }], dom);
+		const dom = await parse(xml) as IDomNode;
+		await computePath(dom, { params: { thinning: 0, sizeDigit: 2, angelDigit: 2, straighten: 0 } });
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg></svg>');
 	});
 
@@ -63,8 +56,8 @@ describe('rules/compute-path', () => {
 		<path d="M0,0Q100,0,100,100t5,5M0,0C0,0,100,0,100,100s5,5,6,6"/>
 		<path d="M90,90c5,5,5,0,8,8S5,5,6,6"/>
 		</svg>`;
-		const dom = await parse(xml) as ITagNode;
-		await computePath([true, { thinning: 0, sizeDigit: 2, angelDigit: 2, straighten: 10 }], dom);
+		const dom = await parse(xml) as IDomNode;
+		await computePath(dom, { params: { thinning: 0, sizeDigit: 2, angelDigit: 2, straighten: 10 } });
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg stroke="red"><path d="m0,0,2,3,5,4,6,2t1,1,9,9-1,2"/><path d="m1e3,0A4,4,1,0090,90m10,10Q0,0,9,9L8,7"/><path d="m1e2,1e2a6,6,1,002,3L35,35"/><path d="m0,0q1e2,0,1e2,1e2t5,5M0,0s1e2,0,1e2,1e2l6,6"/><path d="m90,90c5,5,5,0,8,8S5,5,6,6"/></svg>');
 	});
 
@@ -77,15 +70,15 @@ describe('rules/compute-path', () => {
 		</defs>
 		<path d="M0,0" marker-start="url(#m1)"/>
 		</svg>`;
-		const dom = await parse(xml) as ITagNode;
-		await computePath([true, { thinning: 0, sizeDigit: 2, angelDigit: 2, straighten: 10 }], dom);
+		const dom = await parse(xml) as IDomNode;
+		await computePath(dom, { params: { thinning: 0, sizeDigit: 2, angelDigit: 2, straighten: 10 } });
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><defs><marker id="m1" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="8" markerHeight="8"><circle r="5"/></marker></defs><path d="m0,0" marker-start="url(#m1)"/></svg>');
 	});
 
 	it('animateMotion', async () => {
 		const xml = '<svg><animateMotion path="M0,0"/><animateMotion/></svg>';
-		const dom = await parse(xml) as ITagNode;
-		await computePath([true, { thinning: 0, sizeDigit: 2, angelDigit: 2, straighten: 0 }], dom);
+		const dom = await parse(xml) as IDomNode;
+		await computePath(dom, { params: { thinning: 0, sizeDigit: 2, angelDigit: 2, straighten: 0 } });
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><animateMotion/><animateMotion/></svg>');
 	});
 
@@ -98,8 +91,8 @@ describe('rules/compute-path', () => {
 				<animate attributeName="d" from="M0,0" values="M30,30"/>
 			</path>
 		</svg>`;
-		const dom = await parse(xml) as ITagNode;
-		await computePath([true, { thinning: 0, sizeDigit: 2, angelDigit: 2, straighten: 0 }], dom);
+		const dom = await parse(xml) as IDomNode;
+		await computePath(dom, { params: { thinning: 0, sizeDigit: 2, angelDigit: 2, straighten: 0 } });
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><path><animate attributeName="d" to="m5e5.1L-1-1,0,0h1e2v1e2H0z" values="m5e5.1L-1-1,0,0h1e2v1e2H0z"/></path></svg>');
 	});
 });

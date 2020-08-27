@@ -212,49 +212,46 @@ const formatCircle = (node: ITagNode) => {
 	}
 };
 
-export const shortenShape = async (rule: TRulesConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
-	if (rule[0]) {
-		parseStyleTree(dom as ITagNode);
-		const {
-			thinning,
-		} = rule[1] as {
-			thinning: number;
-		};
-
-		traversalNode(node => shapeElements.includes(node.nodeName), (node: ITagNode) => {
-			const cloneNode = node.cloneNode();
-			cloneNode.styles = node.styles;
-			switch (node.nodeName) {
-				case 'rect':
-					formatRect(cloneNode);
-					break;
-				case 'line':
-					formatLine(cloneNode);
-					break;
-				case 'polyline':
-					formatPoly(thinning, cloneNode, false);
-					break;
-				case 'polygon':
-					formatPoly(thinning, cloneNode, true);
-					break;
-				case 'ellipse':
-					formatEllipse(cloneNode);
-					break;
-				case 'circle':
-					formatCircle(cloneNode);
-					break;
-				default:
-					// 路径只要判断 d 属性是否存在即可
-					cloneNode.nodeName = node.getAttribute('d') ? 'notneed' : 'remove';
-					break;
-			}
-
-			if (cloneNode.nodeName === 'remove') {
-				rmNode(node);
-			} else if (cloneNode.nodeName !== node.nodeName && createTag(cloneNode).length <= createTag(node).length) {
-				Object.assign(node, cloneNode);
-			}
-		}, dom);
+export const shortenShape = async (dom: IDomNode, {
+	params: {
+		thinning,
 	}
+}: IRuleOption<TBaseObj>): Promise<void> => new Promise(resolve => {
+	parseStyleTree(dom);
+
+	traversalNode(node => shapeElements.includes(node.nodeName), (node: ITagNode) => {
+		const cloneNode = node.cloneNode();
+		cloneNode.styles = node.styles;
+		switch (node.nodeName) {
+			case 'rect':
+				formatRect(cloneNode);
+				break;
+			case 'line':
+				formatLine(cloneNode);
+				break;
+			case 'polyline':
+				formatPoly(thinning, cloneNode, false);
+				break;
+			case 'polygon':
+				formatPoly(thinning, cloneNode, true);
+				break;
+			case 'ellipse':
+				formatEllipse(cloneNode);
+				break;
+			case 'circle':
+				formatCircle(cloneNode);
+				break;
+			default:
+				// 路径只要判断 d 属性是否存在即可
+				cloneNode.nodeName = node.getAttribute('d') ? 'notneed' : 'remove';
+				break;
+		}
+
+		if (cloneNode.nodeName === 'remove') {
+			rmNode(node);
+		} else if (cloneNode.nodeName !== node.nodeName && createTag(cloneNode).length <= createTag(node).length) {
+			Object.assign(node, cloneNode);
+		}
+	}, dom);
 	resolve();
 });

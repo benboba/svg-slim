@@ -7,21 +7,6 @@ import { createXML } from '../../../src/slimming/xml/create';
 
 
 describe('rules/shorten-class', () => {
-	it('rule false branch', async () => {
-		const xml = `<svg>
-		<style>.thisIsRed {
-			fill: red;
-		}
-		</style>
-		<rect class="thisIsRed" width="100" height="100"/>
-		<rect class="thisIsRed thisIsBlue" width="100" height="100"/>
-		</svg>`;
-		const dom = await parse(xml) as ITagNode;
-		await combineStyle(dom);
-		await shortenClass([false], dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><style>.thisIsRed{fill:red}</style><rect class="thisIsRed" width="100" height="100"/><rect class="thisIsRed thisIsBlue" width="100" height="100"/></svg>');
-	});
-
 	it('缩短 className', async () => {
 		const xml = `<svg>
 		<style>
@@ -40,9 +25,9 @@ describe('rules/shorten-class', () => {
 		<rect class="thisIsRed" width="100" height="100"/>
 		<rect class="thisIsBlue" width="100" height="100"/>
 		</svg>`;
-		const dom = await parse(xml) as ITagNode;
+		const dom = await parse(xml) as IDomNode;
 		await combineStyle(dom);
-		await shortenClass([true], dom);
+		await shortenClass(dom);
 		createXML(dom).replace(/>\s+</g, '><').should.equal(`<svg><style>@import ('test.css');.a{fill:red}.a{fill:green;stroke:red}</style><rect class="a" width="100" height="100"/><rect width="100" height="100"/></svg>`);
 	});
 
@@ -55,9 +40,9 @@ describe('rules/shorten-class', () => {
 		</style>
 		<rect width="100" height="100"/>
 		</svg>`;
-		const dom = await parse(xml) as ITagNode;
+		const dom = await parse(xml) as IDomNode;
 		await combineStyle(dom);
-		await shortenClass([true], dom);
+		await shortenClass(dom);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><rect width="100" height="100"/></svg>');
 	});
 
@@ -66,9 +51,9 @@ describe('rules/shorten-class', () => {
 		<style>test</style>
 		<rect width="100" height="100"/>
 		</svg>`;
-		const dom = await parse(xml) as ITagNode;
+		const dom = await parse(xml) as IDomNode;
 		await combineStyle(dom);
-		await shortenClass([true], dom);
+		await shortenClass(dom);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><rect width="100" height="100"/></svg>');
 	});
 
@@ -76,9 +61,9 @@ describe('rules/shorten-class', () => {
 		const xml = `<svg>
 		<rect width="100" height="100"/>
 		</svg>`;
-		const dom = await parse(xml) as ITagNode;
+		const dom = await parse(xml) as IDomNode;
 		await combineStyle(dom);
-		await shortenClass([true], dom);
+		await shortenClass(dom);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><rect width="100" height="100"/></svg>');
 	});
 });

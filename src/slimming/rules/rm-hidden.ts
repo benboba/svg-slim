@@ -91,81 +91,79 @@ const numberMap: INumberMap = {
 	},
 };
 
-export const rmHidden = async (rule: TRulesConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
-	if (rule[0]) {
-		parseStyleTree(dom as ITagNode);
+export const rmHidden = async (dom: IDomNode): Promise<void> => new Promise(resolve => {
+	parseStyleTree(dom);
 
-		traversalNode<ITagNode>(isTag, node => {
+	traversalNode<ITagNode>(isTag, node => {
 
-			// 未包含子节点的文本容器视为隐藏节点
-			if (!node.childNodes.length && regularTag[node.nodeName].containTextNode) {
-				rmNode(node);
-				return;
-			}
+		// 未包含子节点的文本容器视为隐藏节点
+		if (!node.childNodes.length && regularTag[node.nodeName].containTextNode) {
+			rmNode(node);
+			return;
+		}
 
-			// textPath 如果没有 path 属性，则 href 和 xlink:href 必须指向 path 或 shape 元素
-			if (node.nodeName === 'textPath') {
-				if (!node.hasAttribute('path')) {
-					const id = node.getAttribute('href') || node.getAttribute('xlink:href');
-					if (!id) {
-						rmNode(node);
-						return;
-					}
-					const target = getById(id, dom);
-					if (!target) {
-						rmNode(node);
-						return;
-					}
-					if (!shapeElements.includes(target.nodeName)) {
-						rmNode(node);
-						return;
-					}
+		// textPath 如果没有 path 属性，则 href 和 xlink:href 必须指向 path 或 shape 元素
+		if (node.nodeName === 'textPath') {
+			if (!node.hasAttribute('path')) {
+				const id = node.getAttribute('href') || node.getAttribute('xlink:href');
+				if (!id) {
+					rmNode(node);
+					return;
 				}
-			}
-
-			const styles = node.styles as IStyleObj;
-			const animateAttrs = getAnimateAttr(node);
-			const notNone = complement(equals('none'));
-
-			if (
-				hasProp(styles, 'display')
-				&&
-				styles.display.value === 'none'
-				&&
-				!['script', 'style', 'mpath'].concat(filterPrimitiveElements, animationElements).includes(node.nodeName)
-				&&
-				// 增加对动画的验证，对那些 display 为 none，但是动画会修改 display 的元素也不会进行移除
-				!checkAnimateAttr(animateAttrs, 'display', notNone)
-			) {
-				rmNode(node);
-				return;
-			}
-
-			// 没有填充和描边的形状，不一定可以被移除，要再判断一下自身或父元素是否有 id
-			if (shapeElements.includes(node.nodeName)) {
-				const noFill = hasProp(styles, 'fill') && styles.fill.value === 'none' && !checkAnimateAttr(animateAttrs, 'fill', notNone);
-				const noStroke = (!hasProp(styles, 'stroke') || styles.stroke.value === 'none') && !checkAnimateAttr(animateAttrs, 'stroke', notNone);
-				if (noFill && noStroke && !getAncestor(node, (n: INode) => n.hasAttribute('id'))) {
+				const target = getById(id, dom);
+				if (!target) {
+					rmNode(node);
+					return;
+				}
+				if (!shapeElements.includes(target.nodeName)) {
 					rmNode(node);
 					return;
 				}
 			}
+		}
 
-			if (hasProp(numberMap, node.nodeName as keyof typeof numberMap)) {
-				const nubmerItem = numberMap[node.nodeName as keyof typeof numberMap];
-				for (let i = nubmerItem.attrs.length; i--;) {
-					if (!checkNumberAttr(node, nubmerItem.attrs[i], nubmerItem.allowEmpty, nubmerItem.allowAuto, nubmerItem.allowZero, animateAttrs)) {
-						rmNode(node);
-						return;
-					}
+		const styles = node.styles as IStyleObj;
+		const animateAttrs = getAnimateAttr(node);
+		const notNone = complement(equals('none'));
+
+		if (
+			hasProp(styles, 'display')
+			&&
+			styles.display.value === 'none'
+			&&
+			!['script', 'style', 'mpath'].concat(filterPrimitiveElements, animationElements).includes(node.nodeName)
+			&&
+			// 增加对动画的验证，对那些 display 为 none，但是动画会修改 display 的元素也不会进行移除
+			!checkAnimateAttr(animateAttrs, 'display', notNone)
+		) {
+			rmNode(node);
+			return;
+		}
+
+		// 没有填充和描边的形状，不一定可以被移除，要再判断一下自身或父元素是否有 id
+		if (shapeElements.includes(node.nodeName)) {
+			const noFill = hasProp(styles, 'fill') && styles.fill.value === 'none' && !checkAnimateAttr(animateAttrs, 'fill', notNone);
+			const noStroke = (!hasProp(styles, 'stroke') || styles.stroke.value === 'none') && !checkAnimateAttr(animateAttrs, 'stroke', notNone);
+			if (noFill && noStroke && !getAncestor(node, (n: INode) => n.hasAttribute('id'))) {
+				rmNode(node);
+				return;
+			}
+		}
+
+		if (hasProp(numberMap, node.nodeName as keyof typeof numberMap)) {
+			const nubmerItem = numberMap[node.nodeName as keyof typeof numberMap];
+			for (let i = nubmerItem.attrs.length; i--;) {
+				if (!checkNumberAttr(node, nubmerItem.attrs[i], nubmerItem.allowEmpty, nubmerItem.allowAuto, nubmerItem.allowZero, animateAttrs)) {
+					rmNode(node);
+					return;
 				}
 			}
+		}
 
-			if (node.nodeName === 'use') {
-				checkUse(node, dom);
-			}
+		if (node.nodeName === 'use') {
+			checkUse(node, dom);
+		}
 
-		}, dom);
-	}
+	}, dom);
 	resolve();
 });

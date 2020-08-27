@@ -4,15 +4,12 @@ import { isTag } from '../xml/is-tag';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
 
-export const rmIrregularTag = async (rule: TRulesConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
-	if (rule[0]) {
-		const { ignore } = rule[1] as { ignore: string[] };
-		const notIgnore = (node: ITagNode) => not(any(equals(prop('nodeName', node)), ignore));
-		traversalNode(both(isTag, notIgnore), node => {
-			if (regularTag[node.nodeName].isUndef) {
-				rmNode(node);
-			}
-		}, dom);
-	}
+export const rmIrregularTag = async (dom: IDomNode, { option: { ignore } }: IRuleOption<{ ignore: string[] }>): Promise<void> => new Promise(resolve => {
+	const notIgnore = (node: ITagNode) => not(any(equals(prop('nodeName', node)), ignore));
+	traversalNode(both(isTag, notIgnore), node => {
+		if (regularTag[node.nodeName].isUndef) {
+			rmNode(node);
+		}
+	}, dom);
 	resolve();
 });

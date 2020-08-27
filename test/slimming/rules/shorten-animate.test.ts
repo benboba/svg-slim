@@ -5,13 +5,6 @@ import { createXML } from '../../../src/slimming/xml/create';
 import { parse } from '../../../src/xml-parser';
 
 describe('rules/shorten-animate', () => {
-	it('rule false branch', async () => {
-		const xml = '<svg><polygon points="0,0 100,200,300,300,299,299" /></svg>';
-		const dom = await parse(xml) as ITagNode;
-		await shortenAnimate([false], dom);
-		createXML(dom).should.equal('<svg><polygon points="0,0 100,200,300,300,299,299"/></svg>');
-	});
-
 	it('优化动画元素', async () => {
 		const xml = `<svg>
 			<feFuncA>
@@ -31,8 +24,8 @@ describe('rules/shorten-animate', () => {
 				<animateTransform attributeName="fill" by="blue" />
 			</text>
 		</svg>`;
-		const dom = await parse(xml) as ITagNode;
-		await shortenAnimate([true, { remove: false }], dom);
+		const dom = await parse(xml) as IDomNode;
+		await shortenAnimate(dom, { option: { remove: false } });
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><feFuncA><animate from="0" attributeName="amplitude"/></feFuncA><text><animate to="100" attributeName="x"/><animate attributeName="fill" by="blue"/></text></svg>');
 	});
 
@@ -46,8 +39,8 @@ describe('rules/shorten-animate', () => {
 			<animateMotion><mpath xlink:href="#a"/></animateMotion>
 			</text>
 		</svg>`;
-		const dom = await parse(xml) as ITagNode;
-		await shortenAnimate([true, { remove: false }], dom);
+		const dom = await parse(xml) as IDomNode;
+		await shortenAnimate(dom, { option: { remove: false } });
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><path id="a" d="M0,0H100V100z"/><text id="c"/><text><animateMotion path="M0,0H100V100z"/><animateMotion><mpath xlink:href="#a"/></animateMotion></text></svg>');
 	});
 
@@ -58,25 +51,25 @@ describe('rules/shorten-animate', () => {
 			<animate href="#a" to="M0,0H50V50z" attributeName="d"/>
 			<animate href="#b" to="M0,0H50V50z" attributeName="d"/>
 		</svg>`;
-		const dom = await parse(xml) as ITagNode;
-		await shortenAnimate([true, { remove: false }], dom);
+		const dom = await parse(xml) as IDomNode;
+		await shortenAnimate(dom, { option: { remove: false } });
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><path id="a" d="M0,0H100V100z"><animate to="M0,0H50V50z" attributeName="d"/><animate to="M0,0H50V50z" attributeName="d"/></path></svg>');
 	});
 
 	it('移除动画元素', async () => {
 		const xml = `<svg>
-        <animate to="1"/>
-        <animate to="1" attributeName="title"/>
-        <animate to="x" attributeName="amplitude"/>
-        <animate to="x" from="0" attributeName="amplitude"/>
-        <animate values="a;b;c" attributeName="x"/>
-        <animate values="a;b;c" to="100" attributeName="x"/>
-        <set attributeName="fill" />
-        <animateMotion />
-        <animateTransform attributeName="x"/>
-    </svg>`;
-		const dom = await parse(xml) as ITagNode;
-		await shortenAnimate([true, { remove: true }], dom);
+		<animate to="1"/>
+		<animate to="1" attributeName="title"/>
+		<animate to="x" attributeName="amplitude"/>
+		<animate to="x" from="0" attributeName="amplitude"/>
+		<animate values="a;b;c" attributeName="x"/>
+		<animate values="a;b;c" to="100" attributeName="x"/>
+		<set attributeName="fill" />
+		<animateMotion />
+		<animateTransform attributeName="x"/>
+		</svg>`;
+		const dom = await parse(xml) as IDomNode;
+		await shortenAnimate(dom, { option: { remove: true } });
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg></svg>');
 	});
 });

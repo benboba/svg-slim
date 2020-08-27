@@ -1,39 +1,51 @@
-// k, v 都是字符串的动态类型
-declare interface IAttrObj {
-	[attr: string]: string;
+declare interface IDynamicObj<T> {
+	[attr: string]: T;
 }
+
+// k, v 都是字符串的动态类型
+declare type TAttrObj = IDynamicObj<string>;
 
 // 通过关键字排重
-declare interface IUnique {
-	[propName: string]: boolean;
+declare type TUnique = IDynamicObj<boolean>;
+
+declare type TBaseObj = Record<never, unknown>;
+
+declare type TRuleOptionVal = number | boolean | string[];
+
+declare type TRuleOption = IDynamicObj<[boolean, IDynamicObj<TRuleOptionVal>?]>;
+
+declare interface IFinalConfig {
+	rules: TRuleOption;
+	params: IParamsOption;
+	env: IEnvOption;
 }
 
-// k 是字符串 v 可能是任意类型的对象
-declare interface IUnknownObj {
-	[attr: string]: unknown;
+declare interface IParamsOption {
+	angelDigit: number;
+	sizeDigit: number;
+	trifuncDigit: number;
+	opacityDigit: number;
+	thinning: number;
+	straighten: number;
+	mergePoint: number;
+	rmAttrEqDefault: boolean;
+	exchangeStyle: boolean;
 }
 
-declare type TBaseObj = Record<string, unknown>;
-
-declare type TRulesConfigVal = boolean | number | string[];
-
-declare interface IRulesConfigOption {
-	[propName: string]: TRulesConfigVal;
+declare interface IEnvOption {
+	ie: number;
 }
 
-declare type TRulesConfigItem = [boolean, IRulesConfigOption?];
-
-declare interface IConfig {
-	rules: {
-		[propName: string]: TRulesConfigItem;
-	};
-	env: {
-		[envName: string]: number | string;
-	};
-	params: {
-		[key: string]: boolean | number;
-	}
+declare interface IRuleOption<T extends IDynamicObj<TRuleOptionVal>> {
+	option: T;
+	params: IParamsOption;
+	env: IEnvOption;
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare type TRuleFunction = (dom: IDomNode, rule: IRuleOption<any>) => Promise<void>;
+
+declare type TRulesItem = [boolean, TRuleFunction, string?];
 
 declare interface IMatrixFunc {
 	type: 'translate' | 'rotate' | 'scale' | 'skewX' | 'skewY' | 'matrix'; // 函数类型

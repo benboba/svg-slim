@@ -193,35 +193,41 @@ const formatColor = (rgba: boolean, str: string, digit: number): string => {
 	return s;
 };
 
-export const shortenColor = async (rule: TRulesConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
-	if (rule[0]) {
-		const { rrggbbaa, opacityDigit } = rule[1] as { rrggbbaa: boolean; opacityDigit: number };
-		const digit = Math.min(opacityDigit, OPACITY_DIGIT);
-		traversalNode<ITagNode>(isTag, node => {
-			node.attributes.forEach(attr => {
-				if (regularAttr[attr.fullname].maybeColor) {
-					attr.value = formatColor(rrggbbaa, attr.value, digit);
-				} else if (attr.fullname === 'style') {
-					const style = parseStyle(attr.value);
-					style.forEach(s => {
-						if (regularAttr[s.fullname].maybeColor) {
-							s.value = formatColor(rrggbbaa, s.value, digit);
-						}
-					});
-					attr.value = stringifyStyle(style);
-				}
-			});
-		}, dom);
+export const shortenColor = async (dom: IDomNode, {
+	option: {
+		rrggbbaa,
+	},
+	params: {
+		opacityDigit,
+	},
+}: IRuleOption<{
+	rrggbbaa: boolean;
+}>): Promise<void> => new Promise(resolve => {
+	const digit = Math.min(opacityDigit, OPACITY_DIGIT);
+	traversalNode<ITagNode>(isTag, node => {
+		node.attributes.forEach(attr => {
+			if (regularAttr[attr.fullname].maybeColor) {
+				attr.value = formatColor(rrggbbaa, attr.value, digit);
+			} else if (attr.fullname === 'style') {
+				const style = parseStyle(attr.value);
+				style.forEach(s => {
+					if (regularAttr[s.fullname].maybeColor) {
+						s.value = formatColor(rrggbbaa, s.value, digit);
+					}
+				});
+				attr.value = stringifyStyle(style);
+			}
+		});
+	}, dom);
 
-		if (dom.stylesheet) {
-			// 缩短 style 标签内的颜色
-			const parsedCss = dom.stylesheet.stylesheet as StyleRules;
-			traversalObj(both(has('property'), has('value')), (cssRule: Declaration) => {
-				if (regularAttr[cssRule.property as string].maybeColor) { // 可能为颜色的属性
-					cssRule.value = formatColor(rrggbbaa, cssRule.value as string, digit);
-				}
-			}, parsedCss.rules);
-		}
+	if (dom.stylesheet) {
+		// 缩短 style 标签内的颜色
+		const parsedCss = dom.stylesheet.stylesheet as StyleRules;
+		traversalObj(both(has('property'), has('value')), (cssRule: Declaration) => {
+			if (regularAttr[cssRule.property as string].maybeColor) { // 可能为颜色的属性
+				cssRule.value = formatColor(rrggbbaa, cssRule.value as string, digit);
+			}
+		}, parsedCss.rules);
 	}
 	resolve();
 });
