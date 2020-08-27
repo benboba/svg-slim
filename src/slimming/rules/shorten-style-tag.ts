@@ -20,9 +20,17 @@ const rmCSSNode = (cssNode: Node, plist: Node[]) => {
 	}
 };
 
-export const shortenStyleTag = async (rule: TRulesConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
-	if (rule[0] && dom.stylesheet) {
-		const { deepShorten, rmDefault } = rule[1] as { deepShorten: boolean; rmDefault: boolean };
+export const shortenStyleTag = async (dom: IDomNode, {
+	option: {
+		deepShorten,
+	},
+	params: {
+		rmAttrEqDefault,
+	},
+}: IRuleOption<{
+	deepShorten: boolean;
+}>): Promise<void> => new Promise(resolve => {
+	if (dom.stylesheet) {
 		const cssRules: StyleRules = dom.stylesheet.stylesheet as StyleRules;
 
 		// 遍历 style 解析对象，取得包含 css 定义的值
@@ -30,7 +38,7 @@ export const shortenStyleTag = async (rule: TRulesConfigItem, dom: IDomNode): Pr
 			const attrDefine = regularAttr[cssNode.property as string];
 			if (!attrDefine.couldBeStyle) {
 				rmCSSNode(cssNode, parents[parents.length - 1] as Rule[]);
-			} else if (rmDefault) {
+			} else if (rmAttrEqDefault) {
 				// 仅验证只有一种默认值的情况
 				if (typeof attrDefine.initValue === 'string' && valueIsEqual(attrDefine, cssNode.value as string, attrDefine.initValue)) {
 					rmCSSNode(cssNode, parents[parents.length - 1] as Rule[]);
@@ -52,7 +60,7 @@ export const shortenStyleTag = async (rule: TRulesConfigItem, dom: IDomNode): Pr
 					const theSelectors = styleRule.selectors as string[];
 					const declarations = styleRule.declarations as Declaration[];
 					// 记录命中对象但存在无效属性的情况
-					const usedRule: IUnique = {};
+					const usedRule: TUnique = {};
 					// 移除无效的选择器
 					for (let si = theSelectors.length; si--;) {
 						const matchNodes = getBySelector(dom, parseSelector(theSelectors[si]));
@@ -99,7 +107,7 @@ export const shortenStyleTag = async (rule: TRulesConfigItem, dom: IDomNode): Pr
 					if (hasProp(selectorUnique, selectorKey)) {
 						const uDeclarations = (selectorUnique[selectorKey].declarations as Declaration[]).concat(styleRule.declarations as Declaration[]);
 						// 合并之后依然要排重
-						const declared: IUnique = {};
+						const declared: TUnique = {};
 						for (let j = uDeclarations.length; j--;) {
 							if (declared[uDeclarations[j].property as string]) {
 								uDeclarations.splice(j, 1);
@@ -121,7 +129,7 @@ export const shortenStyleTag = async (rule: TRulesConfigItem, dom: IDomNode): Pr
 					const declareKey = (styleRule.declarations as Declaration[]).map((d: Declaration) => `${d.property}:${d.value}`).join(';');
 					if (hasProp(declareUnique, declareKey)) {
 						const selectors: string[] = (declareUnique[declareKey].selectors as string[]).concat(styleRule.selectors);
-						const selected: IUnique = {};
+						const selected: TUnique = {};
 						for (let j = selectors.length; j--;) {
 							if (selected[selectors[j]]) {
 								selectors.splice(j, 1);

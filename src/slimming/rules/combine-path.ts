@@ -140,56 +140,48 @@ const getKey = (node: ITagNode): string => {
 	return `attr:${keyObj.attr}|inline:${keyObj.inline}|styletag:${keyObj.styletag}|inherit:${keyObj.inherit}`;
 };
 
-export const combinePath = async (rule: TRulesConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
-	if (rule[0]) {
-		const {
-			disregardFill,
-			disregardOpacity,
-		} = rule[1] as {
-			disregardFill: boolean;
-			disregardOpacity: boolean;
-		};
+export const combinePath = async (dom: IDomNode, {
+	option: {
+		disregardFill,
+		disregardOpacity,
+	}
+}: IRuleOption<{
+	disregardFill: boolean;
+	disregardOpacity: boolean;
+}>): Promise<void> => new Promise(resolve => {
 
-		parseStyleTree(dom as ITagNode);
+	parseStyleTree(dom);
+	traversalNode<ITagNode>(isTag, node => {
+		const pathChildren: IPathChildren = {};
+		let tagIndex = 0;
+		for (let i = 0; i < node.childNodes.length; i++) {
+			const childNode = node.childNodes[i] as ITagNode;
+			if (childNode.nodeName === 'path') {
+				let d: IAttr | undefined;
+				let k = '';
+				childNode.attributes.forEach(attr => {
+					if (attr.fullname === 'd') {
+						d = attr;
+					} else if (attr.fullname !== 'style') {
+						k += `${attr.fullname}=${attr.value}&`;
+					}
+				});
 
-		traversalNode<ITagNode>(isTag, node => {
-			const pathChildren: IPathChildren = {};
-			let tagIndex = 0;
-			for (let i = 0; i < node.childNodes.length; i++) {
-				const childNode = node.childNodes[i] as ITagNode;
-				if (childNode.nodeName === 'path') {
-					let d: IAttr | undefined;
-					let k = '';
-					childNode.attributes.forEach(attr => {
-						if (attr.fullname === 'd') {
-							d = attr;
-						} else if (attr.fullname !== 'style') {
-							k += `${attr.fullname}=${attr.value}&`;
-						}
-					});
-
-					if (d) {
-						const key = `${k}|${getKey(childNode)}`;
-						if (has(key, pathChildren)) {
-							// 允许路径合并的条件：
-							// 1、所有属性和样式（包括继承样式）相同
-							// 2、相邻
-							// 3、没有 fill 或 stroke
-							// 4、所有可见透明度 ≥ 1
-							// TODO 路径没有相交或包含
-							if (pathChildren[key].index === tagIndex - 1 && canbeCombine(childNode, pathChildren[key].node, d, disregardFill, disregardOpacity)) {
-								// 路径拼合时，第一个 m 要转为绝对，否则会有 bug
-								pathChildren[key].attr.value += d.value.replace(/^m/, 'M');
-								rmNode(childNode);
-								tagIndex--;
-								i--;
-							} else {
-								pathChildren[key] = {
-									attr: d,
-									index: tagIndex,
-									node: childNode,
-								};
-							}
+				if (d) {
+					const key = `${k}|${getKey(childNode)}`;
+					if (has(key, pathChildren)) {
+						// 允许路径合并的条件：
+						// 1、所有属性和样式（包括继承样式）相同
+						// 2、相邻
+						// 3、没有 fill 或 stroke
+						// 4、所有可见透明度 ≥ 1
+						// TODO 路径没有相交或包含
+						if (pathChildren[key].index === tagIndex - 1 && canbeCombine(childNode, pathChildren[key].node, d, disregardFill, disregardOpacity)) {
+							// 路径拼合时，第一个 m 要转为绝对，否则会有 bug
+							pathChildren[key].attr.value += d.value.replace(/^m/, 'M');
+							rmNode(childNode);
+							tagIndex--;
+							i--;
 						} else {
 							pathChildren[key] = {
 								attr: d,
@@ -197,13 +189,19 @@ export const combinePath = async (rule: TRulesConfigItem, dom: INode): Promise<n
 								node: childNode,
 							};
 						}
+					} else {
+						pathChildren[key] = {
+							attr: d,
+							index: tagIndex,
+							node: childNode,
+						};
 					}
 				}
-				if (isTag(childNode)) {
-					tagIndex++;
-				}
 			}
-		}, dom);
-	}
+			if (isTag(childNode)) {
+				tagIndex++;
+			}
+		}
+	}, dom);
 	resolve();
 });

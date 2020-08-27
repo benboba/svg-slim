@@ -1,20 +1,22 @@
 import { DEFAULT_ACCURATE_DIGIT, DEFAULT_MATRIX_DIGIT, DEFAULT_SIZE_DIGIT, OPACITY_DIGIT } from '../const';
 
-export const paramsConfig: IConfig['params'] = {
+export const paramsConfig: IParamsOption = {
 	angelDigit: DEFAULT_ACCURATE_DIGIT, // 角度的数据精度
 	sizeDigit: DEFAULT_SIZE_DIGIT, // 位移的数据精度
 	trifuncDigit: DEFAULT_MATRIX_DIGIT, // 三角函数的数据精度
 	opacityDigit: OPACITY_DIGIT, // alpha 值的精度
-	shapeThinning: 0, // 通过抽稀节点来优化路径，为 0 表示不进行抽稀
+	thinning: 0, // 通过抽稀节点来优化路径，为 0 表示不进行抽稀
+	straighten: 0, // 小尺寸的曲线转直线，为 0 表示不进行此项优化
+	mergePoint: 0, // 合并路径中距离相近的点，为 0 表示不进行此项优化 TODO 尚未实现！
 	rmAttrEqDefault: true, // 移除与默认值相同的样式
 	exchangeStyle: false, // 无视 style 标签的存在，强制进行 style 和属性的互转 （[warning] svg 的样式覆盖规则是 style 属性 > style 标签 > 属性，所以这个规则可能导致不正确的覆盖！）
 };
 
-export const envConfig: IConfig['env'] = {
+export const envConfig: IEnvOption = {
 	ie: 11,
 };
 
-export const rulesConfig: IConfig['rules'] = {
+export const rulesConfig: TRuleOption = {
 	// 合并 g 标签
 	'collapse-g': [true],
 	// 塌陷无意义的文本节点
@@ -27,9 +29,7 @@ export const rulesConfig: IConfig['rules'] = {
 	// 分析并合并 transform 属性
 	'combine-transform': [true],
 	// 计算 path 的 d 属性，使之变得更短
-	'compute-path': [true, {
-		straighten: 0, // 小尺寸的曲线转直线，为 0 表示不进行此项优化
-	}],
+	'compute-path': [true],
 	// 移除非规范的属性
 	'rm-attribute': [true, {
 		keepAria: false, // 保留所有的 aria 属性和 role 属性 https://www.w3.org/TR/wai-aria-1.1

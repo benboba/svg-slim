@@ -5,13 +5,6 @@ import { parse } from '../../../src/xml-parser';
 import { createXML } from '../../../src/slimming/xml/create';
 
 describe('rules/rm-attribute', () => {
-	it('rule false branch', async () => {
-		const xml = '<svg><polygon points="0,0 100,200,300,300,299,299" /></svg>';
-		const dom = await parse(xml) as ITagNode;
-		await rmAttribute([false], dom);
-		createXML(dom).should.equal('<svg><polygon points="0,0 100,200,300,300,299,299"/></svg>');
-	});
-
 	it('移除属性', async () => {
 		const xml = `<svg
 			data-test="100"
@@ -33,8 +26,8 @@ describe('rules/rm-attribute', () => {
 			</g>
 		</g>
 		</svg>`;
-		const dom = await parse(xml) as ITagNode;
-		await rmAttribute([true, { rmDefault: true, keepEvent: false, keepAria: false }], dom);
+		const dom = await parse(xml) as IDomNode;
+		await rmAttribute(dom, { params: { rmAttrEqDefault: true }, option: { keepEvent: false, keepAria: false } });
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg width="100" style="width:40"><a/><circle cx="1"/><g><rect/><g fill="none"><rect id="rect" fill="rgb(0,0,0,.5)" stroke="hsl(0,0%,0%)"/><use href="#b"/><use href="#b"/><use href="#b" width="1" height="1"/></g></g></svg>');
 	});
 
@@ -45,8 +38,8 @@ describe('rules/rm-attribute', () => {
 			onload="console.log(123)"
 			version=""
 		><text stroke="none"/><circle cx="1" cy="0"/></svg>`;
-		const dom = await parse(xml) as ITagNode;
-		await rmAttribute([true, { rmDefault: false, keepEvent: true, keepAria: true }], dom);
+		const dom = await parse(xml) as IDomNode;
+		await rmAttribute(dom, { params: { rmAttrEqDefault: false }, option: { keepEvent: true, keepAria: true } });
 		createXML(dom).should.equal('<svg aria-colspan="3" onload="console.log(123)"><text stroke="none"/><circle cx="1" cy="0"/></svg>');
 	});
 });

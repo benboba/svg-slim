@@ -7,9 +7,9 @@
  * @param { boolean } 是否深度优先，是的话会先遍历子元素
  */
 
-import { isObj } from "./is-obj";
+import { isObj } from './is-obj';
 
-const traversal = <T>(condition: (o: T | T[]) => boolean, cb: (o: T, p: Array<T | T[]>) => void, obj: T | T[], path: Array<T | T[]>, visited: Array<T | T[]>, deep: boolean) => {
+const traversal = <T extends TBaseObj>(condition: (o: T | T[]) => boolean, cb: (o: T, p: Array<T | T[]>) => void, obj: T | T[], path: Array<T | T[]>, visited: Array<T | T[]>, deep: boolean) => {
 	if (visited.includes(obj)) {
 		return;
 	}
@@ -32,7 +32,7 @@ const traversal = <T>(condition: (o: T | T[]) => boolean, cb: (o: T, p: Array<T 
 	} else {
 		for (const key in obj) {
 			const objK = obj[key];
-			if (isObj<T | T[]>(objK)) {
+			if (isObj<T>(objK)) {
 				traversal(condition, cb, objK, path, visited, deep);
 			}
 		}
@@ -45,6 +45,6 @@ const traversal = <T>(condition: (o: T | T[]) => boolean, cb: (o: T, p: Array<T 
 	}
 };
 
-export const traversalObj = <T>(condition: (o: T | T[]) => boolean, cb: (o: T, p: Array<T | T[]>) => void, obj: T | T[], deep = false) => {
+export const traversalObj = <T extends TBaseObj>(condition: (o: T | T[]) => boolean, cb: (o: T, p: Array<T | T[]>) => void, obj: T | T[], deep = false) => {
 	traversal<T>(condition, cb, obj, [], [], deep);
 };

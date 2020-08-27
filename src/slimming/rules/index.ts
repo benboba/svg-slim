@@ -32,10 +32,7 @@ import { shortenShape } from './shorten-shape';
 import { shortenStyleAttr } from './shorten-style-attr';
 import { shortenStyleTag } from './shorten-style-tag';
 
-// [isDefaultRule: boolean, ruleHandler: Function, configKey?: string]
-type RuleItem = [true, (dom: IDomNode) => Promise<null>] | [false, (rule: TRulesConfigItem, dom: IDomNode) => Promise<null>, string];
-
-export const rules: RuleItem[] = [
+export const rules: TRulesItem[] = [
 	[true, rmUseless],
 	[true, combineStyle],
 	[true, combineScript],

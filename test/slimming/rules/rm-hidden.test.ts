@@ -5,13 +5,6 @@ import { parse } from '../../../src/xml-parser';
 import { createXML } from '../../../src/slimming/xml/create';
 
 describe('rules/rm-hidden', () => {
-	it('rule false branch', async () => {
-		const xml = '<svg><polygon points="0,0 100,200,300,300,299,299" /></svg>';
-		const dom = await parse(xml) as ITagNode;
-		await rmHidden([false], dom);
-		createXML(dom).should.equal('<svg><polygon points="0,0 100,200,300,300,299,299"/></svg>');
-	});
-
 	it('移除隐藏对象', async () => {
 		const xml = `<svg>
 			<g display="none" style="display:none"><text>1</text></g>
@@ -26,8 +19,8 @@ describe('rules/rm-hidden', () => {
 			<rect fill="none"/>
 			<use/>
 		</svg>`;
-		const dom = await parse(xml) as ITagNode;
-		await rmHidden([true], dom);
+		const dom = await parse(xml) as IDomNode;
+		await rmHidden(dom);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><mask width="auto"><text id="a">1<rect fill="none" stroke="none"/></text></mask><mask width="1"><circle r="5"/></mask><use href="#a"/></svg>');
 	});
 
@@ -40,8 +33,8 @@ describe('rules/rm-hidden', () => {
 		<textPath href="#b">123</textPath>
 		<textPath href="#c">123</textPath>
 		</svg>`;
-		const dom = await parse(xml) as ITagNode;
-		await rmHidden([true], dom);
+		const dom = await parse(xml) as IDomNode;
+		await rmHidden(dom);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><rect id="a"/><textPath id="b" path="M0,0L100H100z">123</textPath><textPath xlink:href="#a">123</textPath></svg>');
 	});
 
@@ -58,8 +51,8 @@ describe('rules/rm-hidden', () => {
 				<animate to="none" attributeName="stroke"/>
 			</rect>
 		</svg>`;
-		const dom = await parse(xml) as ITagNode;
-		await rmHidden([true], dom);
+		const dom = await parse(xml) as IDomNode;
+		await rmHidden(dom);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><rect display="none"><animate from="block" attributeName="display"/></rect></svg>');
 	});
 });

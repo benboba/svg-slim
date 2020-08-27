@@ -9,16 +9,23 @@ const exportFunc: {
 	xmlParser(s: string): Promise<INode>;
 	NodeType: typeof NodeType;
 } = async (data: string, userConfig: unknown = null): Promise<string> => new Promise((resolve, reject) => {
-	parse(data).then(async (dom: INode) => {
+	parse(data).then(async dom => {
 		const finalConfig = mergeConfig(userConfig);
 		for (const item of rules) {
+			const ruleConfig: Partial<IRuleOption> = {
+				params: finalConfig.params,
+				env: finalConfig.env,
+			};
 			if (item[0]) {
-				await (item[1])(dom as ITagNode);
+				await item[1](dom, ruleConfig as IRuleOption);
 			} else {
-				await (item[1])(finalConfig[item[2]], dom as ITagNode);
+				if (finalConfig.rules[item[2] as string][0]) {
+					ruleConfig.option = finalConfig.rules[item[2] as string][1];
+					await item[1](dom, ruleConfig as IRuleOption);
+				}
 			}
 		}
-		resolve(createXML(dom as ITagNode));
+		resolve(createXML(dom));
 	}, reject);
 });
 

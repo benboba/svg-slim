@@ -29,11 +29,11 @@ interface IStyleAttrObj {
 	};
 }
 
-const checkAttr = async (node: ITagNode, dom: INode, rmDefault: boolean) => new Promise<{
+const checkAttr = async (node: ITagNode, dom: IDomNode, rmAttrEqDefault: boolean) => new Promise<{
 	attrObj: IStyleAttrObj;
 	tagDefine: IRegularTag;
 }>(resolve => {
-	parseStyleTree(dom as ITagNode);
+	parseStyleTree(dom);
 	const attrObj: IStyleAttrObj = {}; // 存储所有样式和可以转为样式的属性
 	const tagDefine = regularTag[node.nodeName];
 	// 逆序循环，并从后向前移除属性
@@ -42,7 +42,7 @@ const checkAttr = async (node: ITagNode, dom: INode, rmDefault: boolean) => new 
 		const attrDefine = regularAttr[attr.fullname];
 		if (attr.fullname === 'style') {
 			const styleObj = parseStyle(attr.value);
-			const styleUnique: IUnique = {};
+			const styleUnique: TUnique = {};
 			// 逆序循环，因为 CSS 的优先级是从后往前覆盖的
 			for (let si = styleObj.length; si--;) {
 				const styleItem = styleObj[si];
@@ -67,7 +67,7 @@ const checkAttr = async (node: ITagNode, dom: INode, rmDefault: boolean) => new 
 					node.removeAttribute(styleItem.fullname);
 				}
 
-				if (rmDefault) {
+				if (rmAttrEqDefault) {
 					// 如果父元素上有同名的样式类属性，则不能移除和默认值相同的属性
 					const parentStyle = (node.parentNode as ITagNode).styles;
 					if (!styleDefine.inherited || !parentStyle || !hasProp(parentStyle, styleItem.fullname)) {
@@ -102,7 +102,7 @@ const checkAttr = async (node: ITagNode, dom: INode, rmDefault: boolean) => new 
 				continue;
 			}
 
-			if (rmDefault) {
+			if (rmAttrEqDefault) {
 				// 如果父元素上有同名的样式类属性，则不能移除和默认值相同的属性
 				const parentStyle = (node.parentNode as ITagNode).styles;
 				if (!attrDefine.inherited || !parentStyle || !hasProp(parentStyle, attr.fullname)) {
@@ -223,49 +223,49 @@ const checkAttr = async (node: ITagNode, dom: INode, rmDefault: boolean) => new 
 	});
 });
 
-export const shortenStyleAttr = async (rule: TRulesConfigItem, dom: IDomNode): Promise<null> => new Promise(resolve => {
-	if (rule[0]) {
-		const { exchange, rmDefault } = rule[1] as { exchange: boolean; rmDefault: boolean };
-		const hasStyleTag = !!dom.styletag;
-
-		traversalNodeAsync<ITagNode>(isTag, async node => checkAttr(node, dom, rmDefault).then(({
-			attrObj,
-		}) => {
-			// TODO css all 属性命中后要清空样式
-			// TODO 连锁属性的判断
-			if (!hasStyleTag || exchange) {
-				// [warning] svg 的样式覆盖规则是 style 属性 > style 标签 > 属性，所以以下代码可能导致不正确的样式覆盖！
-				// 如果存在只能放在 css 中的属性，则强制属性转 style @v1.5.0+
-				if (Object.values(attrObj).some(val => val.onlyCss) || Object.keys(attrObj).length > styleThreshold) {
-
-					// 属性转 style
-					Object.entries(attrObj).forEach(([key, val]) => {
-						if (!val.onlyCss) {
-							node.removeAttribute(key);
-						}
-					});
-					// 执行一次 reverse 把顺序反转过来
-					node.setAttribute('style', style2value(Object.keys(attrObj).reverse().map(key => {
-						return {
-							name: key,
-							fullname: key,
-							value: attrObj[key].value,
-						};
-					})));
-
-				} else {
-					// style 转属性
-					node.removeAttribute('style');
-					// 执行一次 reverse 把顺序反转过来
-					Object.keys(attrObj).reverse().forEach(name => {
-						node.setAttribute(name, attrObj[name].value);
-					});
-				}
-			}
-		}), dom).then(() => {
-			resolve();
-		});
-	} else {
-		resolve();
+export const shortenStyleAttr = async (dom: IDomNode, {
+	params: {
+		exchangeStyle,
+		rmAttrEqDefault,
 	}
+}: IRuleOption<TBaseObj>): Promise<void> => new Promise(resolve => {
+	const hasStyleTag = !!dom.styletag;
+
+	traversalNodeAsync<ITagNode>(isTag, async node => checkAttr(node, dom, rmAttrEqDefault).then(({
+		attrObj,
+	}) => {
+		// TODO css all 属性命中后要清空样式
+		// TODO 连锁属性的判断
+		if (!hasStyleTag || exchangeStyle) {
+			// [warning] svg 的样式覆盖规则是 style 属性 > style 标签 > 属性，所以以下代码可能导致不正确的样式覆盖！
+			// 如果存在只能放在 css 中的属性，则强制属性转 style @v1.5.0+
+			if (Object.values(attrObj).some(val => val.onlyCss) || Object.keys(attrObj).length > styleThreshold) {
+
+				// 属性转 style
+				Object.entries(attrObj).forEach(([key, val]) => {
+					if (!val.onlyCss) {
+						node.removeAttribute(key);
+					}
+				});
+				// 执行一次 reverse 把顺序反转过来
+				node.setAttribute('style', style2value(Object.keys(attrObj).reverse().map(key => {
+					return {
+						name: key,
+						fullname: key,
+						value: attrObj[key].value,
+					};
+				})));
+
+			} else {
+				// style 转属性
+				node.removeAttribute('style');
+				// 执行一次 reverse 把顺序反转过来
+				Object.keys(attrObj).reverse().forEach(name => {
+					node.setAttribute(name, attrObj[name].value);
+				});
+			}
+		}
+	}), dom).then(() => {
+		resolve();
+	});
 });

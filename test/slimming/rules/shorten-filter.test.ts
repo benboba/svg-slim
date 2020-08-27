@@ -6,15 +6,6 @@ import { createXML } from '../../../src/slimming/xml/create';
 
 
 describe('rules/shorten-filter', () => {
-	it('rule false branch', async () => {
-		const xml = `<svg>
-		<filter width="-1"/>
-		</svg>`;
-		const dom = await parse(xml) as ITagNode;
-		await shortenFilter([false], dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><filter width="-1"/></svg>');
-	});
-
 	it('shorten filter', async () => {
 		const xml = `<svg>
 		<filter width="-1"/>
@@ -35,8 +26,8 @@ describe('rules/shorten-filter', () => {
 			</filter>
 		</defs>
 		</svg>`;
-		const dom = await parse(xml) as ITagNode;
-		await shortenFilter([true], dom);
+		const dom = await parse(xml) as IDomNode;
+		await shortenFilter(dom);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><defs><filter><feComponentTransfer><feFuncR type="identity"/><feFuncA amplitude="2"><animate attributeName="type" to="gamma"/><animate attributeName="type" to="gamma"/></feFuncA></feComponentTransfer></filter></defs></svg>');
 	});
 });

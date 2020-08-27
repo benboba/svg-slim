@@ -110,7 +110,7 @@ const ProcessTag = (str: string, status: IStatus, lastIndex: number): ICurrent |
 		REG_ATTR.lastIndex = 0;
 
 		let attrExec = REG_ATTR.exec(execResult[2]);
-		const attrUnique: IUnique = {};
+		const attrUnique: TUnique = {};
 		while (attrExec) {
 			updStatus(attrExec.index + execResult[1].length + 1, execResult[0], tempStatus);
 
@@ -221,13 +221,13 @@ const parse = (str: string, status: IStatus, lastIndex: number): ICurrent => {
 	}
 };
 
-export const Parser = async (str: string): Promise<Node> => {
+export const Parser = async (str: string): Promise<IDomNode> => {
 
 	return new Promise((resolve, reject) => {
 		const doc = new Node({
 			nodeType: NodeType.Document,
 			nodeName: '#document',
-		});
+		}) as IDomNode;
 		const stack: Node[] = [];
 		const status: IStatus = {
 			line: 1,

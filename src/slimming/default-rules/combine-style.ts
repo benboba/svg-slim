@@ -17,7 +17,7 @@ const rmCSSNode = (cssNode: Node, plist: Node[]) => {
 };
 
 // 合并多个 style 标签，并将文本节点合并到一个子节点
-export const combineStyle = async (dom: IDomNode): Promise<null> => new Promise(resolve => {
+export const combineStyle = async (dom: IDomNode): Promise<void> => new Promise(resolve => {
 	let firstStyle: ITagNode | undefined;
 	let lastChildNode: INode | undefined;
 
@@ -88,7 +88,7 @@ export const combineStyle = async (dom: IDomNode): Promise<null> => new Promise(
 									rmCSSNode(cssRule, parents[parents.length - 1] as Node[]);
 									return;
 								}
-								const declared: IUnique = {};
+								const declared: TUnique = {};
 								for (let i = cssRule.declarations.length; i--;) {
 									const ruleItem = cssRule.declarations[i] as Declaration;
 									// 1、移除不存在属性名或属性值的项

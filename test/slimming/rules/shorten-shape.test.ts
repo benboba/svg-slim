@@ -6,17 +6,6 @@ import { createXML } from '../../../src/slimming/xml/create';
 
 
 describe('rules/shorten-shape', () => {
-	it('rule false branch', async () => {
-		const xml = `<svg>
-		<rect fill="red" width="100" height="100"/>
-		<rect fill="red" width="1000" height="100"/>
-		<polygon points="0,0 100,200,300,300,299,299" />
-		</svg>`;
-		const dom = await parse(xml) as ITagNode;
-		await shortenShape([false], dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><rect fill="red" width="100" height="100"/><rect fill="red" width="1000" height="100"/><polygon points="0,0 100,200,300,300,299,299"/></svg>');
-	});
-
 	it('转换形状为路径', async () => {
 		const xml = `<svg>
 		<rect style="fill:red" width="100" height="0.5"/>
@@ -41,8 +30,8 @@ describe('rules/shorten-shape', () => {
 		<path/>
 		<path d="M0,0"/>
 		</svg>`;
-		const dom = await parse(xml) as ITagNode;
-		await shortenShape([true, { thinning: 0 }], dom);
+		const dom = await parse(xml) as IDomNode;
+		await shortenShape(dom, { params: { thinning: 0 } });
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><path style="fill:red" d="M0,0v.5h1e2v-.5z"/><path d="M0,0h1e3v1e2h-1e3z"/><rect rx="5" width="1" height="1"/><rect ry="5" width="1" height="1"/><rect rx="5" ry="5" width="1" height="1"/><rect rx="-5" ry="5" width="1" height="1"/><rect width="1em" height="1em"/><line stroke="red" x2="1em"/><path stroke="red" d="M0,0,100,300"/><path fill="red" d="M0,0,1e2,1e2,2e2-2e2z"/><path stroke="red" stroke-linecap="square" d="M10,10z"/><path d="M0,0"/></svg>');
 	});
 
@@ -63,8 +52,8 @@ describe('rules/shorten-shape', () => {
 		<ellipse rx="3" ry="5pt" transform="scale(2)"/>
 		<ellipse rx="3" ry="5"/>
 		</svg>`;
-		const dom = await parse(xml) as ITagNode;
-		await shortenShape([true, { thinning: 0 }], dom);
+		const dom = await parse(xml) as IDomNode;
+		await shortenShape(dom, { params: { thinning: 0 } });
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><circle r="2"/><circle r="2" transform="matrix(1.5,0,0,2.5,0,0)"/><circle r="2" transform="scale(3)"/><circle r="3"/><circle style="fill:red" r="1e2"/><ellipse rx="3" ry="5" transform="scale(2)"/><ellipse rx="3" ry="5" transform="rotate(15,1,1)"/><ellipse rx="30" ry="5" transform="scale(2)"/><ellipse rx="3" ry="5pt" transform="scale(2)"/><ellipse rx="3" ry="5"/></svg>');
 	});
 
@@ -74,8 +63,8 @@ describe('rules/shorten-shape', () => {
 		<polygon points="0,0 100,200,300,300,300,299,299,299,299,298,298,298" />
 		<polyline />
 		</svg>`;
-		const dom = await parse(xml) as ITagNode;
-		await shortenShape([true, { thinning: 30 }], dom);
+		const dom = await parse(xml) as IDomNode;
+		await shortenShape(dom, { params: { thinning: 30 } });
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><path d="M0,0,30,30"/><path d="M0,0,1e2,2e2,3e2,3e2,298,298z"/></svg>');
 	});
 
@@ -90,8 +79,8 @@ describe('rules/shorten-shape', () => {
 			<animate attributeName="stroke-width" to="0"/>
 		</polyline>
 		</svg>`;
-		const dom = await parse(xml) as ITagNode;
-		await shortenShape([true, { thinning: 30 }], dom);
+		const dom = await parse(xml) as IDomNode;
+		await shortenShape(dom, { params: { thinning: 30 } });
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg></svg>');
 	});
 });

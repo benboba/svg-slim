@@ -1,9 +1,8 @@
 import { hasProp } from '../utils/has-prop';
 import { rulesConfig, paramsConfig, envConfig } from './config';
-import { or, equals } from 'ramda';
 import { isObj } from '../utils/is-obj';
 
-const mergeUserVal = (v: TRulesConfigVal, _v: unknown): TRulesConfigVal => {
+const mergeUserVal = (v: TRuleOptionVal, _v: unknown): TRuleOptionVal => {
 	if (Array.isArray(v)) {
 		// 数组只要字符串项
 		if (Array.isArray(_v)) {
@@ -23,24 +22,26 @@ const mergeUserVal = (v: TRulesConfigVal, _v: unknown): TRulesConfigVal => {
 	return v;
 };
 
-const checkRules = (userConfig: TBaseObj, finalConfig: IConfig['rules']) => {
+const checkRules = (userConfig: TBaseObj, finalRules: TRuleOption) => {
 	for (const [key, val] of Object.entries(userConfig)) {
 		// 只合并存在的值
-		if (hasProp(finalConfig, key)) {
-			const conf = finalConfig[key];
+		if (hasProp(finalRules, key)) {
+			const conf = finalRules[key];
 			// 布尔值直接设置开关位置
 			if (typeof val === 'boolean') {
 				conf[0] = val;
 			} else if (Array.isArray(val) && typeof val[0] === 'boolean') {
 				// 如果开关位置不是布尔值，后续直接抛弃处理
-				conf[0] = val[0];
+				conf[0] = val[0] as boolean;
 				// 默认配置如果没有 option 则不必再验证，如果没有打开配置项，后续也不必再验证
 				if (conf[0] && conf[1]) {
+					const option = conf[1] as IDynamicObj<TRuleOptionVal>;
 					// 仅验证拿到 IRulesConfigOption 的情况
-					if (typeof val[1] === 'object' && val[1] && !Array.isArray(val[1])) {
-						for (const [k, v] of Object.entries(val[1])) {
-							if (hasProp(conf[1], k)) {
-								conf[1][k] = mergeUserVal(conf[1][k], v);
+					if (isObj(val[1]) && !Array.isArray(val[1])) {
+						const userOption = val[1];
+						for (const [k, v] of Object.entries(userOption)) {
+							if (hasProp(option, k)) {
+								option[k] = mergeUserVal(option[k], v);
 							}
 						}
 					}
@@ -50,49 +51,58 @@ const checkRules = (userConfig: TBaseObj, finalConfig: IConfig['rules']) => {
 	}
 };
 
-export const mergeConfig = (userConfig: unknown) => {
-	const finalConfig: IConfig = {
+export const mergeConfig = (userConfig: unknown): IFinalConfig => {
+	const finalConfig: {
+		rules: TRuleOption;
+		params: Partial<IParamsOption>;
+		env: Partial<IEnvOption>;
+	} = {
 		rules: {},
-		env: {},
 		params: {},
+		env: {},
 	};
 	// 首先把默认规则深拷贝合并过来
-	for (const [key, val] of Object.entries(rulesConfig)) {
-		finalConfig.rules[key] = [val[0]];
-		if (val[1]) {
-			const option: IRulesConfigOption = {};
-			for (const [k, v] of Object.entries(val[1])) {
+	for (const [key, [_switch, _option]] of (Object.entries(rulesConfig) as Array<[string, [boolean, IDynamicObj<TRuleOptionVal>]]>)) {
+		finalConfig.rules[key] = [_switch];
+		if (_option) {
+			const option: IDynamicObj<TRuleOptionVal> = {};
+			for (const [k, v] of (Object.entries(_option) as Array<[string, TRuleOptionVal]>)) {
 				option[k] = Array.isArray(v) ? v.slice() : v;
 			}
-			finalConfig.rules[key][1] = option;
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			finalConfig.rules[key]!.push(option);
 		}
 	}
 	if (isObj(userConfig)) {
-		const uConfig = userConfig as TBaseObj;
+		const uConfig = userConfig as Record<string, unknown>;
 		checkRules(uConfig, finalConfig.rules);
 		if (hasProp(uConfig, 'rules') && isObj(uConfig.rules)) {
-			checkRules(uConfig.rules, finalConfig.rules);
+			checkRules(uConfig.rules, finalConfig.rules as TRuleOption);
 		}
 
 		const uEnv = uConfig.env;
 		if (hasProp(uConfig, 'env') && isObj(uEnv)) {
-			Object.keys(envConfig).forEach(k => {
+			(Object.keys(envConfig) as [keyof IEnvOption]).forEach(k => {
 				if (hasProp(uEnv, k)) {
-					const eq = equals(typeof uEnv[k]);
-					finalConfig.env[k] = or(eq('string'), eq('number')) ? uEnv[k] as string | number : envConfig[k];
+					const uk = uEnv[k];
+					finalConfig.env[k] = (typeof uk === 'number') ? uk : envConfig[k];
 				}
 			});
 		}
 
 		const uParams = uConfig.params;
 		if (hasProp(uConfig, 'params') && isObj(uParams)) {
-			Object.keys(paramsConfig).forEach(k => {
+			(Object.keys(paramsConfig) as [keyof IParamsOption]).forEach(k => {
 				if (hasProp(uParams, k)) {
-					const eq = equals(typeof uParams[k]);
-					finalConfig.params[k] = or(eq('string'), eq('number')) ? uParams[k] as number | boolean : paramsConfig[k];
+					const uk = uParams[k];
+					finalConfig.params[k] = (typeof uk === typeof paramsConfig[k] ? uk : paramsConfig[k]) as never;
 				}
 			});
 		}
 	}
-	return finalConfig;
+	return finalConfig as {
+		rules: TRuleOption;
+		params: IParamsOption;
+		env: IEnvOption;
+	};
 };

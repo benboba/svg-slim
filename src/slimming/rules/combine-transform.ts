@@ -805,61 +805,55 @@ const applyTransform = (node: ITagNode, matrix: IMatrixFunc, minStr: string) => 
 	}
 };
 
-export const combineTransform = async (rule: TRulesConfigItem, dom: INode): Promise<null> => new Promise(resolve => {
-	if (rule[0]) {
-		parseStyleTree(dom as ITagNode);
-		// digit1 = 矩阵前 4 位的精度，digit2 = 矩阵后 2 位的精度
-		const {
-			trigDigit,
-			sizeDigit,
-			angelDigit,
-		} = rule[1] as {
-			trigDigit: number;
-			sizeDigit: number;
-			angelDigit: number;
-		};
-		traversalNode<ITagNode>(isTag, node => {
-			for (let i = node.attributes.length; i--;) {
-				const attr = node.attributes[i];
-				if (transformAttributes.includes(attr.name)) {
-					const transform: IMatrixFunc[] = [];
-					parseMatrix(attr.value.trim()).forEach(mFunc => {
-						const lastFunc = transform[transform.length - 1];
-						if (transform.length && lastFunc.type === mFunc.type) {
-							const mergeFunc = merge(lastFunc, mFunc, trigDigit, sizeDigit, angelDigit);
-							// 如果合并后为无效变化，则出栈，否则更新合并后的函数
-							if (mergeFunc.noEffect) {
-								transform.pop();
-							} else {
-								transform[transform.length - 1] = mergeFunc;
-							}
+export const combineTransform = async (dom: IDomNode, {
+	params: {
+		trifuncDigit,
+		sizeDigit,
+		angelDigit,
+	}
+}: IRuleOption<TBaseObj>): Promise<void> => new Promise(resolve => {
+	parseStyleTree(dom);
+	traversalNode<ITagNode>(isTag, node => {
+		for (let i = node.attributes.length; i--;) {
+			const attr = node.attributes[i];
+			if (transformAttributes.includes(attr.name)) {
+				const transform: IMatrixFunc[] = [];
+				parseMatrix(attr.value.trim()).forEach(mFunc => {
+					const lastFunc = transform[transform.length - 1];
+					if (transform.length && lastFunc.type === mFunc.type) {
+						const mergeFunc = merge(lastFunc, mFunc, trifuncDigit, sizeDigit, angelDigit);
+						// 如果合并后为无效变化，则出栈，否则更新合并后的函数
+						if (mergeFunc.noEffect) {
+							transform.pop();
 						} else {
-							transform.push(mFunc);
+							transform[transform.length - 1] = mergeFunc;
 						}
-					});
-					if (transform.length) {
-						const matrix = combineMatrix(transform, trigDigit, sizeDigit, angelDigit);
-						const transformStr = stringify(transform, trigDigit, sizeDigit, angelDigit);
-						const matrixStr = stringify([matrix], trigDigit, sizeDigit, angelDigit);
-						const minStr = getShorter(matrixStr, transformStr);
-						if (matrix.noEffect) {
-							node.removeAttribute(attr.fullname);
+					} else {
+						transform.push(mFunc);
+					}
+				});
+				if (transform.length) {
+					const matrix = combineMatrix(transform, trifuncDigit, sizeDigit, angelDigit);
+					const transformStr = stringify(transform, trifuncDigit, sizeDigit, angelDigit);
+					const matrixStr = stringify([matrix], trifuncDigit, sizeDigit, angelDigit);
+					const minStr = getShorter(matrixStr, transformStr);
+					if (matrix.noEffect) {
+						node.removeAttribute(attr.fullname);
+						return;
+					}
+					if (attr.fullname === 'transform') {
+						// TODO：进一步分析子元素
+						// TODO：暂时只应用 transform 属性
+						if (applyTransform(node, matrix, ` ${attr.fullname}="${minStr}"`)) {
 							return;
 						}
-						if (attr.fullname === 'transform') {
-							// TODO：进一步分析子元素
-							// TODO：暂时只应用 transform 属性
-							if (applyTransform(node, matrix, ` ${attr.fullname}="${minStr}"`)) {
-								return;
-							}
-						}
-						attr.value = minStr;
-					} else {
-						node.removeAttribute(attr.fullname);
 					}
+					attr.value = minStr;
+				} else {
+					node.removeAttribute(attr.fullname);
 				}
 			}
-		}, dom);
-	}
+		}
+	}, dom);
 	resolve();
 });
