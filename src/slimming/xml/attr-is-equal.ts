@@ -1,4 +1,5 @@
 import { equals } from 'ramda';
+import { IRegularAttr } from 'typings';
 import { parseColor } from '../color/parse';
 import { parseNumberList } from '../utils/parse-numberlist';
 

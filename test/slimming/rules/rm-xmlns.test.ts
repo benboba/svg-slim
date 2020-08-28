@@ -1,9 +1,9 @@
 const chai = require('chai');
 const should = chai.should();
 import { rmXMLNS } from '../../../src/slimming/rules/rm-xmlns';
-import { parse } from '../../../src/xml-parser';
 import { createXML } from '../../../src/slimming/xml/create';
-
+import { parse } from '../../../src/xml-parser';
+import { IDomNode } from '../../../typings/node';
 
 describe('rules/rm-xmlns', () => {
 	it('移除不必要的 xml 命名空间', async () => {

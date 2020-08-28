@@ -12,6 +12,7 @@
 * 增加 svg-slimming.mjs 和 xml-parser.mjs
 * [**breaking change**] 不再从 dist 目录发布项目，而是直接从根目录发布
 * 调整了目录结构和部分模块的文件名
+* 拆分项目，将 xml-parser 和 svg-attr-validator 作为单独的项目发布到 npm
 
 ### svg-slimming
 
@@ -22,6 +23,7 @@
 * 增加大量 CSS 属性的规则验证
 * 修正了对于枚举类属性的验证规则，之前由于未进行全字匹配会存在一定的误判
 * shorten-defs 现在会移除掉已经不存在子元素的 defs 节点
+* 优化了数值的加减乘运算
 
 ## 2020.03.20 v1.5.3
 

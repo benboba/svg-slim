@@ -26,9 +26,9 @@ describe('const/regs', () => {
 		reg.test('[a]').should.equal(true);
 		reg.test('[a=b]').should.equal(true);
 		reg.test('[a=""]').should.equal(true);
-		reg.test(`[a="'"]`).should.equal(true);
+		reg.test('[a="\'"]').should.equal(true);
 		reg.test('[a="[]"]').should.equal(true);
-		reg.test("[a='b']").should.equal(true);
+		reg.test('[a=\'b\']').should.equal(true);
 		reg.test('[a^=b]').should.equal(true);
 		reg.test('[a$=b]').should.equal(true);
 		reg.test('[a|=b]').should.equal(true);

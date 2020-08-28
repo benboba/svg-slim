@@ -1,3 +1,4 @@
+import { IFnDef } from 'typings';
 import { numberPattern } from './syntax';
 
 export const cssAll = 'initial|inherit|unset|revert';

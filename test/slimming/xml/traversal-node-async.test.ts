@@ -1,10 +1,11 @@
 const chai = require('chai');
 const should = chai.should();
-import { traversalNodeAsync } from '../../../src/slimming/xml/traversal-node-async';
-import { parse } from '../../../src/xml-parser';
-import { rmNode } from '../../../src/slimming/xml/rm-node';
 import { createXML } from '../../../src/slimming/xml/create';
 import { isTag } from '../../../src/slimming/xml/is-tag';
+import { rmNode } from '../../../src/slimming/xml/rm-node';
+import { traversalNodeAsync } from '../../../src/slimming/xml/traversal-node-async';
+import { parse } from '../../../src/xml-parser';
+import { ITagNode } from '../../../typings/node';
 
 
 describe('xml/traversal-node-asycn', () => {

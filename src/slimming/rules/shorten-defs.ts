@@ -1,15 +1,17 @@
 import { propEq } from 'ramda';
+import { TAttrObj } from 'typings';
+import { IAttr, IDomNode, INode, IStyleObj, ITagNode } from 'typings/node';
+import { checkAnimateMotion } from '../animate/check-animate-motion';
+import { shapeElements } from '../const/definitions';
 import { regularAttr } from '../const/regular-attr';
 import { funcIRIToID, IRIFullMatch } from '../const/syntax';
-import { isTag } from '../xml/is-tag';
-import { rmNode } from '../xml/rm-node';
-import { traversalNode } from '../xml/traversal-node';
-import { getAncestor } from '../xml/get-ancestor';
-import { parseStyleTree } from '../xml/parse-style-tree';
 import { parseStyle } from '../style/parse';
 import { stringifyStyle } from '../style/stringify';
-import { shapeElements } from '../const/definitions';
-import { checkAnimateMotion } from '../animate/check-animate-motion';
+import { getAncestor } from '../xml/get-ancestor';
+import { isTag } from '../xml/is-tag';
+import { parseStyleTree } from '../xml/parse-style-tree';
+import { rmNode } from '../xml/rm-node';
+import { traversalNode } from '../xml/traversal-node';
 
 interface IIDCacheITem {
 	tag?: ITagNode; // 具有该 id 的节点

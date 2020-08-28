@@ -1,6 +1,7 @@
+import { IPathResultItem } from 'typings';
+import { minus } from '../math/minus';
 import { Vector } from '../math/vector';
 import { complex } from './complex';
-import { minus } from '../math/minus';
 
 // 曲线指令转直线指令
 export const straighten = (threshold: number, pathArr: IPathResultItem[]): IPathResultItem[] => {

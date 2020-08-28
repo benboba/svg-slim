@@ -1,6 +1,7 @@
+import { IDynamicObj, IEnvOption, IFinalConfig, IParamsOption, TBaseObj, TRuleOption, TRuleOptionVal } from 'typings';
 import { hasProp } from '../utils/has-prop';
-import { rulesConfig, paramsConfig, envConfig } from './config';
 import { isObj } from '../utils/is-obj';
+import { envConfig, paramsConfig, rulesConfig } from './config';
 
 const mergeUserVal = (v: TRuleOptionVal, _v: unknown): TRuleOptionVal => {
 	if (Array.isArray(v)) {
@@ -35,10 +36,10 @@ const checkRules = (userConfig: TBaseObj, finalRules: TRuleOption) => {
 				conf[0] = val[0] as boolean;
 				// 默认配置如果没有 option 则不必再验证，如果没有打开配置项，后续也不必再验证
 				if (conf[0] && conf[1]) {
-					const option = conf[1] as IDynamicObj<TRuleOptionVal>;
+					const option = conf[1];
 					// 仅验证拿到 IRulesConfigOption 的情况
-					if (isObj(val[1]) && !Array.isArray(val[1])) {
-						const userOption = val[1];
+					const userOption = val[1];
+					if (isObj<IDynamicObj<TRuleOptionVal>>(userOption)) {
 						for (const [k, v] of Object.entries(userOption)) {
 							if (hasProp(option, k)) {
 								option[k] = mergeUserVal(option[k], v);
@@ -62,27 +63,27 @@ export const mergeConfig = (userConfig: unknown): IFinalConfig => {
 		env: {},
 	};
 	// 首先把默认规则深拷贝合并过来
-	for (const [key, [_switch, _option]] of (Object.entries(rulesConfig) as Array<[string, [boolean, IDynamicObj<TRuleOptionVal>]]>)) {
+	for (const [key, [_switch, _option]] of Object.entries(rulesConfig)) {
 		finalConfig.rules[key] = [_switch];
 		if (_option) {
 			const option: IDynamicObj<TRuleOptionVal> = {};
-			for (const [k, v] of (Object.entries(_option) as Array<[string, TRuleOptionVal]>)) {
+			for (const [k, v] of Object.entries(_option)) {
 				option[k] = Array.isArray(v) ? v.slice() : v;
 			}
 			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 			finalConfig.rules[key]!.push(option);
 		}
 	}
-	if (isObj(userConfig)) {
-		const uConfig = userConfig as Record<string, unknown>;
+	if (isObj<IDynamicObj<unknown>>(userConfig)) {
+		const uConfig = userConfig;
 		checkRules(uConfig, finalConfig.rules);
-		if (hasProp(uConfig, 'rules') && isObj(uConfig.rules)) {
-			checkRules(uConfig.rules, finalConfig.rules as TRuleOption);
+		if (hasProp(uConfig, 'rules') && isObj<TRuleOption>(uConfig.rules)) {
+			checkRules(uConfig.rules, finalConfig.rules);
 		}
 
 		const uEnv = uConfig.env;
-		if (hasProp(uConfig, 'env') && isObj(uEnv)) {
-			(Object.keys(envConfig) as [keyof IEnvOption]).forEach(k => {
+		if (hasProp(uConfig, 'env') && isObj<IEnvOption>(uEnv)) {
+			(Object.keys(envConfig)).forEach(k => {
 				if (hasProp(uEnv, k)) {
 					const uk = uEnv[k];
 					finalConfig.env[k] = (typeof uk === 'number') ? uk : envConfig[k];
@@ -91,8 +92,8 @@ export const mergeConfig = (userConfig: unknown): IFinalConfig => {
 		}
 
 		const uParams = uConfig.params;
-		if (hasProp(uConfig, 'params') && isObj(uParams)) {
-			(Object.keys(paramsConfig) as [keyof IParamsOption]).forEach(k => {
+		if (hasProp(uConfig, 'params') && isObj<IParamsOption>(uParams)) {
+			(Object.keys(paramsConfig)).forEach(k => {
 				if (hasProp(uParams, k)) {
 					const uk = uParams[k];
 					finalConfig.params[k] = (typeof uk === typeof paramsConfig[k] ? uk : paramsConfig[k]) as never;
@@ -100,9 +101,5 @@ export const mergeConfig = (userConfig: unknown): IFinalConfig => {
 			});
 		}
 	}
-	return finalConfig as {
-		rules: TRuleOption;
-		params: IParamsOption;
-		env: IEnvOption;
-	};
+	return finalConfig as IFinalConfig;
 };

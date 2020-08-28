@@ -1,10 +1,10 @@
+import { TUnique } from 'typings';
+import { IDomNode } from 'typings/node';
 import { NodeType } from '../node/index';
-import { Node } from './node';
-
-import { REG_XML_DECL, REG_CDATA_SECT, REG_OTHER_SECT, REG_DOCTYPE, REG_OTHER_DECL, REG_COMMENTS, REG_START_TAG, REG_END_TAG, REG_ATTR } from './regs';
-
-import { collapseQuot } from './utils';
 import { mixWhiteSpace } from '../slimming/utils/mix-white-space';
+import { Node } from './node';
+import { REG_ATTR, REG_CDATA_SECT, REG_COMMENTS, REG_DOCTYPE, REG_END_TAG, REG_OTHER_DECL, REG_OTHER_SECT, REG_START_TAG, REG_XML_DECL } from './regs';
+import { collapseQuot } from './utils';
 
 interface IStatus {
 	line: number;
@@ -348,3 +348,4 @@ export const Parser = async (str: string): Promise<IDomNode> => {
 };
 
 export { REG_XML_DECL, REG_CDATA_SECT, REG_OTHER_SECT, REG_DOCTYPE, REG_OTHER_DECL, REG_COMMENTS, REG_START_TAG, REG_END_TAG, REG_ATTR };
+

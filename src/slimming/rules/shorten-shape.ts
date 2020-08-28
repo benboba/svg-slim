@@ -1,18 +1,20 @@
 import { complement, equals } from 'ramda';
+import { IRuleOption } from 'typings';
+import { IDomNode, ITagNode } from 'typings/node';
 import { douglasPeucker as DP } from '../algorithm/douglas-peucker';
 import { shapeElements } from '../const/definitions';
 import { numberGlobal, numberPattern, pureNumOrWithPx } from '../const/syntax';
+import { getShorter } from '../utils/get-shorter';
 import { parseNumberList } from '../utils/parse-numberlist';
 import { shortenNumber } from '../utils/shorten-number';
 import { shortenNumberList } from '../utils/shorten-number-list';
 import { createTag } from '../xml/create';
-import { parseStyleTree } from '../xml/parse-style-tree';
 import { checkAnimateAttr, getAnimateAttr } from '../xml/get-animate-attr';
 import { getAttr } from '../xml/get-attr';
+import { parseStyleTree } from '../xml/parse-style-tree';
 import { rmAttrs } from '../xml/rm-attrs';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
-import { getShorter } from '../utils/get-shorter';
 
 const startWithNumber = new RegExp(`^(${numberPattern})`);
 const notNone = complement(equals('none'));
@@ -216,7 +218,7 @@ export const shortenShape = async (dom: IDomNode, {
 	params: {
 		thinning,
 	}
-}: IRuleOption<TBaseObj>): Promise<void> => new Promise(resolve => {
+}: IRuleOption): Promise<void> => new Promise(resolve => {
 	parseStyleTree(dom);
 
 	traversalNode(node => shapeElements.includes(node.nodeName), (node: ITagNode) => {

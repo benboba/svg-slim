@@ -1,9 +1,12 @@
 const chai = require('chai');
 const should = chai.should();
-import { shortenColor } from '../../../src/slimming/rules/shorten-color';
+import { createRuleConfig } from '../../../src/slimming/config/create-rule-config';
+import { mergeConfig } from '../../../src/slimming/config/merge';
 import { combineStyle } from '../../../src/slimming/default-rules/combine-style';
-import { parse } from '../../../src/xml-parser';
+import { shortenColor } from '../../../src/slimming/rules/shorten-color';
 import { createXML } from '../../../src/slimming/xml/create';
+import { parse } from '../../../src/xml-parser';
+import { IDomNode } from '../../../typings/node';
 
 
 describe('rules/shorten-color', () => {
@@ -22,7 +25,12 @@ describe('rules/shorten-color', () => {
 		</svg>`;
 		const dom = await parse(xml) as IDomNode;
 		await combineStyle(dom);
-		await shortenColor(dom, { option: { rrggbbaa: false }, params: { opacityDigit: 4 }});
+		const config = createRuleConfig(mergeConfig({
+			params: {
+				opacityDigit: 4,
+			},
+		}), 'shorten-color');
+		await shortenColor(dom, config);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><style>.a{color:transparent;fill:currentColor;stroke:rgb(0,0,0,.5);x:100}</style><text fill="hsl(9,9%,9%,1%)" stroke="rgb(0,250,0,1%)" color="rgb(0,0,250,.1)">123</text><rect style="fill:red" stroke="#639" color="hsl(0,0%,100%,0)"/></svg>');
 	});
 
@@ -33,7 +41,14 @@ describe('rules/shorten-color', () => {
 		</svg>`;
 		const dom = await parse(xml) as IDomNode;
 		await combineStyle(dom);
-		await shortenColor(dom, { option: { rrggbbaa: true }, params: { opacityDigit: 3 }});
+		const config = createRuleConfig(mergeConfig({
+			rules: {
+				'shorten-color': [true, {
+					rrggbbaa: true,
+				}],
+			},
+		}), 'shorten-color');
+		await shortenColor(dom, config);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><rect width="100" style="fill:#f000;height:100" stroke="#65ea7152" color="#0000"/></svg>');
 	});
 });

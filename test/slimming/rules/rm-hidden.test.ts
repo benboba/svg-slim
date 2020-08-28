@@ -1,8 +1,9 @@
 const chai = require('chai');
 const should = chai.should();
 import { rmHidden } from '../../../src/slimming/rules/rm-hidden';
-import { parse } from '../../../src/xml-parser';
 import { createXML } from '../../../src/slimming/xml/create';
+import { parse } from '../../../src/xml-parser';
+import { IDomNode } from '../../../typings/node';
 
 describe('rules/rm-hidden', () => {
 	it('移除隐藏对象', async () => {

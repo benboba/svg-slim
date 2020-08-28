@@ -5,6 +5,8 @@
  * @param { Node } 目标节点
  */
 
+import { INode } from 'typings/node';
+
 const traversal = <T extends INode>(condition: (n: INode) => boolean | void, cb: (n: T) => void, node: INode, breakImmediate: boolean): void => {
 	// 此处不能用 forEach ，for 循环可以避免当前节点被移除导致下一个节点不会被遍历到的问题
 	if (node.childNodes) {

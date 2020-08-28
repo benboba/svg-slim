@@ -1,5 +1,7 @@
 import { Declaration, Node, Rule, StyleRules } from 'css';
 import { propEq } from 'ramda';
+import { IRuleOption, TUnique } from 'typings';
+import { IDomNode } from 'typings/node';
 import { regularAttr } from '../const/regular-attr';
 import { checkApply } from '../style/check-apply';
 import { parseSelector } from '../style/parse-selector';
@@ -27,9 +29,7 @@ export const shortenStyleTag = async (dom: IDomNode, {
 	params: {
 		rmAttrEqDefault,
 	},
-}: IRuleOption<{
-	deepShorten: boolean;
-}>): Promise<void> => new Promise(resolve => {
+}: IRuleOption): Promise<void> => new Promise(resolve => {
 	if (dom.stylesheet) {
 		const cssRules: StyleRules = dom.stylesheet.stylesheet as StyleRules;
 

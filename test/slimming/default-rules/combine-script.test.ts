@@ -1,8 +1,9 @@
 const chai = require('chai');
 const should = chai.should();
 import { combineScript } from '../../../src/slimming/default-rules/combine-script';
-import { parse } from '../../../src/xml-parser';
 import { createXML } from '../../../src/slimming/xml/create';
+import { parse } from '../../../src/xml-parser';
+import { IDomNode } from '../../../typings/node';
 
 describe('default-rules/combine-script', () => {
 	it('合并 script 标签', async () => {

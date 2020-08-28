@@ -1,14 +1,16 @@
 import { complement, equals, gt, gte } from 'ramda';
+import { IAnimateAttr } from 'typings';
+import { IDomNode, INode, IStyleObj, ITagNode } from 'typings/node';
 import { animationElements, filterPrimitiveElements, shapeElements } from '../const/definitions';
 import { regularTag } from '../const/regular-tag';
 import { IRIFullMatch } from '../const/syntax';
 import { hasProp } from '../utils/has-prop';
-import { parseStyleTree } from '../xml/parse-style-tree';
 import { getAncestor } from '../xml/get-ancestor';
 import { checkAnimateAttr, getAnimateAttr } from '../xml/get-animate-attr';
 import { getAttr } from '../xml/get-attr';
 import { getById } from '../xml/get-by-id';
 import { isTag } from '../xml/is-tag';
+import { parseStyleTree } from '../xml/parse-style-tree';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
 

@@ -1,3 +1,4 @@
+import { IPathResultItem } from 'typings';
 import { numberLength } from '../utils/number-length';
 
 export const computeV = (absolute: number, relative: number, pathResult: IPathResultItem[], pos: number[]): number[] => {

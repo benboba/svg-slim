@@ -1,7 +1,7 @@
 const chai = require('chai');
 const should = chai.should();
-import { parsePath } from '../../../src/slimming/path/parse';
 import { doCompute } from '../../../src/slimming/path/do-compute';
+import { parsePath } from '../../../src/slimming/path/parse';
 import { stringifyPath } from '../../../src/slimming/path/stringify';
 
 describe('path/compute-a', () => {

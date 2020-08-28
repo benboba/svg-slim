@@ -1,4 +1,6 @@
 import { anyPass, propEq } from 'ramda';
+import { IParamsOption, IPathResultItem, IRuleOption } from 'typings';
+import { IDomNode, ITagNode } from 'typings/node';
 import { douglasPeucker } from '../algorithm/douglas-peucker';
 import { LineTypes } from '../const';
 import { plus } from '../math/plus';
@@ -7,11 +9,11 @@ import { doCompute } from '../path/do-compute';
 import { parsePath } from '../path/parse';
 import { straighten as straightenPath } from '../path/straighten';
 import { stringifyPath } from '../path/stringify';
-import { parseStyleTree } from '../xml/parse-style-tree';
+import { checkAnimateAttr, findAnimateAttr, getAnimateAttr } from '../xml/get-animate-attr';
 import { getAttr } from '../xml/get-attr';
+import { parseStyleTree } from '../xml/parse-style-tree';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
-import { getAnimateAttr, checkAnimateAttr, findAnimateAttr } from '../xml/get-animate-attr';
 
 const DPItemNormalize = (pathItem: IPathResultItem): IPathResultItem => {
 	switch (pathItem.type) {
@@ -104,11 +106,8 @@ const processPath = (dVal: string, hasMarker: boolean, hasStroke: boolean, hasSt
 };
 
 export const computePath = async (dom: IDomNode, {
-	option: {
-		straighten,
-	},
 	params,
-}: IRuleOption<{ straighten: number }>): Promise<void> => new Promise(resolve => {
+}: IRuleOption): Promise<void> => new Promise(resolve => {
 	parseStyleTree(dom);
 	traversalNode<ITagNode>(anyPass([propEq('nodeName', 'path'), propEq('nodeName', 'animateMotion'), propEq('nodeName', 'textPath')]), node => {
 		const attrName = node.nodeName === 'path' ? 'd' : 'path';

@@ -2,6 +2,7 @@ const chai = require('chai');
 const should = chai.should();
 import { getBySelector } from '../../../src/slimming/xml/get-by-selector';
 import { parse } from '../../../src/xml-parser';
+import { ITagNode } from '../../../typings/node';
 
 
 describe('xml/get-by-selector', () => {

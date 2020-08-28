@@ -1,3 +1,4 @@
+import { IDomNode, INode, ITagNode, ITextNode } from 'typings/node';
 import { NodeType } from '../../node/index';
 import { regularTag } from '../const/regular-tag';
 import { mixWhiteSpace } from '../utils/mix-white-space';

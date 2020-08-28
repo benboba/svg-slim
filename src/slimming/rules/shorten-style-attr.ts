@@ -1,4 +1,6 @@
 import { has, pipe } from 'ramda';
+import { IRegularTag, IRuleOption, TUnique } from 'typings';
+import { IDomNode, ITagNode } from 'typings/node';
 import { animationAttrElements, animationAttributes } from '../const/definitions';
 import { regularAttr } from '../const/regular-attr';
 import { regularTag } from '../const/regular-tag';
@@ -9,9 +11,9 @@ import { stringifyStyle } from '../style/stringify';
 import { hasProp } from '../utils/has-prop';
 import { legalValue } from '../validate/legal-value';
 import { attrIsEqual } from '../xml/attr-is-equal';
-import { parseStyleTree } from '../xml/parse-style-tree';
 import { isTag } from '../xml/is-tag';
-import { traversalNodeAsync } from '../xml/traversal-node-async';
+import { parseStyleTree } from '../xml/parse-style-tree';
+import { traversalNode } from '../xml/traversal-node';
 
 // 属性转 style 的临界值
 const styleThreshold = 4;
@@ -29,10 +31,7 @@ interface IStyleAttrObj {
 	};
 }
 
-const checkAttr = async (node: ITagNode, dom: IDomNode, rmAttrEqDefault: boolean) => new Promise<{
-	attrObj: IStyleAttrObj;
-	tagDefine: IRegularTag;
-}>(resolve => {
+const checkAttr = (node: ITagNode, dom: IDomNode, rmAttrEqDefault: boolean) => {
 	parseStyleTree(dom);
 	const attrObj: IStyleAttrObj = {}; // 存储所有样式和可以转为样式的属性
 	const tagDefine = regularTag[node.nodeName];
@@ -155,37 +154,6 @@ const checkAttr = async (node: ITagNode, dom: IDomNode, rmAttrEqDefault: boolean
 		}
 	}
 
-	// 	// 在此处进行样式合法性验证
-	// 	let cssString = 'g{';
-	// 	Object.entries(attrObj).forEach(([key, { value }]) => {
-	// 		cssString += `${key}:${value};
-	// `;
-	// 	});
-	// 	cssString += '}';
-
-	// 	// 双重合法性验证
-	// const result = await legalCss(cssString);
-	// if (!result.validity) {
-	// 	result.errors.forEach(err => {
-	// 		if (err.type === 'zero') {
-	// 			return;
-	// 		}
-	// 		const key = Object.keys(attrObj)[err.line - 1] as string | undefined;
-	// 		if (key && err.message.includes(key)) { // cssValidator 有时候会报错行数，需要确保规则对得上
-	// 			const styleItem = attrObj[key];
-	// 			const styleDefine = regularAttr[key];
-	// 			// css 验证失败，还需要进行一次 svg-slimming 的合法性验证，确保没有问题
-	// 			if (!styleDefine.legalValues.length || !legalValue(styleDefine, {
-	// 				fullname: key,
-	// 				value: styleItem.value,
-	// 				name: '',
-	// 			})) {
-	// 				styleItem.value = '';
-	// 			}
-	// 		}
-	// 	});
-	// }
-
 	// 只做基本验证
 	Object.keys(attrObj).forEach(key => {
 		const styleItem = attrObj[key];
@@ -217,23 +185,19 @@ const checkAttr = async (node: ITagNode, dom: IDomNode, rmAttrEqDefault: boolean
 	}
 
 	// 进行动画属性的合法性验证
-	resolve({
-		attrObj,
-		tagDefine,
-	});
-});
+	return attrObj;
+};
 
 export const shortenStyleAttr = async (dom: IDomNode, {
 	params: {
 		exchangeStyle,
 		rmAttrEqDefault,
 	}
-}: IRuleOption<TBaseObj>): Promise<void> => new Promise(resolve => {
+}: IRuleOption): Promise<void> => new Promise(resolve => {
 	const hasStyleTag = !!dom.styletag;
 
-	traversalNodeAsync<ITagNode>(isTag, async node => checkAttr(node, dom, rmAttrEqDefault).then(({
-		attrObj,
-	}) => {
+	traversalNode<ITagNode>(isTag, node => {
+		const attrObj = checkAttr(node, dom, rmAttrEqDefault);
 		// TODO css all 属性命中后要清空样式
 		// TODO 连锁属性的判断
 		if (!hasStyleTag || exchangeStyle) {
@@ -265,7 +229,6 @@ export const shortenStyleAttr = async (dom: IDomNode, {
 				});
 			}
 		}
-	}), dom).then(() => {
-		resolve();
-	});
+	}, dom);
+	resolve();
 });

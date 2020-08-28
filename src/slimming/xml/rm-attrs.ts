@@ -1,3 +1,4 @@
+import { ITagNode } from 'typings/node';
 import { parseStyle } from '../style/parse';
 import { stringifyStyle } from '../style/stringify';
 

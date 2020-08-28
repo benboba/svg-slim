@@ -1,7 +1,8 @@
 const chai = require('chai');
 const should = chai.should();
-import { getAnimateAttr, checkAnimateAttr, findAnimateAttr } from '../../../src/slimming/xml/get-animate-attr';
+import { checkAnimateAttr, findAnimateAttr, getAnimateAttr } from '../../../src/slimming/xml/get-animate-attr';
 import { parse } from '../../../src/xml-parser';
+import { ITagNode } from '../../../typings/node';
 
 describe('xml/get-animate-attr', () => {
 	it('get-animate-attr', async () => {

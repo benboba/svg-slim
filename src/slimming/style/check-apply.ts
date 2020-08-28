@@ -1,3 +1,5 @@
+import { IRegularAttr } from 'typings';
+import { INode, ITagNode } from 'typings/node';
 import { getById } from '../xml/get-by-id';
 import { isTag } from '../xml/is-tag';
 import { parseStyle } from './parse';

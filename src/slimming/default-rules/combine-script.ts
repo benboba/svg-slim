@@ -1,4 +1,5 @@
 import { propEq } from 'ramda';
+import { IDomNode, INode, ITagNode } from 'typings/node';
 import { NodeType } from '../../node/index';
 import { mixWhiteSpace } from '../utils/mix-white-space';
 import { rmNode } from '../xml/rm-node';

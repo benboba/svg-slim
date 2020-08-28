@@ -1,3 +1,4 @@
+import { IPathResultItem } from 'typings';
 import { DEFAULT_ACCURATE_DIGIT, DEFAULT_SIZE_DIGIT } from '../const';
 import { shortenNumberList } from '../utils/shorten-number-list';
 import { stringifyFuncVal } from '../utils/stringify-funcval';

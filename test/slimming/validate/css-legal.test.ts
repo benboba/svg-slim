@@ -10,7 +10,7 @@ describe('validate/legal-value', () => {
 			name: 'animation-timing-function',
 			fullname: 'animation-timing-function',
 			value: 'step-start',
-        }).should.equal(true);
+		}).should.equal(true);
 
 		legalValue(regularAttr['animation-timing-function'], {
 			name: 'animation-timing-function',

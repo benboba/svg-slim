@@ -1,13 +1,14 @@
-import { parse as cssParse, Declaration, KeyFrames, Media, Node, Rule } from 'css';
-import { propEq, has } from 'ramda';
+import { Declaration, KeyFrames, Media, Node, parse as cssParse, Rule } from 'css';
+import { has, propEq } from 'ramda';
+import { TUnique } from 'typings';
+import { IDomNode, INode, ITagNode } from 'typings/node';
 import { NodeType } from '../../node/index';
+import { regularAttr } from '../const/regular-attr';
 import { mixWhiteSpace } from '../utils/mix-white-space';
+import { traversalObj } from '../utils/traversal-obj';
+import { legalValue } from '../validate/legal-value';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
-import { traversalObj } from '../utils/traversal-obj';
-// import { legalCss } from '../validate/legal-css';
-import { regularAttr } from '../const/regular-attr';
-import { legalValue } from '../validate/legal-value';
 
 const rmCSSNode = (cssNode: Node, plist: Node[]) => {
 	const index = plist.indexOf(cssNode);

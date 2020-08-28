@@ -1,3 +1,5 @@
+import { INode } from 'typings/node';
+import { ISelector } from 'typings/style';
 import { validPseudoClass, validPseudoElement } from '../const/definitions';
 import { isTag } from '../xml/is-tag';
 import { traversalNode } from '../xml/traversal-node';

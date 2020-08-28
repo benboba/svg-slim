@@ -1,13 +1,15 @@
 // 合并属性和样式完全相同的路径
 import { has } from 'ramda';
+import { IRuleOption } from 'typings';
+import { IAttr, IDomNode, IStyleObj, ITagNode } from 'typings/node';
 import { parseColor } from '../color/parse';
 import { parseAlpha } from '../math/parse-alpha';
 import { hasProp } from '../utils/has-prop';
+import { getAttr } from '../xml/get-attr';
+import { isTag } from '../xml/is-tag';
 // import { doCompute } from '../path/do-compute';
 // import { parsePath } from '../path/parse';
 import { parseStyleTree } from '../xml/parse-style-tree';
-import { getAttr } from '../xml/get-attr';
-import { isTag } from '../xml/is-tag';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
 // import { plus } from '../math/plus';
@@ -145,10 +147,7 @@ export const combinePath = async (dom: IDomNode, {
 		disregardFill,
 		disregardOpacity,
 	}
-}: IRuleOption<{
-	disregardFill: boolean;
-	disregardOpacity: boolean;
-}>): Promise<void> => new Promise(resolve => {
+}: IRuleOption): Promise<void> => new Promise(resolve => {
 
 	parseStyleTree(dom);
 	traversalNode<ITagNode>(isTag, node => {
@@ -176,7 +175,7 @@ export const combinePath = async (dom: IDomNode, {
 						// 3、没有 fill 或 stroke
 						// 4、所有可见透明度 ≥ 1
 						// TODO 路径没有相交或包含
-						if (pathChildren[key].index === tagIndex - 1 && canbeCombine(childNode, pathChildren[key].node, d, disregardFill, disregardOpacity)) {
+						if (pathChildren[key].index === tagIndex - 1 && canbeCombine(childNode, pathChildren[key].node, d, disregardFill as boolean, disregardOpacity as boolean)) {
 							// 路径拼合时，第一个 m 要转为绝对，否则会有 bug
 							pathChildren[key].attr.value += d.value.replace(/^m/, 'M');
 							rmNode(childNode);

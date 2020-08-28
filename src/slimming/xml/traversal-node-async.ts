@@ -5,6 +5,8 @@
  * @param { Node } 目标节点
  */
 
+import { INode } from 'typings/node';
+
 export const traversalNodeAsync = async <T extends INode>(condition: (n: INode) => boolean | void, cb: (n: T) => Promise<void>, node: INode) => new Promise<void>((resolve, reject) => {
 	if (node.childNodes && node.childNodes.length) {
 		const list: Array<Promise<void>> = [];

@@ -1,9 +1,12 @@
 const chai = require('chai');
 const should = chai.should();
-import { shortenDecimalDigits } from '../../../src/slimming/rules/shorten-decimal-digits';
+import { createRuleConfig } from '../../../src/slimming/config/create-rule-config';
+import { mergeConfig } from '../../../src/slimming/config/merge';
 import { combineStyle } from '../../../src/slimming/default-rules/combine-style';
-import { parse } from '../../../src/xml-parser';
+import { shortenDecimalDigits } from '../../../src/slimming/rules/shorten-decimal-digits';
 import { createXML } from '../../../src/slimming/xml/create';
+import { parse } from '../../../src/xml-parser';
+import { IDomNode } from '../../../typings/node';
 
 
 describe('rules/shorten-decimal-digits', () => {
@@ -27,8 +30,14 @@ describe('rules/shorten-decimal-digits', () => {
 		</svg>`;
 		const dom = await parse(xml) as IDomNode;
 		await combineStyle(dom);
-		await shortenDecimalDigits(dom, { params: { sizeDigit: 1, angelDigit: 3 } });
-		createXML(dom).replace(/>\s+</g, '><').should.equal(`<svg><style>@import ('test.css');.a{fill-rule:evenodd;fill-opacity:inherit;opacity:9%;width:5e5}</style><animate to="-.6" attributeName="x"/><animate to=".5" attributeName="opacity"/><animate to="0.55" attributeName="title"/><animate to="0.55"/><rect opacity="1" style="x:1.2;y:0;title:a" amplitude="2"/><polygon stroke-width="2" style="opacity:.1%" points="2e5.1-1.1.5"/></svg>`);
+		const config = createRuleConfig(mergeConfig({
+			params: {
+				sizeDigit: 1,
+				angelDigit: 3,
+			},
+		}), 'shorten-decimal-digits');
+		await shortenDecimalDigits(dom, config);
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><style>@import (\'test.css\');.a{fill-rule:evenodd;fill-opacity:inherit;opacity:9%;width:5e5}</style><animate to="-.6" attributeName="x"/><animate to=".5" attributeName="opacity"/><animate to="0.55" attributeName="title"/><animate to="0.55"/><rect opacity="1" style="x:1.2;y:0;title:a" amplitude="2"/><polygon stroke-width="2" style="opacity:.1%" points="2e5.1-1.1.5"/></svg>');
 	});
 
 	it('badcase', async () => {
@@ -37,7 +46,8 @@ describe('rules/shorten-decimal-digits', () => {
 		</svg>`;
 		const dom = await parse(xml) as IDomNode;
 		await combineStyle(dom);
-		await shortenDecimalDigits(dom, { params: { sizeDigit: 2, angelDigit: 3 } });
-		createXML(dom).replace(/>\s+</g, '><').should.equal(`<svg></svg>`);
+		const config = createRuleConfig(mergeConfig(null), 'shorten-decimal-digits');
+		await shortenDecimalDigits(dom, config);
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg></svg>');
 	});
 });
