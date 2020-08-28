@@ -1,26 +1,28 @@
-declare interface IDynamicObj<T> {
+import { IDomNode, INode } from './node';
+
+export interface IDynamicObj<T> {
 	[attr: string]: T;
 }
 
 // k, v 都是字符串的动态类型
-declare type TAttrObj = IDynamicObj<string>;
+export type TAttrObj = IDynamicObj<string>;
 
 // 通过关键字排重
-declare type TUnique = IDynamicObj<boolean>;
+export type TUnique = IDynamicObj<boolean>;
 
-declare type TBaseObj = Record<never, unknown>;
+export type TBaseObj = Record<never, unknown>;
 
-declare type TRuleOptionVal = number | boolean | string[];
+export type TRuleOptionVal = number | boolean | string[];
 
-declare type TRuleOption = IDynamicObj<[boolean, IDynamicObj<TRuleOptionVal>?]>;
+export type TRuleOption = IDynamicObj<[boolean, IDynamicObj<TRuleOptionVal>?]>;
 
-declare interface IFinalConfig {
+export interface IFinalConfig {
 	rules: TRuleOption;
 	params: IParamsOption;
 	env: IEnvOption;
 }
 
-declare interface IParamsOption {
+export interface IParamsOption {
 	angelDigit: number;
 	sizeDigit: number;
 	trifuncDigit: number;
@@ -32,28 +34,28 @@ declare interface IParamsOption {
 	exchangeStyle: boolean;
 }
 
-declare interface IEnvOption {
+export interface IEnvOption {
 	ie: number;
 }
 
-declare interface IRuleOption<T extends IDynamicObj<TRuleOptionVal>> {
-	option: T;
+export interface IRuleOption {
+	option: IDynamicObj<TRuleOptionVal>;
 	params: IParamsOption;
 	env: IEnvOption;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-declare type TRuleFunction = (dom: IDomNode, rule: IRuleOption<any>) => Promise<void>;
+export type TRuleFunction = (dom: IDomNode, rule: IRuleOption) => Promise<void>;
 
-declare type TRulesItem = [boolean, TRuleFunction, string?];
+export type TRulesItem = [boolean, TRuleFunction, string?];
 
-declare interface IMatrixFunc {
+export interface IMatrixFunc {
 	type: 'translate' | 'rotate' | 'scale' | 'skewX' | 'skewY' | 'matrix'; // 函数类型
 	noEffect?: boolean; // 是否无效
 	val: number[]; // 参数列表
 }
 
-declare interface IRegularTag {
+export interface IRegularTag {
 	isUndef?: boolean;
 	containTextNode?: boolean;
 	legalChildElements: { transparent?: boolean; noself?: boolean; any?: boolean; childElements?: string[] };
@@ -61,7 +63,7 @@ declare interface IRegularTag {
 	onlyAttr?: string[];
 }
 
-declare type TLegalValueItem = {
+export type TLegalValueItem = {
 	type: 'attr';
 	tag?: string[];
 } | {
@@ -82,7 +84,7 @@ declare type TLegalValueItem = {
 	tag?: string[];
 }
 
-declare interface IRegularAttr {
+export interface IRegularAttr {
 	name: string;
 	isUndef?: boolean;
 	couldBeStyle?: boolean;
@@ -104,16 +106,16 @@ declare interface IRegularAttr {
 	applyTo: string[];
 }
 
-declare interface IPathItem {
+export interface IPathItem {
 	type: string;
 	val: number[];
 }
 
-declare interface IPathResultItem extends IPathItem {
+export interface IPathResultItem extends IPathItem {
 	from: number[];
 }
 
-declare interface IRGBColor {
+export interface IRGBColor {
 	r: number;
 	g: number;
 	b: number;
@@ -122,27 +124,14 @@ declare interface IRGBColor {
 	valid: boolean;
 }
 
-declare interface IAnimateAttr {
+export interface IAnimateAttr {
 	attributeName: string;
 	node: INode,
 	keys: string[],
 	values: string[];
 }
 
-declare module 'svg-path-contours' {
-	function contours(arr: [string, ...number[]][]): Array<[number, number][]>;
-	export = contours;
-}
-
-declare module 'triangulate-contours' {
-	function triangulate(arr: Array<[number, number][]>): {
-		positions: [number, number][];
-		cells: [number, number, number][];
-	};
-	export = triangulate;
-}
-
-declare type TFnValue = {
+export type TFnValue = {
 	type: 'number' | 'int';
 	area?: [number, number];
 } | {
@@ -154,7 +143,7 @@ declare type TFnValue = {
 	enum: string;
 }
 
-declare interface IFnDef {
+export interface IFnDef {
 	name: string;
 	values: TFnValue[];
 	valueLen?: [number, number]; // [a, b]，值的长度应符合 an+b 的规则，即 (value.length - b) % a = 0

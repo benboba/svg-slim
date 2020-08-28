@@ -8,7 +8,7 @@ describe('XML_PARSER 正则表达式', () => {
 		REG_XML_DECL.lastIndex = 0;
 		expect(REG_XML_DECL.test('<?xml version="1.0"?>')).to.be.true;
 		REG_XML_DECL.lastIndex = 0;
-		expect(REG_XML_DECL.test("<?xml     version='1.1'      ?>")).to.be.true;
+		expect(REG_XML_DECL.test('<?xml     version=\'1.1\'      ?>')).to.be.true;
 		REG_XML_DECL.lastIndex = 0;
 		expect(REG_XML_DECL.test('< ?xml version="1.0"?>')).to.be.false;
 		REG_XML_DECL.lastIndex = 0;
@@ -71,9 +71,9 @@ describe('XML_PARSER 正则表达式', () => {
 			Anything 123
 		>`)).to.be.true;
 		REG_DOCTYPE.lastIndex = 0;
-		expect(REG_DOCTYPE.test(`<!DOCTYPE "anyt'hing" 'anyt"hing' <![CDATA[Any Thing]]>>`)).to.be.true;
+		expect(REG_DOCTYPE.test('<!DOCTYPE "anyt\'hing" \'anyt"hing\' <![CDATA[Any Thing]]>>')).to.be.true;
 		REG_DOCTYPE.lastIndex = 0;
-		expect(REG_DOCTYPE.test(`<!DOCTYPE "aaa '123>`)).to.be.false;
+		expect(REG_DOCTYPE.test('<!DOCTYPE "aaa \'123>')).to.be.false;
 		REG_DOCTYPE.lastIndex = 0;
 		expect(REG_DOCTYPE.test('<!DOCTYPE <bbb>')).to.be.false;
 	});
@@ -88,9 +88,9 @@ describe('XML_PARSER 正则表达式', () => {
 			Anything 123
 		>`)).to.be.true;
 		REG_OTHER_DECL.lastIndex = 0;
-		expect(REG_OTHER_DECL.test(`<!ELEMENT "anyt'hing" 'anyt"hing' <![CDATA[Any Thing]]>>`)).to.be.true;
+		expect(REG_OTHER_DECL.test('<!ELEMENT "anyt\'hing" \'anyt"hing\' <![CDATA[Any Thing]]>>')).to.be.true;
 		REG_OTHER_DECL.lastIndex = 0;
-		expect(REG_OTHER_DECL.test(`<!ELEMENT "aaa '123>`)).to.be.false;
+		expect(REG_OTHER_DECL.test('<!ELEMENT "aaa \'123>')).to.be.false;
 		REG_OTHER_DECL.lastIndex = 0;
 		expect(REG_OTHER_DECL.test('<!ELEMENT <bbb>')).to.be.false;
 	});
@@ -144,7 +144,7 @@ describe('XML_PARSER 正则表达式', () => {
 		REG_END_TAG.lastIndex = 0;
 		expect(REG_END_TAG.test('</1a>')).to.be.false;
 		REG_END_TAG.lastIndex = 0;
-		expect(REG_END_TAG.test(`</a b>`)).to.be.false;
+		expect(REG_END_TAG.test('</a b>')).to.be.false;
 	});
 
 	it('Attribute', () => {

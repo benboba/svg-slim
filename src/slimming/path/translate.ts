@@ -1,3 +1,4 @@
+import { IPathResultItem } from 'typings';
 import { minus } from '../math/minus';
 import { plus } from '../math/plus';
 

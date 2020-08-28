@@ -1,9 +1,12 @@
 const chai = require('chai');
 const should = chai.should();
-import { shortenStyleAttr } from '../../../src/slimming/rules/shorten-style-attr';
-import { parse } from '../../../src/xml-parser';
-import { createXML } from '../../../src/slimming/xml/create';
+import { createRuleConfig } from '../../../src/slimming/config/create-rule-config';
+import { mergeConfig } from '../../../src/slimming/config/merge';
 import { combineStyle } from '../../../src/slimming/default-rules/combine-style';
+import { shortenStyleAttr } from '../../../src/slimming/rules/shorten-style-attr';
+import { createXML } from '../../../src/slimming/xml/create';
+import { parse } from '../../../src/xml-parser';
+import { IDomNode } from '../../../typings/node';
 
 
 describe('rules/shorten-style-attr', () => {
@@ -14,14 +17,20 @@ describe('rules/shorten-style-attr', () => {
 		</svg>`;
 		const dom = await parse(xml) as IDomNode;
 		await combineStyle(dom);
-		await shortenStyleAttr(dom, { params: { exchange: false, rmAttrEqDefault: false } });
+		const config = createRuleConfig(mergeConfig({
+			params: {
+				rmAttrEqDefault: false,
+			}
+		}), 'shorten-style-attr');
+		await shortenStyleAttr(dom, config);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><style>rect{fill:red}</style><rect style="fill:blue"/></svg>');
 	});
 
 	it('exchange', async () => {
 		const xml = '<svg width="100" fill-rule="evenodd" stroke="blue" stroke-width="2" style="width:50px;"><rect fill="none" style="fill:blue"/></svg>';
 		const dom = await parse(xml) as IDomNode;
-		await shortenStyleAttr(dom, { params: { exchange: false, rmAttrEqDefault: true } });
+		const config = createRuleConfig(mergeConfig(null), 'shorten-style-attr');
+		await shortenStyleAttr(dom, config);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg width="100" style="fill-rule:evenodd;stroke:blue;stroke-width:2;width:50px"><rect fill="blue"/></svg>');
 	});
 
@@ -38,7 +47,12 @@ describe('rules/shorten-style-attr', () => {
 		<animate to="x" attributeName="opacity" from="0"/>
 		</svg>`;
 		const dom = await parse(xml) as IDomNode;
-		await shortenStyleAttr(dom, { params: { exchange: true, rmAttrEqDefault: true } });
+		const config = createRuleConfig(mergeConfig({
+			params: {
+				exchangeStyle: true,
+			}
+		}), 'shorten-style-attr');
+		await shortenStyleAttr(dom, config);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><g transform-origin="bottom" style="transform:rotate(45deg)"><text title="123" font-family="&quot;微软雅黑&quot;" fill="rebeccapurple" stroke="blue">123</text><g fill="#fff"><rect x="1"/></g></g><rect stroke="red" fill="blue"/><text title="444" style="fill:red;stroke:blue;font-family:Arial;font-weight:700;fill-opacity:0.5">345</text><animate to="x" attributeName="opacity" from="0"/></svg>');
 	});
 
@@ -60,7 +74,12 @@ describe('rules/shorten-style-attr', () => {
 		<mask font-family="Arial" id="mask-3" fill="white"><use href="#path-3"/><use href="#path-4"/></mask>
 		</svg>`;
 		const dom = await parse(xml) as IDomNode;
-		await shortenStyleAttr(dom, { params: { exchange: true, rmAttrEqDefault: true } });
+		const config = createRuleConfig(mergeConfig({
+			params: {
+				exchangeStyle: true,
+			}
+		}), 'shorten-style-attr');
+		await shortenStyleAttr(dom, config);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><defs><pattern id="TrianglePattern"><path d="M 0 0 L 7 0 L 3.5 7 z" xlink:href="#ell"/><path d="M 0 0 L 7 0 L 3.5 7 z" href="#ell"/><path d="M 0 0 L 7 0 L 3.5 7 z"/></pattern><polygon id="path-1" points="46 0 46 52 0 52 0 0 46 0"/><polygon id="path-3" points="46 0 46 52 0 52 0 0 46 0"/></defs><ellipse id="ell" fill="url(#TrianglePattern)"/><ellipse fill="red" xlink:href="#path-1"/><ellipse fill="red" href="#path-3"/><mask id="mask-2" fill="white"><use xlink:href="#path-1"/><use xlink:href="#path-2"/></mask><mask id="mask-3" fill="white"><use href="#path-3"/><use href="#path-4"/></mask></svg>');
 	});
 
@@ -74,7 +93,8 @@ describe('rules/shorten-style-attr', () => {
 		<set to=".5" attributeName="opacity"/>
 		</svg>`;
 		const dom = await parse(xml) as IDomNode;
-		await shortenStyleAttr(dom, { params: { exchange: false, rmAttrEqDefault: true } });
+		const config = createRuleConfig(mergeConfig(null), 'shorten-style-attr');
+		await shortenStyleAttr(dom, config);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg width="100" display="b"><rect width="100"/><g fill="none"><circle fill="#000"/><circle fill="black"/><circle/></g><g><circle/><circle fill="red"/></g><set to="3" attributeName="zoomAndPan"/><set attributeName="x"/><set to=".5" attributeName="opacity"/></svg>');
 	});
 });

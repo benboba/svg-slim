@@ -1,8 +1,10 @@
+import { INode } from 'typings/node';
 import { NodeType } from './node';
-import { parse } from './xml-parser';
+import { mergeConfig } from './slimming/config/merge';
 import { rules } from './slimming/rules';
 import { createXML } from './slimming/xml/create';
-import { mergeConfig } from './slimming/config/merge';
+import { parse } from './xml-parser';
+import { createRuleConfig } from './slimming/config/create-rule-config';
 
 const exportFunc: {
 	(data: string, userConfig?: unknown): Promise<string>;
@@ -12,16 +14,12 @@ const exportFunc: {
 	parse(data).then(async dom => {
 		const finalConfig = mergeConfig(userConfig);
 		for (const item of rules) {
-			const ruleConfig: Partial<IRuleOption> = {
-				params: finalConfig.params,
-				env: finalConfig.env,
-			};
+			const ruleConfig = createRuleConfig(finalConfig, item[2]);
 			if (item[0]) {
-				await item[1](dom, ruleConfig as IRuleOption);
+				await item[1](dom, ruleConfig);
 			} else {
 				if (finalConfig.rules[item[2] as string][0]) {
-					ruleConfig.option = finalConfig.rules[item[2] as string][1];
-					await item[1](dom, ruleConfig as IRuleOption);
+					await item[1](dom, ruleConfig);
 				}
 			}
 		}

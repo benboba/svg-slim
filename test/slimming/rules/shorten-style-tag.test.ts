@@ -1,9 +1,12 @@
 const chai = require('chai');
 const should = chai.should();
-import { shortenStyleTag } from '../../../src/slimming/rules/shorten-style-tag';
+import { createRuleConfig } from '../../../src/slimming/config/create-rule-config';
+import { mergeConfig } from '../../../src/slimming/config/merge';
 import { combineStyle } from '../../../src/slimming/default-rules/combine-style';
-import { parse } from '../../../src/xml-parser';
+import { shortenStyleTag } from '../../../src/slimming/rules/shorten-style-tag';
 import { createXML } from '../../../src/slimming/xml/create';
+import { parse } from '../../../src/xml-parser';
+import { IDomNode } from '../../../typings/node';
 
 
 describe('rules/shorten-style-tag', () => {
@@ -13,7 +16,8 @@ describe('rules/shorten-style-tag', () => {
 		</svg>`;
 		const dom = await parse(xml) as IDomNode;
 		await combineStyle(dom);
-		await shortenStyleTag(dom, { option: { deepShorten: true }, params: { rmAttrEqDefault: false }});
+		const config = createRuleConfig(mergeConfig(null), 'shorten-style-tag');
+		await shortenStyleTag(dom, config);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg></svg>');
 	});
 
@@ -61,8 +65,18 @@ describe('rules/shorten-style-tag', () => {
 		</svg>`;
 		const dom = await parse(xml) as IDomNode;
 		await combineStyle(dom);
-		await shortenStyleTag(dom, { option: { deepShorten: false }, params: { rmAttrEqDefault: false }});
-		createXML(dom).replace(/>\s+</g, '><').should.equal(`<svg><style>@charset 'utf-8';@import ('test.css');@keyframes test{100%{fill:blue}}@media test{text::before{fill:green}}#redText{fill:yellow}text[id^=red]{fill:yellow}a::first-letter{fill:blue}</style><a><text id="redText">123</text></a></svg>`);
+		const config = createRuleConfig(mergeConfig({
+			rules: {
+				'shorten-style-tag': [true, {
+					deepShorten: false,
+				}],
+			},
+			params: {
+				rmAttrEqDefault: false,
+			},
+		}), 'shorten-style-tag');
+		await shortenStyleTag(dom, config);
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><style>@charset \'utf-8\';@import (\'test.css\');@keyframes test{100%{fill:blue}}@media test{text::before{fill:green}}#redText{fill:yellow}text[id^=red]{fill:yellow}a::first-letter{fill:blue}</style><a><text id="redText">123</text></a></svg>');
 	});
 
 	it('缩短 style 元素 - 深度解析', async () => {
@@ -110,8 +124,13 @@ describe('rules/shorten-style-tag', () => {
 		</svg>`;
 		const dom = await parse(xml) as IDomNode;
 		await combineStyle(dom);
-		await shortenStyleTag(dom, { option: { deepShorten: true }, params: { rmAttrEqDefault: false }});
-		createXML(dom).replace(/>\s+</g, '><').should.equal(`<svg><style>#redText,a,text[id^=red]{fill:yellow;fill-rule:evenodd;stroke:blue}@import ('test.css');a::first-letter{fill:red;stroke:blue;text-decoration-line:underline}</style><a><text id="redText">123</text></a></svg>`);
+		const config = createRuleConfig(mergeConfig({
+			params: {
+				rmAttrEqDefault: false,
+			},
+		}), 'shorten-style-tag');
+		await shortenStyleTag(dom, config);
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><style>#redText,a,text[id^=red]{fill:yellow;fill-rule:evenodd;stroke:blue}@import (\'test.css\');a::first-letter{fill:red;stroke:blue;text-decoration-line:underline}</style><a><text id="redText">123</text></a></svg>');
 	});
 
 	it('深度继承的情况', async () => {
@@ -135,7 +154,8 @@ describe('rules/shorten-style-tag', () => {
 		</svg>`;
 		const dom = await parse(xml) as IDomNode;
 		await combineStyle(dom);
-		await shortenStyleTag(dom, { option: { deepShorten: true }, params: { rmAttrEqDefault: false }});
+		const config = createRuleConfig(mergeConfig(null), 'shorten-style-tag');
+		await shortenStyleTag(dom, config);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><style>mask{fill:red}</style><defs><pattern id="TrianglePattern"><path d="M 0 0 L 7 0 L 3.5 7 z"/></pattern><polygon id="path-1" points="46 0 46 52 0 52 0 0 46 0"/></defs><ellipse id="ell" font-family="Arial" fill="url(#TrianglePattern)"/><mask style="stroke: none;fill: blue;" font-family="Arial" id="mask-2"><use xlink:href="#path-1"/></mask><mask style="stroke: none;" font-family="Arial" id="mask-3" xlink:href="#mask-3"/><mask xlink:href="#use"><use id="use"/></mask><mask href="#ell"/></svg>');
 	});
 
@@ -150,7 +170,8 @@ describe('rules/shorten-style-tag', () => {
 		</svg>`;
 		const dom = await parse(xml) as IDomNode;
 		await combineStyle(dom);
-		await shortenStyleTag(dom, { option: { deepShorten: true }, params: { rmAttrEqDefault: true }});
+		const config = createRuleConfig(mergeConfig(null), 'shorten-style-tag');
+		await shortenStyleTag(dom, config);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><rect/></svg>');
 	});
 });

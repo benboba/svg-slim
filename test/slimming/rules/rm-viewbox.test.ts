@@ -3,6 +3,7 @@ const should = chai.should();
 import { rmViewBox } from '../../../src/slimming/rules/rm-viewbox';
 import { parse } from '../../../src/xml-parser';
 import { createXML } from '../../../src/slimming/xml/create';
+import { IDomNode } from '../../../typings/node';
 
 describe('rules/rm-viewbox', () => {
 	it('移除不必要的 ViewBox', async () => {
@@ -18,7 +19,7 @@ describe('rules/rm-viewbox', () => {
 	});
 
 	it('不一样的单位', async () => {
-		const xml = `<svg x="0" y="0" width="100pt" height="100pt" viewBox="0 0 100 100"></svg>`;
+		const xml = '<svg x="0" y="0" width="100pt" height="100pt" viewBox="0 0 100 100"></svg>';
 		const dom = await parse(xml) as IDomNode;
 		await rmViewBox(dom);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg x="0" y="0" width="100pt" height="100pt" viewBox="0 0 100 100"/>');

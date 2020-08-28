@@ -1,4 +1,5 @@
 import { lt } from 'ramda';
+import { IPathResultItem } from 'typings';
 import { numberLength } from '../utils/number-length';
 
 export const computeM = (absolute: number[], relative: number[], pathResult: IPathResultItem[], pos: number[]): number[] => {

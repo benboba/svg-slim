@@ -1,3 +1,4 @@
+import { IPathResultItem } from 'typings';
 import { numberLength } from '../utils/number-length';
 
 export const SPOS_X2 = 0;

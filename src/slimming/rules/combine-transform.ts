@@ -1,3 +1,5 @@
+import { IAnimateAttr, IMatrixFunc, IRegularAttr, IRuleOption } from 'typings';
+import { IDomNode, ITagNode } from 'typings/node';
 import { APOS_LEN, APOS_RX, APOS_RY, APOS_X, APOS_Y, DEFAULT_MATRIX_DIGIT } from '../const';
 import { transformAttributes } from '../const/definitions';
 import { regularAttr } from '../const/regular-attr';
@@ -50,21 +52,22 @@ const checkAttr = (node: ITagNode, attrname: string, val: string) => {
 	if (val === '0') {
 		rmAttrs(node, [attrname]);
 	} else {
-		node.removeAttribute(attrname);
 		const attrDefine: IRegularAttr = regularAttr[attrname];
 		if (attrDefine.couldBeStyle && node.hasAttribute('style')) {
 			const styleAttr = parseStyle(node.getAttribute('style') as string);
-			styleAttr.some(sAttr => {
+			const hasStyle = styleAttr.some(sAttr => {
 				if (sAttr.fullname === attrname) {
 					sAttr.value = val;
 					return true;
 				}
 				return false;
 			});
-			node.setAttribute('style', stringifyStyle(styleAttr));
-		} else {
-			node.setAttribute(attrname, val);
+			if (hasStyle) {
+				node.setAttribute('style', stringifyStyle(styleAttr));
+				return;
+			}
 		}
+		node.setAttribute(attrname, val);
 	}
 };
 
@@ -811,7 +814,7 @@ export const combineTransform = async (dom: IDomNode, {
 		sizeDigit,
 		angelDigit,
 	}
-}: IRuleOption<TBaseObj>): Promise<void> => new Promise(resolve => {
+}: IRuleOption): Promise<void> => new Promise(resolve => {
 	parseStyleTree(dom);
 	traversalNode<ITagNode>(isTag, node => {
 		for (let i = node.attributes.length; i--;) {

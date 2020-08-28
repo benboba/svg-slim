@@ -3,6 +3,7 @@ const should = chai.should();
 import { parseStyleTree } from '../../../src/slimming/xml/parse-style-tree';
 import { combineStyle } from '../../../src/slimming/default-rules/combine-style';
 import { parse } from '../../../src/xml-parser';
+import { ITagNode } from '../../../typings/node';
 
 
 describe('xml/parse-style-tree', () => {

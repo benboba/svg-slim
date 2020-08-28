@@ -1,8 +1,11 @@
 const chai = require('chai');
 const should = chai.should();
+import { createRuleConfig } from '../../../src/slimming/config/create-rule-config';
+import { mergeConfig } from '../../../src/slimming/config/merge';
 import { shortenAnimate } from '../../../src/slimming/rules/shorten-animate';
 import { createXML } from '../../../src/slimming/xml/create';
 import { parse } from '../../../src/xml-parser';
+import { IDomNode } from '../../../typings/node';
 
 describe('rules/shorten-animate', () => {
 	it('优化动画元素', async () => {
@@ -25,7 +28,8 @@ describe('rules/shorten-animate', () => {
 			</text>
 		</svg>`;
 		const dom = await parse(xml) as IDomNode;
-		await shortenAnimate(dom, { option: { remove: false } });
+		const config = createRuleConfig(mergeConfig(null), 'shorten-animate');
+		await shortenAnimate(dom, config);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><feFuncA><animate from="0" attributeName="amplitude"/></feFuncA><text><animate to="100" attributeName="x"/><animate attributeName="fill" by="blue"/></text></svg>');
 	});
 
@@ -40,7 +44,8 @@ describe('rules/shorten-animate', () => {
 			</text>
 		</svg>`;
 		const dom = await parse(xml) as IDomNode;
-		await shortenAnimate(dom, { option: { remove: false } });
+		const config = createRuleConfig(mergeConfig(null), 'shorten-animate');
+		await shortenAnimate(dom, config);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><path id="a" d="M0,0H100V100z"/><text id="c"/><text><animateMotion path="M0,0H100V100z"/><animateMotion><mpath xlink:href="#a"/></animateMotion></text></svg>');
 	});
 
@@ -52,7 +57,8 @@ describe('rules/shorten-animate', () => {
 			<animate href="#b" to="M0,0H50V50z" attributeName="d"/>
 		</svg>`;
 		const dom = await parse(xml) as IDomNode;
-		await shortenAnimate(dom, { option: { remove: false } });
+		const config = createRuleConfig(mergeConfig(null), 'shorten-animate');
+		await shortenAnimate(dom, config);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><path id="a" d="M0,0H100V100z"><animate to="M0,0H50V50z" attributeName="d"/><animate to="M0,0H50V50z" attributeName="d"/></path></svg>');
 	});
 
@@ -69,7 +75,14 @@ describe('rules/shorten-animate', () => {
 		<animateTransform attributeName="x"/>
 		</svg>`;
 		const dom = await parse(xml) as IDomNode;
-		await shortenAnimate(dom, { option: { remove: true } });
+		const config = createRuleConfig(mergeConfig({
+			rules: {
+				'shorten-animate': [true, {
+					remove: true,
+				}],
+			},
+		}), 'shorten-animate');
+		await shortenAnimate(dom, config);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg></svg>');
 	});
 });

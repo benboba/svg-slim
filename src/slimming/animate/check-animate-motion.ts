@@ -1,3 +1,4 @@
+import { IDomNode, ITagNode } from 'typings/node';
 import { shapeElements } from '../const/definitions';
 import { getById } from '../xml/get-by-id';
 

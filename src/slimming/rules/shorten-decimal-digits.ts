@@ -1,5 +1,7 @@
 import { Declaration, StyleRules } from 'css';
 import { both, curry, has } from 'ramda';
+import { IRuleOption } from 'typings';
+import { IDomNode, ITagNode } from 'typings/node';
 import { animationAttrElements, animationAttributes } from '../const/definitions';
 import { regularAttr } from '../const/regular-attr';
 import { numberGlobal } from '../const/syntax';
@@ -22,7 +24,7 @@ export const shortenDecimalDigits = async (dom: IDomNode, {
 		sizeDigit,
 		angelDigit,
 	}
-}: IRuleOption<TBaseObj>): Promise<void> => new Promise(resolve => {
+}: IRuleOption): Promise<void> => new Promise(resolve => {
 	const fuzzyDigit = doShorten(sizeDigit);
 	const accurateDigit = doShorten(angelDigit);
 

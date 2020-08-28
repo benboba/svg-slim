@@ -1,4 +1,5 @@
 import { NodeType } from '../node/index';
+import { IAttr, INode } from 'typings/node';
 
 interface INodeOption {
 	nodeName: string;
@@ -123,9 +124,13 @@ export class Node implements INode {
 		if (this.attributes) {
 			for (const attr of this.attributes) {
 				if (!namespace) {
-					return attr.fullname === name;
+					if (attr.fullname === name) {
+						return true;
+					}
 				} else {
-					return attr.name === name && attr.namespace === namespace;
+					if (attr.name === name && attr.namespace === namespace) {
+						return true;
+					}
 				}
 			}
 		}

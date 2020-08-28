@@ -1,3 +1,4 @@
+import { IRegularTag } from 'typings';
 import { animationAdditionAttributes, animationElements, animationTimingAttributes, animationValueAttributes, conditionalProcessingAttributes, coreAttributes, deprecatedXlinkAttributes, descriptiveElements, filterPrimitiveElements, gradientElements, lightSourceElements, paintServerElements, rectAttributes, shapeElements, structuralElements, textContentChildElements, transferFunctionElementAttributes, transferFunctionElements } from './definitions';
 
 const baseChildren = ['script'].concat(descriptiveElements);

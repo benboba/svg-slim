@@ -1,24 +1,41 @@
 const chai = require('chai');
 const should = chai.should();
+import { createRuleConfig } from '../../../src/slimming/config/create-rule-config';
+import { mergeConfig } from '../../../src/slimming/config/merge';
 import { combineStyle } from '../../../src/slimming/default-rules/combine-style';
 import { rmIrregularTag } from '../../../src/slimming/rules/rm-irregular-tag';
 import { rmPx } from '../../../src/slimming/rules/rm-px';
 import { rmUnnecessary } from '../../../src/slimming/rules/rm-unnecessary';
 import { createXML } from '../../../src/slimming/xml/create';
 import { parse } from '../../../src/xml-parser';
+import { IDomNode } from '../../../typings/node';
 
 describe('rules/覆盖率补齐', () => {
 	it('rm-irregular-tag', async () => {
 		const xml = '<svg><undef/><def/></svg>';
 		const dom = await parse(xml) as IDomNode;
-		await rmIrregularTag(dom, { option: { ignore: ['def'] } });
+		const config = createRuleConfig(mergeConfig({
+			rules: {
+				'rm-irregular-tag': [true, {
+					ignore: ['def'],
+				}],
+			}
+		}), 'rm-irregular-tag');
+		await rmIrregularTag(dom, config);
 		createXML(dom).should.equal('<svg><def/></svg>');
 	});
 
 	it('rm-unnecessary', async () => {
 		const xml = '<svg><title/></svg>';
 		const dom = await parse(xml) as IDomNode;
-		await rmUnnecessary(dom, { option: { tags: [] } });
+		const config = createRuleConfig(mergeConfig({
+			rules: {
+				'rm-unnecessary': [true, {
+					tags: [],
+				}],
+			}
+		}), 'rm-unnecessary');
+		await rmUnnecessary(dom, config);
 		createXML(dom).should.equal('<svg><title/></svg>');
 	});
 

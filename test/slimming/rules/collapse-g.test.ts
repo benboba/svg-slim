@@ -1,8 +1,9 @@
 const chai = require('chai');
 const should = chai.should();
 import { collapseG } from '../../../src/slimming/rules/collapse-g';
-import { parse } from '../../../src/xml-parser';
 import { createXML } from '../../../src/slimming/xml/create';
+import { parse } from '../../../src/xml-parser';
+import { IDomNode } from '../../../typings/node';
 
 describe('rules/collapse-g', () => {
 	it('g元素塌陷', async () => {

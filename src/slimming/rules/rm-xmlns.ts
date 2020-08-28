@@ -1,3 +1,4 @@
+import { IDomNode, INode } from 'typings/node';
 import { hasProp } from '../utils/has-prop';
 import { isTag } from '../xml/is-tag';
 import { rmNode } from '../xml/rm-node';

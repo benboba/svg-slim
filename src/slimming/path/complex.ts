@@ -1,6 +1,7 @@
-import { symmetry } from '../math/symmetry';
-import { plus } from '../math/plus';
+import { IPathResultItem } from 'typings';
 import { minus } from '../math/minus';
+import { plus } from '../math/plus';
+import { symmetry } from '../math/symmetry';
 
 // 把简单路径指令转回复杂指令
 export const complex = (item: IPathResultItem, lastItem: IPathResultItem) => {

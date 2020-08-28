@@ -1,9 +1,10 @@
 const chai = require('chai');
 const should = chai.should();
-import { shortenDefs } from '../../../src/slimming/rules/shorten-defs';
-import { parse } from '../../../src/xml-parser';
-import { createXML } from '../../../src/slimming/xml/create';
 import { combineStyle } from '../../../src/slimming/default-rules/combine-style';
+import { shortenDefs } from '../../../src/slimming/rules/shorten-defs';
+import { createXML } from '../../../src/slimming/xml/create';
+import { parse } from '../../../src/xml-parser';
+import { IDomNode } from '../../../typings/node';
 
 
 describe('rules/shorten-defs', () => {

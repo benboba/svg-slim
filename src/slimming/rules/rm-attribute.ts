@@ -1,11 +1,13 @@
+import { IRegularAttr, IRegularTag, IRuleOption } from 'typings';
+import { IDomNode, ITagNode } from 'typings/node';
 import { ariaAttributes, eventAttributes } from '../const/definitions';
 import { regularAttr } from '../const/regular-attr';
 import { regularTag } from '../const/regular-tag';
 import { hasProp } from '../utils/has-prop';
 import { legalValue } from '../validate/legal-value';
 import { attrIsEqual } from '../xml/attr-is-equal';
-import { parseStyleTree } from '../xml/parse-style-tree';
 import { isTag } from '../xml/is-tag';
+import { parseStyleTree } from '../xml/parse-style-tree';
 import { traversalNode } from '../xml/traversal-node';
 
 // rm-attirbute 不再验证 css 类的属性，只关注该 css 属性是否是 svg 所支持的
@@ -17,10 +19,7 @@ export const rmAttribute = async (dom: IDomNode, {
 	params: {
 		rmAttrEqDefault,
 	},
-}: IRuleOption<{
-	keepEvent: boolean;
-	keepAria: boolean;
-}>): Promise<void> => new Promise(resolve => {
+}: IRuleOption): Promise<void> => new Promise(resolve => {
 	traversalNode<ITagNode>(isTag, node => {
 		if (rmAttrEqDefault) {
 			parseStyleTree(dom);

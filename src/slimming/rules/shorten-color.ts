@@ -1,5 +1,7 @@
 import { Declaration, StyleRules } from 'css';
 import { both, has, pipe, toLower } from 'ramda';
+import { IRuleOption } from 'typings';
+import { IDomNode, ITagNode } from 'typings/node';
 import { parseColor } from '../color/parse';
 import { rgb2hsl } from '../color/rgb2hsl';
 import { FF, Hundred, OPACITY_DIGIT } from '../const';
@@ -180,7 +182,7 @@ const formatColor = (rgba: boolean, str: string, digit: number): string => {
 		}
 
 		s = s.replace(/#([0-9a-f])\1([0-9a-f])\2([0-9a-f])\3(?=[^0-9a-f]|$)/gi, '#$1$2$3');
-		s = s.replace(shortenReg, $0 => `${shortenMap[$0 as keyof typeof shortenMap]}`);
+		s = s.replace(shortenReg, ($0: string) => `${shortenMap[$0 as keyof typeof shortenMap]}`);
 		if (rgba) {
 			s = s.replace(/#([0-9a-f])\1([0-9a-f])\2([0-9a-f])\3([0-9a-f])\4(?=[^0-9a-f]|$)/gi, '#$1$2$3$4');
 			s = s.replace(/^transparent$/i, '#0000');
@@ -200,19 +202,17 @@ export const shortenColor = async (dom: IDomNode, {
 	params: {
 		opacityDigit,
 	},
-}: IRuleOption<{
-	rrggbbaa: boolean;
-}>): Promise<void> => new Promise(resolve => {
+}: IRuleOption): Promise<void> => new Promise(resolve => {
 	const digit = Math.min(opacityDigit, OPACITY_DIGIT);
 	traversalNode<ITagNode>(isTag, node => {
 		node.attributes.forEach(attr => {
 			if (regularAttr[attr.fullname].maybeColor) {
-				attr.value = formatColor(rrggbbaa, attr.value, digit);
+				attr.value = formatColor(rrggbbaa as boolean, attr.value, digit);
 			} else if (attr.fullname === 'style') {
 				const style = parseStyle(attr.value);
 				style.forEach(s => {
 					if (regularAttr[s.fullname].maybeColor) {
-						s.value = formatColor(rrggbbaa, s.value, digit);
+						s.value = formatColor(rrggbbaa as boolean, s.value, digit);
 					}
 				});
 				attr.value = stringifyStyle(style);
@@ -225,7 +225,7 @@ export const shortenColor = async (dom: IDomNode, {
 		const parsedCss = dom.stylesheet.stylesheet as StyleRules;
 		traversalObj(both(has('property'), has('value')), (cssRule: Declaration) => {
 			if (regularAttr[cssRule.property as string].maybeColor) { // 可能为颜色的属性
-				cssRule.value = formatColor(rrggbbaa, cssRule.value as string, digit);
+				cssRule.value = formatColor(rrggbbaa as boolean, cssRule.value as string, digit);
 			}
 		}, parsedCss.rules);
 	}

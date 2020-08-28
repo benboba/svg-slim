@@ -1,4 +1,5 @@
-import { cssAll, cssTimeFullMatch, cubicBezierFunc, stepsFunc, cssEasingFunction } from './css-value';
+import { IRegularAttr } from 'typings';
+import { cssAll, cssEasingFunction, cssTimeFullMatch, cubicBezierFunc, stepsFunc } from './css-value';
 import { containerElements, filterPrimitiveElements, gradientElements, graphicsElements, newViewportsElements, shapeElements, textContentElements } from './definitions';
 import { alignmentBaseline, alignX, alignY, animateTransformType, blendMode, calcMode, channel, crossOrigin, dur, edgeMode, feColorMatrixType, feFuncType, feTurbulenceType, inVal, isolationMode, lengthAdjust, markerUnit, method, operater, operater1, orient, referrer, restart, spreadMethod, target, units } from './enum';
 import { angelFullMatch, clockFullMatch, controlPointsFullMatch, cssNameFullMatch, cssNameSpaceSeparatedFullMatch, indentFullMatch, integerFullMatch, langFullMatch, lengthPairFullMatch, lengthPairListFullMatch, lengthPercentageFullMatch, lengthPercentageListFullMatch, mediaTypeFullMatch, nameFullMatch, numberFullMatch, numberListFullMatch, numberOptionalFullMatch, numberSemiSepatatedFullMatch, pathFullMatch, percentageFullMatch, preservAspectRatioFullMatch, timeListFullMatch, transformListFullMatch, URIFullMatch, viewBoxFullMatch } from './syntax';

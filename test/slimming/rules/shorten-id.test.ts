@@ -1,9 +1,10 @@
 const chai = require('chai');
 const should = chai.should();
-import { shortenID } from '../../../src/slimming/rules/shorten-id';
 import { combineStyle } from '../../../src/slimming/default-rules/combine-style';
-import { parse } from '../../../src/xml-parser';
+import { shortenID } from '../../../src/slimming/rules/shorten-id';
 import { createXML } from '../../../src/slimming/xml/create';
+import { parse } from '../../../src/xml-parser';
+import { IDomNode } from '../../../typings/node';
 
 
 describe('rules/shorten-id', () => {

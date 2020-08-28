@@ -1,3 +1,4 @@
+import { IPathItem, IPathResultItem } from 'typings';
 import { APOS_LEN, APOS_X } from '../const';
 import { minus } from '../math/minus';
 import { plus } from '../math/plus';

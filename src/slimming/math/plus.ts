@@ -6,4 +6,7 @@ import { curry } from 'ramda';
 import { digit } from './digit';
 import { toFixed } from './tofixed';
 
-export const plus = curry((a: number, b: number): number => toFixed(digit(a, b), a + b));
+export const plus = curry((a: number, b: number) => {
+	const dgt = Math.max(digit(a), digit(b));
+	return toFixed(dgt, a + b);
+});

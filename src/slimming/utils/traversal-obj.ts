@@ -7,6 +7,7 @@
  * @param { boolean } 是否深度优先，是的话会先遍历子元素
  */
 
+import { TBaseObj } from 'typings';
 import { isObj } from './is-obj';
 
 const traversal = <T extends TBaseObj>(condition: (o: T | T[]) => boolean, cb: (o: T, p: Array<T | T[]>) => void, obj: T | T[], path: Array<T | T[]>, visited: Array<T | T[]>, deep: boolean) => {

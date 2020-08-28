@@ -1,5 +1,6 @@
+import { IMatrixFunc } from 'typings';
+import { CIRC, HALF_CIRC, matrixEPos } from '../const';
 import { toFixed } from '../math/tofixed';
-import { matrixEPos, CIRC, HALF_CIRC } from '../const';
 
 const aPos = 0;
 const bPos = 1;

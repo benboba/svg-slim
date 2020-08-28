@@ -2,6 +2,7 @@ const chai = require('chai');
 const should = chai.should();
 import { matchSelector } from '../../../src/slimming/style/match-selector';
 import { parse } from '../../../src/xml-parser';
+import { ITagNode } from '../../../typings/node';
 
 describe('style/match-selector', () => {
 	it('参数缺失的情况', () => {
@@ -9,7 +10,7 @@ describe('style/match-selector', () => {
 	});
 
 	it('empty Match', async () => {
-		const xml = `<rect class="a b c"/>`;
+		const xml = '<rect class="a b c"/>';
 		const dom = await parse(xml) as ITagNode;
 		matchSelector({
 			attr: [],
@@ -20,7 +21,7 @@ describe('style/match-selector', () => {
 	});
 
 	it('class Match', async () => {
-		const xml = `<rect class="a b c"/>`;
+		const xml = '<rect class="a b c"/>';
 		const dom = await parse(xml) as ITagNode;
 		matchSelector({
 			attr: [],
@@ -37,7 +38,7 @@ describe('style/match-selector', () => {
 	});
 
 	it('attr Match', async () => {
-		const xml = `<rect a="a"/>`;
+		const xml = '<rect a="a"/>';
 		const dom = await parse(xml) as ITagNode;
 		matchSelector({
 			attr: [{
@@ -191,9 +192,9 @@ describe('style/match-selector', () => {
 	});
 
 	it('pseudo Match', async () => {
-		const xml1 = `<text class="a b c"/>`;
-		const xml2 = `<g><rect/></g>`;
-		const xml3 = `<g><text/></g>`;
+		const xml1 = '<text class="a b c"/>';
+		const xml2 = '<g><rect/></g>';
+		const xml3 = '<g><text/></g>';
 		const dom1 = await parse(xml1) as ITagNode;
 		const dom2 = await parse(xml2) as ITagNode;
 		const dom3 = await parse(xml3) as ITagNode;

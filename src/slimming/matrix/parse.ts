@@ -1,5 +1,6 @@
+import { IMatrixFunc } from 'typings';
+import { commaWsp, numberPattern } from '../const/syntax';
 import { parseNumberList } from '../utils/parse-numberlist';
-import { numberPattern, commaWsp } from '../const/syntax';
 
 const matrixSingle = `(translate|scale|rotate|skewX|skewY|matrix)\\s*\\(\\s*(${numberPattern}(?:${commaWsp}${numberPattern})*)\\s*\\)`;
 const matrixReg = new RegExp(matrixSingle, 'gm');

@@ -1,5 +1,6 @@
 import { Rule, StyleRules } from 'css';
 import { has } from 'ramda';
+import { IDomNode } from 'typings/node';
 import { createShortenID } from '../algorithm/create-shorten-id';
 import { hasProp } from '../utils/has-prop';
 import { mixWhiteSpace } from '../utils/mix-white-space';

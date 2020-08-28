@@ -1,7 +1,9 @@
+import { IRegularAttr } from 'typings';
+import { IAttr } from 'typings/node';
 import { regularAttr } from '../const/regular-attr';
 import { useEnum } from './use-enum';
-import { useReg } from './use-reg';
 import { useFunc } from './use-func';
+import { useReg } from './use-reg';
 
 export const legalValue = (attrDefine: IRegularAttr, attr: IAttr, nodeName = ''): boolean => {
 	if (attrDefine.legalValues.length) {

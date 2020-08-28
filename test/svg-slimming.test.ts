@@ -47,7 +47,7 @@ describe('svg-slimming 入口', () => {
 		dom.should.equal('<svg/>');
 	});
 
-	it('破坏性操作', async () => {
+	it('config 不是对象', async () => {
 		const xml = '<svg></svg>';
 		const dom = await slimming(xml, 'test');
 		dom.should.equal('<svg/>');

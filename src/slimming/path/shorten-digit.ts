@@ -1,5 +1,6 @@
+import { IPathResultItem } from 'typings';
+import { APOS_LEN, APOS_ROTATION, APOS_RX, APOS_RY, APOS_X, APOS_Y } from '../const';
 import { toFixed } from '../math/tofixed';
-import { APOS_LEN, APOS_X, APOS_Y, APOS_RX, APOS_RY, APOS_ROTATION } from '../const';
 
 export const shortenDigit = (pathItem: IPathResultItem, digit1: number, digit2: number): number[] => {
 	if (pathItem.type.toLowerCase() === 'a') {

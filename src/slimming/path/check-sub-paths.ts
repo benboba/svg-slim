@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const contours = require('svg-path-contours');
 const triangle = require('triangulate-contours');
+import { IPathResultItem } from 'typings';
 import { combineA, combineHV, combineL } from './combine';
 import { complex } from './complex';
 import { getRel } from './translate';

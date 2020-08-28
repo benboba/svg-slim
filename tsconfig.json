@@ -15,7 +15,8 @@
 	},
 	"include": [
 		"src/**/*",
-		"src/typings/*"
+		"test/**/*",
+		"typings/*"
 	],
 	"exclude": [
 		"node_modules"

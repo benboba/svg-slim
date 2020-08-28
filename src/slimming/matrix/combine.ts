@@ -1,3 +1,4 @@
+import { IMatrixFunc } from 'typings';
 import { DEFAULT_ACCURATE_DIGIT, DEFAULT_MATRIX_DIGIT, DEFAULT_SIZE_DIGIT } from '../const';
 import { Matrix } from './matrix';
 import { shorten } from './shorten';

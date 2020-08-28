@@ -1,3 +1,5 @@
+import { IRuleOption } from 'typings';
+import { IDomNode, ITagNode } from 'typings/node';
 import { checkAnimateMotion } from '../animate/check-animate-motion';
 import { animationAttrElements, animationAttributes, animationElements } from '../const/definitions';
 import { regularAttr } from '../const/regular-attr';
@@ -7,7 +9,7 @@ import { getById } from '../xml/get-by-id';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';
 
-export const shortenAnimate = async (dom: IDomNode, { option: { remove } }: IRuleOption<{ remove: boolean }>): Promise<void> => new Promise(resolve => {
+export const shortenAnimate = async (dom: IDomNode, { option: { remove } }: IRuleOption): Promise<void> => new Promise(resolve => {
 	traversalNode(node => animationElements.includes(node.nodeName), (node: ITagNode) => {
 		if (remove) {
 			rmNode(node);

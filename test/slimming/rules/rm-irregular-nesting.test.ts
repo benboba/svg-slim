@@ -1,8 +1,11 @@
 const chai = require('chai');
 const should = chai.should();
+import { createRuleConfig } from '../../../src/slimming/config/create-rule-config';
+import { mergeConfig } from '../../../src/slimming/config/merge';
 import { rmIrregularNesting } from '../../../src/slimming/rules/rm-irregular-nesting';
-import { parse } from '../../../src/xml-parser';
 import { createXML } from '../../../src/slimming/xml/create';
+import { parse } from '../../../src/xml-parser';
+import { IDomNode } from '../../../typings/node';
 
 describe('rules/rm-irregular-nesting', () => {
 	it('移除不正确的嵌套', async () => {
@@ -19,7 +22,14 @@ describe('rules/rm-irregular-nesting', () => {
 		<switch><a><line/></a></switch>
 		</svg>`;
 		const dom = await parse(xml) as IDomNode;
-		await rmIrregularNesting(dom, { option: { ignore: ['rect'] } });
+		const config = createRuleConfig(mergeConfig({
+			rules: {
+				'rm-irregular-nesting': [true, {
+					ignore: ['rect'],
+				}],
+			},
+		}), 'rm-irregular-nesting');
+		await rmIrregularNesting(dom, config);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><desc><circle></circle><a/></desc><rect><a><g/></a></rect><switch><a><line/></a></switch></svg>');
 	});
 });

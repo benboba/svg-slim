@@ -2,8 +2,9 @@
 const chai = require('chai');
 const should = chai.should();
 const expect = chai.expect;
-import { parse, NodeType } from '../src/xml-parser';
+import { NodeType, parse } from '../src/xml-parser';
 import { Node } from '../src/xml-parser/node';
+import { IAttr } from '../typings/node';
 
 describe('XML_PARSER', () => {
 	it('解析超大文档', async () => {
@@ -556,8 +557,8 @@ describe('XML_PARSER', () => {
 		(dom.attributes as IAttr[]).length.should.equal(1);
 		dom.removeAttribute('test', 'testns');
 		(dom.attributes as IAttr[]).length.should.equal(0);
-		dom.insertBefore(xmlClone, xmlClone)
-		dom.insertBefore(xml, xmlClone)
+		dom.insertBefore(xmlClone, xmlClone);
+		dom.insertBefore(xml, xmlClone);
 		dom.replaceChild(xml, xmlClone);
 		dom.replaceChild(xml, xmlClone);
 		dom.replaceChild(xmlClone, new Node({
@@ -571,89 +572,89 @@ describe('XML_PARSER', () => {
 });
 
 describe('XMLPARSER badcase', function() {
-    parse(` <?xml version="1.1" ?><svg/>`).catch(err => {
-        it('xml声明必须在最前面', function() {
-            err.message.should.have.match(/^The xml declaration must be at the front of the document!/);
-        });
-    });
-
-    parse(`<svg>`).catch(err => {
-        it('文档结构错误', function() {
-            err.message.should.have.match(/^Document structure is wrong!/);
-        });
-    });
-
-    parse(`<svg></html>`).catch(err => {
-        it('开始和结束标签无法匹配', function() {
-            err.message.should.have.match(/^The start and end tags cannot match!/);
-        });
-    });
-
-    parse(`<svg/><svg/>`).catch(err => {
-        it('只允许出现一个根元素节点', function() {
-            err.message.should.have.match(/^Only one root element node is allowed!/);
-        });
-    });
-
-    parse(``).catch(err => {
-        it('没有根元素节点', function() {
-            err.message.should.have.match(/^No root element node!/);
-        });
+	parse(' <?xml version="1.1" ?><svg/>').catch(err => {
+		it('xml声明必须在最前面', function() {
+			err.message.should.have.match(/^The xml declaration must be at the front of the document!/);
+		});
 	});
 
-    parse(`<svg attr="1" attr="2"/>`).catch(err => {
-        it('属性名重复', function() {
-            err.message.should.have.match(/^Duplicate property names!/);
-        });
-    });
+	parse('<svg>').catch(err => {
+		it('文档结构错误', function() {
+			err.message.should.have.match(/^Document structure is wrong!/);
+		});
+	});
 
-    parse(`<svg/></svg>`).catch(err => {
-        it('意外的结束标签', function() {
-            err.message.should.have.match(/^Unexpected end tag!/);
-        });
-    });
+	parse('<svg></html>').catch(err => {
+		it('开始和结束标签无法匹配', function() {
+			err.message.should.have.match(/^The start and end tags cannot match!/);
+		});
+	});
 
-    parse(`<svg/>123`).catch(err => {
-        it('意外的文本节点', function() {
-            err.message.should.have.match(/^Unexpected text node!/);
-        });
-    });
+	parse('<svg/><svg/>').catch(err => {
+		it('只允许出现一个根元素节点', function() {
+			err.message.should.have.match(/^Only one root element node is allowed!/);
+		});
+	});
 
-    parse(`  a <svg/>`).catch(err => {
-        it('意外的文本节点2', function() {
-            err.message.should.have.match(/^Unexpected text node!/);
-        });
-    });
+	parse('').catch(err => {
+		it('没有根元素节点', function() {
+			err.message.should.have.match(/^No root element node!/);
+		});
+	});
 
-    parse(`<svg:/>`).catch(err => {
-        it('错误的开始标签', function() {
-            err.message.should.have.match(/^Wrong start tag!/);
-        });
-    });
+	parse('<svg attr="1" attr="2"/>').catch(err => {
+		it('属性名重复', function() {
+			err.message.should.have.match(/^Duplicate property names!/);
+		});
+	});
 
-    parse(`<svg></:svg>`).catch(err => {
-        it('错误的结束标签', function() {
-            err.message.should.have.match(/^Wrong end tag!/);
-        });
-    });
+	parse('<svg/></svg>').catch(err => {
+		it('意外的结束标签', function() {
+			err.message.should.have.match(/^Unexpected end tag!/);
+		});
+	});
 
-    parse(`<svg attr:="1"/>`).catch(err => {
-        it('错误的属性名', function() {
-            err.message.should.have.match(/^Wrong attribute name!/);
-        });
-    });
+	parse('<svg/>123').catch(err => {
+		it('意外的文本节点', function() {
+			err.message.should.have.match(/^Unexpected text node!/);
+		});
+	});
+
+	parse('  a <svg/>').catch(err => {
+		it('意外的文本节点2', function() {
+			err.message.should.have.match(/^Unexpected text node!/);
+		});
+	});
+
+	parse('<svg:/>').catch(err => {
+		it('错误的开始标签', function() {
+			err.message.should.have.match(/^Wrong start tag!/);
+		});
+	});
+
+	parse('<svg></:svg>').catch(err => {
+		it('错误的结束标签', function() {
+			err.message.should.have.match(/^Wrong end tag!/);
+		});
+	});
+
+	parse('<svg attr:="1"/>').catch(err => {
+		it('错误的属性名', function() {
+			err.message.should.have.match(/^Wrong attribute name!/);
+		});
+	});
 
 	parse(`<svg
 	:attr=""/>`).catch(err => {
-        it('错误的属性名2', function() {
-            err.message.should.have.match(/^Wrong attribute name!/);
-        });
-    });
+		it('错误的属性名2', function() {
+			err.message.should.have.match(/^Wrong attribute name!/);
+		});
+	});
 
-    parse(`< svg />`).catch(err => {
-        it('解析标签失败', function() {
-            err.message.should.have.match(/^Failed to parse tags!/);
-        });
-    });
+	parse('< svg />').catch(err => {
+		it('解析标签失败', function() {
+			err.message.should.have.match(/^Failed to parse tags!/);
+		});
+	});
 
 });

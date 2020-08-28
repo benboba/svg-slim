@@ -1,9 +1,11 @@
 const chai = require('chai');
 const should = chai.should();
+import { createRuleConfig } from '../../../src/slimming/config/create-rule-config';
+import { mergeConfig } from '../../../src/slimming/config/merge';
 import { shortenShape } from '../../../src/slimming/rules/shorten-shape';
-import { parse } from '../../../src/xml-parser';
 import { createXML } from '../../../src/slimming/xml/create';
-
+import { parse } from '../../../src/xml-parser';
+import { IDomNode } from '../../../typings/node';
 
 describe('rules/shorten-shape', () => {
 	it('转换形状为路径', async () => {
@@ -31,7 +33,8 @@ describe('rules/shorten-shape', () => {
 		<path d="M0,0"/>
 		</svg>`;
 		const dom = await parse(xml) as IDomNode;
-		await shortenShape(dom, { params: { thinning: 0 } });
+		const config = createRuleConfig(mergeConfig(null), 'shorten-shape');
+		await shortenShape(dom, config);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><path style="fill:red" d="M0,0v.5h1e2v-.5z"/><path d="M0,0h1e3v1e2h-1e3z"/><rect rx="5" width="1" height="1"/><rect ry="5" width="1" height="1"/><rect rx="5" ry="5" width="1" height="1"/><rect rx="-5" ry="5" width="1" height="1"/><rect width="1em" height="1em"/><line stroke="red" x2="1em"/><path stroke="red" d="M0,0,100,300"/><path fill="red" d="M0,0,1e2,1e2,2e2-2e2z"/><path stroke="red" stroke-linecap="square" d="M10,10z"/><path d="M0,0"/></svg>');
 	});
 
@@ -53,7 +56,8 @@ describe('rules/shorten-shape', () => {
 		<ellipse rx="3" ry="5"/>
 		</svg>`;
 		const dom = await parse(xml) as IDomNode;
-		await shortenShape(dom, { params: { thinning: 0 } });
+		const config = createRuleConfig(mergeConfig(null), 'shorten-shape');
+		await shortenShape(dom, config);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><circle r="2"/><circle r="2" transform="matrix(1.5,0,0,2.5,0,0)"/><circle r="2" transform="scale(3)"/><circle r="3"/><circle style="fill:red" r="1e2"/><ellipse rx="3" ry="5" transform="scale(2)"/><ellipse rx="3" ry="5" transform="rotate(15,1,1)"/><ellipse rx="30" ry="5" transform="scale(2)"/><ellipse rx="3" ry="5pt" transform="scale(2)"/><ellipse rx="3" ry="5"/></svg>');
 	});
 
@@ -64,7 +68,12 @@ describe('rules/shorten-shape', () => {
 		<polyline />
 		</svg>`;
 		const dom = await parse(xml) as IDomNode;
-		await shortenShape(dom, { params: { thinning: 30 } });
+		const config = createRuleConfig(mergeConfig({
+			params: {
+				thinning: 30,
+			}
+		}), 'shorten-shape');
+		await shortenShape(dom, config);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><path d="M0,0,30,30"/><path d="M0,0,1e2,2e2,3e2,3e2,298,298z"/></svg>');
 	});
 
@@ -80,7 +89,12 @@ describe('rules/shorten-shape', () => {
 		</polyline>
 		</svg>`;
 		const dom = await parse(xml) as IDomNode;
-		await shortenShape(dom, { params: { thinning: 30 } });
+		const config = createRuleConfig(mergeConfig({
+			params: {
+				thinning: 30,
+			}
+		}), 'shorten-shape');
+		await shortenShape(dom, config);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg></svg>');
 	});
 });

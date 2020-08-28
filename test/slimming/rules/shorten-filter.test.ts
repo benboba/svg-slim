@@ -1,8 +1,9 @@
 const chai = require('chai');
 const should = chai.should();
 import { shortenFilter } from '../../../src/slimming/rules/shorten-filter';
-import { parse } from '../../../src/xml-parser';
 import { createXML } from '../../../src/slimming/xml/create';
+import { parse } from '../../../src/xml-parser';
+import { IDomNode } from '../../../typings/node';
 
 
 describe('rules/shorten-filter', () => {

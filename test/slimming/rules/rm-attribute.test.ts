@@ -1,8 +1,11 @@
 const chai = require('chai');
 const should = chai.should();
+import { createRuleConfig } from '../../../src/slimming/config/create-rule-config';
+import { mergeConfig } from '../../../src/slimming/config/merge';
 import { rmAttribute } from '../../../src/slimming/rules/rm-attribute';
-import { parse } from '../../../src/xml-parser';
 import { createXML } from '../../../src/slimming/xml/create';
+import { parse } from '../../../src/xml-parser';
+import { IDomNode } from '../../../typings/node';
 
 describe('rules/rm-attribute', () => {
 	it('移除属性', async () => {
@@ -27,7 +30,8 @@ describe('rules/rm-attribute', () => {
 		</g>
 		</svg>`;
 		const dom = await parse(xml) as IDomNode;
-		await rmAttribute(dom, { params: { rmAttrEqDefault: true }, option: { keepEvent: false, keepAria: false } });
+		const config = createRuleConfig(mergeConfig(null), 'rm-attribute');
+		await rmAttribute(dom, config);
 		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg width="100" style="width:40"><a/><circle cx="1"/><g><rect/><g fill="none"><rect id="rect" fill="rgb(0,0,0,.5)" stroke="hsl(0,0%,0%)"/><use href="#b"/><use href="#b"/><use href="#b" width="1" height="1"/></g></g></svg>');
 	});
 
@@ -39,7 +43,18 @@ describe('rules/rm-attribute', () => {
 			version=""
 		><text stroke="none"/><circle cx="1" cy="0"/></svg>`;
 		const dom = await parse(xml) as IDomNode;
-		await rmAttribute(dom, { params: { rmAttrEqDefault: false }, option: { keepEvent: true, keepAria: true } });
+		const config = createRuleConfig(mergeConfig({
+			rules: {
+				'rm-attribute': [true, {
+					keepEvent: true,
+					keepAria: true,
+				}],
+			},
+			params: {
+				rmAttrEqDefault: false,
+			}
+		}), 'rm-attribute');
+		await rmAttribute(dom, config);
 		createXML(dom).should.equal('<svg aria-colspan="3" onload="console.log(123)"><text stroke="none"/><circle cx="1" cy="0"/></svg>');
 	});
 });
