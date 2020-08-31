@@ -59,8 +59,8 @@ export const mergeConfig = (userConfig: unknown): IFinalConfig => {
 		env: Partial<IEnvOption>;
 	} = {
 		rules: {},
-		params: {},
-		env: {},
+		params: { ...paramsConfig },
+		env: { ...envConfig },
 	};
 	// 首先把默认规则深拷贝合并过来
 	for (const [key, [_switch, _option]] of Object.entries(rulesConfig)) {
@@ -86,7 +86,7 @@ export const mergeConfig = (userConfig: unknown): IFinalConfig => {
 			(Object.keys(envConfig)).forEach(k => {
 				if (hasProp(uEnv, k)) {
 					const uk = uEnv[k];
-					finalConfig.env[k] = (typeof uk === 'number') ? uk : envConfig[k];
+					finalConfig.env[k] = mergeUserVal(uEnv[k], uk) as never;
 				}
 			});
 		}
@@ -96,7 +96,7 @@ export const mergeConfig = (userConfig: unknown): IFinalConfig => {
 			(Object.keys(paramsConfig)).forEach(k => {
 				if (hasProp(uParams, k)) {
 					const uk = uParams[k];
-					finalConfig.params[k] = (typeof uk === typeof paramsConfig[k] ? uk : paramsConfig[k]) as never;
+					finalConfig.params[k] = mergeUserVal(paramsConfig[k], uk) as never;
 				}
 			});
 		}

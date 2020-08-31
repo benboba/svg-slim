@@ -7,7 +7,7 @@ import { regularAttr } from '../const/regular-attr';
 import { numberGlobal } from '../const/syntax';
 import { parseAlpha } from '../math/parse-alpha';
 import { shortenAlpha } from '../math/shorten-alpha';
-import { toFixed } from '../math/tofixed';
+import { toFixed } from '../math/to-fixed';
 import { parseStyle } from '../style/parse';
 import { stringifyStyle } from '../style/stringify';
 import { shortenNumber } from '../utils/shorten-number';

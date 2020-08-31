@@ -6,9 +6,9 @@
   "module": "dist/svg-slimming.mjs",
   "types": "dist/svg-slimming.d.ts",
   "scripts": {
-    "build": "rm -rf dist && cross-env NODE_ENV=development rollup -c",
+    "build": "rm -rf dist && rollup -c",
     "lint": "eslint --ext .ts ./src",
-    "test": "cross-env TS_NODE_FILES=true TS_NODE_PROJECT=tsconfig.test.json nyc mocha test/slimming/rules/compute-path.test.ts"
+    "test": "cross-env TS_NODE_FILES=true TS_NODE_PROJECT=tsconfig.test.json nyc mocha"
   },
   "nyc": {
     "include": [
@@ -28,12 +28,10 @@
   },
   "keywords": [
     "svg",
-    "xml",
     "optimization",
     "minimization",
     "parse",
     "svg-slimming",
-    "xml-parser",
     "javascript",
     "nodejs"
   ],
@@ -66,7 +64,6 @@
     "rollup-plugin-copy": "^3.3.0",
     "rollup-plugin-typescript2": "^0.27.2",
     "source-map-support": "^0.5.13",
-    "terser-webpack-plugin": "^1.2.1",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.7"
   }

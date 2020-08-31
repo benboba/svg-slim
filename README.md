@@ -4,7 +4,7 @@
 
 ## Change Log
 
-[View change log](https://github.com/benboba/svg-slimming/blob/master/CHANGELOG.md)
+[View change log](./CHANGELOG.md)
 
 ## Introduction
 

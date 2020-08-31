@@ -6,7 +6,7 @@ import { regularAttr } from '../const/regular-attr';
 import { pureNumOrWithPx, pureNumOrWithPxList } from '../const/syntax';
 import { multiply } from '../math/multiply';
 import { plus } from '../math/plus';
-import { toFixed } from '../math/tofixed';
+import { toFixed } from '../math/to-fixed';
 import { combineMatrix } from '../matrix/combine';
 import { Matrix } from '../matrix/matrix';
 import { merge } from '../matrix/merge';
@@ -839,7 +839,7 @@ export const combineTransform = async (dom: IDomNode, {
 					const matrix = combineMatrix(transform, trifuncDigit, sizeDigit, angelDigit);
 					const transformStr = stringify(transform, trifuncDigit, sizeDigit, angelDigit);
 					const matrixStr = stringify([matrix], trifuncDigit, sizeDigit, angelDigit);
-					const minStr = getShorter(matrixStr, transformStr);
+					const minStr = getShorter(transformStr, matrixStr);
 					if (matrix.noEffect) {
 						node.removeAttribute(attr.fullname);
 						return;

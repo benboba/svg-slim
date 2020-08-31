@@ -2,7 +2,7 @@ import { all, eqProps } from 'ramda';
 import { IPathResultItem } from 'typings';
 import { APOS_LARGE, APOS_ROTATION, APOS_RX, APOS_RY, APOS_SWEEP, APOS_X, APOS_Y, CIRC } from '../const';
 import { plus } from '../math/plus';
-import { toFixed } from '../math/tofixed';
+import { toFixed } from '../math/to-fixed';
 import { Vector } from '../math/vector';
 import { getAbs, getAbsHV, getRel, getRelHV } from './translate';
 

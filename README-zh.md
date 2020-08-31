@@ -4,7 +4,7 @@
 
 ## 更新日志
 
-[查看更新日志](https://github.com/benboba/svg-slimming/blob/master/CHANGELOG-zh.md)
+[查看更新日志](./CHANGELOG-zh.md)
 
 ## 简介
 

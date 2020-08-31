@@ -13,7 +13,7 @@ describe('path/check-sub-paths', () => {
 	});
 
 	it('combine rx ry', () => {
-		stringifyPath(doCompute(checkSubPath(doCompute(parsePath('M6 4 A 10 5, 0, 1, 1, 6 -4 10 5, 0, 0, 1, 10, 0M0,0a5,5,0,0,0,100,0a5,5,0,0,0,100,100z')), false, false, 2, 2))).should.equal('m6,4a10,5,0,114-4M0,0a5,5,0,00100,0,5,5,0,00100,100z');
+		stringifyPath(doCompute(checkSubPath(doCompute(parsePath('M6 4 A 10 5, 0, 1, 1, 6 -4 10 5, 0, 0, 1, 10, 0M0,0a5,5,0,0,0,100,0a5,5,0,0,0,100,100z')), false, false, 2, 2))).should.equal('m6,4a10,5,0,114-4M0,0a5,5,0,001e2,0,5,5,0,001e2,1e2z');
 	});
 
 	it('combine rotation', () => {
@@ -26,16 +26,16 @@ describe('path/check-sub-paths', () => {
 
 	it('combine h v', () => {
 		stringifyPath(doCompute(checkSubPath(doCompute(parsePath('M 0 0 h10h10h10h10,10-10')), true, false, 2, 2))).should.equal('m0,0h50H40');
-		stringifyPath(doCompute(checkSubPath(doCompute(parsePath('M 200 0 H9H8H-5H5')), true, false, 2, 2))).should.equal('m200,0H-5,5');
+		stringifyPath(doCompute(checkSubPath(doCompute(parsePath('M 200 0 H9H8H-5H5')), true, false, 2, 2))).should.equal('m2e2,0H-5,5');
 		stringifyPath(doCompute(checkSubPath(doCompute(parsePath('M 0 0 v10v10v10v10,10-10')), true, false, 2, 2))).should.equal('m0,0v50V40');
-		stringifyPath(doCompute(checkSubPath(doCompute(parsePath('M 0 200 V9V8V-5V5')), true, false, 2, 2))).should.equal('m0,200V-5,5');
+		stringifyPath(doCompute(checkSubPath(doCompute(parsePath('M 0 200 V9V8V-5V5')), true, false, 2, 2))).should.equal('m0,2e2V-5,5');
 	});
 
 	it('combine l', () => {
 		stringifyPath(doCompute(checkSubPath(doCompute(parsePath('M 0 0 L0,0,50,50,m0,0,l0,0,m10,10')), true, true, 2, 2))).should.equal('m0,0,50,50m0,0z');
 		stringifyPath(doCompute(checkSubPath(doCompute(parsePath('M 0 0 L0,0,50,50,m0,0,l0,0,m10,10')), false, false, 2, 2))).should.equal('');
 		stringifyPath(doCompute(checkSubPath(doCompute(parsePath('M 0 0 L10,20,20,40,30,60,50,80')), false, false, 2, 2))).should.equal('m0,0,30,60,20,20');
-		stringifyPath(doCompute(checkSubPath(doCompute(parsePath('M 100 100 l1,2,1,2,1,2,2,2')), false, false, 2, 2))).should.equal('m100,100,3,6,2,2');
+		stringifyPath(doCompute(checkSubPath(doCompute(parsePath('M 100 100 l1,2,1,2,1,2,2,2')), false, false, 2, 2))).should.equal('m1e2,1e2,3,6,2,2');
 		stringifyPath(doCompute(checkSubPath(doCompute(parsePath('M 80 80 l10,20,-5,-40')), false, false, 2, 2))).should.equal('m80,80,10,20-5-40');
 	});
 
@@ -47,14 +47,14 @@ describe('path/check-sub-paths', () => {
 		stringifyPath(doCompute(checkSubPath(doCompute(parsePath('M 0 0q0 0 0 0')), false, false, 2, 2))).should.equal('');
 		stringifyPath(doCompute(checkSubPath(doCompute(parsePath('M 0 0t 0 0zm15,0t0,0')), true, true, 2, 2))).should.equal('m0,0zm15,0z');
 		stringifyPath(doCompute(checkSubPath(doCompute(parsePath('M 0 0t50,50z')), true, false, 2, 2))).should.equal('m0,0,50,50z');
-		stringifyPath(doCompute(checkSubPath(doCompute(parsePath('M100 100Q15,0,0,15T30,30')), true, true, 2, 2))).should.equal('m100,100Q15,0,0,15t30,15');
+		stringifyPath(doCompute(checkSubPath(doCompute(parsePath('M100 100Q15,0,0,15T30,30')), true, true, 2, 2))).should.equal('m1e2,1e2Q15,0,0,15t30,15');
 	});
 
 	it('check c s', () => {
 		stringifyPath(doCompute(checkSubPath(doCompute(parsePath('M 0 0s0 0 0 0')), false, false, 2, 2))).should.equal('');
 		stringifyPath(doCompute(checkSubPath(doCompute(parsePath('M 0 0s0 0 0 0')), true, true, 2, 2))).should.equal('m0,0z');
 		stringifyPath(doCompute(checkSubPath(doCompute(parsePath('M 0 0s15,15,30,30h10v10S2,2,1,1')), true, true, 2, 2))).should.equal('m0,0,30,30h10v10L1,1');
-		stringifyPath(doCompute(checkSubPath(doCompute(parsePath('M100 100C30,30,15,0,0,15S6,6,30,1')), true, true, 2, 2))).should.equal('m100,100C30,30,15,0,0,15S6,6,30,1');
+		stringifyPath(doCompute(checkSubPath(doCompute(parsePath('M100 100C30,30,15,0,0,15S6,6,30,1')), true, true, 2, 2))).should.equal('m1e2,1e2C30,30,15,0,0,15S6,6,30,1');
 	});
 
 	it('badcase', () => {

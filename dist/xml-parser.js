@@ -21,6 +21,8 @@
 	    NodeType[NodeType["DocType"] = 10] = "DocType";
 	})(exports.NodeType || (exports.NodeType = {}));
 
+	const mixWhiteSpace = (str) => str.replace(/\s+/g, ' ');
+
 	class Node {
 	    constructor(option) {
 	        this.nodeName = option.nodeName;
@@ -116,8 +118,15 @@
 	    hasAttribute(name, namespace) {
 	        if (this.attributes) {
 	            for (const attr of this.attributes) {
-	                if ((!namespace && attr.fullname === name) || (attr.name === name && attr.namespace === namespace)) {
-	                    return true;
+	                if (!namespace) {
+	                    if (attr.fullname === name) {
+	                        return true;
+	                    }
+	                }
+	                else {
+	                    if (attr.name === name && attr.namespace === namespace) {
+	                        return true;
+	                    }
 	                }
 	            }
 	        }
@@ -126,8 +135,15 @@
 	    getAttribute(name, namespace) {
 	        if (this.attributes) {
 	            for (const attr of this.attributes) {
-	                if ((!namespace && attr.fullname === name) || (attr.name === name && attr.namespace === namespace)) {
-	                    return attr.value;
+	                if (!namespace) {
+	                    if (attr.fullname === name) {
+	                        return attr.value;
+	                    }
+	                }
+	                else {
+	                    if (attr.name === name && attr.namespace === namespace) {
+	                        return attr.value;
+	                    }
 	                }
 	            }
 	        }
@@ -136,9 +152,17 @@
 	    setAttribute(name, value, namespace) {
 	        if (this.attributes) {
 	            for (const attr of this.attributes) {
-	                if ((!namespace && attr.fullname === name) || (attr.name === name && attr.namespace === namespace)) {
-	                    attr.value = value;
-	                    return;
+	                if (!namespace) {
+	                    if (attr.fullname === name) {
+	                        attr.value = value;
+	                        return;
+	                    }
+	                }
+	                else {
+	                    if (attr.name === name && attr.namespace === namespace) {
+	                        attr.value = value;
+	                        return;
+	                    }
 	                }
 	            }
 	            const newAttr = {
@@ -157,9 +181,17 @@
 	        if (this.attributes) {
 	            for (let i = this.attributes.length; i--;) {
 	                const attr = this.attributes[i];
-	                if ((!namespace && attr.fullname === name) || (attr.name === name && attr.namespace === namespace)) {
-	                    this.attributes.splice(i, 1);
-	                    break;
+	                if (!namespace) {
+	                    if (attr.fullname === name) {
+	                        this.attributes.splice(i, 1);
+	                        return;
+	                    }
+	                }
+	                else {
+	                    if (attr.name === name && attr.namespace === namespace) {
+	                        this.attributes.splice(i, 1);
+	                        return;
+	                    }
 	                }
 	            }
 	        }
@@ -184,7 +216,6 @@
 	const SDDecl = `\\s+standalone${Eq}(?:'(?:yes|no)'|"(?:yes|no)")`;
 	const Reference = `(?:&${Name};|&#[0-9]+;|&#x[0-9a-fA-F]+;)`;
 	const AttrVal = `"(?:[^<&"]|${Reference})*"|'(?:[^<&']|${Reference})*'`;
-	// tslint:disable-next-line
 	const DeclContent = '(?:[^<>\'"]+|[^<>\']*\'[^\']*\'[^<>\']*|[^<>"]*"[^"]*"[^<>"]*|[^<>\'"]*<[^<>]*>[^<>\'"]*)+?';
 	const REG_XML_DECL = new RegExp(`<\\?xml(${VersionInfo}(?:${EncodingDecl})?(?:${SDDecl})?\\s*)\\?>`, 'g');
 	const REG_CDATA_SECT = /<!\[CDATA\[([\d\D]*?)\]\]>/g;
@@ -197,8 +228,6 @@
 	const REG_ATTR = new RegExp(`(?:^|\\s)(${Name})${Eq}(${AttrVal})`, supportUnicode ? 'gu' : 'g');
 
 	const collapseQuot = (str) => str.slice(1, -1);
-
-	const mixWhiteSpace = (str) => str.replace(/\s+/g, ' ');
 
 	const configs = [
 	    [1, 'xml-decl', REG_XML_DECL, exports.NodeType.XMLDecl],
