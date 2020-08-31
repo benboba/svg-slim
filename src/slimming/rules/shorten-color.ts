@@ -174,7 +174,7 @@ const formatColor = (rgba: boolean, str: string, digit: number): string => {
 					const alpha = shortenAlpha(digit, color.a);
 					const rgb = `rgb(${color.r},${color.g},${color.b},${alpha})`;
 					const hsl = `hsl(${hslColor.h},${hslColor.s}%,${hslColor.l}%,${alpha})`;
-					s = getShorter(hsl, rgb);
+					s = getShorter(rgb, hsl);
 				}
 			}
 		} else {

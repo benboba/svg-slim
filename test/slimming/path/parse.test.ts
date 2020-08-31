@@ -16,17 +16,17 @@ describe('path/parse', () => {
 
 	it('parse z error', () => {
 		stringifyPath(doCompute(parsePath('z'))).should.equal('');
-		stringifyPath(doCompute(parsePath('M0,0l100,0,50,100z1M3,3'))).should.equal('m0,0h100l50,100z');
+		stringifyPath(doCompute(parsePath('M0,0l100,0,50,100z1M3,3'))).should.equal('m0,0h1e2l50,1e2z');
 	});
 
 	it('parse line error', () => {
-		stringifyPath(doCompute(parsePath('m0,0,l100,100,100'))).should.equal('m0,0,100,100');
+		stringifyPath(doCompute(parsePath('m0,0,l100,100,100'))).should.equal('m0,0,1e2,1e2');
 		stringifyPath(doCompute(parsePath('m0,0,l100'))).should.equal('m0,0');
 		stringifyPath(doCompute(parsePath('M0,0z1M3,3'))).should.equal('m0,0z');
 	});
 
 	it('parse curve error', () => {
-		stringifyPath(doCompute(parsePath('m0,0,t100,100,100'))).should.equal('m0,0t100,100');
+		stringifyPath(doCompute(parsePath('m0,0,t100,100,100'))).should.equal('m0,0t1e2,1e2');
 		stringifyPath(doCompute(parsePath('m0,0,q100'))).should.equal('m0,0');
 		stringifyPath(doCompute(parsePath('m0,0,Q1,2,3,4,5,6,7'))).should.equal('m0,0q1,2,3,4');
 		stringifyPath(doCompute(parsePath('m0,0,c100'))).should.equal('m0,0');

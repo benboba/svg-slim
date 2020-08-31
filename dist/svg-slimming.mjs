@@ -1,4 +1,4 @@
-import { propEq, has, anyPass, curry, both, pipe, lt, equals, all, eqProps, complement, gte, gt, not, any, prop, toLower } from 'ramda';
+import { propEq, trim, has, anyPass, curry, both, pipe, lt, equals, all, eqProps, complement, gte, gt, not, any, prop, toLower } from 'ramda';
 import { parse as parse$1, stringify as stringify$1 } from 'css';
 import { decode } from 'he';
 
@@ -20,491 +20,223 @@ var NodeType;
     NodeType[NodeType["DocType"] = 10] = "DocType";
 })(NodeType || (NodeType = {}));
 
-class Node {
-    constructor(option) {
-        this.nodeName = option.nodeName;
-        this.nodeType = option.nodeType;
-        this.namespace = option.namespace;
-        this.selfClose = option.selfClose;
-        this.textContent = option.textContent;
-        if (this.nodeType === NodeType.Tag || this.nodeType === NodeType.Document) {
-            this.attributes = [];
-            this.childNodes = [];
-        }
-    }
-    // 复制自身，但是不复制节点树关系链
-    cloneNode() {
-        const cloneNode = new Node({
-            nodeName: this.nodeName,
-            nodeType: this.nodeType,
-            namespace: this.namespace,
-            textContent: this.textContent,
-        });
-        if (this.attributes) {
-            // 属性需要深拷贝
-            cloneNode.attributes = this.attributes.map(attr => {
-                return {
-                    name: attr.name,
-                    value: attr.value,
-                    fullname: attr.fullname,
-                    namespace: attr.namespace,
-                };
-            });
-        }
-        return cloneNode;
-    }
-    // 追加子节点
-    appendChild(childNode) {
-        if (this.childNodes) {
-            // 如果子节点原本有父节点，则先从原本的父节点中移除
-            if (childNode.parentNode) {
-                childNode.parentNode.removeChild(childNode);
-            }
-            this.childNodes.push(childNode);
-            childNode.parentNode = this;
-        }
-    }
-    // 插入到子节点之前
-    insertBefore(childNode, previousTarget) {
-        if (this.childNodes) {
-            // 如果子节点原本有父节点，则先从原本的父节点中移除
-            if (childNode.parentNode) {
-                childNode.parentNode.removeChild(childNode);
-            }
-            // 判断目标节点是否在自己的子节点列表中，如果不在，直接插入
-            const pindex = this.childNodes.indexOf(previousTarget);
-            if (pindex !== -1) {
-                this.childNodes.splice(pindex, 0, childNode);
-            }
-            else {
-                this.childNodes.push(childNode);
-            }
-            childNode.parentNode = this;
-        }
-    }
-    // 替换子节点
-    replaceChild(childNode, ...children) {
-        if (this.childNodes) {
-            const index = this.childNodes.indexOf(childNode);
-            if (index !== -1) {
-                children.forEach(child => {
-                    // 先把要插入的子节点从原有父节点移除
-                    if (child.parentNode) {
-                        child.parentNode.removeChild(child);
-                    }
-                    // 指定父节点到自身
-                    child.parentNode = this;
-                });
-                this.childNodes.splice(index, 1, ...children);
-                // 清理被替换掉的子节点的钩子
-                delete childNode.parentNode;
-            }
-        }
-    }
-    // 移除子节点
-    removeChild(childNode) {
-        if (this.childNodes) {
-            const index = this.childNodes.indexOf(childNode);
-            if (index !== -1) {
-                this.childNodes.splice(index, 1);
-                delete childNode.parentNode;
-            }
-        }
-    }
-    // 是否存在属性
-    hasAttribute(name, namespace) {
-        if (this.attributes) {
-            for (const attr of this.attributes) {
-                if ((!namespace && attr.fullname === name) || (attr.name === name && attr.namespace === namespace)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    getAttribute(name, namespace) {
-        if (this.attributes) {
-            for (const attr of this.attributes) {
-                if ((!namespace && attr.fullname === name) || (attr.name === name && attr.namespace === namespace)) {
-                    return attr.value;
-                }
-            }
-        }
-        return null;
-    }
-    setAttribute(name, value, namespace) {
-        if (this.attributes) {
-            for (const attr of this.attributes) {
-                if ((!namespace && attr.fullname === name) || (attr.name === name && attr.namespace === namespace)) {
-                    attr.value = value;
-                    return;
-                }
-            }
-            const newAttr = {
-                name,
-                value,
-                fullname: name,
-            };
-            if (namespace) {
-                newAttr.fullname = `${namespace}:${name}`;
-                newAttr.namespace = namespace;
-            }
-            this.attributes.push(newAttr);
-        }
-    }
-    removeAttribute(name, namespace) {
-        if (this.attributes) {
-            for (let i = this.attributes.length; i--;) {
-                const attr = this.attributes[i];
-                if ((!namespace && attr.fullname === name) || (attr.name === name && attr.namespace === namespace)) {
-                    this.attributes.splice(i, 1);
-                    break;
-                }
-            }
-        }
-    }
-}
+const hasProp = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
 
-let supportUnicode = true;
-try {
-    supportUnicode = /\u{20BB7}/u.test('𠮷');
-}
-catch (e) {
-    supportUnicode = false;
-}
-const NameStartChar = `:A-Z_a-z\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD${supportUnicode ? '\\u{10000}-\\u{EFFFF}' : ''}`;
-const NameChar = `${NameStartChar}\\-\\.0-9\\u00B7\\u0300-\\u036F\\u203F-\\u2040`;
-const Name = `[${NameStartChar}][${NameChar}]*`;
-const Eq = '\\s*=\\s*';
-const VersionNum = '1\\.[0-9]+';
-const EncName = '[A-Za-z](?:[A-Za-z0-9\\._]|-)*';
-const VersionInfo = `\\s+version${Eq}(?:'${VersionNum}'|"${VersionNum}")`;
-const EncodingDecl = `\\s+encoding${Eq}(?:'${EncName}'|"${EncName}")`;
-const SDDecl = `\\s+standalone${Eq}(?:'(?:yes|no)'|"(?:yes|no)")`;
-const Reference = `(?:&${Name};|&#[0-9]+;|&#x[0-9a-fA-F]+;)`;
-const AttrVal = `"(?:[^<&"]|${Reference})*"|'(?:[^<&']|${Reference})*'`;
-// tslint:disable-next-line
-const DeclContent = '(?:[^<>\'"]+|[^<>\']*\'[^\']*\'[^<>\']*|[^<>"]*"[^"]*"[^<>"]*|[^<>\'"]*<[^<>]*>[^<>\'"]*)+?';
-const REG_XML_DECL = new RegExp(`<\\?xml(${VersionInfo}(?:${EncodingDecl})?(?:${SDDecl})?\\s*)\\?>`, 'g');
-const REG_CDATA_SECT = /<!\[CDATA\[([\d\D]*?)\]\]>/g;
-const REG_OTHER_SECT = /<!\[\s?([A-Z]+)\s?\[([\d\D]*?)\]\]>/g;
-const REG_DOCTYPE = new RegExp(`<!DOCTYPE\\s+(${DeclContent})>`, 'g');
-const REG_OTHER_DECL = new RegExp(`<!([A-Z]+)\\s+(${DeclContent})>`, 'g');
-const REG_COMMENTS = /<!--([\d\D]*?)-->/g;
-const REG_START_TAG = new RegExp(`<(${Name})((?:\\s+${Name}${Eq}(?:${AttrVal}))*)\\s*(\\/?)>`, supportUnicode ? 'gu' : 'g');
-const REG_END_TAG = new RegExp(`</(${Name})\\s*>`, supportUnicode ? 'gu' : 'g');
-const REG_ATTR = new RegExp(`(?:^|\\s)(${Name})${Eq}(${AttrVal})`, supportUnicode ? 'gu' : 'g');
+const isObj = (obj) => obj && typeof obj === 'object';
 
-const collapseQuot = (str) => str.slice(1, -1);
+const FF = 255;
+const Hundred = 100;
+const Hex = 16;
+const CIRC = 360;
+const HALF_CIRC = 180;
+const GRAD = 400;
+const RAD = Math.PI * 2;
+const matrixEPos = 4;
+const HALF = 0.5;
+const APOS_RX = 0;
+const APOS_RY = 1;
+const APOS_ROTATION = 2;
+const APOS_LARGE = 3;
+const APOS_SWEEP = 4;
+const APOS_X = 5;
+const APOS_Y = 6;
+const APOS_LEN = 7;
+const OPACITY_DIGIT = 3; // 浏览器对于颜色的 alpha 值只处理到小数点后第 3 位
+const DEFAULT_SIZE_DIGIT = 2;
+const DEFAULT_ACCURATE_DIGIT = 2;
+const DEFAULT_MATRIX_DIGIT = 3;
+// path 直线指令
+const LineTypes = 'LlHhVv';
 
-const mixWhiteSpace = (str) => str.replace(/\s+/g, ' ');
+const paramsConfig = {
+    angelDigit: DEFAULT_ACCURATE_DIGIT,
+    sizeDigit: DEFAULT_SIZE_DIGIT,
+    trifuncDigit: DEFAULT_MATRIX_DIGIT,
+    opacityDigit: OPACITY_DIGIT,
+    thinning: 0,
+    straighten: 0,
+    mergePoint: 0,
+    rmAttrEqDefault: true,
+    exchangeStyle: false,
+};
+const envConfig = {
+    ie: 11,
+};
+const rulesConfig = {
+    // 合并 g 标签
+    'collapse-g': [true],
+    // 塌陷无意义的文本节点
+    'collapse-textwrap': [true],
+    // 合并 path 标签
+    'combine-path': [true, {
+            disregardFill: false,
+            disregardOpacity: false,
+        }],
+    // 分析并合并 transform 属性
+    'combine-transform': [true],
+    // 计算 path 的 d 属性，使之变得更短
+    'compute-path': [true],
+    // 移除非规范的属性
+    'rm-attribute': [true, {
+            keepAria: false,
+            keepEvent: false,
+        }],
+    // 移除注释
+    'rm-comments': [true],
+    // 移除 DOCTYPE 声明
+    'rm-doctype': [true],
+    // 移除隐藏对象
+    'rm-hidden': [true],
+    // 移除不规范嵌套的标签
+    'rm-irregular-nesting': [true, {
+            ignore: [],
+        }],
+    // 移除非规范的标签
+    // 配置不移除的非规范标签
+    'rm-irregular-tag': [true, {
+            ignore: [],
+        }],
+    // 移除 px 单位
+    'rm-px': [true],
+    // 移除不必要的标签
+    // 配置需要移除的标签列表
+    'rm-unnecessary': [true, {
+            tags: ['desc', 'discard', 'foreignObject', 'video', 'audio', 'iframe', 'canvas', 'metadata', 'script', 'title', 'unknown', 'image'],
+        }],
+    // 移除 svg 标签的 version 属性
+    'rm-version': [true],
+    // 是否强制移除 viewBox 属性
+    'rm-viewbox': [true],
+    // 移除 xml 声明
+    'rm-xml-decl': [true],
+    // 如有必要，移除 xml 命名空间
+    'rm-xmlns': [true],
+    // 缩短动画元素
+    'shorten-animate': [true, {
+            remove: false,
+        }],
+    // 缩短 className ，并移除不被引用的 className
+    'shorten-class': [true],
+    // 缩短颜色
+    'shorten-color': [true, {
+            rrggbbaa: false,
+        }],
+    // 缩短小数点后位数
+    'shorten-decimal-digits': [true],
+    // 合并所有的 defs ，移除无效的 defs 定义
+    'shorten-defs': [true],
+    // 移除无效的滤镜元素，移除不必要的滤镜元素属性
+    'shorten-filter': [true],
+    // 缩短 ID ，并移除不被引用的 ID
+    'shorten-id': [true],
+    // 缩短 shape 类型的节点
+    'shorten-shape': [true],
+    // 缩短 style 属性
+    'shorten-style-attr': [true],
+    // 缩短 style 标签的内容（合并相同规则、移除无效样式）
+    // 深度分析，移除无效选择器、合并相同的选择器、合并相同规则
+    'shorten-style-tag': [true, {
+            deepShorten: true,
+        }],
+};
 
-const configs = [
-    [1, 'xml-decl', REG_XML_DECL, NodeType.XMLDecl],
-    [1, 'cdata', REG_CDATA_SECT, NodeType.CDATA],
-    [2, REG_OTHER_SECT, NodeType.OtherSect],
-    [1, 'doctype', REG_DOCTYPE, NodeType.DocType],
-    [2, REG_OTHER_DECL, NodeType.OtherDecl],
-    [1, 'comments', REG_COMMENTS, NodeType.Comments],
-];
-const updStatus = (pos, str, status) => {
-    for (; status.lastpos < pos; status.lastpos++) {
-        if (str[status.lastpos] === '\r' || str[status.lastpos] === '\n') {
-            // 换行判断，\r 直接换行，\n 判断一下是不是紧跟在 \r 后面
-            if (str[status.lastpos] === '\r' || str[status.lastpos - 1] !== '\r') {
-                status.line++;
-                status.pos = 0;
+const mergeUserVal = (v, _v) => {
+    if (Array.isArray(v)) {
+        // 数组只要字符串项
+        if (Array.isArray(_v)) {
+            return _v.filter(s => typeof s === 'string');
+        }
+    }
+    else if (typeof v === typeof _v) {
+        if (typeof _v === 'number') {
+            // 数值项要忽略 NaN、Infinity 和负数，并下取整
+            // 数值精度最多保留 8 位
+            if (_v >= 0 && _v !== Infinity) {
+                return Math.floor(_v);
             }
         }
         else {
-            status.pos++;
+            return _v;
         }
     }
+    return v;
 };
-// 应对一个捕获组的状况
-const Process1 = (conf, str, lastIndex) => {
-    const reg = conf[2];
-    reg.lastIndex = lastIndex;
-    const execResult = reg.exec(str);
-    if (execResult && execResult.index === lastIndex) {
-        return {
-            node: new Node({
-                nodeType: conf[3],
-                nodeName: `#${conf[1]}`,
-                textContent: execResult[1],
-            }),
-            lastIndex: reg.lastIndex,
-        };
-    }
-    return null;
-};
-// 应对两个捕获组的状况
-const Process2 = (conf, str, lastIndex) => {
-    const reg = conf[1];
-    reg.lastIndex = lastIndex;
-    const execResult = reg.exec(str);
-    if (execResult && execResult.index === lastIndex) {
-        return {
-            node: new Node({
-                nodeType: conf[2],
-                nodeName: `#${execResult[1].toLowerCase()}`,
-                textContent: execResult[2],
-            }),
-            lastIndex: reg.lastIndex,
-        };
-    }
-    return null;
-};
-// 处理标签
-const ProcessTag = (str, status, lastIndex) => {
-    REG_START_TAG.lastIndex = lastIndex;
-    const execResult = REG_START_TAG.exec(str);
-    if (execResult && execResult.index === lastIndex) {
-        const tempStatus = { line: status.line, pos: status.pos, lastpos: 0 };
-        const result = {
-            node: new Node({
-                nodeType: NodeType.Tag,
-                nodeName: execResult[1],
-                namespace: '',
-                selfClose: execResult[3] === '/',
-            }),
-            lastIndex: REG_START_TAG.lastIndex,
-        };
-        // 标签的 namespace
-        if (execResult[1].includes(':')) {
-            const tagName = execResult[1].split(':');
-            if (tagName.length !== 2 || !tagName[0] || !tagName[1]) {
-                throw new Error(`Wrong start tag! at ${status.line}:${status.pos}`);
+const checkRules = (userConfig, finalRules) => {
+    for (const [key, val] of Object.entries(userConfig)) {
+        // 只合并存在的值
+        if (hasProp(finalRules, key)) {
+            const conf = finalRules[key];
+            // 布尔值直接设置开关位置
+            if (typeof val === 'boolean') {
+                conf[0] = val;
             }
-            else {
-                result.node.nodeName = tagName[1];
-                result.node.namespace = tagName[0];
-            }
-        }
-        updStatus(execResult[1].length + 1, execResult[0], tempStatus);
-        // ** 重要 ** 重置匹配位置！
-        REG_ATTR.lastIndex = 0;
-        let attrExec = REG_ATTR.exec(execResult[2]);
-        const attrUnique = {};
-        while (attrExec) {
-            updStatus(attrExec.index + execResult[1].length + 1, execResult[0], tempStatus);
-            // 属性名排重
-            if (attrUnique[attrExec[1]]) {
-                throw new Error(`Duplicate property names! at ${tempStatus.line}:${tempStatus.pos}`);
-            }
-            attrUnique[attrExec[1]] = true;
-            if (attrExec[1].includes(':')) {
-                const attrName = attrExec[1].split(':');
-                if (attrName.length === 2 && attrName[0] && attrName[1]) {
-                    result.node.setAttribute(attrName[1], collapseQuot(attrExec[2]).trim(), attrName[0]);
-                }
-                else {
-                    throw new Error(`Wrong attribute name! at ${tempStatus.line + status.line - 1}:${tempStatus.line > 1 ? tempStatus.pos : status.pos + tempStatus.pos}`);
-                }
-            }
-            else {
-                result.node.setAttribute(attrExec[1], collapseQuot(attrExec[2]).trim());
-            }
-            attrExec = REG_ATTR.exec(execResult[2]);
-        }
-        return result;
-    }
-    return null;
-};
-const ProcessEndTag = (str, status, lastIndex) => {
-    REG_END_TAG.lastIndex = lastIndex;
-    const execResult = REG_END_TAG.exec(str);
-    if (execResult && execResult.index === lastIndex) {
-        const result = {
-            node: new Node({
-                nodeType: NodeType.EndTag,
-                nodeName: execResult[1],
-                namespace: '',
-            }),
-            lastIndex: REG_END_TAG.lastIndex,
-        };
-        if (execResult[1].includes(':')) {
-            const tagName = execResult[1].split(':');
-            if (tagName.length !== 2 || !tagName[1] || !tagName[0]) {
-                throw new Error(`Wrong end tag! at ${status.line}:${status.pos}`);
-            }
-            else {
-                result.node.nodeName = tagName[1];
-                result.node.namespace = tagName[0];
-            }
-        }
-        return result;
-    }
-    return null;
-};
-const parse = (str, status, lastIndex) => {
-    const REG_LT = /</g;
-    REG_LT.lastIndex = lastIndex;
-    const ltExec = REG_LT.exec(str);
-    if (ltExec) {
-        if (ltExec.index === lastIndex) { // 以 < 开始的情况都按节点处理
-            for (const cfg of configs) {
-                if (cfg[0] === 1) {
-                    const processResult1 = Process1(cfg, str, lastIndex);
-                    if (processResult1) {
-                        return processResult1;
-                    }
-                }
-                else {
-                    const processResult2 = Process2(cfg, str, lastIndex);
-                    if (processResult2) {
-                        return processResult2;
-                    }
-                }
-            }
-            const processTag = ProcessTag(str, status, lastIndex);
-            if (processTag) {
-                return processTag;
-            }
-            const processEndTag = ProcessEndTag(str, status, lastIndex);
-            if (processEndTag) {
-                return processEndTag;
-            }
-            throw new Error(`Failed to parse tags! at ${status.line}:${status.pos}`);
-        }
-        else { // 非 < 开始的都按文本处理
-            return {
-                node: new Node({
-                    nodeType: NodeType.Text,
-                    nodeName: '#text',
-                    textContent: mixWhiteSpace(str.slice(lastIndex, ltExec.index)),
-                }),
-                lastIndex: ltExec.index,
-            };
-        }
-    }
-    else {
-        return {
-            node: new Node({
-                nodeType: NodeType.Text,
-                nodeName: '#text',
-                textContent: mixWhiteSpace(str.slice(lastIndex)),
-            }),
-            lastIndex: str.length,
-        };
-    }
-};
-const Parser = async (str) => {
-    return new Promise((resolve, reject) => {
-        const doc = new Node({
-            nodeType: NodeType.Document,
-            nodeName: '#document',
-        });
-        const stack = [];
-        const status = {
-            line: 1,
-            pos: 0,
-            lastpos: 0,
-        };
-        const len = str.length;
-        let current;
-        let hasRoot = false;
-        const firstIndex = str.indexOf('<');
-        if (firstIndex > 0 && !/^\s+</.test(str)) {
-            reject(new Error(`Unexpected text node! at ${status.line}:${status.pos}`));
-            return;
-        }
-        try {
-            current = parse(str, status, firstIndex); // 第一个 < 之前的全部字符都忽略掉
-        }
-        catch (e) {
-            reject(e);
-            return;
-        }
-        if (current.node.nodeType === NodeType.XMLDecl && firstIndex > 0) {
-            reject(new Error(`The xml declaration must be at the front of the document! at ${status.line}:${status.pos}`));
-            return;
-        }
-        doc.appendChild(current.node);
-        if (current.node.nodeType === NodeType.Tag) {
-            hasRoot = true;
-            if (!current.node.selfClose) {
-                stack.push(current.node);
-            }
-        }
-        while (current.lastIndex < len) {
-            updStatus(current.lastIndex, str, status);
-            try {
-                current = parse(str, status, current.lastIndex); // 第一个 < 之前的全部字符都忽略掉
-            }
-            catch (e) {
-                reject(e);
-                return;
-            }
-            const stackLen = stack.length;
-            if (current.node.nodeType === NodeType.EndTag) {
-                // 遇到结束标签的处理逻辑
-                if (stackLen) {
-                    // 结束标签和开始标签匹配
-                    if (stack[stackLen - 1].nodeName === current.node.nodeName && stack[stackLen - 1].namespace === current.node.namespace) {
-                        // 无子节点，则转为自闭合节点
-                        const childNodes = stack[stackLen - 1].childNodes;
-                        if (!childNodes || !childNodes.length) {
-                            stack[stackLen - 1].selfClose = true;
+            else if (Array.isArray(val) && typeof val[0] === 'boolean') {
+                // 如果开关位置不是布尔值，后续直接抛弃处理
+                conf[0] = val[0];
+                // 默认配置如果没有 option 则不必再验证，如果没有打开配置项，后续也不必再验证
+                if (conf[0] && conf[1]) {
+                    const option = conf[1];
+                    // 仅验证拿到 IRulesConfigOption 的情况
+                    const userOption = val[1];
+                    if (isObj(userOption)) {
+                        for (const [k, v] of Object.entries(userOption)) {
+                            if (hasProp(option, k)) {
+                                option[k] = mergeUserVal(option[k], v);
+                            }
                         }
-                        stack.pop();
-                    }
-                    else {
-                        reject(new Error(`The start and end tags cannot match! at ${status.line}:${status.pos}`));
-                        return;
-                    }
-                }
-                else {
-                    // 没有开始标签而出现了结束标签
-                    reject(new Error(`Unexpected end tag! at ${status.line}:${status.pos}`));
-                    return;
-                }
-            }
-            else {
-                if (stackLen) {
-                    // 插入子节点
-                    stack[stackLen - 1].appendChild(current.node);
-                }
-                else if (current.node.nodeType === NodeType.Text || current.node.nodeType === NodeType.CDATA) {
-                    // 没有节点而出现了非空文本节点
-                    if (current.node.textContent.replace(/\s/g, '')) {
-                        reject(new Error(`Unexpected text node! at ${status.line}:${status.pos}`));
-                        return;
-                    }
-                }
-                else {
-                    // 直接扔到根下
-                    doc.appendChild(current.node);
-                }
-                // 遇到未闭合的节点，扔到stack内
-                if (current.node.nodeType === NodeType.Tag) {
-                    if (!stackLen) {
-                        if (hasRoot) {
-                            reject(new Error(`Only one root element node is allowed! at ${status.line}:${status.pos}`));
-                            return;
-                        }
-                        hasRoot = true;
-                    }
-                    if (!current.node.selfClose) {
-                        stack.push(current.node);
                     }
                 }
             }
-            if (current.lastIndex === len) {
-                updStatus(len, str, status);
-            }
         }
-        if (stack.length) {
-            reject(new Error(`Document structure is wrong! at ${status.line}:${status.pos}`));
-            return;
-        }
-        if (!hasRoot) {
-            reject(new Error(`No root element node! at ${status.line}:${status.pos}`));
-            return;
-        }
-        resolve(doc);
-    });
+    }
 };
+const mergeConfig = (userConfig) => {
+    const finalConfig = {
+        rules: {},
+        params: {},
+        env: {},
+    };
+    // 首先把默认规则深拷贝合并过来
+    for (const [key, [_switch, _option]] of Object.entries(rulesConfig)) {
+        finalConfig.rules[key] = [_switch];
+        if (_option) {
+            const option = {};
+            for (const [k, v] of Object.entries(_option)) {
+                option[k] = Array.isArray(v) ? v.slice() : v;
+            }
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            finalConfig.rules[key].push(option);
+        }
+    }
+    if (isObj(userConfig)) {
+        const uConfig = userConfig;
+        checkRules(uConfig, finalConfig.rules);
+        if (hasProp(uConfig, 'rules') && isObj(uConfig.rules)) {
+            checkRules(uConfig.rules, finalConfig.rules);
+        }
+        const uEnv = uConfig.env;
+        if (hasProp(uConfig, 'env') && isObj(uEnv)) {
+            (Object.keys(envConfig)).forEach(k => {
+                if (hasProp(uEnv, k)) {
+                    const uk = uEnv[k];
+                    finalConfig.env[k] = (typeof uk === 'number') ? uk : envConfig[k];
+                }
+            });
+        }
+        const uParams = uConfig.params;
+        if (hasProp(uConfig, 'params') && isObj(uParams)) {
+            (Object.keys(paramsConfig)).forEach(k => {
+                if (hasProp(uParams, k)) {
+                    const uk = uParams[k];
+                    finalConfig.params[k] = (typeof uk === typeof paramsConfig[k] ? uk : paramsConfig[k]);
+                }
+            });
+        }
+    }
+    return finalConfig;
+};
+
+const mixWhiteSpace = (str) => str.replace(/\s+/g, ' ');
 
 const rmNode = (node) => {
     if (node.parentNode) {
@@ -613,53 +345,6 @@ const combineScript = async (dom) => new Promise(resolve => {
     resolve();
 });
 
-/*
- * 深度遍历所有的 Object 属性
- * @param { function } 条件
- * @param { function } 回调
- * @param { object } 目标对象
- * @param { object[] } 避免对象调用自身造成死循环
- * @param { boolean } 是否深度优先，是的话会先遍历子元素
- */
-const traversal$1 = (condition, cb, obj, path, visited, deep) => {
-    if (visited.includes(obj)) {
-        return;
-    }
-    visited.push(obj);
-    if (!deep) {
-        if (condition(obj)) {
-            cb(obj, path);
-            return;
-        }
-    }
-    path.push(obj);
-    if (Array.isArray(obj)) {
-        for (let i = 0; i < obj.length;) {
-            const item = obj[i];
-            traversal$1(condition, cb, item, path, visited, deep);
-            if (item === obj[i]) {
-                i++;
-            }
-        }
-    }
-    else {
-        for (const key in obj) {
-            if (typeof obj[key] === 'object') { // tslint:disable-line strict-type-predicates
-                traversal$1(condition, cb, obj[key], path, visited, deep);
-            }
-        }
-    }
-    path.pop();
-    if (deep) {
-        if (condition(obj)) {
-            cb(obj, path);
-        }
-    }
-};
-const traversalObj = (condition, cb, obj, deep = false) => {
-    traversal$1(condition, cb, obj, [], [], deep);
-};
-
 // elements group
 const animationElements = ['animate', 'animateMotion', 'animateTransform', 'discard', 'set'];
 const animationAttrElements = ['animate', 'animateTransform', 'set'];
@@ -696,44 +381,17 @@ const transferFunctionElementAttributes = ['type', 'tableValues', 'slope', 'inte
 const validPseudoClass = ['hover', 'link', 'active', 'visited', 'focus', 'first-child', 'lang', 'not'];
 const validPseudoElement = ['first-letter', 'first-line'];
 
-// 用于属性合法性验证的枚举类型（此处存储方便直接转换为正则的字符串形式）
-const calcMode = 'discrete|linear|paced|spline';
-const units = 'userSpaceOnUse|objectBoundingBox';
-const crossOrigin = 'anonymous|use-credentials';
-const dur = 'media|indefinite';
-const edgeMode = 'duplicate|wrap|none';
-const inVal = 'SourceGraphic|SourceAlpha|BackgroundImage|BackgroundAlpha|FillPaint|StrokePaint';
-const lengthAdjust = 'spacing|spacingAndGlyphs';
-const markerUnit = 'strokeWidth|userSpaceOnUse';
-const method = 'align|stretch';
-const blendMode = 'normal|multiply|screen|overlay|darken|lighten|color-dodge|color-burn|hard-light|soft-light|difference|exclusion|hue|saturation|color|luminosity';
-const operater = 'over|in|out|atop|xor|lighter|arithmetic';
-const operater1 = 'erode|dilate';
-const orient = 'auto|auto-start-reverse';
-const alignX = 'left|center|right';
-const alignY = 'top|center|bottom';
-const referrer = 'no-referrer|no-referrer-when-downgrade|same-origin|origin|strict-origin|origin-when-cross-origin|strict-origin-when-cross-origin|unsafe-url';
-const restart = 'always|whenNotActive|never';
-const spreadMethod = 'pad|reflect|repeat';
-const target = '_self|_parent|_top|_blank';
-const animateTransformType = 'translate|scale|rotate|skewX|skewY';
-const feColorMatrixType = 'matrix|saturate|hueRotate|luminanceToAlpha';
-const feFuncType = 'identity|table|discrete|linear|gamma';
-const feTurbulenceType = 'fractalNoise|turbulence';
-const channel = 'R|G|B|A';
-const isolationMode = 'auto|isolate';
-
 // 符合官方定义的 token
 // https://drafts.csswg.org/css-syntax-3
 // 是否支持 unicode
-let supportUnicode$1 = true;
+let supportUnicode = true;
 try {
-    supportUnicode$1 = /\u{20BB7}/u.test('𠮷');
+    supportUnicode = /\u{20BB7}/u.test('𠮷');
 }
 catch (e) {
-    supportUnicode$1 = false;
+    supportUnicode = false;
 }
-const uModifier = supportUnicode$1 ? 'u' : '';
+const uModifier = supportUnicode ? 'u' : '';
 // definition
 const commaWsp = '(?:\\s*,\\s*|\\s*)';
 const semi = '\\s*;\\s*';
@@ -741,15 +399,15 @@ const paren = '\\s*\\(\\s*';
 const rParen = '\\s*\\)';
 // name token
 // https://www.w3.org/TR/xml/#NT-Name
-const NameStartChar$1 = `:A-Z_a-z\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD${supportUnicode$1 ? '\\u{10000}-\\u{EFFFF}' : ''}`;
-const NameChar$1 = `${NameStartChar$1}\\-\\.0-9\\u00B7\\u0300-\\u036F\\u203F-\\u2040`;
-const Name$1 = `[${NameStartChar$1}][${NameChar$1}]*`;
+const NameStartChar = `:A-Z_a-z\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD${supportUnicode ? '\\u{10000}-\\u{EFFFF}' : ''}`;
+const NameChar = `${NameStartChar}\\-\\.0-9\\u00B7\\u0300-\\u036F\\u203F-\\u2040`;
+const Name = `[${NameStartChar}][${NameChar}]*`;
 // css syntax
 // https://drafts.csswg.org/css-syntax-3/#non-ascii-code-point
-const cssNameStartChar = `A-Za-z_\\u0080-\\uFFFF${supportUnicode$1 ? '\\u{10000}-\\u{EFFFF}' : ''}`;
+const cssNameStartChar = `A-Za-z_\\u0080-\\uFFFF${supportUnicode ? '\\u{10000}-\\u{EFFFF}' : ''}`;
 const cssNameChar = `${cssNameStartChar}\\-0-9`;
 const cssName = `[${cssNameStartChar}][${cssNameChar}]*`;
-const nameFullMatch = new RegExp(`^${Name$1}$`, uModifier);
+const nameFullMatch = new RegExp(`^${Name}$`, uModifier);
 const cssNameFullMatch = new RegExp(`^${cssName}$`, uModifier);
 const cssNameSpaceSeparatedFullMatch = new RegExp(`^${cssName}(?:\\s+${cssName})*$`, uModifier);
 // number token
@@ -787,9 +445,9 @@ const timeCountValue = '\\d+(?:\\.\\d+)?(?:h|min|s|ms)?';
 const timeValue = '(?:\\d+:)?[0-5]\\d:[0-5]\\d(?:\\.\\d+)?';
 const clockValue = `(?:${timeCountValue}|${timeValue})`;
 const offsetValue = `(?:\\s*[+-]\\s*)?${clockValue}`;
-const syncbaseValue = `${Name$1}\\.(?:begin|end)(?:${offsetValue})?`;
-const eventValue = `(?:${Name$1}\\.)?(?:${eventAttributes.join('|')})(?:${offsetValue})?`;
-const repeatValue = `(?:${Name$1}\\.)?repeat\\(\\d+\\)(?:${offsetValue})?`;
+const syncbaseValue = `${Name}\\.(?:begin|end)(?:${offsetValue})?`;
+const eventValue = `(?:${Name}\\.)?(?:${eventAttributes.join('|')})(?:${offsetValue})?`;
+const repeatValue = `(?:${Name}\\.)?repeat\\(\\d+\\)(?:${offsetValue})?`;
 const accessKeyValue = `accessKey\\(.\\)(?:${offsetValue})?`;
 const wallclockSyncValue = 'wallclock\\(\\d+\\)';
 const timePattern = `(?:${offsetValue}|${syncbaseValue}|${eventValue}|${repeatValue}|${accessKeyValue}|${wallclockSyncValue}|indefinite)`;
@@ -827,11 +485,71 @@ const funcIRIToID = /^url\((["']?)#(.+)\1\)$/;
 const IRIFullMatch = /^#(.+)$/;
 const mediaTypeFullMatch = /^(?:image|audio|video|application|text|multipart|message)\/[^/]+$/;
 
+const cssAll = 'initial|inherit|unset|revert';
+const cssTimeFullMatch = new RegExp(`^${numberPattern}m?s$`);
+const cssEasingFunction = 'linear|ease|ease-in|ease-out|ease-in-out|step-start|step-end';
+const cubicBezierFunc = {
+    name: 'cubic-bezier',
+    valueLen: [0, 4],
+    values: [
+        {
+            type: 'number',
+            area: [0, 1],
+        },
+        {
+            type: 'number',
+        },
+    ],
+    valueRepeat: [2, 0],
+};
+const stepsFunc = {
+    name: 'steps',
+    valueLenArea: [1, 2],
+    values: [
+        {
+            type: 'int',
+            area: [1, Infinity],
+        },
+        {
+            type: 'enum',
+            enum: 'jump-start|jump-end|jump-none|jump-both|start|end',
+        },
+    ],
+    valueRepeat: [2, 0],
+};
+
+// 用于属性合法性验证的枚举类型（此处存储方便直接转换为正则的字符串形式）
+const calcMode = 'discrete|linear|paced|spline';
+const units = 'userSpaceOnUse|objectBoundingBox';
+const crossOrigin = 'anonymous|use-credentials';
+const dur = 'media|indefinite';
+const edgeMode = 'duplicate|wrap|none';
+const inVal = 'SourceGraphic|SourceAlpha|BackgroundImage|BackgroundAlpha|FillPaint|StrokePaint';
+const lengthAdjust = 'spacing|spacingAndGlyphs';
+const markerUnit = 'strokeWidth|userSpaceOnUse';
+const method = 'align|stretch';
+const blendMode = 'normal|multiply|screen|overlay|darken|lighten|color-dodge|color-burn|hard-light|soft-light|difference|exclusion|hue|saturation|color|luminosity';
+const operater = 'over|in|out|atop|xor|lighter|arithmetic';
+const operater1 = 'erode|dilate';
+const orient = 'auto|auto-start-reverse';
+const alignX = 'left|center|right';
+const alignY = 'top|center|bottom';
+const referrer = 'no-referrer|no-referrer-when-downgrade|same-origin|origin|strict-origin|origin-when-cross-origin|strict-origin-when-cross-origin|unsafe-url';
+const restart = 'always|whenNotActive|never';
+const spreadMethod = 'pad|reflect|repeat';
+const target = '_self|_parent|_top|_blank';
+const animateTransformType = 'translate|scale|rotate|skewX|skewY';
+const feColorMatrixType = 'matrix|saturate|hueRotate|luminanceToAlpha';
+const feFuncType = 'identity|table|discrete|linear|gamma';
+const feTurbulenceType = 'fractalNoise|turbulence';
+const channel = 'R|G|B|A';
+const isolationMode = 'auto|isolate';
+const alignmentBaseline = 'auto|baseline|before-edge|text-before-edge|middle|central|after-edge|text-after-edge|ideographic|alphabetic|hanging|mathematical';
+
 const shapeAndText = shapeElements.concat(textContentElements);
 const viewport = ['pattern', 'marker'].concat(newViewportsElements);
 const useContainerGraphics = ['use'].concat(containerElements, graphicsElements);
 const colorApply = ['animate'].concat(useContainerGraphics, gradientElements);
-// tslint:disable:max-file-line-count
 const _regularAttr = {
     'accumulate': {
         name: 'accumulate',
@@ -2563,7 +2281,10 @@ const _regularAttr = {
         couldBeStyle: true,
         inherited: true,
         animatable: true,
-        legalValues: [],
+        legalValues: [{
+                type: 'enum',
+                value: alignmentBaseline,
+            }],
         initValue: 'baseline',
         applyTo: ['tspan', 'textPath'],
     },
@@ -2572,7 +2293,10 @@ const _regularAttr = {
         couldBeStyle: true,
         cantTrans: true,
         cantBeAttr: true,
-        legalValues: [],
+        legalValues: [{
+                type: 'enum',
+                value: cssAll,
+            }],
         initValue: '',
         applyTo: useContainerGraphics,
     },
@@ -2581,7 +2305,10 @@ const _regularAttr = {
         couldBeStyle: true,
         cantTrans: true,
         cantBeAttr: true,
-        legalValues: [],
+        legalValues: [{
+                type: 'reg',
+                value: cssNameFullMatch,
+            }],
         initValue: 'none',
         applyTo: useContainerGraphics,
     },
@@ -2591,7 +2318,10 @@ const _regularAttr = {
         couldBeStyle: true,
         cantTrans: true,
         cantBeAttr: true,
-        legalValues: [],
+        legalValues: [{
+                type: 'reg',
+                value: cssTimeFullMatch,
+            }],
         initValue: '0',
         applyTo: useContainerGraphics,
     },
@@ -2601,7 +2331,16 @@ const _regularAttr = {
         couldBeStyle: true,
         cantTrans: true,
         cantBeAttr: true,
-        legalValues: [],
+        legalValues: [{
+                type: 'enum',
+                value: cssEasingFunction,
+            }, {
+                type: 'func',
+                value: cubicBezierFunc,
+            }, {
+                type: 'func',
+                value: stepsFunc,
+            }],
         initValue: 'ease',
         applyTo: useContainerGraphics,
     },
@@ -3509,7 +3248,103 @@ const regularAttr = new Proxy(_regularAttr, {
     },
 });
 
-const useEnum = (e, val) => new RegExp(`^${e}$`).test(val);
+/*
+ * 深度遍历所有的 Object 属性
+ * @param { function } 条件
+ * @param { function } 回调
+ * @param { object } 目标对象
+ * @param { object[] } 避免对象调用自身造成死循环
+ * @param { boolean } 是否深度优先，是的话会先遍历子元素
+ */
+const traversal$1 = (condition, cb, obj, path, visited, deep) => {
+    if (visited.includes(obj)) {
+        return;
+    }
+    visited.push(obj);
+    if (!deep) {
+        if (condition(obj)) {
+            cb(obj, path);
+            return;
+        }
+    }
+    path.push(obj);
+    if (Array.isArray(obj)) {
+        for (let i = 0; i < obj.length;) {
+            const item = obj[i];
+            traversal$1(condition, cb, item, path, visited, deep);
+            if (item === obj[i]) {
+                i++;
+            }
+        }
+    }
+    else {
+        for (const key in obj) {
+            const objK = obj[key];
+            if (isObj(objK)) {
+                traversal$1(condition, cb, objK, path, visited, deep);
+            }
+        }
+    }
+    path.pop();
+    if (deep) {
+        if (condition(obj)) {
+            cb(obj, path);
+        }
+    }
+};
+const traversalObj = (condition, cb, obj, deep = false) => {
+    traversal$1(condition, cb, obj, [], [], deep);
+};
+
+const useEnum = (e, val) => new RegExp(`^(?:${e})$`).test(val);
+
+const funcReg = new RegExp('^([^(]+)\\((.+)\\)$');
+const useFunc = (fnDef, val) => {
+    const fn = funcReg.exec(val);
+    if (fn) {
+        if (fn[1] !== fnDef.name) {
+            return false;
+        }
+        const values = fn[2].split(',').map(trim);
+        // 值的长度必须符合 an+b
+        if (fnDef.valueLen && (values.length - fnDef.valueLen[1]) % fnDef.valueLen[0]) {
+            return false;
+        }
+        // 值的长度必须位于合法区间
+        if (fnDef.valueLenArea && (values.length < fnDef.valueLenArea[0] || values.length > fnDef.valueLenArea[1])) {
+            return false;
+        }
+        for (let i = 0; i < values.length; i++) {
+            // 获取值的定义
+            const valueDef = fnDef.values[(i - fnDef.valueRepeat[1]) % fnDef.valueRepeat[0]];
+            if (valueDef.type === 'number' || valueDef.type === 'int') {
+                // 数值必须可以正确执行类型转换
+                const val = +values[i];
+                if (Number.isNaN(val)) {
+                    return false;
+                }
+                if (valueDef.area) {
+                    // 数值必须在正确的范围
+                    if (val < valueDef.area[0] || val > valueDef.area[1]) {
+                        return false;
+                    }
+                }
+                if (valueDef.type === 'int') {
+                    if (val !== Math.floor(val)) {
+                        return false;
+                    }
+                }
+            }
+            else if (valueDef.type === 'enum') {
+                if (!useEnum(valueDef.enum, values[i])) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    return false;
+};
 
 const useReg = (reg, val) => reg.test(val.trim());
 
@@ -3538,6 +3373,12 @@ const legalValue = (attrDefine, attr, nodeName = '') => {
                     // 值应该是一个属性名，而且不允许循环引用
                     case 'attr':
                         if (!regularAttr[attr.value].isUndef && attr.fullname !== attr.value) {
+                            return true;
+                        }
+                        break;
+                    // 值应该是一个函数
+                    case 'func':
+                        if (useFunc(legalRule.value, attr.value)) {
                             return true;
                         }
                         break;
@@ -3685,9 +3526,9 @@ const combineStyle = async (dom) => new Promise(resolve => {
         }
     }
     if (ruleParents.length) {
-        // (async () => { // tslint:disable-line no-floating-promises
+        // (async () => {
         for (const [rule, parent] of ruleParents) {
-            // 				if (typeof document === 'undefined') { // tslint:disable-line strict-type-predicates
+            // 				if (typeof document === 'undefined') {
             // 					let cssString = 'text,rect{';
             // 					rule.declarations.forEach(d => {
             // 						cssString += `${d.property}:${d.value};
@@ -4094,8 +3935,6 @@ const rmUseless = async (dom) => new Promise(resolve => {
     resolve();
 });
 
-const hasProp = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
-
 const isTag = propEq('nodeType', NodeType.Tag);
 
 const collapseAttributes = (node1, node2) => {
@@ -4136,60 +3975,108 @@ const doCollapse = (dom) => {
         }
     }, dom);
 };
-const collapseG = async (rule, dom) => new Promise(resolve => {
-    if (rule[0]) {
-        doCollapse(dom);
-    }
+const collapseG = async (dom) => new Promise(resolve => {
+    doCollapse(dom);
     resolve();
 });
 
-const collapseTextwrap = async (rule, dom) => new Promise(resolve => {
-    if (rule[0]) {
-        traversalNode(isTag, node => {
-            const tagDefine = regularTag[node.nodeName];
-            // 规则执行的前提：文本容器嵌套关系
-            if (tagDefine.containTextNode && node.parentNode && regularTag[node.parentNode.nodeName].containTextNode) {
-                for (let i = node.attributes.length; i--;) {
-                    // 只要有一个非空属性，就不执行塌陷
-                    if (node.attributes[i].value.trim()) {
-                        return;
-                    }
+const collapseTextwrap = async (dom) => new Promise(resolve => {
+    traversalNode(isTag, node => {
+        const tagDefine = regularTag[node.nodeName];
+        // 规则执行的前提：文本容器嵌套关系
+        if (tagDefine.containTextNode && node.parentNode && regularTag[node.parentNode.nodeName].containTextNode) {
+            for (let i = node.attributes.length; i--;) {
+                // 只要有一个非空属性，就不执行塌陷
+                if (node.attributes[i].value.trim()) {
+                    return;
                 }
-                node.parentNode.replaceChild(node, ...node.childNodes);
             }
-        }, dom);
-    }
+            node.parentNode.replaceChild(node, ...node.childNodes);
+        }
+    }, dom);
     resolve();
 });
 
-const FF = 255;
-const Hundred = 100;
-const Hex = 16;
-const CIRC = 360;
-const HALF_CIRC = 180;
-const GRAD = 400;
-const RAD = Math.PI * 2;
-const matrixEPos = 4;
-const HALF = 0.5;
-const APOS_RX = 0;
-const APOS_RY = 1;
-const APOS_ROTATION = 2;
-const APOS_LARGE = 3;
-const APOS_SWEEP = 4;
-const APOS_X = 5;
-const APOS_Y = 6;
-const APOS_LEN = 7;
-const OPACITY_DIGIT = 3; // 浏览器对于颜色的 alpha 值只处理到小数点后第 3 位
-const DEFAULT_SIZE_DIGIT = 2;
-const DEFAULT_ACCURATE_DIGIT = 2;
-const DEFAULT_MATRIX_DIGIT = 3;
-// path 直线指令
-const LineTypes = 'LlHhVv';
-
-const toFixed = curry((digit, a) => (a < 0 ? -1 : 1) * Math.round(Math.abs(a) * Math.pow(10, digit)) / Math.pow(10, digit));
+const getShorter = (a, b) => a.length < b.length ? a : b;
 
 // 移除纯小数的前导 0
 const shortenPureDecimal = (s) => s.replace(/^(-?)0\./, '$1.');
+
+const isExp = (s) => s.toLowerCase().includes('e');
+
+const isFloat = (s) => s.includes('.');
+
+// 对纯小数进行按位四舍五入
+const floatFixed = (_dgt, sourceNum, sourceStr) => {
+    // dgt 为负数的当作 0 来处理
+    const dgt = Math.max(_dgt, 0);
+    // dgt 为 0 表示四舍五入取整
+    if (dgt === 0) {
+        return Math.round(sourceNum);
+    }
+    const dotIndex = sourceStr.indexOf('.');
+    const digitN = sourceStr.length - (dotIndex + 1);
+    if (digitN <= dgt) {
+        return sourceNum;
+    }
+    // 最后一位四舍五入
+    const fixedSub = sourceStr.slice(0, dotIndex + dgt + 1);
+    if (+sourceStr[dotIndex + dgt + 1] > 4) {
+        if (/\.9+$/.test(fixedSub)) {
+            // 需要进位整数的情况
+            return sourceNum < 0 ? Math.floor(sourceNum) : Math.ceil(sourceNum);
+        }
+        else {
+            return +fixedSub.replace(/([0-8])9*$/, (_mantissa, lastN) => `${+lastN + 1}`);
+        }
+    }
+    else {
+        return +fixedSub;
+    }
+};
+const toFixed = curry((digit, n) => {
+    // NaN 和 Infinity 直接返回
+    if (!isFinite(n)) {
+        return n;
+    }
+    const s = n.toString();
+    // 科学计数法
+    if (isExp(s)) {
+        const eIndex = s.indexOf('e');
+        if (s[eIndex + 1] === '-') {
+            const exp = +s.slice(eIndex + 2);
+            // 精度要求低于 (科学计数法精度 - 1)，直接返回 0
+            if (digit < exp - 1) {
+                return 0;
+            }
+            // 如果精度等于 (科学计数法精度 - 1)，对整数位进行四舍五入
+            if (digit === exp - 1) {
+                return +`${+s[0] > 4 ? 1 : 0}e-${exp - 1}`;
+            }
+            // 1.00001e-7 的精度是 12
+            if (isFloat(s)) {
+                // 精度大于等于数值精度，返回原数值
+                if (digit >= eIndex - (s.indexOf('.') + 1) + exp) {
+                    return n;
+                }
+                const dotS = s.slice(0, eIndex);
+                const dotFix = floatFixed(digit - exp, +dotS, dotS);
+                return +`${dotFix}e-${exp}`;
+            }
+            // 精度大于等于数值精度，返回原数值
+            return n;
+        }
+        else {
+            return n;
+        }
+    }
+    // 小数的情况
+    if (isFloat(s)) {
+        return floatFixed(digit, n, s);
+    }
+    // 整数的情况
+    return n;
+});
 
 // 浮点数转百分比
 const toPercent = (digit, n) => `${toFixed(Math.max(digit - 2, 0), n * Hundred)}%`;
@@ -4198,7 +4085,7 @@ const toPercent = (digit, n) => `${toFixed(Math.max(digit - 2, 0), n * Hundred)}
 const shortenAlpha = (digit, s) => {
     const perc = shortenPureDecimal(toPercent(digit, s));
     const num = shortenPureDecimal(`${toFixed(digit, s)}`);
-    return perc.length < num.length ? perc : num;
+    return getShorter(perc, num);
 };
 
 // 转换百分比格式字符串为数值
@@ -4486,7 +4373,7 @@ const alphaMap = {
     '3': 1,
     '0': 0,
 };
-const execColor = (color, digit = OPACITY_DIGIT) => {
+const parseColor = (color, digit = OPACITY_DIGIT) => {
     // 首先对原始字符串进行基本的格式处理和类型转换
     let _color = color.trim();
     if (hasProp(keywords, _color)) {
@@ -4587,7 +4474,7 @@ const execColor = (color, digit = OPACITY_DIGIT) => {
 
 const alphaReg = new RegExp(`^(${numberPattern})(%?)$`);
 // 解析 opacity 类型的值，成功解析返回 0~1 之间的数值，无法解析则返回原始字符串
-const execAlpha = (s) => {
+const parseAlpha = (s) => {
     const alpha = alphaReg.exec(s);
     if (alpha) {
         return validOpacity(alpha[2], alpha[1]);
@@ -4595,8 +4482,18 @@ const execAlpha = (s) => {
     return s;
 };
 
+// 获取属性（根据 SVG 覆盖规则，css 优先）
+const getAttr = (node, key, defaultVal) => {
+    let val = defaultVal;
+    const styles = node.styles;
+    if (hasProp(styles, key)) {
+        val = styles[key].value;
+    }
+    return val;
+};
+
 const cssReg = /([^:;]+):((?:[^;'"]*?(?:(?:'[^']*?'|"[^"]*?"|\/\*.*?\*\/))*[^;'"]*?)*)(?=;|$)/gim;
-const execStyle = (styleStr) => {
+const parseStyle = (styleStr) => {
     // 此处使用数组，因为不能在解析器中排重，排重的工作要交给优化工具
     const style = [];
     const str = decode(styleStr, {
@@ -4627,7 +4524,6 @@ const execStyle = (styleStr) => {
 // css 选择器相关字符
 const idChar = '#[^#\\.\\[\\*:\\s]+';
 const classChar = '\\.[^#\\.\\[\\*:\\s]+';
-// tslint:disable-next-line
 const attrChar = '\\[[a-zA-Z][a-zA-Z0-9\\-]*(?:[\\|\\^\\$\\*~]?=(?:\'[^\']*\'|"[^"]*"|[^\'"\\]]+))?\\]';
 const pseudoChar = '\\:{1,2}[a-zA-Z-]+(?:\\((?:[^\\)]+|[^\\(]+\\([^\\)]+\\))\\))?';
 
@@ -4648,9 +4544,9 @@ var attrModifier;
     attrModifier[attrModifier["*"] = 5] = "*";
 })(attrModifier || (attrModifier = {}));
 
-const execSelector = (selector) => {
+const parseSelector = (selector) => {
     const selectors = [];
-    const selectorUnitReg = new RegExp(`^([^\\s>+~#\\.\\[:]+|\\*)?((?:${idChar}|${classChar}|${attrChar}|${pseudoChar})*)([\\s>+~]+|$)`);
+    const selectorUnitReg = new RegExp(`^((?:[^\\s>+~#\\.\\[:]+|\\*)?)((?:${idChar}|${classChar}|${attrChar}|${pseudoChar})*)([\\s>+~]+|$)`);
     let selectorStr = selector;
     let selectorExec = selectorUnitReg.exec(selectorStr);
     while (selectorExec && selectorExec[0].length) {
@@ -4683,7 +4579,6 @@ const execSelector = (selector) => {
                         }
                         else {
                             // 取出等号修饰符
-                            // tslint:disable-next-line strict-type-predicates
                             if (typeof attrModifier[attrStr[eqIndex - 1]] === 'number') {
                                 selectorUnit.attr.push({
                                     key: attrStr.slice(0, eqIndex - 1),
@@ -4730,7 +4625,6 @@ const execSelector = (selector) => {
         }
         if (selectorExec[3]) {
             const combinator = selectorExec[3].trim();
-            // tslint:disable-next-line strict-type-predicates
             if (typeof selectorUnitCombinator[combinator] === 'number') {
                 selectorUnit.combinator = selectorUnitCombinator[combinator];
             }
@@ -4824,7 +4718,6 @@ const checkAttr = (node, selector) => {
                     }
                     break;
                 // 结尾字符匹配
-                // tslint:disable-next-line:no-string-literal
                 case attrModifier['$']:
                     if (attr.lastIndexOf(attrSelector.value) !== attr.length - attrSelector.value.length) {
                         return false;
@@ -5013,7 +4906,7 @@ const check = (dom, styleItems) => {
         node.attributes.forEach(attr => {
             if (attr.fullname === 'style') {
                 // 行内样式优先级最高
-                const styles = execStyle(attr.value);
+                const styles = parseStyle(attr.value);
                 styles.forEach(style => {
                     nodeStyle[style.name] = {
                         value: style.value,
@@ -5028,7 +4921,6 @@ const check = (dom, styleItems) => {
             else if (regularAttr[attr.fullname].couldBeStyle) {
                 // 属性优先级最低，但可以覆盖继承
                 const styleDefine = nodeStyle[attr.fullname];
-                // tslint:disable-next-line
                 if (!styleDefine || styleDefine.from === 'inherit') {
                     nodeStyle[attr.fullname] = {
                         value: attr.value,
@@ -5042,7 +4934,6 @@ const check = (dom, styleItems) => {
             if (styleItem.nodes.includes(node)) {
                 styleItem.styles.forEach(style => {
                     const styleDefine = nodeStyle[style.name];
-                    // tslint:disable-next-line
                     if (!styleDefine || styleDefine.from === 'attr' || styleDefine.from === 'inherit' || (styleDefine.from === 'styletag' && styleDefine.selectorPriority && overrideAble(styleItem.selectorPriority, styleDefine.selectorPriority))) {
                         nodeStyle[style.name] = {
                             value: style.value,
@@ -5085,7 +4976,7 @@ const check = (dom, styleItems) => {
     }, dom);
 };
 // 解析样式树，为每个节点增加 styles 属性，标记当前节点生效的样式信息
-const execStyleTree = (dom) => {
+const parseStyleTree = (dom) => {
     // 首先清理掉曾经被解析过的样式树
     traversalNode(isTag, node => {
         if (node.styles) {
@@ -5109,7 +5000,7 @@ const execStyleTree = (dom) => {
                     }
                 });
                 for (let si = styleRule.selectors.length; si--;) {
-                    const selector = execSelector(styleRule.selectors[si]);
+                    const selector = parseSelector(styleRule.selectors[si]);
                     const selectorPriority = getSelectorPriority(selector);
                     const nodes = getBySelector(dom, selector);
                     if (nodes.length) {
@@ -5126,21 +5017,11 @@ const execStyleTree = (dom) => {
     check(dom, styleItems);
 };
 
-// 获取属性（根据 SVG 覆盖规则，css 优先）
-const getAttr = (node, key, defaultVal) => {
-    let val = defaultVal;
-    const styles = node.styles;
-    if (hasProp(styles, key)) {
-        val = styles[key].value;
-    }
-    return val;
-};
-
 // 合并属性和样式完全相同的路径
 // // TODO 验证路径是否相交
 // const checkPath = (str: string) => {
 // 	const paths: number[][] = [];
-// 	const pathItems = doCompute(execPath(str));
+// 	const pathItems = doCompute(parsePath(str));
 // 	let verify = true;
 // 	let currentPath: number[] = [];
 // 	pathItems.every(item => {
@@ -5224,9 +5105,9 @@ const canbeCombine = (node1, node2, attr, combineFill, combineOpacity) => {
         return false;
     }
     const styles = node1.styles;
-    const noOpacity = !hasProp(styles, 'opacity') || execAlpha(styles.opacity.value) === 1;
-    const noStrokeOpacity = execColor(hasProp(styles, 'stroke') ? styles.stroke.value : '').a === 1 && (!hasProp(styles, 'stroke-opacity') || execAlpha(styles['stroke-opacity'].value) === 1);
-    const noFillOpacity = execColor(hasProp(styles, 'fill') ? styles.fill.value : '').a === 1 && (!hasProp(styles, 'fill-opacity') || execAlpha(styles['fill-opacity'].value) === 1);
+    const noOpacity = !hasProp(styles, 'opacity') || parseAlpha(styles.opacity.value) === 1;
+    const noStrokeOpacity = parseColor(hasProp(styles, 'stroke') ? styles.stroke.value : '').a === 1 && (!hasProp(styles, 'stroke-opacity') || parseAlpha(styles['stroke-opacity'].value) === 1);
+    const noFillOpacity = parseColor(hasProp(styles, 'fill') ? styles.fill.value : '').a === 1 && (!hasProp(styles, 'fill-opacity') || parseAlpha(styles['fill-opacity'].value) === 1);
     // fill 为空
     const noFill = hasProp(styles, 'fill') && styles.fill.value === 'none' && (combineOpacity || (noOpacity && noStrokeOpacity));
     // 填充规则不能是 evenodd 必须是 nonzero
@@ -5249,49 +5130,39 @@ const getKey = (node) => {
     });
     return `attr:${keyObj.attr}|inline:${keyObj.inline}|styletag:${keyObj.styletag}|inherit:${keyObj.inherit}`;
 };
-const combinePath = async (rule, dom) => new Promise(resolve => {
-    if (rule[0]) {
-        const { disregardFill, disregardOpacity, } = rule[1];
-        execStyleTree(dom);
-        traversalNode(isTag, node => {
-            const pathChildren = {};
-            let tagIndex = 0;
-            for (let i = 0; i < node.childNodes.length; i++) {
-                const childNode = node.childNodes[i];
-                if (childNode.nodeName === 'path') {
-                    let d;
-                    let k = '';
-                    childNode.attributes.forEach(attr => {
-                        if (attr.fullname === 'd') {
-                            d = attr;
-                        }
-                        else if (attr.fullname !== 'style') {
-                            k += `${attr.fullname}=${attr.value}&`;
-                        }
-                    });
-                    if (d) {
-                        const key = `${k}|${getKey(childNode)}`;
-                        if (has(key, pathChildren)) {
-                            // 允许路径合并的条件：
-                            // 1、所有属性和样式（包括继承样式）相同
-                            // 2、相邻
-                            // 3、没有 fill 或 stroke
-                            // 4、所有可见透明度 ≥ 1
-                            // TODO 路径没有相交或包含
-                            if (pathChildren[key].index === tagIndex - 1 && canbeCombine(childNode, pathChildren[key].node, d, disregardFill, disregardOpacity)) {
-                                // 路径拼合时，第一个 m 要转为绝对，否则会有 bug
-                                pathChildren[key].attr.value += d.value.replace(/^m/, 'M');
-                                rmNode(childNode);
-                                tagIndex--;
-                                i--;
-                            }
-                            else {
-                                pathChildren[key] = {
-                                    attr: d,
-                                    index: tagIndex,
-                                    node: childNode,
-                                };
-                            }
+const combinePath = async (dom, { option: { disregardFill, disregardOpacity, } }) => new Promise(resolve => {
+    parseStyleTree(dom);
+    traversalNode(isTag, node => {
+        const pathChildren = {};
+        let tagIndex = 0;
+        for (let i = 0; i < node.childNodes.length; i++) {
+            const childNode = node.childNodes[i];
+            if (childNode.nodeName === 'path') {
+                let d;
+                let k = '';
+                childNode.attributes.forEach(attr => {
+                    if (attr.fullname === 'd') {
+                        d = attr;
+                    }
+                    else if (attr.fullname !== 'style') {
+                        k += `${attr.fullname}=${attr.value}&`;
+                    }
+                });
+                if (d) {
+                    const key = `${k}|${getKey(childNode)}`;
+                    if (has(key, pathChildren)) {
+                        // 允许路径合并的条件：
+                        // 1、所有属性和样式（包括继承样式）相同
+                        // 2、相邻
+                        // 3、没有 fill 或 stroke
+                        // 4、所有可见透明度 ≥ 1
+                        // TODO 路径没有相交或包含
+                        if (pathChildren[key].index === tagIndex - 1 && canbeCombine(childNode, pathChildren[key].node, d, disregardFill, disregardOpacity)) {
+                            // 路径拼合时，第一个 m 要转为绝对，否则会有 bug
+                            pathChildren[key].attr.value += d.value.replace(/^m/, 'M');
+                            rmNode(childNode);
+                            tagIndex--;
+                            i--;
                         }
                         else {
                             pathChildren[key] = {
@@ -5301,40 +5172,72 @@ const combinePath = async (rule, dom) => new Promise(resolve => {
                             };
                         }
                     }
-                }
-                if (isTag(childNode)) {
-                    tagIndex++;
+                    else {
+                        pathChildren[key] = {
+                            attr: d,
+                            index: tagIndex,
+                            node: childNode,
+                        };
+                    }
                 }
             }
-        }, dom);
-    }
+            if (isTag(childNode)) {
+                tagIndex++;
+            }
+        }
+    }, dom);
     resolve();
 });
 
 /*
- * 以字符串的形式返回小数部分
+ * 获取一个数字的精度
  */
-const decimal = (a) => {
-    const astr = `${a}`;
-    return astr.includes('.') ? astr.slice(astr.indexOf('.') + 1) : '';
+const digit = (n) => {
+    // 忽略 NaN 和 Infinity
+    if (!isFinite(n)) {
+        return 0;
+    }
+    const s = n.toString();
+    // 科学计数法的情况
+    if (isExp(s)) {
+        const eIndex = s.indexOf('e');
+        if (s[eIndex + 1] === '-') {
+            const exp = +s.slice(eIndex + 2);
+            // 1.00001e-7 的精度是 12
+            if (isFloat(s)) {
+                return eIndex - (s.indexOf('.') + 1) + exp;
+            }
+            return exp;
+        }
+        else {
+            return 0;
+        }
+    }
+    // 小数的情况
+    if (isFloat(s)) {
+        return s.length - (s.indexOf('.') + 1);
+    }
+    // 整数的情况
+    return 0;
 };
 
 /*
  * 保证精度的乘法
  * 用于解决 双精度浮点数 导致精度变化的问题
  */
-const multiply = curry((a, b) => toFixed(decimal(a).length + decimal(b).length, a * b));
-
-/*
- * 返回两个小数的最大精度
- */
-const digit = curry((a, b) => Math.max(decimal(a).length, decimal(b).length));
+const multiply = curry((a, b) => {
+    const dgt = digit(a) + digit(b);
+    return toFixed(dgt, a * b);
+});
 
 /*
  * 保证精度的加法
  * 用于解决 双精度浮点数 导致精度变化的问题
  */
-const plus = curry((a, b) => toFixed(digit(a, b), a + b));
+const plus = curry((a, b) => {
+    const dgt = Math.max(digit(a), digit(b));
+    return toFixed(dgt, a + b);
+});
 
 const HALF_CIRC$1 = 180;
 class Matrix {
@@ -5563,65 +5466,6 @@ const combineMatrix = (operate, digit1 = DEFAULT_MATRIX_DIGIT, digit2 = DEFAULT_
     }, digit1, digit2, digit3);
 };
 
-const execNumberList = (s) => {
-    const result = [];
-    // 首先全字匹配字符串，不符合的直接退出
-    if (numberListFullMatch.test(s)) {
-        // 重要！含有 g 修饰符的正则表达式 exec 时要先重置！
-        numberGlobal.lastIndex = 0;
-        let matches = numberGlobal.exec(s);
-        while (matches) {
-            result.push(+matches[0]);
-            matches = numberGlobal.exec(s);
-        }
-    }
-    return result;
-};
-
-const matrixSingle = `(translate|scale|rotate|skewX|skewY|matrix)\\s*\\(\\s*(${numberPattern}(?:${commaWsp}${numberPattern})*)\\s*\\)`;
-const matrixReg = new RegExp(matrixSingle, 'gm');
-const matrixFullReg = new RegExp(`^${matrixSingle}(?:${commaWsp}${matrixSingle})*$`, 'm');
-const matrixValLen = 6;
-const execMatrix = (str) => {
-    const result = [];
-    // 首先全字匹配完整的字符串，不匹配的直接退出
-    if (matrixFullReg.test(str.trim())) {
-        // 重置正则匹配位置
-        matrixReg.lastIndex = 0;
-        let match = matrixReg.exec(str);
-        while (match !== null) {
-            const val = execNumberList(match[2]);
-            // 验证参数的个数是否合法，不合法的直接退出
-            if (match[1] === 'translate' || match[1] === 'scale') {
-                if (val.length > 2) {
-                    return [];
-                }
-            }
-            else if (match[1] === 'matrix') {
-                if (val.length !== matrixValLen) {
-                    return [];
-                }
-            }
-            else if (match[1] === 'rotate') {
-                if (val.length !== 1 && val.length !== 3) {
-                    return [];
-                }
-            }
-            else {
-                if (val.length !== 1) {
-                    return [];
-                }
-            }
-            result.push({
-                type: match[1],
-                val,
-            });
-            match = matrixReg.exec(str);
-        }
-    }
-    return result;
-};
-
 const merge = (func1, func2, digit1 = DEFAULT_MATRIX_DIGIT, digit2 = DEFAULT_SIZE_DIGIT, digit3 = DEFAULT_ACCURATE_DIGIT) => {
     let resFunc = {
         type: func1.type,
@@ -5667,6 +5511,65 @@ const merge = (func1, func2, digit1 = DEFAULT_MATRIX_DIGIT, digit2 = DEFAULT_SIZ
     return shorten(resFunc, digit1, digit2, digit3);
 };
 
+const parseNumberList = (s) => {
+    const result = [];
+    // 首先全字匹配字符串，不符合的直接退出
+    if (numberListFullMatch.test(s)) {
+        // 重要！含有 g 修饰符的正则表达式 exec 时要先重置！
+        numberGlobal.lastIndex = 0;
+        let matches = numberGlobal.exec(s);
+        while (matches) {
+            result.push(+matches[0]);
+            matches = numberGlobal.exec(s);
+        }
+    }
+    return result;
+};
+
+const matrixSingle = `(translate|scale|rotate|skewX|skewY|matrix)\\s*\\(\\s*(${numberPattern}(?:${commaWsp}${numberPattern})*)\\s*\\)`;
+const matrixReg = new RegExp(matrixSingle, 'gm');
+const matrixFullReg = new RegExp(`^${matrixSingle}(?:${commaWsp}${matrixSingle})*$`, 'm');
+const matrixValLen = 6;
+const parseMatrix = (str) => {
+    const result = [];
+    // 首先全字匹配完整的字符串，不匹配的直接退出
+    if (matrixFullReg.test(str.trim())) {
+        // 重置正则匹配位置
+        matrixReg.lastIndex = 0;
+        let match = matrixReg.exec(str);
+        while (match !== null) {
+            const val = parseNumberList(match[2]);
+            // 验证参数的个数是否合法，不合法的直接退出
+            if (match[1] === 'translate' || match[1] === 'scale') {
+                if (val.length > 2) {
+                    return [];
+                }
+            }
+            else if (match[1] === 'matrix') {
+                if (val.length !== matrixValLen) {
+                    return [];
+                }
+            }
+            else if (match[1] === 'rotate') {
+                if (val.length !== 1 && val.length !== 3) {
+                    return [];
+                }
+            }
+            else {
+                if (val.length !== 1) {
+                    return [];
+                }
+            }
+            result.push({
+                type: match[1],
+                val,
+            });
+            match = matrixReg.exec(str);
+        }
+    }
+    return result;
+};
+
 const toScientific = (s) => {
     const sStr = s.toString();
     let _s = sStr;
@@ -5676,7 +5579,7 @@ const toScientific = (s) => {
         e++;
     }
     _s = `${_s}e${e}`;
-    return _s.length <= sStr.length ? _s : sStr;
+    return getShorter(_s, sStr);
 };
 
 const shortenNumber = pipe(toScientific, shortenPureDecimal);
@@ -5701,7 +5604,10 @@ const stringify = (m, digit1 = DEFAULT_MATRIX_DIGIT, digit2 = DEFAULT_SIZE_DIGIT
  * 保证精度的减法
  * 用于解决 双精度浮点数 导致精度变化的问题
  */
-const minus = curry((a, b) => toFixed(digit(a, b), a - b));
+const minus = curry((a, b) => {
+    const dgt = Math.max(digit(a), digit(b));
+    return toFixed(dgt, a - b);
+});
 
 const numberLength = (num) => shortenNumberList(num.map(shortenNumber).join(',')).length;
 
@@ -6147,7 +6053,6 @@ const qArgLen = 4;
 const doCompute = (pathArr) => {
     const result = [];
     let pos = [0, 0];
-    // tslint:disable-next-line:cyclomatic-complexity
     for (const subPath of pathArr) {
         const pathResult = [];
         for (const pathItem of subPath) {
@@ -6289,7 +6194,7 @@ const doCompute = (pathArr) => {
 const FLAG_POS1 = 3;
 const FLAG_POS2 = 4;
 const LOOP_LEN = 7;
-const execArc = (s) => {
+const parseArc = (s) => {
     const result = [];
     // 重要！含有 g 修饰符的正则表达式 exec 时要先重置！
     numberGlobal.lastIndex = 0;
@@ -6316,7 +6221,7 @@ const execArc = (s) => {
 };
 
 const pathReg = new RegExp(`([mzlhvcsqta])\\s*((?:${numberSequence})?)(.*?)(?=[mzlhvcsqta]|$)`, 'gim');
-const execPath = (str) => {
+const parsePath = (str) => {
     const result = [];
     let temp = [];
     // 重置正则匹配位置
@@ -6330,7 +6235,7 @@ const execPath = (str) => {
         }
         let val = [];
         if (match[2]) {
-            val = type === 'a' ? execArc(match[2]) : execNumberList(match[2]);
+            val = type === 'a' ? parseArc(match[2]) : parseNumberList(match[2]);
         }
         switch (type) {
             // 平移的参数必须为偶数
@@ -6547,7 +6452,7 @@ const checkAnimateAttr = (animateAttrs, name, condition = () => true) => animate
 const findAnimateAttr = (animateAttrs, name) => animateAttrs.filter(item => item.attributeName === name);
 
 const rmAttrs = (node, attrs) => {
-    let styleVal = execStyle(node.getAttribute('style') || '');
+    let styleVal = parseStyle(node.getAttribute('style') || '');
     for (const key of attrs) {
         node.removeAttribute(key);
         styleVal = styleVal.filter(attr => attr.fullname !== key);
@@ -6560,7 +6465,6 @@ const rmAttrs = (node, attrs) => {
     }
 };
 
-// tslint:disable max-file-line-count
 const SAFE_ROTATE_CORNER = 90;
 const fixedMVal = toFixed(DEFAULT_MATRIX_DIGIT);
 const applyNumber = (fn, s, ex) => shortenNumber(fn(parseFloat(s), ex));
@@ -6581,22 +6485,22 @@ const checkAttr$1 = (node, attrname, val) => {
         rmAttrs(node, [attrname]);
     }
     else {
-        node.removeAttribute(attrname);
         const attrDefine = regularAttr[attrname];
         if (attrDefine.couldBeStyle && node.hasAttribute('style')) {
-            const styleAttr = execStyle(node.getAttribute('style'));
-            styleAttr.some(sAttr => {
+            const styleAttr = parseStyle(node.getAttribute('style'));
+            const hasStyle = styleAttr.some(sAttr => {
                 if (sAttr.fullname === attrname) {
                     sAttr.value = val;
                     return true;
                 }
                 return false;
             });
-            node.setAttribute('style', stringifyStyle(styleAttr));
+            if (hasStyle) {
+                node.setAttribute('style', stringifyStyle(styleAttr));
+                return;
+            }
         }
-        else {
-            node.setAttribute(attrname, val);
-        }
+        node.setAttribute(attrname, val);
     }
 };
 // 应用
@@ -6609,10 +6513,10 @@ const applyTextTransform = (node, matrix, animateAttrs) => {
     const dy = node.getAttribute('dy') || '0';
     // 必须是纯数值列表
     if (pureNumOrWithPxList.test(dx) && pureNumOrWithPxList.test(dy)) {
-        const dxs = execNumberList(dx);
+        const dxs = parseNumberList(dx);
         checkAttr$1(node, 'dx', applyNumberList(plus, dxs, matrix.val[0]));
         if (matrix.val[1]) {
-            const dys = execNumberList(dy);
+            const dys = parseNumberList(dy);
             checkAttr$1(node, 'dy', applyNumberList(plus, dys, matrix.val[1]));
         }
         node.removeAttribute('transform');
@@ -6637,7 +6541,6 @@ const applyRectTransform = (node, matrix, animateAttrs, hasStroke, hasMarker) =>
         rx = '0';
         ry = '0';
     }
-    // todo 暂不支持 animate
     if (!pureNumOrWithPx.test(x) || !pureNumOrWithPx.test(y) || checkAnimateAttr(animateAttrs, 'x') || checkAnimateAttr(animateAttrs, 'y')) {
         return false;
     }
@@ -7010,7 +6913,7 @@ const applyPolyTransform = (node, matrix, animateAttrs, hasStroke, hasMarker, mi
         return false;
     }
     let pointVal = node.getAttribute('points') || '';
-    const points = execNumberList(pointVal);
+    const points = parseNumberList(pointVal);
     // points 数量必须是偶数
     if (points.length % 2 === 1) {
         points.pop();
@@ -7072,7 +6975,7 @@ const applyPathTransform = (node, matrix, animateAttrs, hasStroke, hasMarker, mi
         return false;
     }
     const d = node.getAttribute('d') || '';
-    const pathResult = doCompute(execPath(d));
+    const pathResult = doCompute(parsePath(d));
     if (matrix.type === 'translate') {
         const tx = matrix.val[0];
         const ty = matrix.val[1] || 0;
@@ -7324,57 +7227,53 @@ const applyTransform = (node, matrix, minStr) => {
             return false;
     }
 };
-const combineTransform = async (rule, dom) => new Promise(resolve => {
-    if (rule[0]) {
-        execStyleTree(dom);
-        // digit1 = 矩阵前 4 位的精度，digit2 = 矩阵后 2 位的精度
-        const { trigDigit, sizeDigit, angelDigit, } = rule[1];
-        traversalNode(isTag, node => {
-            for (let i = node.attributes.length; i--;) {
-                const attr = node.attributes[i];
-                if (transformAttributes.includes(attr.name)) {
-                    const transform = [];
-                    execMatrix(attr.value.trim()).forEach(mFunc => {
-                        const lastFunc = transform[transform.length - 1];
-                        if (transform.length && lastFunc.type === mFunc.type) {
-                            const mergeFunc = merge(lastFunc, mFunc, trigDigit, sizeDigit, angelDigit);
-                            // 如果合并后为无效变化，则出栈，否则更新合并后的函数
-                            if (mergeFunc.noEffect) {
-                                transform.pop();
-                            }
-                            else {
-                                transform[transform.length - 1] = mergeFunc;
-                            }
+const combineTransform = async (dom, { params: { trifuncDigit, sizeDigit, angelDigit, } }) => new Promise(resolve => {
+    parseStyleTree(dom);
+    traversalNode(isTag, node => {
+        for (let i = node.attributes.length; i--;) {
+            const attr = node.attributes[i];
+            if (transformAttributes.includes(attr.name)) {
+                const transform = [];
+                parseMatrix(attr.value.trim()).forEach(mFunc => {
+                    const lastFunc = transform[transform.length - 1];
+                    if (transform.length && lastFunc.type === mFunc.type) {
+                        const mergeFunc = merge(lastFunc, mFunc, trifuncDigit, sizeDigit, angelDigit);
+                        // 如果合并后为无效变化，则出栈，否则更新合并后的函数
+                        if (mergeFunc.noEffect) {
+                            transform.pop();
                         }
                         else {
-                            transform.push(mFunc);
+                            transform[transform.length - 1] = mergeFunc;
                         }
-                    });
-                    if (transform.length) {
-                        const matrix = combineMatrix(transform, trigDigit, sizeDigit, angelDigit);
-                        const transformStr = stringify(transform, trigDigit, sizeDigit, angelDigit);
-                        const matrixStr = stringify([matrix], trigDigit, sizeDigit, angelDigit);
-                        const minStr = (matrixStr.length < transformStr.length) ? matrixStr : transformStr;
-                        if (matrix.noEffect) {
-                            node.removeAttribute(attr.fullname);
-                            return;
-                        }
-                        if (attr.fullname === 'transform') {
-                            // TODO：进一步分析子元素
-                            // TODO：暂时只应用 transform 属性
-                            if (applyTransform(node, matrix, ` ${attr.fullname}="${minStr}"`)) {
-                                return;
-                            }
-                        }
-                        attr.value = minStr;
                     }
                     else {
-                        node.removeAttribute(attr.fullname);
+                        transform.push(mFunc);
                     }
+                });
+                if (transform.length) {
+                    const matrix = combineMatrix(transform, trifuncDigit, sizeDigit, angelDigit);
+                    const transformStr = stringify(transform, trifuncDigit, sizeDigit, angelDigit);
+                    const matrixStr = stringify([matrix], trifuncDigit, sizeDigit, angelDigit);
+                    const minStr = getShorter(matrixStr, transformStr);
+                    if (matrix.noEffect) {
+                        node.removeAttribute(attr.fullname);
+                        return;
+                    }
+                    if (attr.fullname === 'transform') {
+                        // TODO：进一步分析子元素
+                        // TODO：暂时只应用 transform 属性
+                        if (applyTransform(node, matrix, ` ${attr.fullname}="${minStr}"`)) {
+                            return;
+                        }
+                    }
+                    attr.value = minStr;
+                }
+                else {
+                    node.removeAttribute(attr.fullname);
                 }
             }
-        }, dom);
-    }
+        }
+    }, dom);
     resolve();
 });
 
@@ -8012,7 +7911,7 @@ const DPInit = (threshold, pathArr) => {
 };
 const processPath = (dVal, hasMarker, hasStroke, hasStrokeCap, { thinning, sizeDigit, angelDigit, straighten: straighten$1, }) => {
     // 先运算一次 doCompute，拿到每条指令的 from 坐标
-    let pathResult = doCompute(execPath(dVal));
+    let pathResult = doCompute(parsePath(dVal));
     // 如果存在 marker 引用，多余的优化都不能做
     if (!hasMarker) {
         // 存在小尺寸曲线转直线的规则
@@ -8035,70 +7934,67 @@ const processPath = (dVal, hasMarker, hasStroke, hasStrokeCap, { thinning, sizeD
         return '';
     }
 };
-const computePath = async (rule, dom) => new Promise(resolve => {
-    if (rule[0]) {
-        execStyleTree(dom);
-        traversalNode(anyPass([propEq('nodeName', 'path'), propEq('nodeName', 'animateMotion'), propEq('nodeName', 'textPath')]), node => {
-            const option = rule[1];
-            const attrName = node.nodeName === 'path' ? 'd' : 'path';
-            const attrD = node.getAttribute(attrName);
-            const animateAttrs = getAnimateAttr(node);
-            // 是否存在 marker 引用，没有 marker 可以移除所有空移动指令
-            const hasMarker = getAttr(node, 'marker-start', 'none') !== 'none' || getAttr(node, 'marker-mid', 'none') !== 'none' || getAttr(node, 'marker-end', 'none') !== 'none';
-            // 是否存在 stroke，没有 stroke 可以移除面积为 0 的子路径
-            const hasStroke = getAttr(node, 'stroke', 'none') !== 'none' && getAttr(node, 'stroke-width', '1') !== '0';
-            // 是否存在 stroke-linecap，没有 stroke-linecap 可以移除长度为 0 的指令
-            const hasStrokeCap = getAttr(node, 'stroke-linecap', 'butt') !== 'butt';
-            let noAttrD = true;
-            let noAnimateD = true;
-            if (attrD) {
-                const pathResult = processPath(attrD, hasMarker, hasStroke, hasStrokeCap, option);
-                if (!pathResult) {
-                    node.removeAttribute(attrName);
-                }
-                else {
-                    noAttrD = false;
-                    node.setAttribute(attrName, pathResult);
-                }
+const computePath = async (dom, { params, }) => new Promise(resolve => {
+    parseStyleTree(dom);
+    traversalNode(anyPass([propEq('nodeName', 'path'), propEq('nodeName', 'animateMotion'), propEq('nodeName', 'textPath')]), node => {
+        const attrName = node.nodeName === 'path' ? 'd' : 'path';
+        const attrD = node.getAttribute(attrName);
+        const animateAttrs = getAnimateAttr(node);
+        // 是否存在 marker 引用，没有 marker 可以移除所有空移动指令
+        const hasMarker = getAttr(node, 'marker-start', 'none') !== 'none' || getAttr(node, 'marker-mid', 'none') !== 'none' || getAttr(node, 'marker-end', 'none') !== 'none';
+        // 是否存在 stroke，没有 stroke 可以移除面积为 0 的子路径
+        const hasStroke = getAttr(node, 'stroke', 'none') !== 'none' && getAttr(node, 'stroke-width', '1') !== '0';
+        // 是否存在 stroke-linecap，没有 stroke-linecap 可以移除长度为 0 的指令
+        const hasStrokeCap = getAttr(node, 'stroke-linecap', 'butt') !== 'butt';
+        let noAttrD = true;
+        let noAnimateD = true;
+        if (attrD) {
+            const pathResult = processPath(attrD, hasMarker, hasStroke, hasStrokeCap, params);
+            if (!pathResult) {
+                node.removeAttribute(attrName);
             }
-            // animateMotion 的 path 属性不能再次被动画元素修改
-            if (node.nodeName !== 'animateMotion' && checkAnimateAttr(animateAttrs, attrName)) {
-                const animateD = findAnimateAttr(animateAttrs, attrName);
-                animateD.forEach(item => {
-                    const value = item.values.map(val => processPath(val, hasMarker, hasStroke, hasStrokeCap, option));
-                    item.keys.forEach((key, index) => {
-                        if (key === 'values') {
-                            const values = value.slice(index).filter(v => !!v).join(';');
-                            if (values) {
-                                item.node.setAttribute(key, values);
-                            }
-                            else {
-                                item.node.removeAttribute(key);
-                            }
+            else {
+                noAttrD = false;
+                node.setAttribute(attrName, pathResult);
+            }
+        }
+        // animateMotion 的 path 属性不能再次被动画元素修改
+        if (node.nodeName !== 'animateMotion' && checkAnimateAttr(animateAttrs, attrName)) {
+            const animateD = findAnimateAttr(animateAttrs, attrName);
+            animateD.forEach(item => {
+                const value = item.values.map(val => processPath(val, hasMarker, hasStroke, hasStrokeCap, params));
+                item.keys.forEach((key, index) => {
+                    if (key === 'values') {
+                        const values = value.slice(index).filter(v => !!v).join(';');
+                        if (values) {
+                            item.node.setAttribute(key, values);
                         }
                         else {
-                            if (value[index]) {
-                                item.node.setAttribute(key, value[index]);
-                            }
-                            else {
-                                item.node.removeAttribute(key);
-                            }
+                            item.node.removeAttribute(key);
                         }
-                    });
+                    }
+                    else {
+                        if (value[index]) {
+                            item.node.setAttribute(key, value[index]);
+                        }
+                        else {
+                            item.node.removeAttribute(key);
+                        }
+                    }
                 });
-                // 再次更新动画属性再进行判断
-                if (node.nodeName === 'path' && checkAnimateAttr(getAnimateAttr(node), attrName)) {
-                    noAnimateD = false;
-                }
+            });
+            // 再次更新动画属性再进行判断
+            if (node.nodeName === 'path' && checkAnimateAttr(getAnimateAttr(node), attrName)) {
+                noAnimateD = false;
             }
-            // 既没有 d 属性也没有动画 d 属性的 path 元素可以移除
-            // textPath 不适用，还需要判断 href 和 xlink:href 且 href 指向了正确的目标
-            // animateMotion 不适用，还需要判断是否有 mpath 子元素，且 mpath 指向了正确的目标
-            if (noAttrD && noAnimateD && node.nodeName === 'path') {
-                rmNode(node);
-            }
-        }, dom);
-    }
+        }
+        // 既没有 d 属性也没有动画 d 属性的 path 元素可以移除
+        // textPath 不适用，还需要判断 href 和 xlink:href 且 href 指向了正确的目标
+        // animateMotion 不适用，还需要判断是否有 mpath 子元素，且 mpath 指向了正确的目标
+        if (noAttrD && noAnimateD && node.nodeName === 'path') {
+            rmNode(node);
+        }
+    }, dom);
     resolve();
 });
 
@@ -8107,8 +8003,8 @@ const valueIsEqual = (attrDefine, value1, value2) => {
         return true;
     }
     if (attrDefine.maybeColor) {
-        const color1 = execColor(value1);
-        const color2 = execColor(value2);
+        const color1 = parseColor(value1);
+        const color2 = parseColor(value2);
         color1.origin = '';
         color2.origin = '';
         if (equals(color1, color2)) {
@@ -8116,8 +8012,8 @@ const valueIsEqual = (attrDefine, value1, value2) => {
         }
     }
     if (attrDefine.maybeSizeNumber || attrDefine.maybeAccurateNumber) {
-        const nums2 = execNumberList(value2);
-        if (nums2.length > 0 && equals(execNumberList(value1), nums2)) {
+        const nums2 = parseNumberList(value2);
+        if (nums2.length > 0 && equals(parseNumberList(value1), nums2)) {
             return true;
         }
     }
@@ -8139,81 +8035,74 @@ const attrIsEqual = (attrDefine, value, nodeName) => {
 };
 
 // rm-attirbute 不再验证 css 类的属性，只关注该 css 属性是否是 svg 所支持的
-const rmAttribute = async (rule, dom) => new Promise(resolve => {
-    if (rule[0]) {
-        const { rmDefault, keepEvent, keepAria, } = rule[1];
-        traversalNode(isTag, node => {
-            if (rmDefault) {
-                execStyleTree(dom);
+const rmAttribute = async (dom, { option: { keepEvent, keepAria, }, params: { rmAttrEqDefault, }, }) => new Promise(resolve => {
+    traversalNode(isTag, node => {
+        if (rmAttrEqDefault) {
+            parseStyleTree(dom);
+        }
+        const tagDefine = regularTag[node.nodeName];
+        // href 和 xlink:href 不能并存，如果并存，应该移除后者
+        if (node.hasAttribute('href') && node.hasAttribute('xlink:href')) {
+            node.removeAttribute('xlink:href');
+        }
+        for (let i = node.attributes.length; i--;) {
+            const attr = node.attributes[i];
+            const attrDefine = regularAttr[attr.fullname];
+            const value = attr.value.trim();
+            if (attrDefine.isUndef) { // 非标准属性
+                let isUndef = true;
+                if ((keepEvent && eventAttributes.includes(attr.fullname)) // 事件属性是否保留
+                    ||
+                        (keepAria && ariaAttributes.includes(attr.fullname)) // aria 属性是否保留
+                ) {
+                    isUndef = false;
+                }
+                if (isUndef) {
+                    node.removeAttribute(attr.fullname);
+                    continue;
+                }
             }
-            const tagDefine = regularTag[node.nodeName];
-            // href 和 xlink:href 不能并存，如果并存，应该移除后者
-            if (node.hasAttribute('href') && node.hasAttribute('xlink:href')) {
-                node.removeAttribute('xlink:href');
+            else {
+                if (!value // 空属性
+                    ||
+                        (!attrDefine.couldBeStyle && !attr.fullname.includes('xmlns') && !tagDefine.ownAttributes.includes(attr.fullname)) // 属性和元素不匹配
+                    ||
+                        !legalValue(attrDefine, attr, node.nodeName) // 不合法的值
+                ) {
+                    node.removeAttribute(attr.fullname);
+                    continue;
+                }
             }
-            for (let i = node.attributes.length; i--;) {
-                const attr = node.attributes[i];
-                const attrDefine = regularAttr[attr.fullname];
-                const value = attr.value.trim();
-                if (attrDefine.isUndef) { // 非标准属性
-                    let isUndef = true;
-                    if ((keepEvent && eventAttributes.includes(attr.fullname)) // 事件属性是否保留
-                        ||
-                            (keepAria && ariaAttributes.includes(attr.fullname)) // aria 属性是否保留
-                    ) {
-                        isUndef = false;
-                    }
-                    if (isUndef) {
-                        node.removeAttribute(attr.fullname);
-                        continue;
-                    }
+            if (rmAttrEqDefault) {
+                // 如果父元素上有同名的样式类属性，则不能移除和默认值相同的属性
+                const parentStyle = node.parentNode.styles;
+                if (attrDefine.inherited && parentStyle && hasProp(parentStyle, attr.fullname)) {
+                    continue;
                 }
-                else {
-                    if (!value // 空属性
-                        ||
-                            (!attrDefine.couldBeStyle && !attr.fullname.includes('xmlns') && !tagDefine.ownAttributes.includes(attr.fullname)) // 属性和元素不匹配
-                        ||
-                            !legalValue(attrDefine, attr, node.nodeName) // 不合法的值
-                    ) {
-                        node.removeAttribute(attr.fullname);
-                        continue;
-                    }
+                if (attrIsEqual(attrDefine, value, node.nodeName)) {
+                    node.removeAttribute(attr.fullname);
                 }
-                if (rmDefault) {
-                    // 如果父元素上有同名的样式类属性，则不能移除和默认值相同的属性
-                    const parentStyle = node.parentNode.styles;
-                    if (attrDefine.inherited && parentStyle && hasProp(parentStyle, attr.fullname)) {
-                        continue;
-                    }
-                    if (attrIsEqual(attrDefine, value, node.nodeName)) {
+            }
+            // use 元素的宽高不能为负
+            if (node.nodeName === 'use') {
+                if (attr.fullname === 'width' || attr.fullname === 'height') {
+                    if (+value < 0) {
                         node.removeAttribute(attr.fullname);
-                    }
-                }
-                // use 元素的宽高不能为负
-                if (node.nodeName === 'use') {
-                    if (attr.fullname === 'width' || attr.fullname === 'height') {
-                        if (+value < 0) {
-                            node.removeAttribute(attr.fullname);
-                        }
                     }
                 }
             }
-        }, dom);
-    }
+        }
+    }, dom);
     resolve();
 });
 
-const rmComments = async (rule, dom) => new Promise(resolve => {
-    if (rule[0]) {
-        traversalNode(propEq('nodeType', NodeType.Comments), rmNode, dom);
-    }
+const rmComments = async (dom) => new Promise(resolve => {
+    traversalNode(propEq('nodeType', NodeType.Comments), rmNode, dom);
     resolve();
 });
 
-const rmDocType = async (rule, dom) => new Promise(resolve => {
-    if (rule[0]) {
-        traversalNode(propEq('nodeType', NodeType.DocType), rmNode, dom);
-    }
+const rmDocType = async (dom) => new Promise(resolve => {
+    traversalNode(propEq('nodeType', NodeType.DocType), rmNode, dom);
     resolve();
 });
 
@@ -8298,281 +8187,260 @@ const numberMap = {
         allowZero: false,
     },
 };
-const rmHidden = async (rule, dom) => new Promise(resolve => {
-    if (rule[0]) {
-        execStyleTree(dom);
-        // tslint:disable-next-line: cyclomatic-complexity
-        traversalNode(isTag, node => {
-            // 未包含子节点的文本容器视为隐藏节点
-            if (!node.childNodes.length && regularTag[node.nodeName].containTextNode) {
-                rmNode(node);
-                return;
-            }
-            // textPath 如果没有 path 属性，则 href 和 xlink:href 必须指向 path 或 shape 元素
-            if (node.nodeName === 'textPath') {
-                if (!node.hasAttribute('path')) {
-                    const id = node.getAttribute('href') || node.getAttribute('xlink:href');
-                    if (!id) {
-                        rmNode(node);
-                        return;
-                    }
-                    const target = getById(id, dom);
-                    if (!target) {
-                        rmNode(node);
-                        return;
-                    }
-                    if (!shapeElements.includes(target.nodeName)) {
-                        rmNode(node);
-                        return;
-                    }
+const rmHidden = async (dom) => new Promise(resolve => {
+    parseStyleTree(dom);
+    traversalNode(isTag, node => {
+        // 未包含子节点的文本容器视为隐藏节点
+        if (!node.childNodes.length && regularTag[node.nodeName].containTextNode) {
+            rmNode(node);
+            return;
+        }
+        // textPath 如果没有 path 属性，则 href 和 xlink:href 必须指向 path 或 shape 元素
+        if (node.nodeName === 'textPath') {
+            if (!node.hasAttribute('path')) {
+                const id = node.getAttribute('href') || node.getAttribute('xlink:href');
+                if (!id) {
+                    rmNode(node);
+                    return;
                 }
-            }
-            const styles = node.styles;
-            const animateAttrs = getAnimateAttr(node);
-            const notNone = complement(equals('none'));
-            if (hasProp(styles, 'display')
-                &&
-                    styles.display.value === 'none'
-                &&
-                    !['script', 'style', 'mpath'].concat(filterPrimitiveElements, animationElements).includes(node.nodeName)
-                &&
-                    // 增加对动画的验证，对那些 display 为 none，但是动画会修改 display 的元素也不会进行移除
-                    !checkAnimateAttr(animateAttrs, 'display', notNone)) {
-                rmNode(node);
-                return;
-            }
-            // 没有填充和描边的形状，不一定可以被移除，要再判断一下自身或父元素是否有 id
-            if (shapeElements.includes(node.nodeName)) {
-                const noFill = hasProp(styles, 'fill') && styles.fill.value === 'none' && !checkAnimateAttr(animateAttrs, 'fill', notNone);
-                const noStroke = (!hasProp(styles, 'stroke') || styles.stroke.value === 'none') && !checkAnimateAttr(animateAttrs, 'stroke', notNone);
-                if (noFill && noStroke && !getAncestor(node, (n) => n.hasAttribute('id'))) {
+                const target = getById(id, dom);
+                if (!target) {
+                    rmNode(node);
+                    return;
+                }
+                if (!shapeElements.includes(target.nodeName)) {
                     rmNode(node);
                     return;
                 }
             }
-            if (hasProp(numberMap, node.nodeName)) {
-                const nubmerItem = numberMap[node.nodeName];
-                for (let i = nubmerItem.attrs.length; i--;) {
-                    if (!checkNumberAttr(node, nubmerItem.attrs[i], nubmerItem.allowEmpty, nubmerItem.allowAuto, nubmerItem.allowZero, animateAttrs)) {
-                        rmNode(node);
-                        return;
-                    }
-                }
-            }
-            if (node.nodeName === 'use') {
-                checkUse(node, dom);
-            }
-        }, dom);
-    }
-    resolve();
-});
-
-const rmIrregularNesting = async (rule, dom) => new Promise(resolve => {
-    if (rule[0]) {
-        const { ignore } = rule[1];
-        const notIgnore = (node) => not(any(equals(prop('nodeName', node)), ignore));
-        traversalNode(both(isTag, notIgnore), node => {
-            let legalRule = regularTag[node.nodeName].legalChildElements;
-            // noself 表示不允许嵌套自身
-            const noself = legalRule.noself;
-            // transparent 表示参照最近的非 switch 上级元素的规则
-            if (legalRule.transparent) {
-                const parent = getAncestor(node.parentNode, (n) => n.nodeName !== 'switch');
-                legalRule = regularTag[parent.nodeName].legalChildElements;
-            }
-            for (let i = node.childNodes.length; i--;) {
-                const childNode = node.childNodes[i];
-                // 只针对 tag 类的子节点作处理
-                if (!isTag(childNode)) {
-                    continue;
-                }
-                if (noself && childNode.nodeName === node.nodeName) { // 不允许嵌套自身
-                    rmNode(childNode);
-                }
-                else if (legalRule.any) {
-                    // any 表示可以任意嵌套
-                    continue;
-                }
-                else if (legalRule.childElements && !legalRule.childElements.includes(childNode.nodeName)) { // 不在嵌套列表中的情况
-                    rmNode(childNode);
-                }
-            }
-        }, dom, true);
-    }
-    resolve();
-});
-
-const rmIrregularTag = async (rule, dom) => new Promise(resolve => {
-    if (rule[0]) {
-        const { ignore } = rule[1];
-        const notIgnore = (node) => not(any(equals(prop('nodeName', node)), ignore));
-        traversalNode(both(isTag, notIgnore), node => {
-            if (regularTag[node.nodeName].isUndef) {
+        }
+        const styles = node.styles;
+        const animateAttrs = getAnimateAttr(node);
+        const notNone = complement(equals('none'));
+        if (hasProp(styles, 'display')
+            &&
+                styles.display.value === 'none'
+            &&
+                !['script', 'style', 'mpath'].concat(filterPrimitiveElements, animationElements).includes(node.nodeName)
+            &&
+                // 增加对动画的验证，对那些 display 为 none，但是动画会修改 display 的元素也不会进行移除
+                !checkAnimateAttr(animateAttrs, 'display', notNone)) {
+            rmNode(node);
+            return;
+        }
+        // 没有填充和描边的形状，不一定可以被移除，要再判断一下自身或父元素是否有 id
+        if (shapeElements.includes(node.nodeName)) {
+            const noFill = hasProp(styles, 'fill') && styles.fill.value === 'none' && !checkAnimateAttr(animateAttrs, 'fill', notNone);
+            const noStroke = (!hasProp(styles, 'stroke') || styles.stroke.value === 'none') && !checkAnimateAttr(animateAttrs, 'stroke', notNone);
+            if (noFill && noStroke && !getAncestor(node, (n) => n.hasAttribute('id'))) {
                 rmNode(node);
+                return;
             }
-        }, dom);
-    }
+        }
+        if (hasProp(numberMap, node.nodeName)) {
+            const nubmerItem = numberMap[node.nodeName];
+            for (let i = nubmerItem.attrs.length; i--;) {
+                if (!checkNumberAttr(node, nubmerItem.attrs[i], nubmerItem.allowEmpty, nubmerItem.allowAuto, nubmerItem.allowZero, animateAttrs)) {
+                    rmNode(node);
+                    return;
+                }
+            }
+        }
+        if (node.nodeName === 'use') {
+            checkUse(node, dom);
+        }
+    }, dom);
+    resolve();
+});
+
+const rmIrregularNesting = async (dom, { option: { ignore } }) => new Promise(resolve => {
+    const notIgnore = (node) => not(any(equals(prop('nodeName', node)), ignore));
+    traversalNode(both(isTag, notIgnore), node => {
+        let legalRule = regularTag[node.nodeName].legalChildElements;
+        // noself 表示不允许嵌套自身
+        const noself = legalRule.noself;
+        // transparent 表示参照最近的非 switch 上级元素的规则
+        if (legalRule.transparent) {
+            const parent = getAncestor(node.parentNode, (n) => n.nodeName !== 'switch');
+            legalRule = regularTag[parent.nodeName].legalChildElements;
+        }
+        for (let i = node.childNodes.length; i--;) {
+            const childNode = node.childNodes[i];
+            // 只针对 tag 类的子节点作处理
+            if (!isTag(childNode)) {
+                continue;
+            }
+            if (noself && childNode.nodeName === node.nodeName) { // 不允许嵌套自身
+                rmNode(childNode);
+            }
+            else if (legalRule.any) {
+                // any 表示可以任意嵌套
+                continue;
+            }
+            else if (legalRule.childElements && !legalRule.childElements.includes(childNode.nodeName)) { // 不在嵌套列表中的情况
+                rmNode(childNode);
+            }
+        }
+    }, dom, true);
+    resolve();
+});
+
+const rmIrregularTag = async (dom, { option: { ignore } }) => new Promise(resolve => {
+    const notIgnore = (node) => not(any(equals(prop('nodeName', node)), ignore));
+    traversalNode(both(isTag, notIgnore), node => {
+        if (regularTag[node.nodeName].isUndef) {
+            rmNode(node);
+        }
+    }, dom);
     resolve();
 });
 
 const pxReg = new RegExp(`(^|\\(|\\s|,|{|;|:)(${numberPattern})px(?=$|\\)|\\s|,|;|})`, 'gi');
-const rmPx = async (rule, dom) => new Promise(resolve => {
-    if (rule[0]) {
-        traversalNode(isTag, node => {
-            node.attributes.forEach(attr => {
-                if (attr.fullname === 'style') {
-                    const style = execStyle(attr.value);
-                    style.forEach(s => {
-                        if (regularAttr[s.fullname].maybeSizeNumber || regularAttr[s.fullname].maybeAccurateNumber) {
-                            pxReg.lastIndex = 0;
-                            // 移除 px ，同时移除 0 值的单位
-                            s.value = s.value.replace(pxReg, '$1$2').replace(/(^|\D)0[a-z]+/gi, '$10');
-                        }
-                    });
-                    attr.value = stringifyStyle(style);
-                }
-                else {
-                    if (regularAttr[attr.fullname].maybeSizeNumber || regularAttr[attr.fullname].maybeAccurateNumber) {
+const rmPx = async (dom) => new Promise(resolve => {
+    traversalNode(isTag, node => {
+        node.attributes.forEach(attr => {
+            if (attr.fullname === 'style') {
+                const style = parseStyle(attr.value);
+                style.forEach(s => {
+                    if (regularAttr[s.fullname].maybeSizeNumber || regularAttr[s.fullname].maybeAccurateNumber) {
                         pxReg.lastIndex = 0;
                         // 移除 px ，同时移除 0 值的单位
-                        attr.value = attr.value.replace(pxReg, '$1$2').replace(/(^|\D)0[a-z]+/gi, '$10');
+                        s.value = s.value.replace(pxReg, '$1$2').replace(/(^|\D)0[a-z]+/gi, '$10');
                     }
-                }
-            });
-        }, dom);
-        if (dom.stylesheet) {
-            // 缩短 style 标签内的数值
-            const parsedCss = dom.stylesheet.stylesheet;
-            traversalObj(both(has('property'), has('value')), (cssRule) => {
-                cssRule.value = cssRule.value.replace(pxReg, '$1$2');
-            }, parsedCss.rules);
-        }
-    }
-    resolve();
-});
-
-const rmUnnecessary = async (rule, dom) => new Promise(resolve => {
-    if (rule[0]) {
-        const { tags } = rule[1];
-        if (tags.length) {
-            traversalNode(node => tags.includes(node.nodeName) && unnecessaryElements.includes(node.nodeName), rmNode, dom);
-        }
-    }
-    resolve();
-});
-
-const rmVersion = async (rule, dom) => new Promise(resolve => {
-    if (rule[0]) {
-        traversalNode(propEq('nodeName', 'svg'), node => {
-            node.removeAttribute('version');
-        }, dom);
-    }
-    resolve();
-});
-
-const rmViewBox = async (rule, dom) => new Promise(resolve => {
-    if (rule[0]) {
-        traversalNode(node => node.hasAttribute('viewBox'), node => {
-            const size = ['0', '0', '0', '0'];
-            const viewBox = execNumberList(node.getAttribute('viewBox'));
-            // viewBox 属性的长度必须为 4，且 width 和 height 不能为负
-            if (viewBox.length !== 4 || viewBox[2] < 0 || viewBox[3] < 0) {
-                node.removeAttribute('viewBox');
-                return;
+                });
+                attr.value = stringifyStyle(style);
             }
-            node.attributes.forEach(attr => {
-                if (node.nodeName === 'marker') {
-                    if (attr.fullname === 'markerWidth') {
+            else {
+                if (regularAttr[attr.fullname].maybeSizeNumber || regularAttr[attr.fullname].maybeAccurateNumber) {
+                    pxReg.lastIndex = 0;
+                    // 移除 px ，同时移除 0 值的单位
+                    attr.value = attr.value.replace(pxReg, '$1$2').replace(/(^|\D)0[a-z]+/gi, '$10');
+                }
+            }
+        });
+    }, dom);
+    if (dom.stylesheet) {
+        // 缩短 style 标签内的数值
+        const parsedCss = dom.stylesheet.stylesheet;
+        traversalObj(both(has('property'), has('value')), (cssRule) => {
+            cssRule.value = cssRule.value.replace(pxReg, '$1$2');
+        }, parsedCss.rules);
+    }
+    resolve();
+});
+
+const rmUnnecessary = async (dom, { option }) => new Promise(resolve => {
+    const { tags } = option;
+    if (tags.length) {
+        traversalNode(node => tags.includes(node.nodeName) && unnecessaryElements.includes(node.nodeName), rmNode, dom);
+    }
+    resolve();
+});
+
+const rmVersion = async (dom) => new Promise(resolve => {
+    traversalNode(propEq('nodeName', 'svg'), node => {
+        node.removeAttribute('version');
+    }, dom);
+    resolve();
+});
+
+const rmViewBox = async (dom) => new Promise(resolve => {
+    traversalNode(node => node.hasAttribute('viewBox'), node => {
+        const size = ['0', '0', '0', '0'];
+        const viewBox = parseNumberList(node.getAttribute('viewBox'));
+        // viewBox 属性的长度必须为 4，且 width 和 height 不能为负
+        if (viewBox.length !== 4 || viewBox[2] < 0 || viewBox[3] < 0) {
+            node.removeAttribute('viewBox');
+            return;
+        }
+        node.attributes.forEach(attr => {
+            if (node.nodeName === 'marker') {
+                if (attr.fullname === 'markerWidth') {
+                    size[2] = attr.value.replace(/px$/, '');
+                }
+                else if (attr.fullname === 'markerHeight') {
+                    size[3] = attr.value.replace(/px$/, '');
+                }
+            }
+            else {
+                switch (attr.fullname) {
+                    case 'x':
+                        size[0] = attr.value.replace(/px$/, '');
+                        break;
+                    case 'y':
+                        size[1] = attr.value.replace(/px$/, '');
+                        break;
+                    case 'width':
                         size[2] = attr.value.replace(/px$/, '');
-                    }
-                    else if (attr.fullname === 'markerHeight') {
+                        break;
+                    case 'height':
                         size[3] = attr.value.replace(/px$/, '');
-                    }
+                        break;
+                }
+            }
+        });
+        // x、y、width、height 可以是不同的单位，只有当单位是 px 且和 viewBox 各个位置相等时，才可以移除 viewBox
+        if (equals(size, viewBox.map(s => `${s}`))) {
+            node.removeAttribute('viewBox');
+        }
+    }, dom);
+    resolve();
+});
+
+const rmXMLDecl = async (dom) => new Promise(resolve => {
+    traversalNode(propEq('nodeType', NodeType.XMLDecl), rmNode, dom);
+    resolve();
+});
+
+const rmXMLNS = async (dom) => new Promise(resolve => {
+    const traversalNode = (node, nsStack) => {
+        if (isTag(node)) {
+            const xmlnsObj = {};
+            Object.assign(xmlnsObj, nsStack[nsStack.length - 1]);
+            // 首先判断节点是否存在命名空间
+            if (node.namespace) {
+                if (hasProp(xmlnsObj, node.namespace)) {
+                    xmlnsObj[node.namespace].count++;
                 }
                 else {
-                    switch (attr.fullname) {
-                        case 'x':
-                            size[0] = attr.value.replace(/px$/, '');
-                            break;
-                        case 'y':
-                            size[1] = attr.value.replace(/px$/, '');
-                            break;
-                        case 'width':
-                            size[2] = attr.value.replace(/px$/, '');
-                            break;
-                        case 'height':
-                            size[3] = attr.value.replace(/px$/, '');
-                            break;
-                    }
+                    rmNode(node);
+                    return;
                 }
-            });
-            // x、y、width、height 可以是不同的单位，只有当单位是 px 且和 viewBox 各个位置相等时，才可以移除 viewBox
-            if (equals(size, viewBox.map(s => `${s}`))) {
-                node.removeAttribute('viewBox');
             }
-        }, dom);
-    }
-    resolve();
-});
-
-const rmXMLDecl = async (rule, dom) => new Promise(resolve => {
-    if (rule[0]) {
-        traversalNode(propEq('nodeType', NodeType.XMLDecl), rmNode, dom);
-    }
-    resolve();
-});
-
-const rmXMLNS = async (rule, dom) => new Promise(resolve => {
-    if (rule[0]) {
-        const traversalNode = (node, nsStack) => {
-            if (isTag(node)) {
-                const xmlnsObj = {};
-                Object.assign(xmlnsObj, nsStack[nsStack.length - 1]);
-                // 首先判断节点是否存在命名空间
-                if (node.namespace) {
-                    if (hasProp(xmlnsObj, node.namespace)) {
-                        xmlnsObj[node.namespace].count++;
+            // 遍历节点属性的命名空间
+            for (let i = node.attributes.length; i--;) {
+                const attr = node.attributes[i];
+                if (attr.namespace === 'xmlns') {
+                    xmlnsObj[attr.name] = {
+                        target: node,
+                        count: 0,
+                    };
+                }
+                else if (attr.namespace) {
+                    if (hasProp(xmlnsObj, attr.namespace)) {
+                        xmlnsObj[attr.namespace].count++;
                     }
                     else {
-                        rmNode(node);
-                        return;
+                        node.removeAttribute(attr.fullname);
                     }
                 }
-                // 遍历节点属性的命名空间
-                for (let i = node.attributes.length; i--;) {
-                    const attr = node.attributes[i];
-                    if (attr.namespace === 'xmlns') {
-                        xmlnsObj[attr.name] = {
-                            target: node,
-                            count: 0,
-                        };
-                    }
-                    else if (attr.namespace) {
-                        if (hasProp(xmlnsObj, attr.namespace)) {
-                            xmlnsObj[attr.namespace].count++;
-                        }
-                        else {
-                            node.removeAttribute(attr.fullname);
-                        }
-                    }
-                }
-                // 压栈，并遍历子节点
-                nsStack.push(xmlnsObj);
-                node.childNodes.forEach(childNode => {
-                    traversalNode(childNode, nsStack);
-                });
-                Object.keys(xmlnsObj).forEach(ns => {
-                    if (xmlnsObj[ns].count === 0 && xmlnsObj[ns].target === node) {
-                        node.removeAttribute(`xmlns:${ns}`);
-                    }
-                });
-                nsStack.pop();
             }
-        };
-        dom.childNodes.forEach(node => {
-            traversalNode(node, [{}]);
-        });
-    }
+            // 压栈，并遍历子节点
+            nsStack.push(xmlnsObj);
+            node.childNodes.forEach(childNode => {
+                traversalNode(childNode, nsStack);
+            });
+            Object.keys(xmlnsObj).forEach(ns => {
+                if (xmlnsObj[ns].count === 0 && xmlnsObj[ns].target === node) {
+                    node.removeAttribute(`xmlns:${ns}`);
+                }
+            });
+            nsStack.pop();
+        }
+    };
+    dom.childNodes.forEach(node => {
+        traversalNode(node, [{}]);
+    });
     resolve();
 });
 
@@ -8596,84 +8464,80 @@ const checkAnimateMotion = (node, dom) => {
             });
 };
 
-const shortenAnimate = async (rule, dom) => new Promise(resolve => {
-    if (rule[0]) {
-        const { remove } = rule[1];
-        // tslint:disable-next-line: cyclomatic-complexity
-        traversalNode(node => animationElements.includes(node.nodeName), (node) => {
-            if (remove) {
+const shortenAnimate = async (dom, { option: { remove } }) => new Promise(resolve => {
+    traversalNode(node => animationElements.includes(node.nodeName), (node) => {
+        if (remove) {
+            rmNode(node);
+            return;
+        }
+        // 不管 href 能不能找到目标，都移除该属性，改为设置成 target 的子元素
+        const href = node.hasAttribute('href') ? node.getAttribute('href') : node.getAttribute('xlink:href');
+        if (href) {
+            const target = getById(href, dom);
+            if (target) {
+                target.appendChild(node);
+            }
+        }
+        node.removeAttribute('href');
+        node.removeAttribute('xlink:href');
+        // 处理 attributeName 属性
+        if (animationAttrElements.includes(node.nodeName)) {
+            // 先取出来 attributeName 属性
+            const attributeName = node.getAttribute('attributeName') || '';
+            if (!attributeName || !regularAttr[attributeName].animatable) {
+                // attributeName 指定了不能实现动画的属性，视为无效
                 rmNode(node);
                 return;
             }
-            // 不管 href 能不能找到目标，都移除该属性，改为设置成 target 的子元素
-            const href = node.hasAttribute('href') ? node.getAttribute('href') : node.getAttribute('xlink:href');
-            if (href) {
-                const target = getById(href, dom);
-                if (target) {
-                    target.appendChild(node);
-                }
+            // attributeName 和父元素不匹配
+            const parentName = node.parentNode.nodeName;
+            if (!regularAttr[attributeName].applyTo.includes(parentName) && !regularTag[parentName].ownAttributes.includes(attributeName)) {
+                rmNode(node);
+                return;
             }
-            node.removeAttribute('href');
-            node.removeAttribute('xlink:href');
-            // 处理 attributeName 属性
-            if (animationAttrElements.includes(node.nodeName)) {
-                // 先取出来 attributeName 属性
-                const attributeName = node.getAttribute('attributeName') || '';
-                if (!attributeName || !regularAttr[attributeName].animatable) {
-                    // attributeName 指定了不能实现动画的属性，视为无效
-                    rmNode(node);
-                    return;
-                }
-                // attributeName 和父元素不匹配
-                const parentName = node.parentNode.nodeName;
-                if (!regularAttr[attributeName].applyTo.includes(parentName) && !regularTag[parentName].ownAttributes.includes(attributeName)) {
-                    rmNode(node);
-                    return;
-                }
-                // animateTransform 只能修改 tranform 类型的属性
-                // https://svgwg.org/specs/animations/#SVGExtensionsToSMILAnimation
-                if (node.nodeName === 'animateTransform' && attributeName !== 'transform' && attributeName !== 'patternTransform') {
-                    rmNode(node);
-                    return;
-                }
-                for (const attr of node.attributes) {
-                    // 对动画属性 from、to、by、values 的值进行合法性验证
-                    if (animationAttributes.includes(attr.fullname)) {
-                        // 动画属性不合法
-                        if ((attr.fullname !== 'values' && !legalValue(regularAttr[attributeName], attr))) {
-                            node.removeAttribute(attr.fullname);
-                            continue;
-                        }
-                        // values 是以分号分隔的，需要分隔后对每一项进行合法性验证
-                        const values = attr.value.split(';');
-                        if (values.every(val => !legalValue(regularAttr[attributeName], {
-                            name: 'values',
-                            fullname: 'values',
-                            namespace: '',
-                            value: val.trim(),
-                        }))) {
-                            node.removeAttribute(attr.fullname);
-                        }
+            // animateTransform 只能修改 tranform 类型的属性
+            // https://svgwg.org/specs/animations/#SVGExtensionsToSMILAnimation
+            if (node.nodeName === 'animateTransform' && attributeName !== 'transform' && attributeName !== 'patternTransform') {
+                rmNode(node);
+                return;
+            }
+            for (const attr of node.attributes) {
+                // 对动画属性 from、to、by、values 的值进行合法性验证
+                if (animationAttributes.includes(attr.fullname)) {
+                    // 动画属性不合法
+                    if ((attr.fullname !== 'values' && !legalValue(regularAttr[attributeName], attr))) {
+                        node.removeAttribute(attr.fullname);
+                        continue;
+                    }
+                    // values 是以分号分隔的，需要分隔后对每一项进行合法性验证
+                    const values = attr.value.split(';');
+                    if (values.every(val => !legalValue(regularAttr[attributeName], {
+                        name: 'values',
+                        fullname: 'values',
+                        namespace: '',
+                        value: val.trim(),
+                    }))) {
+                        node.removeAttribute(attr.fullname);
                     }
                 }
-                if (node.nodeName === 'set' && !node.getAttribute('to')) {
-                    rmNode(node);
-                    return;
-                }
-                if (!animationAttributes.some(key => node.hasAttribute(key))) {
-                    rmNode(node);
-                    return;
-                }
             }
-            // animateMotion 如果没有 path 属性，则必须包含有效的 mpath ，规则是 href 或 xlink:href 指向 path 或 shape 元素
-            if (node.nodeName === 'animateMotion') {
-                if (!checkAnimateMotion(node, dom)) {
-                    rmNode(node);
-                    return;
-                }
+            if (node.nodeName === 'set' && !node.getAttribute('to')) {
+                rmNode(node);
+                return;
             }
-        }, dom);
-    }
+            if (!animationAttributes.some(key => node.hasAttribute(key))) {
+                rmNode(node);
+                return;
+            }
+        }
+        // animateMotion 如果没有 path 属性，则必须包含有效的 mpath ，规则是 href 或 xlink:href 指向 path 或 shape 元素
+        if (node.nodeName === 'animateMotion') {
+            if (!checkAnimateMotion(node, dom)) {
+                rmNode(node);
+                return;
+            }
+        }
+    }, dom);
     resolve();
 });
 
@@ -8696,81 +8560,79 @@ const createShortenID = (si) => {
 };
 
 const classSelectorReg = /\.([^,*#>+~:{\s[.]+)/gi;
-const shortenClass = async (rule, dom) => new Promise(resolve => {
-    if (rule[0]) {
-        const parsedCss = dom.stylesheet;
-        if (parsedCss) {
-            let si = 0;
-            const classList = {};
-            const shorten = (key) => {
-                if (hasProp(classList, key)) {
-                    return classList[key][0];
-                }
-                const sid = createShortenID(si++);
-                classList[key] = [sid, false];
-                return sid;
-            };
-            // 取出所有被引用的 class ，并缩短
-            const cssRules = parsedCss.stylesheet;
-            traversalObj(has('selectors'), (ruleItem) => {
-                const selectors = ruleItem.selectors;
-                if (selectors) {
-                    selectors.forEach((selector, selectorIndex) => {
-                        selectors[selectorIndex] = selector.replace(classSelectorReg, (m, p) => `.${shorten(p)}`);
-                    });
-                }
-            }, cssRules.rules);
-            // 查找 dom 树，找到被引用的 class ，替换为缩短后的值
-            traversalNode(isTag, node => {
-                const classAttr = node.getAttribute('class');
-                if (classAttr !== null) {
-                    const className = mixWhiteSpace(classAttr.trim()).split(/\s+/);
-                    for (let ci = className.length; ci--;) {
-                        if (hasProp(classList, className[ci])) {
-                            const cName = classList[className[ci]][0];
-                            classList[className[ci]][1] = true;
-                            className[ci] = cName;
-                        }
-                        else {
-                            className.splice(ci, 1);
-                        }
-                    }
-                    if (className.length) {
-                        node.setAttribute('class', className.join(' '));
+const shortenClass = async (dom) => new Promise(resolve => {
+    const parsedCss = dom.stylesheet;
+    if (parsedCss) {
+        let si = 0;
+        const classList = {};
+        const shorten = (key) => {
+            if (hasProp(classList, key)) {
+                return classList[key][0];
+            }
+            const sid = createShortenID(si++);
+            classList[key] = [sid, false];
+            return sid;
+        };
+        // 取出所有被引用的 class ，并缩短
+        const cssRules = parsedCss.stylesheet;
+        traversalObj(has('selectors'), (ruleItem) => {
+            const selectors = ruleItem.selectors;
+            if (selectors) {
+                selectors.forEach((selector, selectorIndex) => {
+                    selectors[selectorIndex] = selector.replace(classSelectorReg, (m, p) => `.${shorten(p)}`);
+                });
+            }
+        }, cssRules.rules);
+        // 查找 dom 树，找到被引用的 class ，替换为缩短后的值
+        traversalNode(isTag, node => {
+            const classAttr = node.getAttribute('class');
+            if (classAttr !== null) {
+                const className = mixWhiteSpace(classAttr.trim()).split(/\s+/);
+                for (let ci = className.length; ci--;) {
+                    if (hasProp(classList, className[ci])) {
+                        const cName = classList[className[ci]][0];
+                        classList[className[ci]][1] = true;
+                        className[ci] = cName;
                     }
                     else {
-                        node.removeAttribute('class');
+                        className.splice(ci, 1);
                     }
                 }
-            }, dom);
-            // 最后移除不存在的 class 引用
-            Object.values(classList).forEach(item => {
-                if (item[1]) {
-                    return;
+                if (className.length) {
+                    node.setAttribute('class', className.join(' '));
                 }
-                const reg = new RegExp(`\\.${item[0]}(?=[,\\*#>+~:{\\s\\[\\.]|$)`);
-                traversalObj(has('selectors'), (ruleItem, path) => {
-                    const selectors = ruleItem.selectors;
-                    if (selectors) {
-                        for (let i = selectors.length; i--;) {
-                            if (reg.test(selectors[i])) {
-                                selectors.splice(i, 1);
-                            }
-                        }
-                        if (!selectors.length) {
-                            const parent = path[path.length - 1];
-                            parent.splice(parent.indexOf(ruleItem), 1);
+                else {
+                    node.removeAttribute('class');
+                }
+            }
+        }, dom);
+        // 最后移除不存在的 class 引用
+        Object.values(classList).forEach(item => {
+            if (item[1]) {
+                return;
+            }
+            const reg = new RegExp(`\\.${item[0]}(?=[,\\*#>+~:{\\s\\[\\.]|$)`);
+            traversalObj(has('selectors'), (ruleItem, path) => {
+                const selectors = ruleItem.selectors;
+                if (selectors) {
+                    for (let i = selectors.length; i--;) {
+                        if (reg.test(selectors[i])) {
+                            selectors.splice(i, 1);
                         }
                     }
-                }, cssRules.rules);
-            });
-        }
-        else {
-            // 如果不存在样式表，则直接移除所有的 class 属性
-            traversalNode(isTag, node => {
-                node.removeAttribute('class');
-            }, dom);
-        }
+                    if (!selectors.length) {
+                        const parent = path[path.length - 1];
+                        parent.splice(parent.indexOf(ruleItem), 1);
+                    }
+                }
+            }, cssRules.rules);
+        });
+    }
+    else {
+        // 如果不存在样式表，则直接移除所有的 class 属性
+        traversalNode(isTag, node => {
+            node.removeAttribute('class');
+        }, dom);
     }
     resolve();
 });
@@ -8943,11 +8805,10 @@ const shortenMap = {
 };
 const shortenReg = new RegExp(`(?:${Object.keys(shortenMap).join('|')})(?=[^0-9a-f]|$)`, 'gi');
 const formatColor = (rgba, str, digit) => {
-    const color = execColor(str, digit);
+    const color = parseColor(str, digit);
     let s = color.origin;
     if (color.valid) {
         if (color.a < 1) {
-            // tslint:disable:prefer-conditional-expression
             if (rgba) {
                 s = `#${operateHex(color.r)}${operateHex(color.g)}${operateHex(color.b)}${has(`${color.a * Hundred}`, alphaMap$1) ? operateHex(alphaMap$1[`${color.a * Hundred}`]) : operateHex(Math.round(color.a * FF))}`;
             }
@@ -8960,7 +8821,7 @@ const formatColor = (rgba, str, digit) => {
                     const alpha = shortenAlpha(digit, color.a);
                     const rgb = `rgb(${color.r},${color.g},${color.b},${alpha})`;
                     const hsl = `hsl(${hslColor.h},${hslColor.s}%,${hslColor.l}%,${alpha})`;
-                    s = hsl.length < rgb.length ? hsl : rgb;
+                    s = getShorter(hsl, rgb);
                 }
             }
         }
@@ -8968,7 +8829,7 @@ const formatColor = (rgba, str, digit) => {
             s = `#${operateHex(color.r)}${operateHex(color.g)}${operateHex(color.b)}`;
         }
         s = s.replace(/#([0-9a-f])\1([0-9a-f])\2([0-9a-f])\3(?=[^0-9a-f]|$)/gi, '#$1$2$3');
-        s = s.replace(shortenReg, $0 => `${shortenMap[$0]}`);
+        s = s.replace(shortenReg, ($0) => `${shortenMap[$0]}`);
         if (rgba) {
             s = s.replace(/#([0-9a-f])\1([0-9a-f])\2([0-9a-f])\3([0-9a-f])\4(?=[^0-9a-f]|$)/gi, '#$1$2$3$4');
             s = s.replace(/^transparent$/i, '#0000');
@@ -8980,94 +8841,88 @@ const formatColor = (rgba, str, digit) => {
     }
     return s;
 };
-const shortenColor = async (rule, dom) => new Promise(resolve => {
-    if (rule[0]) {
-        const { rrggbbaa, opacityDigit } = rule[1];
-        const digit = Math.min(opacityDigit, OPACITY_DIGIT);
-        traversalNode(isTag, node => {
-            node.attributes.forEach(attr => {
-                if (regularAttr[attr.fullname].maybeColor) {
-                    attr.value = formatColor(rrggbbaa, attr.value, digit);
-                }
-                else if (attr.fullname === 'style') {
-                    const style = execStyle(attr.value);
-                    style.forEach(s => {
-                        if (regularAttr[s.fullname].maybeColor) {
-                            s.value = formatColor(rrggbbaa, s.value, digit);
-                        }
-                    });
-                    attr.value = stringifyStyle(style);
-                }
-            });
-        }, dom);
-        if (dom.stylesheet) {
-            // 缩短 style 标签内的颜色
-            const parsedCss = dom.stylesheet.stylesheet;
-            traversalObj(both(has('property'), has('value')), (cssRule) => {
-                if (regularAttr[cssRule.property].maybeColor) { // 可能为颜色的属性
-                    cssRule.value = formatColor(rrggbbaa, cssRule.value, digit);
-                }
-            }, parsedCss.rules);
-        }
+const shortenColor = async (dom, { option: { rrggbbaa, }, params: { opacityDigit, }, }) => new Promise(resolve => {
+    const digit = Math.min(opacityDigit, OPACITY_DIGIT);
+    traversalNode(isTag, node => {
+        node.attributes.forEach(attr => {
+            if (regularAttr[attr.fullname].maybeColor) {
+                attr.value = formatColor(rrggbbaa, attr.value, digit);
+            }
+            else if (attr.fullname === 'style') {
+                const style = parseStyle(attr.value);
+                style.forEach(s => {
+                    if (regularAttr[s.fullname].maybeColor) {
+                        s.value = formatColor(rrggbbaa, s.value, digit);
+                    }
+                });
+                attr.value = stringifyStyle(style);
+            }
+        });
+    }, dom);
+    if (dom.stylesheet) {
+        // 缩短 style 标签内的颜色
+        const parsedCss = dom.stylesheet.stylesheet;
+        traversalObj(both(has('property'), has('value')), (cssRule) => {
+            if (regularAttr[cssRule.property].maybeColor) { // 可能为颜色的属性
+                cssRule.value = formatColor(rrggbbaa, cssRule.value, digit);
+            }
+        }, parsedCss.rules);
     }
     resolve();
 });
 
 // 移除掉正、负号前面的逗号，移除掉0.前面的0，移除掉.1,.1或e1,.1这种case中间的逗号
 const doShorten = curry((digit, val) => shortenNumberList(val.replace(numberGlobal, s => `${shortenNumber(toFixed(digit, parseFloat(s)))}`)));
-const shortenDecimalDigits = async (rule, dom) => new Promise(resolve => {
-    if (rule[0]) {
-        const { sizeDigit, angelDigit } = rule[1];
-        const fuzzyDigit = doShorten(sizeDigit);
-        const accurateDigit = doShorten(angelDigit);
-        const shortenValue = (key, value) => {
-            const define = regularAttr[key];
-            if (define.maybeAlpha) { // alpha 值采用特殊处理逻辑
-                const alpha = execAlpha(value);
-                if (typeof alpha === 'number') {
-                    return shortenAlpha(angelDigit, alpha);
-                }
+const shortenDecimalDigits = async (dom, { params: { sizeDigit, angelDigit, } }) => new Promise(resolve => {
+    const fuzzyDigit = doShorten(sizeDigit);
+    const accurateDigit = doShorten(angelDigit);
+    const shortenValue = (key, value) => {
+        const define = regularAttr[key];
+        if (define.maybeAlpha) { // alpha 值采用特殊处理逻辑
+            const alpha = parseAlpha(value);
+            if (typeof alpha === 'number') {
+                return shortenAlpha(angelDigit, alpha);
             }
-            else if (define.maybeSizeNumber) { // 可以模糊处理的数字
-                return fuzzyDigit(value);
-            }
-            else if (define.maybeAccurateNumber) { // 需要较精确的数字
-                return accurateDigit(value);
-            }
-            return value;
-        };
-        if (dom.stylesheet) {
-            // 缩短 style 标签内的数值
-            const parsedCss = dom.stylesheet.stylesheet;
-            traversalObj(both(has('property'), has('value')), (cssRule) => {
-                cssRule.value = shortenValue(cssRule.property, cssRule.value);
-            }, parsedCss.rules);
         }
-        traversalNode(isTag, node => {
-            // 先取出来 attributeName 属性
-            const attributeName = node.getAttribute('attributeName');
-            // 缩短节点属性的数值
-            node.attributes.forEach(attr => {
-                numberGlobal.lastIndex = 0;
-                if (animationAttributes.includes(attr.fullname) && animationAttrElements.includes(node.nodeName)) { // 动画处理的属性，需要根据 attributeName 属性判断
-                    if (attributeName) {
-                        attr.value = shortenValue(attributeName, attr.value);
-                    }
-                }
-                else if (attr.fullname === 'style') { // css 样式处理，和属性类似
-                    const style = execStyle(attr.value);
-                    style.forEach(s => {
-                        numberGlobal.lastIndex = 0;
-                        s.value = shortenValue(s.fullname, s.value);
-                    });
-                    attr.value = stringifyStyle(style);
-                }
-                else {
-                    attr.value = shortenValue(attr.fullname, attr.value);
-                }
-            });
-        }, dom);
+        else if (define.maybeSizeNumber) { // 可以模糊处理的数字
+            return fuzzyDigit(value);
+        }
+        else if (define.maybeAccurateNumber) { // 需要较精确的数字
+            return accurateDigit(value);
+        }
+        return value;
+    };
+    if (dom.stylesheet) {
+        // 缩短 style 标签内的数值
+        const parsedCss = dom.stylesheet.stylesheet;
+        traversalObj(both(has('property'), has('value')), (cssRule) => {
+            cssRule.value = shortenValue(cssRule.property, cssRule.value);
+        }, parsedCss.rules);
     }
+    traversalNode(isTag, node => {
+        // 先取出来 attributeName 属性
+        const attributeName = node.getAttribute('attributeName');
+        // 缩短节点属性的数值
+        node.attributes.forEach(attr => {
+            numberGlobal.lastIndex = 0;
+            if (animationAttributes.includes(attr.fullname) && animationAttrElements.includes(node.nodeName)) { // 动画处理的属性，需要根据 attributeName 属性判断
+                if (attributeName) {
+                    attr.value = shortenValue(attributeName, attr.value);
+                }
+            }
+            else if (attr.fullname === 'style') { // css 样式处理，和属性类似
+                const style = parseStyle(attr.value);
+                style.forEach(s => {
+                    numberGlobal.lastIndex = 0;
+                    s.value = shortenValue(s.fullname, s.value);
+                });
+                attr.value = stringifyStyle(style);
+            }
+            else {
+                attr.value = shortenValue(attr.fullname, attr.value);
+            }
+        });
+    }, dom);
     resolve();
 });
 
@@ -9132,7 +8987,7 @@ const checkDefsApply = (item, dom) => {
             }
             const useTag = item.tag;
             node.parentNode.replaceChild(node, useTag);
-            const styleArray = useTag.hasAttribute('style') ? execStyle(useTag.getAttribute('style')) : [];
+            const styleArray = useTag.hasAttribute('style') ? parseStyle(useTag.getAttribute('style')) : [];
             for (const [key, val] of Object.entries(originAttr)) {
                 if (!useTag.hasAttribute(key) && !styleArray.some(sItem => sItem.fullname === key)) {
                     useTag.setAttribute(key, val);
@@ -9176,80 +9031,82 @@ const checkDefsApply = (item, dom) => {
         }
     }
 };
-const shortenDefs = async (rule, dom) => new Promise(resolve => {
-    if (rule[0]) {
-        let firstDefs;
-        // 首先合并 defs 标签
-        traversalNode(propEq('nodeName', 'defs'), node => {
-            if (firstDefs) {
-                for (const childNode of node.childNodes) {
-                    // 合并时只把标签类元素挪过去
-                    if (isTag(childNode)) {
-                        firstDefs.appendChild(childNode);
-                    }
-                }
-                rmNode(node);
-            }
-            else {
-                firstDefs = node;
-                for (let ci = node.childNodes.length; ci--;) {
-                    const childNode = node.childNodes[ci];
-                    // 只保留标签类的子元素
-                    if (!isTag(childNode)) {
-                        rmNode(childNode);
-                    }
-                }
-            }
-        }, dom);
+const shortenDefs = async (dom) => new Promise(resolve => {
+    let firstDefs;
+    // 首先合并 defs 标签
+    traversalNode(propEq('nodeName', 'defs'), node => {
         if (firstDefs) {
-            // 取出所有被引用的 ID
-            const IDList = {};
-            traversalNode(isTag, node => {
-                node.attributes.forEach(attr => {
-                    if (regularAttr[attr.fullname].maybeFuncIRI) {
-                        const firi = funcIRIToID.exec(attr.value);
-                        if (firi) {
-                            if (!IDList[firi[2]]) {
-                                IDList[firi[2]] = {
-                                    iri: [],
-                                };
-                            }
-                            IDList[firi[2]].iri.push([node, attr.fullname]);
+            for (const childNode of node.childNodes) {
+                // 合并时只把标签类元素挪过去
+                if (isTag(childNode)) {
+                    firstDefs.appendChild(childNode);
+                }
+            }
+            rmNode(node);
+        }
+        else {
+            firstDefs = node;
+            for (let ci = node.childNodes.length; ci--;) {
+                const childNode = node.childNodes[ci];
+                // 只保留标签类的子元素
+                if (!isTag(childNode)) {
+                    rmNode(childNode);
+                }
+            }
+        }
+    }, dom);
+    if (firstDefs) {
+        // 取出所有被引用的 ID
+        const IDList = {};
+        traversalNode(isTag, node => {
+            node.attributes.forEach(attr => {
+                if (regularAttr[attr.fullname].maybeFuncIRI) {
+                    const firi = funcIRIToID.exec(attr.value);
+                    if (firi) {
+                        if (!IDList[firi[2]]) {
+                            IDList[firi[2]] = {
+                                iri: [],
+                            };
                         }
+                        IDList[firi[2]].iri.push([node, attr.fullname]);
                     }
-                    else if (regularAttr[attr.fullname].maybeIRI) {
-                        const iri = IRIFullMatch.exec(attr.value);
-                        if (iri) {
-                            if (!IDList[iri[1]]) {
-                                IDList[iri[1]] = {
-                                    iri: [],
-                                };
-                            }
-                            IDList[iri[1]].iri.push([node, attr.fullname]);
+                }
+                else if (regularAttr[attr.fullname].maybeIRI) {
+                    const iri = IRIFullMatch.exec(attr.value);
+                    if (iri) {
+                        if (!IDList[iri[1]]) {
+                            IDList[iri[1]] = {
+                                iri: [],
+                            };
                         }
-                    }
-                });
-            }, dom);
-            checkSub(firstDefs, IDList, true);
-            execStyleTree(dom);
-            Object.values(IDList).forEach(item => {
-                if (item.tag) {
-                    // 有可能引用对象存在于 defs 内部，并且已被移除
-                    for (let i = item.iri.length; i--;) {
-                        const [tag] = item.iri[i];
-                        // 判断是否已从文档中移除
-                        if (!getAncestor(tag, (node) => node.nodeName === '#document')) {
-                            item.iri.splice(i, 1);
-                        }
-                    }
-                    if (!item.iri.length) {
-                        rmNode(item.tag);
-                    }
-                    if (item.iri.length === 1) {
-                        checkDefsApply(item, dom);
+                        IDList[iri[1]].iri.push([node, attr.fullname]);
                     }
                 }
             });
+        }, dom);
+        checkSub(firstDefs, IDList, true);
+        parseStyleTree(dom);
+        Object.values(IDList).forEach(item => {
+            if (item.tag) {
+                // 有可能引用对象存在于 defs 内部，并且已被移除
+                for (let i = item.iri.length; i--;) {
+                    const [tag] = item.iri[i];
+                    // 判断是否已从文档中移除
+                    if (!getAncestor(tag, (node) => node.nodeName === '#document')) {
+                        item.iri.splice(i, 1);
+                    }
+                }
+                if (!item.iri.length) {
+                    rmNode(item.tag);
+                }
+                if (item.iri.length === 1) {
+                    checkDefsApply(item, dom);
+                }
+            }
+        });
+        // 当 defs 没有子元素后，进行移除
+        if (!firstDefs.childNodes.length) {
+            rmNode(firstDefs);
         }
     }
     resolve();
@@ -9273,70 +9130,68 @@ const checkFeAttrs = (type, rmAttrs) => {
         });
     }
 };
-const shortenFilter = async (rule, dom) => new Promise(resolve => {
-    if (rule[0]) {
-        traversalNode(isTag, (node) => {
-            if (filterPrimitiveElements.includes(node.nodeName) || node.nodeName === 'filter') {
-                const width = node.getAttribute('width');
-                const height = node.getAttribute('height');
-                // 滤镜元素的 region 尺寸必须合法
-                if ((width && parseFloat(width) <= 0) || (height && parseFloat(height) <= 0)) {
-                    rmNode(node);
-                    return;
+const shortenFilter = async (dom) => new Promise(resolve => {
+    traversalNode(isTag, (node) => {
+        if (filterPrimitiveElements.includes(node.nodeName) || node.nodeName === 'filter') {
+            const width = node.getAttribute('width');
+            const height = node.getAttribute('height');
+            // 滤镜元素的 region 尺寸必须合法
+            if ((width && parseFloat(width) <= 0) || (height && parseFloat(height) <= 0)) {
+                rmNode(node);
+                return;
+            }
+        }
+        // filter 没有子元素没有意义
+        if (node.nodeName === 'filter') {
+            let hasFilterSub = false;
+            node.childNodes.forEach(subNode => {
+                if (filterPrimitiveElements.includes(subNode.nodeName)) {
+                    hasFilterSub = true;
+                }
+            });
+            if (!hasFilterSub) {
+                rmNode(node);
+                return;
+            }
+        }
+        // feComponentTransfer 的同一个类型的 transferFunctionElement 子元素不允许多次出现
+        if (node.nodeName === 'feComponentTransfer') {
+            const funcUnique = {};
+            for (let i = node.childNodes.length; i--;) {
+                const childNode = node.childNodes[i];
+                if (funcUnique[childNode.nodeName]) {
+                    rmNode(childNode);
+                    continue;
+                }
+                if (transferFunctionElements.includes(childNode.nodeName)) {
+                    funcUnique[childNode.nodeName] = true;
                 }
             }
-            // filter 没有子元素没有意义
-            if (node.nodeName === 'filter') {
-                let hasFilterSub = false;
-                node.childNodes.forEach(subNode => {
-                    if (filterPrimitiveElements.includes(subNode.nodeName)) {
-                        hasFilterSub = true;
-                    }
+        }
+        // transferFunctionElement 不同的 type 所需的属性不一样，其它不必要的属性都可以删掉
+        // https://drafts.fxtf.org/filter-effects/#element-attrdef-fecomponenttransfer-type
+        if (transferFunctionElements.includes(node.nodeName)) {
+            const type = node.getAttribute('type') || '';
+            const animateAttrs = getAnimateAttr(node).filter(item => item.attributeName === 'type');
+            if (!type && !animateAttrs.length) {
+                rmNode(node);
+                return;
+            }
+            const rmAttrs = feFuncAttr.slice();
+            // 保留当前 type 必备的属性
+            checkFeAttrs(type, rmAttrs);
+            // 遍历并保留每一个 animate type 的必备属性
+            animateAttrs.forEach(item => {
+                item.values.forEach(val => {
+                    checkFeAttrs(val, rmAttrs);
                 });
-                if (!hasFilterSub) {
-                    rmNode(node);
-                    return;
-                }
-            }
-            // feComponentTransfer 的同一个类型的 transferFunctionElement 子元素不允许多次出现
-            if (node.nodeName === 'feComponentTransfer') {
-                const funcUnique = {};
-                for (let i = node.childNodes.length; i--;) {
-                    const childNode = node.childNodes[i];
-                    if (funcUnique[childNode.nodeName]) {
-                        rmNode(childNode);
-                        continue;
-                    }
-                    if (transferFunctionElements.includes(childNode.nodeName)) {
-                        funcUnique[childNode.nodeName] = true;
-                    }
-                }
-            }
-            // transferFunctionElement 不同的 type 所需的属性不一样，其它不必要的属性都可以删掉
-            // https://drafts.fxtf.org/filter-effects/#element-attrdef-fecomponenttransfer-type
-            if (transferFunctionElements.includes(node.nodeName)) {
-                const type = node.getAttribute('type') || '';
-                const animateAttrs = getAnimateAttr(node).filter(item => item.attributeName === 'type');
-                if (!type && !animateAttrs.length) {
-                    rmNode(node);
-                    return;
-                }
-                const rmAttrs = feFuncAttr.slice();
-                // 保留当前 type 必备的属性
-                checkFeAttrs(type, rmAttrs);
-                // 遍历并保留每一个 animate type 的必备属性
-                animateAttrs.forEach(item => {
-                    item.values.forEach(val => {
-                        checkFeAttrs(val, rmAttrs);
-                    });
-                });
-                // 最后移除掉不必要的属性
-                rmAttrs.forEach(attr => {
-                    node.removeAttribute(attr);
-                });
-            }
-        }, dom);
-    }
+            });
+            // 最后移除掉不必要的属性
+            rmAttrs.forEach(attr => {
+                node.removeAttribute(attr);
+            });
+        }
+    }, dom);
     resolve();
 });
 
@@ -9344,111 +9199,108 @@ const shortenStyle = (s) => mixWhiteSpace(s.trim()).replace(/\s*([@='"#.*+>~[\](
 
 const idSelectorReg = /#([^,*#>+~:{\s[.]+)/gi;
 const style2value = pipe(stringifyStyle, shortenStyle);
-const shortenID = async (rule, dom) => new Promise(resolve => {
-    if (rule[0]) {
-        let si = 0;
-        const IDList = {};
-        const shorten = (node, attrname, key) => {
-            if (hasProp(IDList, key)) {
-                return IDList[key][0];
-            }
-            const sid = createShortenID(si++);
-            IDList[key] = [sid, node, attrname];
-            return sid;
-        };
-        let cssRules;
-        // 取出 ID 选择器，并缩短
-        if (dom.stylesheet) {
-            cssRules = dom.stylesheet.stylesheet;
-            traversalObj(has('selectors'), (ruleItem) => {
-                const selectors = ruleItem.selectors;
-                if (selectors) {
-                    selectors.forEach((selector, selectorIndex) => {
-                        selectors[selectorIndex] = selector.replace(idSelectorReg, (m, p) => `#${shorten(dom.styletag, null, p)}`);
-                    });
-                }
-            }, cssRules.rules);
+const shortenID = async (dom) => new Promise(resolve => {
+    let si = 0;
+    const IDList = {};
+    const shorten = (node, attrname, key) => {
+        if (hasProp(IDList, key)) {
+            return IDList[key][0];
         }
-        // 取出所有被属性引用的 ID ，并缩短
-        traversalNode(isTag, node => {
-            node.attributes.forEach(attr => {
-                if (regularAttr[attr.fullname].maybeFuncIRI) {
-                    const firi = funcIRIToID.exec(attr.value);
-                    if (firi) {
-                        attr.value = `url(#${shorten(node, attr.fullname, firi[2])})`;
-                    }
-                }
-                else if (regularAttr[attr.fullname].maybeIRI) {
-                    const iri = IRIFullMatch.exec(attr.value);
-                    if (iri) {
-                        attr.value = `#${shorten(node, attr.fullname, iri[1])}`;
-                    }
-                }
-                else if (attr.fullname === 'style') {
-                    const styleObj = execStyle(attr.value);
-                    styleObj.forEach(styleItem => {
-                        if (regularAttr[styleItem.fullname].maybeFuncIRI) {
-                            const firi = funcIRIToID.exec(styleItem.value);
-                            if (firi) {
-                                styleItem.value = `url(#${shorten(node, `style|${styleItem.fullname}`, firi[2])})`;
-                            }
-                        }
-                    });
-                    attr.value = style2value(styleObj);
-                }
-            });
-        }, dom);
-        // 查找 dom 树，找到被引用的 ID ，替换为缩短后的值
-        traversalNode(isTag, (node) => {
-            const ID = node.getAttribute('id');
-            if (ID !== null) {
-                if (hasProp(IDList, ID)) {
-                    const id = IDList[ID][0];
-                    // tslint:disable-next-line:no-dynamic-delete
-                    delete IDList[ID];
-                    node.setAttribute('id', id);
-                }
-                else {
-                    node.removeAttribute('id');
+        const sid = createShortenID(si++);
+        IDList[key] = [sid, node, attrname];
+        return sid;
+    };
+    let cssRules;
+    // 取出 ID 选择器，并缩短
+    if (dom.stylesheet) {
+        cssRules = dom.stylesheet.stylesheet;
+        traversalObj(has('selectors'), (ruleItem) => {
+            const selectors = ruleItem.selectors;
+            if (selectors) {
+                selectors.forEach((selector, selectorIndex) => {
+                    selectors[selectorIndex] = selector.replace(idSelectorReg, (m, p) => `#${shorten(dom.styletag, null, p)}`);
+                });
+            }
+        }, cssRules.rules);
+    }
+    // 取出所有被属性引用的 ID ，并缩短
+    traversalNode(isTag, node => {
+        node.attributes.forEach(attr => {
+            if (regularAttr[attr.fullname].maybeFuncIRI) {
+                const firi = funcIRIToID.exec(attr.value);
+                if (firi) {
+                    attr.value = `url(#${shorten(node, attr.fullname, firi[2])})`;
                 }
             }
-        }, dom);
-        // 最后移除不存在的 ID 引用
-        Object.values(IDList).forEach(item => {
-            const attrName = item[2];
-            if (typeof attrName === 'string') {
-                if (attrName.startsWith('style|')) {
-                    const styleObj = execStyle(item[1].getAttribute('style')).filter(styleItem => styleItem.fullname !== attrName.slice(6));
-                    if (styleObj.length) {
-                        item[1].setAttribute('style', style2value(styleObj));
+            else if (regularAttr[attr.fullname].maybeIRI) {
+                const iri = IRIFullMatch.exec(attr.value);
+                if (iri) {
+                    attr.value = `#${shorten(node, attr.fullname, iri[1])}`;
+                }
+            }
+            else if (attr.fullname === 'style') {
+                const styleObj = parseStyle(attr.value);
+                styleObj.forEach(styleItem => {
+                    if (regularAttr[styleItem.fullname].maybeFuncIRI) {
+                        const firi = funcIRIToID.exec(styleItem.value);
+                        if (firi) {
+                            styleItem.value = `url(#${shorten(node, `style|${styleItem.fullname}`, firi[2])})`;
+                        }
                     }
-                    else {
-                        item[1].removeAttribute('style');
-                    }
+                });
+                attr.value = style2value(styleObj);
+            }
+        });
+    }, dom);
+    // 查找 dom 树，找到被引用的 ID ，替换为缩短后的值
+    traversalNode(isTag, (node) => {
+        const ID = node.getAttribute('id');
+        if (ID !== null) {
+            if (hasProp(IDList, ID)) {
+                const id = IDList[ID][0];
+                delete IDList[ID];
+                node.setAttribute('id', id);
+            }
+            else {
+                node.removeAttribute('id');
+            }
+        }
+    }, dom);
+    // 最后移除不存在的 ID 引用
+    Object.values(IDList).forEach(item => {
+        const attrName = item[2];
+        if (typeof attrName === 'string') {
+            if (attrName.startsWith('style|')) {
+                const styleObj = parseStyle(item[1].getAttribute('style')).filter(styleItem => styleItem.fullname !== attrName.slice(6));
+                if (styleObj.length) {
+                    item[1].setAttribute('style', style2value(styleObj));
                 }
                 else {
-                    item[1].removeAttribute(attrName);
+                    item[1].removeAttribute('style');
                 }
             }
             else {
-                const reg = new RegExp(`#${item[0]}(?=[,\\*#>+~:{\\s\\[\\.]|$)`);
-                traversalObj(has('selectors'), (ruleItem, path) => {
-                    const selectors = ruleItem.selectors;
-                    if (selectors) {
-                        for (let i = selectors.length; i--;) {
-                            if (reg.test(selectors[i])) {
-                                selectors.splice(i, 1);
-                            }
-                        }
-                        if (!selectors.length) {
-                            const parent = path[path.length - 1];
-                            parent.splice(parent.indexOf(ruleItem), 1);
+                item[1].removeAttribute(attrName);
+            }
+        }
+        else {
+            const reg = new RegExp(`#${item[0]}(?=[,\\*#>+~:{\\s\\[\\.]|$)`);
+            traversalObj(has('selectors'), (ruleItem, path) => {
+                const selectors = ruleItem.selectors;
+                if (selectors) {
+                    for (let i = selectors.length; i--;) {
+                        if (reg.test(selectors[i])) {
+                            selectors.splice(i, 1);
                         }
                     }
-                }, cssRules.rules);
-            }
-        });
-    }
+                    if (!selectors.length) {
+                        const parent = path[path.length - 1];
+                        parent.splice(parent.indexOf(ruleItem), 1);
+                    }
+                }
+            }, cssRules.rules);
+        }
+    });
     resolve();
 });
 
@@ -9576,7 +9428,7 @@ const formatRect = (node) => {
     // 此处考虑到宽和高的字节数差异，应该取较小的那种
     const hvh = shortenNumberList(`M${x},${y}h${width}v${height}h-${width}z`);
     const vhv = shortenNumberList(`M${x},${y}v${height}h${width}v-${height}z`);
-    node.setAttribute('d', vhv.length < hvh.length ? vhv : hvh);
+    node.setAttribute('d', getShorter(vhv, hvh));
 };
 const formatLine = (node) => {
     const strokeWidth = getAttr(node, 'stroke-width', '1');
@@ -9626,7 +9478,7 @@ const formatPoly = (thinning, node, addZ) => {
     node.nodeName = 'path';
     let d = '';
     if (node.hasAttribute('points')) {
-        let points = execNumberList(node.getAttribute('points'));
+        let points = parseNumberList(node.getAttribute('points'));
         const animateAttrs = getAnimateAttr(node);
         // 是否存在 marker 引用
         const hasMarker = getAttr(node, 'marker-start', 'none') !== 'none'
@@ -9694,45 +9546,42 @@ const formatCircle = (node) => {
         node.nodeName = 'remove';
     }
 };
-const shortenShape = async (rule, dom) => new Promise(resolve => {
-    if (rule[0]) {
-        execStyleTree(dom);
-        const { thinning, } = rule[1];
-        traversalNode(node => shapeElements.includes(node.nodeName), (node) => {
-            const cloneNode = node.cloneNode();
-            cloneNode.styles = node.styles;
-            switch (node.nodeName) {
-                case 'rect':
-                    formatRect(cloneNode);
-                    break;
-                case 'line':
-                    formatLine(cloneNode);
-                    break;
-                case 'polyline':
-                    formatPoly(thinning, cloneNode, false);
-                    break;
-                case 'polygon':
-                    formatPoly(thinning, cloneNode, true);
-                    break;
-                case 'ellipse':
-                    formatEllipse(cloneNode);
-                    break;
-                case 'circle':
-                    formatCircle(cloneNode);
-                    break;
-                default:
-                    // 路径只要判断 d 属性是否存在即可
-                    cloneNode.nodeName = node.getAttribute('d') ? 'notneed' : 'remove';
-                    break;
-            }
-            if (cloneNode.nodeName === 'remove') {
-                rmNode(node);
-            }
-            else if (cloneNode.nodeName !== node.nodeName && createTag(cloneNode).length <= createTag(node).length) {
-                Object.assign(node, cloneNode);
-            }
-        }, dom);
-    }
+const shortenShape = async (dom, { params: { thinning, } }) => new Promise(resolve => {
+    parseStyleTree(dom);
+    traversalNode(node => shapeElements.includes(node.nodeName), (node) => {
+        const cloneNode = node.cloneNode();
+        cloneNode.styles = node.styles;
+        switch (node.nodeName) {
+            case 'rect':
+                formatRect(cloneNode);
+                break;
+            case 'line':
+                formatLine(cloneNode);
+                break;
+            case 'polyline':
+                formatPoly(thinning, cloneNode, false);
+                break;
+            case 'polygon':
+                formatPoly(thinning, cloneNode, true);
+                break;
+            case 'ellipse':
+                formatEllipse(cloneNode);
+                break;
+            case 'circle':
+                formatCircle(cloneNode);
+                break;
+            default:
+                // 路径只要判断 d 属性是否存在即可
+                cloneNode.nodeName = node.getAttribute('d') ? 'notneed' : 'remove';
+                break;
+        }
+        if (cloneNode.nodeName === 'remove') {
+            rmNode(node);
+        }
+        else if (cloneNode.nodeName !== node.nodeName && createTag(cloneNode).length <= createTag(node).length) {
+            Object.assign(node, cloneNode);
+        }
+    }, dom);
     resolve();
 });
 
@@ -9756,7 +9605,7 @@ const check$2 = (styleDefine, node, dom, unique, fromStyleTag) => {
         for (let i = node.attributes.length; i--;) {
             const attr = node.attributes[i];
             if (attr.fullname === 'style') {
-                const childStyle = execStyle(attr.value);
+                const childStyle = parseStyle(attr.value);
                 if (childStyle.some(style => style.fullname === styleDefine.name)) {
                     return false;
                 }
@@ -9796,7 +9645,7 @@ const check$2 = (styleDefine, node, dom, unique, fromStyleTag) => {
         for (let i = childNode.attributes.length; i--;) {
             const attr = childNode.attributes[i];
             if (attr.fullname === 'style') {
-                const childStyle = execStyle(attr.value);
+                const childStyle = parseStyle(attr.value);
                 if (childStyle.some(style => style.fullname === styleDefine.name)) {
                     return false;
                 }
@@ -9832,52 +9681,13 @@ const check$2 = (styleDefine, node, dom, unique, fromStyleTag) => {
 // 深度分析，判断样式继承链上是否存在可应用对象
 const checkApply = (styleDefine, node, dom, fromStyleTag = false) => check$2(styleDefine, node, dom, [], fromStyleTag);
 
-/*
- * 遍历所有的 Node 节点，并对符合条件的节点执行操作，异步版本
- * @param { function } 条件
- * @param { function } 回调
- * @param { Node } 目标节点
- */
-const traversalNodeAsync = async (condition, cb, node) => new Promise((resolve, reject) => {
-    if (node.childNodes && node.childNodes.length) {
-        const list = [];
-        for (const childNode of node.childNodes) {
-            if (condition(childNode)) {
-                list.push(new Promise(resv => {
-                    Promise.resolve().then(async () => {
-                        await cb(childNode);
-                        if (childNode.parentNode === node) {
-                            await traversalNodeAsync(condition, cb, childNode);
-                        }
-                        resv();
-                    });
-                }));
-            }
-            else {
-                list.push(new Promise(resv => {
-                    Promise.resolve().then(async () => {
-                        await traversalNodeAsync(condition, cb, childNode);
-                        resv();
-                    });
-                }));
-            }
-        }
-        Promise.all(list).then(() => {
-            resolve();
-        }, reject); // tslint:disable-line no-floating-promises
-    }
-    else {
-        resolve();
-    }
-});
-
 // 属性转 style 的临界值
 const styleThreshold = 4;
 const style2value$1 = pipe(stringifyStyle, shortenStyle);
 // 一些元素的某些属性不能被转为 style
 const cantTrans = (define, attrName) => define.onlyAttr && define.onlyAttr.includes(attrName);
-const checkAttr$2 = async (node, dom, rmDefault) => new Promise(resolve => {
-    execStyleTree(dom);
+const checkAttr$2 = (node, dom, rmAttrEqDefault) => {
+    parseStyleTree(dom);
     const attrObj = {}; // 存储所有样式和可以转为样式的属性
     const tagDefine = regularTag[node.nodeName];
     // 逆序循环，并从后向前移除属性
@@ -9885,7 +9695,7 @@ const checkAttr$2 = async (node, dom, rmDefault) => new Promise(resolve => {
         const attr = node.attributes[i];
         const attrDefine = regularAttr[attr.fullname];
         if (attr.fullname === 'style') {
-            const styleObj = execStyle(attr.value);
+            const styleObj = parseStyle(attr.value);
             const styleUnique = {};
             // 逆序循环，因为 CSS 的优先级是从后往前覆盖的
             for (let si = styleObj.length; si--;) {
@@ -9906,7 +9716,7 @@ const checkAttr$2 = async (node, dom, rmDefault) => new Promise(resolve => {
                 if (!onlyCss && has(styleItem.fullname, attrObj)) {
                     node.removeAttribute(styleItem.fullname);
                 }
-                if (rmDefault) {
+                if (rmAttrEqDefault) {
                     // 如果父元素上有同名的样式类属性，则不能移除和默认值相同的属性
                     const parentStyle = node.parentNode.styles;
                     if (!styleDefine.inherited || !parentStyle || !hasProp(parentStyle, styleItem.fullname)) {
@@ -9938,7 +9748,7 @@ const checkAttr$2 = async (node, dom, rmDefault) => new Promise(resolve => {
             if (attrDefine.cantTrans || cantTrans(tagDefine, attr.fullname)) { // 有一些元素的某些属性不能被转为 style，此类属性也不宜再按照 css 属性来验证
                 continue;
             }
-            if (rmDefault) {
+            if (rmAttrEqDefault) {
                 // 如果父元素上有同名的样式类属性，则不能移除和默认值相同的属性
                 const parentStyle = node.parentNode.styles;
                 if (!attrDefine.inherited || !parentStyle || !hasProp(parentStyle, attr.fullname)) {
@@ -9987,35 +9797,6 @@ const checkAttr$2 = async (node, dom, rmDefault) => new Promise(resolve => {
             }
         }
     }
-    // 	// 在此处进行样式合法性验证
-    // 	let cssString = 'g{';
-    // 	Object.entries(attrObj).forEach(([key, { value }]) => {
-    // 		cssString += `${key}:${value};
-    // `;
-    // 	});
-    // 	cssString += '}';
-    // 	// 双重合法性验证
-    // const result = await legalCss(cssString);
-    // if (!result.validity) {
-    // 	result.errors.forEach(err => {
-    // 		if (err.type === 'zero') {
-    // 			return;
-    // 		}
-    // 		const key = Object.keys(attrObj)[err.line - 1] as string | undefined;
-    // 		if (key && err.message.includes(key)) { // cssValidator 有时候会报错行数，需要确保规则对得上
-    // 			const styleItem = attrObj[key];
-    // 			const styleDefine = regularAttr[key];
-    // 			// css 验证失败，还需要进行一次 svg-slimming 的合法性验证，确保没有问题
-    // 			if (!styleDefine.legalValues.length || !legalValue(styleDefine, {
-    // 				fullname: key,
-    // 				value: styleItem.value,
-    // 				name: '',
-    // 			})) {
-    // 				styleItem.value = '';
-    // 			}
-    // 		}
-    // 	});
-    // }
     // 只做基本验证
     Object.keys(attrObj).forEach(key => {
         const styleItem = attrObj[key];
@@ -10033,11 +9814,11 @@ const checkAttr$2 = async (node, dom, rmDefault) => new Promise(resolve => {
             if (!attrItem.value) {
                 node.removeAttribute(attrItem.animateAttr);
             }
-            delete attrObj[key]; // tslint:disable-line no-dynamic-delete
+            delete attrObj[key];
         }
         else {
             if (!attrItem.value) {
-                delete attrObj[key]; // tslint:disable-line no-dynamic-delete
+                delete attrObj[key];
                 node.removeAttribute(key);
             }
         }
@@ -10046,53 +9827,44 @@ const checkAttr$2 = async (node, dom, rmDefault) => new Promise(resolve => {
         node.removeAttribute('style');
     }
     // 进行动画属性的合法性验证
-    resolve({
-        attrObj,
-        tagDefine,
-    });
-});
-const shortenStyleAttr = async (rule, dom) => new Promise(resolve => {
-    if (rule[0]) {
-        const { exchange, rmDefault } = rule[1];
-        const hasStyleTag = !!dom.styletag;
-        traversalNodeAsync(isTag, async (node) => checkAttr$2(node, dom, rmDefault).then(({ attrObj, }) => {
-            // TODO css all 属性命中后要清空样式
-            // TODO 连锁属性的判断
-            if (!hasStyleTag || exchange) {
-                // [warning] svg 的样式覆盖规则是 style 属性 > style 标签 > 属性，所以以下代码可能导致不正确的样式覆盖！
-                // 如果存在只能放在 css 中的属性，则强制属性转 style @v1.5.0+
-                if (Object.values(attrObj).some(val => val.onlyCss) || Object.keys(attrObj).length > styleThreshold) {
-                    // 属性转 style
-                    Object.entries(attrObj).forEach(([key, val]) => {
-                        if (!val.onlyCss) {
-                            node.removeAttribute(key);
-                        }
-                    });
-                    // 执行一次 reverse 把顺序反转过来
-                    node.setAttribute('style', style2value$1(Object.keys(attrObj).reverse().map(key => {
-                        return {
-                            name: key,
-                            fullname: key,
-                            value: attrObj[key].value,
-                        };
-                    })));
-                }
-                else {
-                    // style 转属性
-                    node.removeAttribute('style');
-                    // 执行一次 reverse 把顺序反转过来
-                    Object.keys(attrObj).reverse().forEach(name => {
-                        node.setAttribute(name, attrObj[name].value);
-                    });
-                }
+    return attrObj;
+};
+const shortenStyleAttr = async (dom, { params: { exchangeStyle, rmAttrEqDefault, } }) => new Promise(resolve => {
+    const hasStyleTag = !!dom.styletag;
+    traversalNode(isTag, node => {
+        const attrObj = checkAttr$2(node, dom, rmAttrEqDefault);
+        // TODO css all 属性命中后要清空样式
+        // TODO 连锁属性的判断
+        if (!hasStyleTag || exchangeStyle) {
+            // [warning] svg 的样式覆盖规则是 style 属性 > style 标签 > 属性，所以以下代码可能导致不正确的样式覆盖！
+            // 如果存在只能放在 css 中的属性，则强制属性转 style @v1.5.0+
+            if (Object.values(attrObj).some(val => val.onlyCss) || Object.keys(attrObj).length > styleThreshold) {
+                // 属性转 style
+                Object.entries(attrObj).forEach(([key, val]) => {
+                    if (!val.onlyCss) {
+                        node.removeAttribute(key);
+                    }
+                });
+                // 执行一次 reverse 把顺序反转过来
+                node.setAttribute('style', style2value$1(Object.keys(attrObj).reverse().map(key => {
+                    return {
+                        name: key,
+                        fullname: key,
+                        value: attrObj[key].value,
+                    };
+                })));
             }
-        }), dom).then(() => {
-            resolve();
-        });
-    }
-    else {
-        resolve();
-    }
+            else {
+                // style 转属性
+                node.removeAttribute('style');
+                // 执行一次 reverse 把顺序反转过来
+                Object.keys(attrObj).reverse().forEach(name => {
+                    node.setAttribute(name, attrObj[name].value);
+                });
+            }
+        }
+    }, dom);
+    resolve();
 });
 
 const rmCSSNode$1 = (cssNode, plist) => {
@@ -10101,9 +9873,8 @@ const rmCSSNode$1 = (cssNode, plist) => {
         plist.splice(index, 1);
     }
 };
-const shortenStyleTag = async (rule, dom) => new Promise(resolve => {
-    if (rule[0] && dom.stylesheet) {
-        const { deepShorten, rmDefault } = rule[1];
+const shortenStyleTag = async (dom, { option: { deepShorten, }, params: { rmAttrEqDefault, }, }) => new Promise(resolve => {
+    if (dom.stylesheet) {
         const cssRules = dom.stylesheet.stylesheet;
         // 遍历 style 解析对象，取得包含 css 定义的值
         traversalObj(propEq('type', 'declaration'), (cssNode, parents) => {
@@ -10111,7 +9882,7 @@ const shortenStyleTag = async (rule, dom) => new Promise(resolve => {
             if (!attrDefine.couldBeStyle) {
                 rmCSSNode$1(cssNode, parents[parents.length - 1]);
             }
-            else if (rmDefault) {
+            else if (rmAttrEqDefault) {
                 // 仅验证只有一种默认值的情况
                 if (typeof attrDefine.initValue === 'string' && valueIsEqual(attrDefine, cssNode.value, attrDefine.initValue)) {
                     rmCSSNode$1(cssNode, parents[parents.length - 1]);
@@ -10135,7 +9906,7 @@ const shortenStyleTag = async (rule, dom) => new Promise(resolve => {
                     const usedRule = {};
                     // 移除无效的选择器
                     for (let si = theSelectors.length; si--;) {
-                        const matchNodes = getBySelector(dom, execSelector(theSelectors[si]));
+                        const matchNodes = getBySelector(dom, parseSelector(theSelectors[si]));
                         if (!matchNodes.length) {
                             theSelectors.splice(si, 1);
                         }
@@ -10225,7 +9996,6 @@ const shortenStyleTag = async (rule, dom) => new Promise(resolve => {
     resolve();
 });
 
-// default rules
 const rules = [
     [true, rmUseless],
     [true, combineStyle],
@@ -10260,197 +10030,543 @@ const rules = [
     [false, rmXMLNS, 'rm-xmlns'],
 ];
 
-const config = {
-    // 合并 g 标签
-    'collapse-g': [true],
-    // 塌陷无意义的文本节点
-    'collapse-textwrap': [true],
-    // 合并 path 标签
-    'combine-path': [true, {
-            disregardFill: false,
-            disregardOpacity: false,
-            keyOrder: ['disregardFill', 'disregardOpacity'],
-        }],
-    // 分析并合并 transform 属性
-    'combine-transform': [true, {
-            angelDigit: DEFAULT_ACCURATE_DIGIT,
-            sizeDigit: DEFAULT_SIZE_DIGIT,
-            trifuncDigit: DEFAULT_MATRIX_DIGIT,
-            keyOrder: ['trifuncDigit', 'sizeDigit', 'angelDigit'],
-        }],
-    // 计算 path 的 d 属性，使之变得更短
-    'compute-path': [true, {
-            angelDigit: DEFAULT_ACCURATE_DIGIT,
-            sizeDigit: DEFAULT_SIZE_DIGIT,
-            straighten: 0,
-            thinning: 0,
-            keyOrder: ['removed thinning switch@v1.5.0', 'thinning', 'size', 'angelDigit', 'straighten'],
-        }],
-    // 移除非规范的属性
-    'rm-attribute': [true, {
-            keepAria: false,
-            keepEvent: false,
-            rmDefault: true,
-            keyOrder: ['rmDefault', 'keepEvent', 'keepAria'],
-        }],
-    // 移除注释
-    'rm-comments': [true],
-    // 移除 DOCTYPE 声明
-    'rm-doctype': [true],
-    // 移除隐藏对象
-    'rm-hidden': [true],
-    // 移除不规范嵌套的标签
-    'rm-irregular-nesting': [true, {
-            ignore: [],
-            keyOrder: ['ignore'],
-        }],
-    // 移除非规范的标签
-    // 配置不移除的非规范标签
-    'rm-irregular-tag': [true, {
-            ignore: [],
-            keyOrder: ['ignore'],
-        }],
-    // 移除 px 单位
-    'rm-px': [true],
-    // 移除不必要的标签
-    // 配置需要移除的标签列表
-    'rm-unnecessary': [true, {
-            tags: ['desc', 'discard', 'foreignObject', 'video', 'audio', 'iframe', 'canvas', 'metadata', 'script', 'title', 'unknown', 'image'],
-            keyOrder: ['tags'],
-        }],
-    // 移除 svg 标签的 version 属性
-    'rm-version': [true],
-    // 是否强制移除 viewBox 属性
-    'rm-viewbox': [true],
-    // 移除 xml 声明
-    'rm-xml-decl': [true],
-    // 如有必要，移除 xml 命名空间
-    'rm-xmlns': [true],
-    // 缩短动画元素
-    'shorten-animate': [true, {
-            remove: false,
-        }],
-    // 缩短 className ，并移除不被引用的 className
-    'shorten-class': [true],
-    // 缩短颜色
-    'shorten-color': [true, {
-            opacityDigit: OPACITY_DIGIT,
-            rrggbbaa: false,
-            keyOrder: ['rrggbbaa', 'opacityDigit'],
-        }],
-    // 缩短小数点后位数
-    'shorten-decimal-digits': [true, {
-            angelDigit: DEFAULT_ACCURATE_DIGIT,
-            sizeDigit: DEFAULT_SIZE_DIGIT,
-            keyOrder: ['sizeDigit', 'angelDigit'],
-        }],
-    // 合并所有的 defs ，移除无效的 defs 定义
-    'shorten-defs': [true],
-    // 移除无效的滤镜元素，移除不必要的滤镜元素属性
-    'shorten-filter': [true],
-    // 缩短 ID ，并移除不被引用的 ID
-    'shorten-id': [true],
-    // 缩短 shape 类型的节点
-    'shorten-shape': [true, {
-            thinning: 0,
-            keyOrder: ['thinning'],
-        }],
-    // 缩短 style 属性
-    'shorten-style-attr': [true, {
-            exchange: false,
-            rmDefault: true,
-            keyOrder: ['exchange'],
-        }],
-    // 缩短 style 标签的内容（合并相同规则、移除无效样式）
-    // 深度分析，移除无效选择器、合并相同的选择器、合并相同规则
-    'shorten-style-tag': [true, {
-            deepShorten: true,
-            rmDefault: true,
-            keyOrder: ['deepShorten'],
-        }],
-};
-
-const mergeUserVal = (v, _v) => {
-    if (Array.isArray(v)) {
-        // 数组只要字符串项
-        if (Array.isArray(_v)) {
-            return _v.filter(s => typeof s === 'string');
+class Node {
+    constructor(option) {
+        this.nodeName = option.nodeName;
+        this.nodeType = option.nodeType;
+        this.namespace = option.namespace;
+        this.selfClose = option.selfClose;
+        this.textContent = option.textContent;
+        if (this.nodeType === NodeType.Tag || this.nodeType === NodeType.Document) {
+            this.attributes = [];
+            this.childNodes = [];
         }
     }
-    else if (typeof v === typeof _v) {
-        if (typeof _v === 'number') {
-            // 数值项要忽略 NaN、Infinity 和负数，并下取整
-            // 数值精度最多保留 8 位
-            if (_v >= 0 && _v !== Infinity) {
-                return Math.floor(_v);
+    // 复制自身，但是不复制节点树关系链
+    cloneNode() {
+        const cloneNode = new Node({
+            nodeName: this.nodeName,
+            nodeType: this.nodeType,
+            namespace: this.namespace,
+            textContent: this.textContent,
+        });
+        if (this.attributes) {
+            // 属性需要深拷贝
+            cloneNode.attributes = this.attributes.map(attr => {
+                return {
+                    name: attr.name,
+                    value: attr.value,
+                    fullname: attr.fullname,
+                    namespace: attr.namespace,
+                };
+            });
+        }
+        return cloneNode;
+    }
+    // 追加子节点
+    appendChild(childNode) {
+        if (this.childNodes) {
+            // 如果子节点原本有父节点，则先从原本的父节点中移除
+            if (childNode.parentNode) {
+                childNode.parentNode.removeChild(childNode);
+            }
+            this.childNodes.push(childNode);
+            childNode.parentNode = this;
+        }
+    }
+    // 插入到子节点之前
+    insertBefore(childNode, previousTarget) {
+        if (this.childNodes) {
+            // 如果子节点原本有父节点，则先从原本的父节点中移除
+            if (childNode.parentNode) {
+                childNode.parentNode.removeChild(childNode);
+            }
+            // 判断目标节点是否在自己的子节点列表中，如果不在，直接插入
+            const pindex = this.childNodes.indexOf(previousTarget);
+            if (pindex !== -1) {
+                this.childNodes.splice(pindex, 0, childNode);
+            }
+            else {
+                this.childNodes.push(childNode);
+            }
+            childNode.parentNode = this;
+        }
+    }
+    // 替换子节点
+    replaceChild(childNode, ...children) {
+        if (this.childNodes) {
+            const index = this.childNodes.indexOf(childNode);
+            if (index !== -1) {
+                children.forEach(child => {
+                    // 先把要插入的子节点从原有父节点移除
+                    if (child.parentNode) {
+                        child.parentNode.removeChild(child);
+                    }
+                    // 指定父节点到自身
+                    child.parentNode = this;
+                });
+                this.childNodes.splice(index, 1, ...children);
+                // 清理被替换掉的子节点的钩子
+                delete childNode.parentNode;
             }
         }
-        else {
-            return _v;
-        }
     }
-    return v;
-};
-const mergeConfig = (userConfig) => {
-    const finalConfig = {};
-    // 首先把默认规则深拷贝合并过来
-    for (const [key, val] of Object.entries(config)) {
-        finalConfig[key] = [val[0]];
-        if (val[1]) {
-            const option = { keyOrder: val[1].keyOrder };
-            for (const [k, v] of Object.entries(val[1])) {
-                option[k] = Array.isArray(v) ? v.slice() : v;
+    // 移除子节点
+    removeChild(childNode) {
+        if (this.childNodes) {
+            const index = this.childNodes.indexOf(childNode);
+            if (index !== -1) {
+                this.childNodes.splice(index, 1);
+                delete childNode.parentNode;
             }
-            finalConfig[key][1] = option;
         }
     }
-    if (typeof userConfig === 'object' && userConfig) {
-        for (const [key, val] of Object.entries(userConfig)) {
-            // 只合并存在的值
-            if (hasProp(finalConfig, key)) {
-                const conf = finalConfig[key];
-                // 布尔值直接设置开关位置
-                if (typeof val === 'boolean') {
-                    conf[0] = val;
+    // 是否存在属性
+    hasAttribute(name, namespace) {
+        if (this.attributes) {
+            for (const attr of this.attributes) {
+                if (!namespace) {
+                    if (attr.fullname === name) {
+                        return true;
+                    }
                 }
-                else if (Array.isArray(val) && typeof val[0] === 'boolean') {
-                    // 如果开关位置不是布尔值，后续直接抛弃处理
-                    conf[0] = val[0];
-                    // 默认配置如果没有 option 则不必再验证，如果没有打开配置项，后续也不必再验证
-                    if (conf[0] && conf[1]) {
-                        if (typeof val[1] === 'object' && val[1] && !Array.isArray(val[1])) {
-                            // 如果拿到的是 IConfigOption 类型
-                            for (const [k, v] of Object.entries(val[1])) {
-                                if (k !== 'keyOrder' && hasProp(conf[1], k)) {
-                                    conf[1][k] = mergeUserVal(conf[1][k], v);
-                                }
-                            }
-                        }
-                        else {
-                            for (const k of Object.keys(conf[1])) {
-                                if (k !== 'keyOrder') {
-                                    const index = conf[1].keyOrder.indexOf(k) + 1;
-                                    conf[1][k] = mergeUserVal(conf[1][k], val[index]);
-                                }
-                            }
-                        }
+                else {
+                    if (attr.name === name && attr.namespace === namespace) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    getAttribute(name, namespace) {
+        if (this.attributes) {
+            for (const attr of this.attributes) {
+                if (!namespace) {
+                    if (attr.fullname === name) {
+                        return attr.value;
+                    }
+                }
+                else {
+                    if (attr.name === name && attr.namespace === namespace) {
+                        return attr.value;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    setAttribute(name, value, namespace) {
+        if (this.attributes) {
+            for (const attr of this.attributes) {
+                if (!namespace) {
+                    if (attr.fullname === name) {
+                        attr.value = value;
+                        return;
+                    }
+                }
+                else {
+                    if (attr.name === name && attr.namespace === namespace) {
+                        attr.value = value;
+                        return;
+                    }
+                }
+            }
+            const newAttr = {
+                name,
+                value,
+                fullname: name,
+            };
+            if (namespace) {
+                newAttr.fullname = `${namespace}:${name}`;
+                newAttr.namespace = namespace;
+            }
+            this.attributes.push(newAttr);
+        }
+    }
+    removeAttribute(name, namespace) {
+        if (this.attributes) {
+            for (let i = this.attributes.length; i--;) {
+                const attr = this.attributes[i];
+                if (!namespace) {
+                    if (attr.fullname === name) {
+                        this.attributes.splice(i, 1);
+                        return;
+                    }
+                }
+                else {
+                    if (attr.name === name && attr.namespace === namespace) {
+                        this.attributes.splice(i, 1);
+                        return;
                     }
                 }
             }
         }
     }
-    return finalConfig;
+}
+
+let supportUnicode$1 = true;
+try {
+    supportUnicode$1 = /\u{20BB7}/u.test('𠮷');
+}
+catch (e) {
+    supportUnicode$1 = false;
+}
+const NameStartChar$1 = `:A-Z_a-z\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD${supportUnicode$1 ? '\\u{10000}-\\u{EFFFF}' : ''}`;
+const NameChar$1 = `${NameStartChar$1}\\-\\.0-9\\u00B7\\u0300-\\u036F\\u203F-\\u2040`;
+const Name$1 = `[${NameStartChar$1}][${NameChar$1}]*`;
+const Eq = '\\s*=\\s*';
+const VersionNum = '1\\.[0-9]+';
+const EncName = '[A-Za-z](?:[A-Za-z0-9\\._]|-)*';
+const VersionInfo = `\\s+version${Eq}(?:'${VersionNum}'|"${VersionNum}")`;
+const EncodingDecl = `\\s+encoding${Eq}(?:'${EncName}'|"${EncName}")`;
+const SDDecl = `\\s+standalone${Eq}(?:'(?:yes|no)'|"(?:yes|no)")`;
+const Reference = `(?:&${Name$1};|&#[0-9]+;|&#x[0-9a-fA-F]+;)`;
+const AttrVal = `"(?:[^<&"]|${Reference})*"|'(?:[^<&']|${Reference})*'`;
+const DeclContent = '(?:[^<>\'"]+|[^<>\']*\'[^\']*\'[^<>\']*|[^<>"]*"[^"]*"[^<>"]*|[^<>\'"]*<[^<>]*>[^<>\'"]*)+?';
+const REG_XML_DECL = new RegExp(`<\\?xml(${VersionInfo}(?:${EncodingDecl})?(?:${SDDecl})?\\s*)\\?>`, 'g');
+const REG_CDATA_SECT = /<!\[CDATA\[([\d\D]*?)\]\]>/g;
+const REG_OTHER_SECT = /<!\[\s?([A-Z]+)\s?\[([\d\D]*?)\]\]>/g;
+const REG_DOCTYPE = new RegExp(`<!DOCTYPE\\s+(${DeclContent})>`, 'g');
+const REG_OTHER_DECL = new RegExp(`<!([A-Z]+)\\s+(${DeclContent})>`, 'g');
+const REG_COMMENTS = /<!--([\d\D]*?)-->/g;
+const REG_START_TAG = new RegExp(`<(${Name$1})((?:\\s+${Name$1}${Eq}(?:${AttrVal}))*)\\s*(\\/?)>`, supportUnicode$1 ? 'gu' : 'g');
+const REG_END_TAG = new RegExp(`</(${Name$1})\\s*>`, supportUnicode$1 ? 'gu' : 'g');
+const REG_ATTR = new RegExp(`(?:^|\\s)(${Name$1})${Eq}(${AttrVal})`, supportUnicode$1 ? 'gu' : 'g');
+
+const collapseQuot = (str) => str.slice(1, -1);
+
+const configs = [
+    [1, 'xml-decl', REG_XML_DECL, NodeType.XMLDecl],
+    [1, 'cdata', REG_CDATA_SECT, NodeType.CDATA],
+    [2, REG_OTHER_SECT, NodeType.OtherSect],
+    [1, 'doctype', REG_DOCTYPE, NodeType.DocType],
+    [2, REG_OTHER_DECL, NodeType.OtherDecl],
+    [1, 'comments', REG_COMMENTS, NodeType.Comments],
+];
+const updStatus = (pos, str, status) => {
+    for (; status.lastpos < pos; status.lastpos++) {
+        if (str[status.lastpos] === '\r' || str[status.lastpos] === '\n') {
+            // 换行判断，\r 直接换行，\n 判断一下是不是紧跟在 \r 后面
+            if (str[status.lastpos] === '\r' || str[status.lastpos - 1] !== '\r') {
+                status.line++;
+                status.pos = 0;
+            }
+        }
+        else {
+            status.pos++;
+        }
+    }
+};
+// 应对一个捕获组的状况
+const Process1 = (conf, str, lastIndex) => {
+    const reg = conf[2];
+    reg.lastIndex = lastIndex;
+    const execResult = reg.exec(str);
+    if (execResult && execResult.index === lastIndex) {
+        return {
+            node: new Node({
+                nodeType: conf[3],
+                nodeName: `#${conf[1]}`,
+                textContent: execResult[1],
+            }),
+            lastIndex: reg.lastIndex,
+        };
+    }
+    return null;
+};
+// 应对两个捕获组的状况
+const Process2 = (conf, str, lastIndex) => {
+    const reg = conf[1];
+    reg.lastIndex = lastIndex;
+    const execResult = reg.exec(str);
+    if (execResult && execResult.index === lastIndex) {
+        return {
+            node: new Node({
+                nodeType: conf[2],
+                nodeName: `#${execResult[1].toLowerCase()}`,
+                textContent: execResult[2],
+            }),
+            lastIndex: reg.lastIndex,
+        };
+    }
+    return null;
+};
+// 处理标签
+const ProcessTag = (str, status, lastIndex) => {
+    REG_START_TAG.lastIndex = lastIndex;
+    const execResult = REG_START_TAG.exec(str);
+    if (execResult && execResult.index === lastIndex) {
+        const tempStatus = { line: status.line, pos: status.pos, lastpos: 0 };
+        const result = {
+            node: new Node({
+                nodeType: NodeType.Tag,
+                nodeName: execResult[1],
+                namespace: '',
+                selfClose: execResult[3] === '/',
+            }),
+            lastIndex: REG_START_TAG.lastIndex,
+        };
+        // 标签的 namespace
+        if (execResult[1].includes(':')) {
+            const tagName = execResult[1].split(':');
+            if (tagName.length !== 2 || !tagName[0] || !tagName[1]) {
+                throw new Error(`Wrong start tag! at ${status.line}:${status.pos}`);
+            }
+            else {
+                result.node.nodeName = tagName[1];
+                result.node.namespace = tagName[0];
+            }
+        }
+        updStatus(execResult[1].length + 1, execResult[0], tempStatus);
+        // ** 重要 ** 重置匹配位置！
+        REG_ATTR.lastIndex = 0;
+        let attrExec = REG_ATTR.exec(execResult[2]);
+        const attrUnique = {};
+        while (attrExec) {
+            updStatus(attrExec.index + execResult[1].length + 1, execResult[0], tempStatus);
+            // 属性名排重
+            if (attrUnique[attrExec[1]]) {
+                throw new Error(`Duplicate property names! at ${tempStatus.line}:${tempStatus.pos}`);
+            }
+            attrUnique[attrExec[1]] = true;
+            if (attrExec[1].includes(':')) {
+                const attrName = attrExec[1].split(':');
+                if (attrName.length === 2 && attrName[0] && attrName[1]) {
+                    result.node.setAttribute(attrName[1], collapseQuot(attrExec[2]).trim(), attrName[0]);
+                }
+                else {
+                    throw new Error(`Wrong attribute name! at ${tempStatus.line + status.line - 1}:${tempStatus.line > 1 ? tempStatus.pos : status.pos + tempStatus.pos}`);
+                }
+            }
+            else {
+                result.node.setAttribute(attrExec[1], collapseQuot(attrExec[2]).trim());
+            }
+            attrExec = REG_ATTR.exec(execResult[2]);
+        }
+        return result;
+    }
+    return null;
+};
+const ProcessEndTag = (str, status, lastIndex) => {
+    REG_END_TAG.lastIndex = lastIndex;
+    const execResult = REG_END_TAG.exec(str);
+    if (execResult && execResult.index === lastIndex) {
+        const result = {
+            node: new Node({
+                nodeType: NodeType.EndTag,
+                nodeName: execResult[1],
+                namespace: '',
+            }),
+            lastIndex: REG_END_TAG.lastIndex,
+        };
+        if (execResult[1].includes(':')) {
+            const tagName = execResult[1].split(':');
+            if (tagName.length !== 2 || !tagName[1] || !tagName[0]) {
+                throw new Error(`Wrong end tag! at ${status.line}:${status.pos}`);
+            }
+            else {
+                result.node.nodeName = tagName[1];
+                result.node.namespace = tagName[0];
+            }
+        }
+        return result;
+    }
+    return null;
+};
+const parse = (str, status, lastIndex) => {
+    const REG_LT = /</g;
+    REG_LT.lastIndex = lastIndex;
+    const ltExec = REG_LT.exec(str);
+    if (ltExec) {
+        if (ltExec.index === lastIndex) { // 以 < 开始的情况都按节点处理
+            for (const cfg of configs) {
+                if (cfg[0] === 1) {
+                    const processResult1 = Process1(cfg, str, lastIndex);
+                    if (processResult1) {
+                        return processResult1;
+                    }
+                }
+                else {
+                    const processResult2 = Process2(cfg, str, lastIndex);
+                    if (processResult2) {
+                        return processResult2;
+                    }
+                }
+            }
+            const processTag = ProcessTag(str, status, lastIndex);
+            if (processTag) {
+                return processTag;
+            }
+            const processEndTag = ProcessEndTag(str, status, lastIndex);
+            if (processEndTag) {
+                return processEndTag;
+            }
+            throw new Error(`Failed to parse tags! at ${status.line}:${status.pos}`);
+        }
+        else { // 非 < 开始的都按文本处理
+            return {
+                node: new Node({
+                    nodeType: NodeType.Text,
+                    nodeName: '#text',
+                    textContent: mixWhiteSpace(str.slice(lastIndex, ltExec.index)),
+                }),
+                lastIndex: ltExec.index,
+            };
+        }
+    }
+    else {
+        return {
+            node: new Node({
+                nodeType: NodeType.Text,
+                nodeName: '#text',
+                textContent: mixWhiteSpace(str.slice(lastIndex)),
+            }),
+            lastIndex: str.length,
+        };
+    }
+};
+const Parser = async (str) => {
+    return new Promise((resolve, reject) => {
+        const doc = new Node({
+            nodeType: NodeType.Document,
+            nodeName: '#document',
+        });
+        const stack = [];
+        const status = {
+            line: 1,
+            pos: 0,
+            lastpos: 0,
+        };
+        const len = str.length;
+        let current;
+        let hasRoot = false;
+        const firstIndex = str.indexOf('<');
+        if (firstIndex > 0 && !/^\s+</.test(str)) {
+            reject(new Error(`Unexpected text node! at ${status.line}:${status.pos}`));
+            return;
+        }
+        try {
+            current = parse(str, status, firstIndex); // 第一个 < 之前的全部字符都忽略掉
+        }
+        catch (e) {
+            reject(e);
+            return;
+        }
+        if (current.node.nodeType === NodeType.XMLDecl && firstIndex > 0) {
+            reject(new Error(`The xml declaration must be at the front of the document! at ${status.line}:${status.pos}`));
+            return;
+        }
+        doc.appendChild(current.node);
+        if (current.node.nodeType === NodeType.Tag) {
+            hasRoot = true;
+            if (!current.node.selfClose) {
+                stack.push(current.node);
+            }
+        }
+        while (current.lastIndex < len) {
+            updStatus(current.lastIndex, str, status);
+            try {
+                current = parse(str, status, current.lastIndex); // 第一个 < 之前的全部字符都忽略掉
+            }
+            catch (e) {
+                reject(e);
+                return;
+            }
+            const stackLen = stack.length;
+            if (current.node.nodeType === NodeType.EndTag) {
+                // 遇到结束标签的处理逻辑
+                if (stackLen) {
+                    // 结束标签和开始标签匹配
+                    if (stack[stackLen - 1].nodeName === current.node.nodeName && stack[stackLen - 1].namespace === current.node.namespace) {
+                        // 无子节点，则转为自闭合节点
+                        const childNodes = stack[stackLen - 1].childNodes;
+                        if (!childNodes || !childNodes.length) {
+                            stack[stackLen - 1].selfClose = true;
+                        }
+                        stack.pop();
+                    }
+                    else {
+                        reject(new Error(`The start and end tags cannot match! at ${status.line}:${status.pos}`));
+                        return;
+                    }
+                }
+                else {
+                    // 没有开始标签而出现了结束标签
+                    reject(new Error(`Unexpected end tag! at ${status.line}:${status.pos}`));
+                    return;
+                }
+            }
+            else {
+                if (stackLen) {
+                    // 插入子节点
+                    stack[stackLen - 1].appendChild(current.node);
+                }
+                else if (current.node.nodeType === NodeType.Text || current.node.nodeType === NodeType.CDATA) {
+                    // 没有节点而出现了非空文本节点
+                    if (current.node.textContent.replace(/\s/g, '')) {
+                        reject(new Error(`Unexpected text node! at ${status.line}:${status.pos}`));
+                        return;
+                    }
+                }
+                else {
+                    // 直接扔到根下
+                    doc.appendChild(current.node);
+                }
+                // 遇到未闭合的节点，扔到stack内
+                if (current.node.nodeType === NodeType.Tag) {
+                    if (!stackLen) {
+                        if (hasRoot) {
+                            reject(new Error(`Only one root element node is allowed! at ${status.line}:${status.pos}`));
+                            return;
+                        }
+                        hasRoot = true;
+                    }
+                    if (!current.node.selfClose) {
+                        stack.push(current.node);
+                    }
+                }
+            }
+            if (current.lastIndex === len) {
+                updStatus(len, str, status);
+            }
+        }
+        if (stack.length) {
+            reject(new Error(`Document structure is wrong! at ${status.line}:${status.pos}`));
+            return;
+        }
+        if (!hasRoot) {
+            reject(new Error(`No root element node! at ${status.line}:${status.pos}`));
+            return;
+        }
+        resolve(doc);
+    });
+};
+
+const createRuleConfig = (finalConfig, key) => {
+    const config = {
+        params: finalConfig.params,
+        env: finalConfig.env,
+        option: {},
+    };
+    if (key) {
+        config.option = finalConfig.rules[key][1];
+    }
+    return config;
 };
 
 const exportFunc = async (data, userConfig = null) => new Promise((resolve, reject) => {
     Parser(data).then(async (dom) => {
         const finalConfig = mergeConfig(userConfig);
         for (const item of rules) {
+            const ruleConfig = createRuleConfig(finalConfig, item[2]);
             if (item[0]) {
-                await (item[1])(dom);
+                await item[1](dom, ruleConfig);
             }
             else {
-                await (item[1])(finalConfig[item[2]], dom);
+                if (finalConfig.rules[item[2]][0]) {
+                    await item[1](dom, ruleConfig);
+                }
             }
         }
         resolve(createXML(dom));

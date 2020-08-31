@@ -1,6 +1,6 @@
 import { IMatrixFunc } from 'typings';
 import { DEFAULT_ACCURATE_DIGIT, DEFAULT_MATRIX_DIGIT, DEFAULT_SIZE_DIGIT, matrixEPos } from '../const';
-import { toFixed } from '../math/tofixed';
+import { toFixed } from '../math/to-fixed';
 import { simplify } from './simplify';
 
 // 降低 transform 函数的参数精度，移除冗余参数，并对无效函数打上标记

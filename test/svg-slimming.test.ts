@@ -21,7 +21,9 @@ describe('svg-slimming 入口', () => {
 			</text   >
 		</svg>`;
 		const dom = await slimming(xml, {
-			'rm-unnecessary': [true, ['title', 123]],
+			'rm-unnecessary': [true, {
+				tags: ['title', 123],
+			}],
 			'no-this-key': true,
 			'shorten-decimal-digits': [true, 'haha', 1.5],
 			'rm-irregular-tag': [true, null],
@@ -31,7 +33,6 @@ describe('svg-slimming 入口', () => {
 			'collapse-g': [true],
 			'rm-irregular-nesting': [true, {
 				ignore: [1, false, () => 3],
-				keyOrder: [],
 			}],
 			'shorten-style-tag': [true, {
 				haha: null,

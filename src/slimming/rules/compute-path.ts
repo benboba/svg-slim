@@ -107,6 +107,8 @@ const processPath = (dVal: string, hasMarker: boolean, hasStroke: boolean, hasSt
 
 export const computePath = async (dom: IDomNode, {
 	params,
+	env,
+	option,
 }: IRuleOption): Promise<void> => new Promise(resolve => {
 	parseStyleTree(dom);
 	traversalNode<ITagNode>(anyPass([propEq('nodeName', 'path'), propEq('nodeName', 'animateMotion'), propEq('nodeName', 'textPath')]), node => {
@@ -122,7 +124,6 @@ export const computePath = async (dom: IDomNode, {
 		const hasStrokeCap = getAttr(node, 'stroke-linecap', 'butt') !== 'butt';
 		let noAttrD = true;
 		let noAnimateD = true;
-
 		if (attrD) {
 			const pathResult = processPath(attrD, hasMarker, hasStroke, hasStrokeCap, params);
 			if (!pathResult) {

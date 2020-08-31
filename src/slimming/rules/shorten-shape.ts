@@ -70,7 +70,7 @@ const formatRect = (node: ITagNode) => {
 	// 此处考虑到宽和高的字节数差异，应该取较小的那种
 	const hvh = shortenNumberList(`M${x},${y}h${width}v${height}h-${width}z`);
 	const vhv = shortenNumberList(`M${x},${y}v${height}h${width}v-${height}z`);
-	node.setAttribute('d', getShorter(vhv, hvh));
+	node.setAttribute('d', getShorter(hvh, vhv));
 
 };
 
