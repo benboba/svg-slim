@@ -1,5 +1,5 @@
-import { IAnimateAttr, IMatrixFunc, IRegularAttr, IRuleOption } from 'typings';
-import { IDomNode, ITagNode } from 'typings/node';
+import { IAnimateAttr, IMatrixFunc, IRegularAttr, IRuleOption } from '../../../typings';
+import { IDomNode, ITagNode } from '../../../typings/node';
 import { APOS_LEN, APOS_RX, APOS_RY, APOS_X, APOS_Y, DEFAULT_MATRIX_DIGIT } from '../const';
 import { transformAttributes } from '../const/definitions';
 import { regularAttr } from '../const/regular-attr';

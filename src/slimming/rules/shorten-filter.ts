@@ -1,5 +1,5 @@
-import { TUnique } from 'typings';
-import { IDomNode, ITagNode } from 'typings/node';
+import { TUnique } from '../../../typings';
+import { IDomNode, ITagNode } from '../../../typings/node';
 import { filterPrimitiveElements, transferFunctionElements } from '../const/definitions';
 import { hasProp } from '../utils/has-prop';
 import { getAnimateAttr } from '../xml/get-animate-attr';

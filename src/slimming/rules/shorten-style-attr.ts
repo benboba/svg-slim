@@ -1,6 +1,6 @@
 import { has, pipe } from 'ramda';
-import { IRegularTag, IRuleOption, TUnique } from 'typings';
-import { IDomNode, ITagNode } from 'typings/node';
+import { IRegularTag, IRuleOption, TUnique } from '../../../typings';
+import { IDomNode, ITagNode } from '../../../typings/node';
 import { animationAttrElements, animationAttributes } from '../const/definitions';
 import { regularAttr } from '../const/regular-attr';
 import { regularTag } from '../const/regular-tag';

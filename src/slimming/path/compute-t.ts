@@ -1,4 +1,4 @@
-import { IPathResultItem } from 'typings';
+import { IPathResultItem } from '../../../typings';
 import { plus } from '../math/plus';
 import { symmetry } from '../math/symmetry';
 import { numberLength } from '../utils/number-length';

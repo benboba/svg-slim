@@ -1,5 +1,5 @@
 import { equals } from 'ramda';
-import { IDomNode, ITagNode } from 'typings/node';
+import { IDomNode, ITagNode } from '../../../typings/node';
 import { parseNumberList } from '../utils/parse-numberlist';
 import { traversalNode } from '../xml/traversal-node';
 

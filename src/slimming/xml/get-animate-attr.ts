@@ -1,5 +1,5 @@
-import { IAnimateAttr } from 'typings';
-import { ITagNode } from 'typings/node';
+import { IAnimateAttr } from '../../../typings';
+import { ITagNode } from '../../../typings/node';
 import { animationAttrElements } from '../const/definitions';
 
 // 如果子对象包含动画元素，获取这些动画元素影响了哪些属性

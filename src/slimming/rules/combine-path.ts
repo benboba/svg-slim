@@ -1,7 +1,7 @@
 // 合并属性和样式完全相同的路径
 import { has } from 'ramda';
-import { IRuleOption } from 'typings';
-import { IAttr, IDomNode, IStyleObj, ITagNode } from 'typings/node';
+import { IRuleOption } from '../../../typings';
+import { IAttr, IDomNode, IStyleObj, ITagNode } from '../../../typings/node';
 import { parseColor } from '../color/parse';
 import { parseAlpha } from '../math/parse-alpha';
 import { hasProp } from '../utils/has-prop';

@@ -1,4 +1,4 @@
-import { ISelector } from 'typings/style';
+import { ISelector } from '../../../typings/style';
 import { attrChar, classChar, idChar, pseudoChar } from '../const/regs';
 import { attrModifier, selectorUnitCombinator } from './define';
 

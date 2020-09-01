@@ -1,6 +1,6 @@
 import { any, both, equals, not, prop } from 'ramda';
-import { IRuleOption } from 'typings';
-import { IDomNode, INode, ITagNode } from 'typings/node';
+import { IRuleOption } from '../../../typings';
+import { IDomNode, INode, ITagNode } from '../../../typings/node';
 import { regularTag } from '../const/regular-tag';
 import { getAncestor } from '../xml/get-ancestor';
 import { isTag } from '../xml/is-tag';

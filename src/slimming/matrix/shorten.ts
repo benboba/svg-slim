@@ -1,4 +1,4 @@
-import { IMatrixFunc } from 'typings';
+import { IMatrixFunc } from '../../../typings';
 import { DEFAULT_ACCURATE_DIGIT, DEFAULT_MATRIX_DIGIT, DEFAULT_SIZE_DIGIT, matrixEPos } from '../const';
 import { toFixed } from '../math/to-fixed';
 import { simplify } from './simplify';

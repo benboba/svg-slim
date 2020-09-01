@@ -1,6 +1,6 @@
 import { Rule, StyleRules } from 'css';
 import { has, pipe } from 'ramda';
-import { IDomNode, INode, ITagNode } from 'typings/node';
+import { IDomNode, INode, ITagNode } from '../../../typings/node';
 import { createShortenID } from '../algorithm/create-shorten-id';
 import { regularAttr } from '../const/regular-attr';
 import { funcIRIToID, IRIFullMatch } from '../const/syntax';

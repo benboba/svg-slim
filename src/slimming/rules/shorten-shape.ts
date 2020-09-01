@@ -1,6 +1,6 @@
 import { complement, equals } from 'ramda';
-import { IRuleOption } from 'typings';
-import { IDomNode, ITagNode } from 'typings/node';
+import { IRuleOption } from '../../../typings';
+import { IDomNode, ITagNode } from '../../../typings/node';
 import { douglasPeucker as DP } from '../algorithm/douglas-peucker';
 import { shapeElements } from '../const/definitions';
 import { numberGlobal, numberPattern, pureNumOrWithPx } from '../const/syntax';

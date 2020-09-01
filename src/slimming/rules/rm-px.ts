@@ -1,6 +1,6 @@
 import { Declaration, StyleRules } from 'css';
 import { both, has } from 'ramda';
-import { IDomNode, ITagNode } from 'typings/node';
+import { IDomNode, ITagNode } from '../../../typings/node';
 import { regularAttr } from '../const/regular-attr';
 import { numberPattern } from '../const/syntax';
 import { parseStyle } from '../style/parse';

@@ -1,6 +1,6 @@
 import { both } from 'ramda';
-import { INode, ITagNode } from 'typings/node';
-import { ISelector } from 'typings/style';
+import { INode, ITagNode } from '../../../typings/node';
+import { ISelector } from '../../../typings/style';
 import { selectorUnitCombinator } from '../style/define';
 import { matchSelector } from '../style/match-selector';
 import { isTag } from './is-tag';

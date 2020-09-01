@@ -1,6 +1,6 @@
 import { propEq } from 'ramda';
-import { TAttrObj } from 'typings';
-import { IAttr, IDomNode, INode, IStyleObj, ITagNode } from 'typings/node';
+import { TAttrObj } from '../../../typings';
+import { IAttr, IDomNode, INode, IStyleObj, ITagNode } from '../../../typings/node';
 import { checkAnimateMotion } from '../animate/check-animate-motion';
 import { shapeElements } from '../const/definitions';
 import { regularAttr } from '../const/regular-attr';

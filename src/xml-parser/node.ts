@@ -1,5 +1,5 @@
 import { NodeType } from '../node/index';
-import { IAttr, INode } from 'typings/node';
+import { IAttr, INode } from '../../typings/node';
 
 interface INodeOption {
 	nodeName: string;

@@ -1,5 +1,5 @@
 import { trim } from 'ramda';
-import { IFnDef } from 'typings';
+import { IFnDef } from '../../../typings';
 import { useEnum } from './use-enum';
 
 const funcReg = new RegExp('^([^(]+)\\((.+)\\)$');

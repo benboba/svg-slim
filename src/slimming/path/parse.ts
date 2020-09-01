@@ -1,4 +1,4 @@
-import { IPathItem } from 'typings';
+import { IPathItem } from '../../../typings';
 import { APOS_LARGE, APOS_LEN, APOS_SWEEP } from '../const';
 import { numberSequence } from '../const/syntax';
 import { parseNumberList } from '../utils/parse-numberlist';

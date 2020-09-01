@@ -1,3 +1,3 @@
-import { IAttr } from 'typings/node';
+import { IAttr } from '../../../typings/node';
 
 export const stringifyStyle = (style: IAttr[]) => style.map(attr => `${attr.name}:${attr.value}`).join(';');

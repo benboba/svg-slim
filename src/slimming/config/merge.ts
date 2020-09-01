@@ -1,4 +1,4 @@
-import { IDynamicObj, IEnvOption, IFinalConfig, IParamsOption, TBaseObj, TRuleOption, TRuleOptionVal } from 'typings';
+import { IDynamicObj, IEnvOption, IFinalConfig, IParamsOption, TBaseObj, TRuleOption, TRuleOptionVal } from '../../../typings';
 import { hasProp } from '../utils/has-prop';
 import { isObj } from '../utils/is-obj';
 import { envConfig, paramsConfig, rulesConfig } from './config';

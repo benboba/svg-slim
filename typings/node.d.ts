@@ -1,5 +1,6 @@
 import { Stylesheet } from 'css';
 import { NodeType } from '../src/node';
+import { ISeletorPriority } from './style';
 
 export interface IAttr {
 	name: string;

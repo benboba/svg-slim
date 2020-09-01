@@ -1,4 +1,4 @@
-import { IPathResultItem } from 'typings';
+import { IPathResultItem } from '../../../typings';
 import { numberLength } from '../utils/number-length';
 
 export const computeH = (absolute: number, relative: number, pathResult: IPathResultItem[], pos: number[]): number[] => {

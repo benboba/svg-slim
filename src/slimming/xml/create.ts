@@ -1,5 +1,5 @@
 import { stringify as cssStringify } from 'css';
-import { IDomNode, INode, ITagNode } from 'typings/node';
+import { IDomNode, INode, ITagNode } from '../../../typings/node';
 import { NodeType } from '../../node/index';
 import { shortenTag } from '../style/shorten-tag';
 import { mixWhiteSpace } from '../utils/mix-white-space';

@@ -1,4 +1,4 @@
-import { IPathResultItem } from 'typings';
+import { IPathResultItem } from '../../../typings';
 import { minus } from '../math/minus';
 import { Vector } from '../math/vector';
 import { complex } from './complex';

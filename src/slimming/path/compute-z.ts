@@ -1,4 +1,4 @@
-import { IPathResultItem } from 'typings';
+import { IPathResultItem } from '../../../typings';
 import { plus } from '../math/plus';
 
 export const computeZ = (pathResult: IPathResultItem[], pos: number[]): number[] => {

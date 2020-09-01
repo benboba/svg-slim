@@ -1,4 +1,4 @@
-import { IPathResultItem } from 'typings';
+import { IPathResultItem } from '../../../typings';
 import { APOS_RX, APOS_RY, APOS_X, APOS_Y } from '../const';
 import { numberLength } from '../utils/number-length';
 import { computeL } from './compute-l';

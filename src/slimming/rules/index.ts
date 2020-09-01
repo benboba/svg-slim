@@ -1,5 +1,5 @@
 // default rules
-import { TRulesItem } from 'typings';
+import { TRulesItem } from '../../../typings';
 import { combineScript } from '../default-rules/combine-script';
 import { combineStyle } from '../default-rules/combine-style';
 import { combineTextNode } from '../default-rules/combine-textnode';

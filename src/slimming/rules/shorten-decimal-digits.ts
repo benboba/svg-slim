@@ -1,7 +1,7 @@
 import { Declaration, StyleRules } from 'css';
 import { both, curry, has } from 'ramda';
-import { IRuleOption } from 'typings';
-import { IDomNode, ITagNode } from 'typings/node';
+import { IRuleOption } from '../../../typings';
+import { IDomNode, ITagNode } from '../../../typings/node';
 import { animationAttrElements, animationAttributes } from '../const/definitions';
 import { regularAttr } from '../const/regular-attr';
 import { numberGlobal } from '../const/syntax';

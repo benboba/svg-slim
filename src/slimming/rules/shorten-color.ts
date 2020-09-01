@@ -1,7 +1,7 @@
 import { Declaration, StyleRules } from 'css';
 import { both, has, pipe, toLower } from 'ramda';
-import { IRuleOption } from 'typings';
-import { IDomNode, ITagNode } from 'typings/node';
+import { IRuleOption } from '../../../typings';
+import { IDomNode, ITagNode } from '../../../typings/node';
 import { parseColor } from '../color/parse';
 import { rgb2hsl } from '../color/rgb2hsl';
 import { FF, Hundred, OPACITY_DIGIT } from '../const';

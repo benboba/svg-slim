@@ -1,6 +1,6 @@
 import { complement, equals, gt, gte } from 'ramda';
-import { IAnimateAttr } from 'typings';
-import { IDomNode, INode, IStyleObj, ITagNode } from 'typings/node';
+import { IAnimateAttr } from '../../../typings';
+import { IDomNode, INode, IStyleObj, ITagNode } from '../../../typings/node';
 import { animationElements, filterPrimitiveElements, shapeElements } from '../const/definitions';
 import { regularTag } from '../const/regular-tag';
 import { IRIFullMatch } from '../const/syntax';

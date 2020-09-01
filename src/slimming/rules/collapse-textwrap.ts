@@ -1,4 +1,4 @@
-import { IDomNode, ITagNode } from 'typings/node';
+import { IDomNode, ITagNode } from '../../../typings/node';
 import { regularTag } from '../const/regular-tag';
 import { isTag } from '../xml/is-tag';
 import { traversalNode } from '../xml/traversal-node';
