@@ -1,7 +1,7 @@
 import { Declaration, Node, Rule, StyleRules } from 'css';
 import { propEq } from 'ramda';
-import { IRuleOption, TUnique } from 'typings';
-import { IDomNode } from 'typings/node';
+import { IRuleOption, TUnique } from '../../../typings';
+import { IDomNode } from '../../../typings/node';
 import { regularAttr } from '../const/regular-attr';
 import { checkApply } from '../style/check-apply';
 import { parseSelector } from '../style/parse-selector';

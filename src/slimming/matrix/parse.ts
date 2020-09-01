@@ -1,4 +1,4 @@
-import { IMatrixFunc } from 'typings';
+import { IMatrixFunc } from '../../../typings';
 import { commaWsp, numberPattern } from '../const/syntax';
 import { parseNumberList } from '../utils/parse-numberlist';
 

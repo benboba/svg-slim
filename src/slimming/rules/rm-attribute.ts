@@ -1,5 +1,5 @@
-import { IRegularAttr, IRegularTag, IRuleOption } from 'typings';
-import { IDomNode, ITagNode } from 'typings/node';
+import { IRegularAttr, IRegularTag, IRuleOption } from '../../../typings';
+import { IDomNode, ITagNode } from '../../../typings/node';
 import { ariaAttributes, eventAttributes } from '../const/definitions';
 import { regularAttr } from '../const/regular-attr';
 import { regularTag } from '../const/regular-tag';

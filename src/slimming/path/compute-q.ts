@@ -1,5 +1,5 @@
 import { equals } from 'ramda';
-import { IPathResultItem } from 'typings';
+import { IPathResultItem } from '../../../typings';
 import { plus } from '../math/plus';
 import { numberLength } from '../utils/number-length';
 import { computeT } from './compute-t';

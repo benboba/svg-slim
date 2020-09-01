@@ -1,5 +1,5 @@
-import { TUnique } from 'typings';
-import { IDomNode } from 'typings/node';
+import { TUnique } from '../../typings';
+import { IDomNode } from '../../typings/node';
 import { NodeType } from '../node/index';
 import { mixWhiteSpace } from '../slimming/utils/mix-white-space';
 import { Node } from './node';

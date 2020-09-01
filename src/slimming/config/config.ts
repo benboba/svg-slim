@@ -1,4 +1,4 @@
-import { IEnvOption, IParamsOption, TRuleOption } from 'typings';
+import { IEnvOption, IParamsOption, TRuleOption } from '../../../typings';
 import { DEFAULT_ACCURATE_DIGIT, DEFAULT_MATRIX_DIGIT, DEFAULT_SIZE_DIGIT, OPACITY_DIGIT } from '../const';
 
 export const paramsConfig: IParamsOption = {

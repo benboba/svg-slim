@@ -1,4 +1,4 @@
-import { IRGBColor } from 'typings';
+import { IRGBColor } from '../../../typings';
 import { CIRC, FF, HALF, Hundred } from '../const';
 import { validNum } from '../math/valid';
 

@@ -1,5 +1,5 @@
-import { IRegularAttr } from 'typings';
-import { IAttr } from 'typings/node';
+import { IRegularAttr } from '../../../typings';
+import { IAttr } from '../../../typings/node';
 import { regularAttr } from '../const/regular-attr';
 import { useEnum } from './use-enum';
 import { useFunc } from './use-func';

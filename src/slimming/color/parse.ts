@@ -1,5 +1,5 @@
 import { has } from 'ramda';
-import { IRGBColor } from 'typings';
+import { IRGBColor } from '../../../typings';
 import { CIRC, FF, GRAD, Hex, Hundred, OPACITY_DIGIT, RAD } from '../const';
 import { angel, numberPattern } from '../const/syntax';
 import { shortenAlpha } from '../math/shorten-alpha';

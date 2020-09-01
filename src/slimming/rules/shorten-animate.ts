@@ -1,5 +1,5 @@
-import { IRuleOption } from 'typings';
-import { IDomNode, ITagNode } from 'typings/node';
+import { IRuleOption } from '../../../typings';
+import { IDomNode, ITagNode } from '../../../typings/node';
 import { checkAnimateMotion } from '../animate/check-animate-motion';
 import { animationAttrElements, animationAttributes, animationElements } from '../const/definitions';
 import { regularAttr } from '../const/regular-attr';

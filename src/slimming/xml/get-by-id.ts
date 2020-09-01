@@ -1,4 +1,4 @@
-import { INode, ITagNode } from 'typings/node';
+import { INode, ITagNode } from '../../../typings/node';
 import { traversalNode } from './traversal-node';
 
 export const getById = (idStr: string, dom: INode) => {

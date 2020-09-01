@@ -1,5 +1,5 @@
 import { propEq } from 'ramda';
-import { IAttr, IDomNode, INode, ITagNode } from 'typings/node';
+import { IAttr, IDomNode, INode, ITagNode } from '../../../typings/node';
 import { cantCollapseAttributes, transformAttributes } from '../const/definitions';
 import { hasProp } from '../utils/has-prop';
 import { isTag } from '../xml/is-tag';

@@ -1,4 +1,4 @@
-import { IPathResultItem } from 'typings';
+import { IPathResultItem } from '../../../typings';
 import { numberLength } from '../utils/number-length';
 import { computeH } from './compute-h';
 import { computeV } from './compute-v';

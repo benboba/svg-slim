@@ -1,5 +1,5 @@
 import { decode } from 'he';
-import { IAttr } from 'typings/node';
+import { IAttr } from '../../../typings/node';
 
 const cssReg = /([^:;]+):((?:[^;'"]*?(?:(?:'[^']*?'|"[^"]*?"|\/\*.*?\*\/))*[^;'"]*?)*)(?=;|$)/gim;
 

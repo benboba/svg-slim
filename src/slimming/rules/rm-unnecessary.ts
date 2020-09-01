@@ -1,5 +1,5 @@
-import { IRuleOption } from 'typings';
-import { IDomNode } from 'typings/node';
+import { IRuleOption } from '../../../typings';
+import { IDomNode } from '../../../typings/node';
 import { unnecessaryElements } from '../const/definitions';
 import { rmNode } from '../xml/rm-node';
 import { traversalNode } from '../xml/traversal-node';

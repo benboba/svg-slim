@@ -1,4 +1,4 @@
-import { INode } from 'typings/node';
+import { INode } from '../typings/node';
 import { NodeType } from './node';
 import { mergeConfig } from './slimming/config/merge';
 import { rules } from './slimming/rules';

@@ -1,6 +1,6 @@
 import { Declaration, Rule, StyleRules } from 'css';
-import { IAttr, IDomNode, IStyleObj, ITagNode } from 'typings/node';
-import { ISeletorPriority } from 'typings/style';
+import { IAttr, IDomNode, IStyleObj, ITagNode } from '../../../typings/node';
+import { ISeletorPriority } from '../../../typings/style';
 import { regularAttr } from '../const/regular-attr';
 import { parseStyle } from '../style/parse';
 import { parseSelector } from '../style/parse-selector';

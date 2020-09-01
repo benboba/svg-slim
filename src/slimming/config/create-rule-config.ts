@@ -1,4 +1,4 @@
-import { IRuleOption, IFinalConfig, IDynamicObj, TRuleOptionVal } from 'typings';
+import { IRuleOption, IFinalConfig, IDynamicObj, TRuleOptionVal } from '../../../typings';
 
 export const createRuleConfig = (finalConfig: IFinalConfig, key?: string): IRuleOption => {
 	const config: IRuleOption = {

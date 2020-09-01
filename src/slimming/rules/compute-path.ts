@@ -1,6 +1,6 @@
 import { anyPass, propEq } from 'ramda';
-import { IParamsOption, IPathResultItem, IRuleOption } from 'typings';
-import { IDomNode, ITagNode } from 'typings/node';
+import { IParamsOption, IPathResultItem, IRuleOption } from '../../../typings';
+import { IDomNode, ITagNode } from '../../../typings/node';
 import { douglasPeucker } from '../algorithm/douglas-peucker';
 import { LineTypes } from '../const';
 import { plus } from '../math/plus';

@@ -1,4 +1,4 @@
-import { ISelector, ISeletorPriority } from 'typings/style';
+import { ISelector, ISeletorPriority } from '../../../typings/style';
 
 export const getSelectorPriority = (seletors: ISelector[]): ISeletorPriority => {
 	const priority: ISeletorPriority = {

@@ -1,7 +1,7 @@
 import { Declaration, KeyFrames, Media, Node, parse as cssParse, Rule } from 'css';
 import { has, propEq } from 'ramda';
-import { TUnique } from 'typings';
-import { IDomNode, INode, ITagNode } from 'typings/node';
+import { TUnique } from '../../../typings';
+import { IDomNode, INode, ITagNode } from '../../../typings/node';
 import { NodeType } from '../../node/index';
 import { regularAttr } from '../const/regular-attr';
 import { mixWhiteSpace } from '../utils/mix-white-space';

@@ -1,4 +1,4 @@
-import { IStyleObj, ITagNode } from 'typings/node';
+import { IStyleObj, ITagNode } from '../../../typings/node';
 import { hasProp } from '../utils/has-prop';
 
 // 获取属性（根据 SVG 覆盖规则，css 优先）
