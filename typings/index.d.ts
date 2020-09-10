@@ -1,25 +1,23 @@
-import { IDomNode, INode } from './node';
+import { IDocument, ITagNode } from 'svg-vdom';
 
-export interface IDynamicObj<T> {
-	[attr: string]: T;
-}
+export type TDynamicObj<T> = Record<string, T>;
 
 // k, v 都是字符串的动态类型
-export type TAttrObj = IDynamicObj<string>;
+export type TAttrObj = TDynamicObj<string>;
 
 // 通过关键字排重
-export type TUnique = IDynamicObj<boolean>;
+export type TUnique = TDynamicObj<boolean>;
 
 export type TBaseObj = Record<never, unknown>;
 
 export type TRuleOptionVal = number | boolean | string[];
 
-export type TRuleOption = IDynamicObj<[boolean, IDynamicObj<TRuleOptionVal>?]>;
+export type TRuleOption = TDynamicObj<[boolean, TDynamicObj<TRuleOptionVal>?]>;
 
 export interface IFinalConfig {
 	rules: TRuleOption;
 	params: IParamsOption;
-	env: IEnvOption;
+	browsers: TDynamicObj<number>;
 }
 
 export interface IParamsOption {
@@ -34,18 +32,14 @@ export interface IParamsOption {
 	exchangeStyle: boolean;
 }
 
-export interface IEnvOption {
-	ie: number;
-}
-
 export interface IRuleOption {
-	option: IDynamicObj<TRuleOptionVal>;
+	option: TDynamicObj<TRuleOptionVal>;
 	params: IParamsOption;
-	env: IEnvOption;
+	browsers: IFinalConfig['browsers'];
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type TRuleFunction = (dom: IDomNode, rule: IRuleOption) => Promise<void>;
+export type TRuleFunction = (dom: IDocument, rule: IRuleOption) => Promise<void>;
 
 export type TRulesItem = [boolean, TRuleFunction, string?];
 
@@ -126,7 +120,7 @@ export interface IRGBColor {
 
 export interface IAnimateAttr {
 	attributeName: string;
-	node: INode,
+	node: ITagNode,
 	keys: string[],
 	values: string[];
 }
