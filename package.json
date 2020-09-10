@@ -2,9 +2,9 @@
   "name": "svg-slimming",
   "version": "2.0.0",
   "description": "svg slimming",
-  "main": "dist/svg-slimming.js",
-  "module": "dist/svg-slimming.mjs",
-  "types": "dist/svg-slimming.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "rm -rf dist && rollup -c",
     "lint": "eslint --ext .ts ./src",
@@ -38,11 +38,15 @@
   "author": "Wang Feng <benboba@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@types/browserslist": "^4.8.0",
+    "browserslist": "^4.14.1",
     "css": "^2.2.3",
     "he": "^1.2.0",
+    "known-css-properties": "^0.19.0",
     "ramda": "^0.25.0",
     "rxjs": "^6.6.2",
     "svg-path-contours": "^2.0.0",
+    "svg-vdom": "^1.0.5",
     "triangulate-contours": "^1.0.2"
   },
   "devDependencies": {

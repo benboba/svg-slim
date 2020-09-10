@@ -10,3 +10,15 @@ declare module 'triangulate-contours' {
 	};
 	export = triangulate;
 }
+
+declare module 'known-css-properties' {
+	const properties: {
+		all: string[];
+	};
+	export = properties;
+}
+
+declare module 'browserslist' {
+	const browserslist: () => string[];
+	export = browserslist;
+}
