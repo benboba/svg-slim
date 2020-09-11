@@ -29,6 +29,6 @@ describe('rules/rm-irregular-nesting', () => {
 			},
 		}), 'rm-irregular-nesting');
 		await rmIrregularNesting(dom, config);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><desc><circle></circle><a/></desc><rect><a><g/></a></rect><switch><a><line/></a></switch></svg>');
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><desc><circle></circle><a/></desc><rect/><switch><a><line/></a></switch></svg>');
 	});
 });

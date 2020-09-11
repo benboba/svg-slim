@@ -83,16 +83,15 @@ describe('rules/shorten-style-attr', () => {
 
 	it('rm default', async () => {
 		const xml = `<svg width="100" style="display:b;fill:#000">
-		<rect fill="black" style="" x="-1abc" width="100" animation-name="test"/>
+		<rect fill="black" style="" width="100"/>
 		<g fill="none"><circle fill="#000" style="stroke:none"/><circle style="fill:black"/><circle/></g>
 		<g style="fill:none"><circle fill="#000"/><circle style="fill:red"/></g>
 		<set to="3" attributeName="zoomAndPan"/>
-		<set to="nothing" attributeName="x"/>
 		<set to=".5" attributeName="opacity"/>
 		</svg>`;
 		const dom = await parse(xml);
 		const config = createRuleConfig(mergeConfig(null), 'shorten-style-attr');
 		await shortenStyleAttr(dom, config);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg width="100" display="b"><rect width="100"/><g fill="none"><circle fill="#000"/><circle fill="black"/><circle/></g><g><circle/><circle fill="red"/></g><set to="3" attributeName="zoomAndPan"/><set attributeName="x"/><set to=".5" attributeName="opacity"/></svg>');
+		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg width="100" display="b"><rect width="100"/><g fill="none"><circle fill="#000"/><circle fill="black"/><circle/></g><g><circle/><circle fill="red"/></g><set to="3" attributeName="zoomAndPan"/><set to=".5" attributeName="opacity"/></svg>');
 	});
 });

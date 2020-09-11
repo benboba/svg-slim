@@ -8,6 +8,7 @@ import { checkApply } from '../style/check-apply';
 import { hasProp } from '../utils/has-prop';
 import { mixWhiteSpace } from '../utils/mix-white-space';
 import { traversalObj } from '../utils/traversal-obj';
+import { knownCSS } from '../validate/known-css';
 import { valueIsEqual } from '../xml/attr-is-equal';
 
 interface ICSSUnique {
@@ -21,6 +22,7 @@ const rmCSSNode = (cssNode: Node, plist: Node[]) => {
 	}
 };
 
+// TODO geometry property!!!
 export const shortenStyleTag = async (dom: IDom, {
 	option: {
 		deepShorten,
@@ -35,7 +37,7 @@ export const shortenStyleTag = async (dom: IDom, {
 		// 遍历 style 解析对象，取得包含 css 定义的值
 		traversalObj<Declaration>(propEq('type', 'declaration'), (cssNode, parents) => {
 			const attrDefine = regularAttr[cssNode.property as string];
-			if (!attrDefine.couldBeStyle) {
+			if (!attrDefine.couldBeStyle && !knownCSS(cssNode.property as string)) {
 				rmCSSNode(cssNode, parents[parents.length - 1] as Rule[]);
 			} else if (rmAttrEqDefault) {
 				// 仅验证只有一种默认值的情况
@@ -45,7 +47,6 @@ export const shortenStyleTag = async (dom: IDom, {
 			}
 		}, cssRules.rules, true);
 
-		// TODO css all 属性命中后要清空样式
 		// TODO 连锁属性的判断
 		// TODO 直接把 style 应用到元素
 		// 深度优化

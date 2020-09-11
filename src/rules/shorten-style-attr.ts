@@ -1,4 +1,5 @@
 import { has, pipe } from 'ramda';
+import { NodeType } from 'svg-vdom';
 import { IRegularTag, IRuleOption, TUnique } from '../../typings';
 import { IDom, ITag } from '../../typings/node';
 import { animationAttrElements, animationAttributes } from '../const/definitions';
@@ -9,11 +10,11 @@ import { parseStyle } from '../style/parse';
 import { shortenStyle } from '../style/shorten';
 import { stringifyStyle } from '../style/stringify';
 import { hasProp } from '../utils/has-prop';
+import { knownCSS } from '../validate/known-css';
 import { legalValue } from '../validate/legal-value';
 import { attrIsEqual } from '../xml/attr-is-equal';
 import { isTag } from '../xml/is-tag';
 import { parseStyleTree } from '../xml/parse-style-tree';
-import { NodeType } from 'svg-vdom';
 
 // 属性转 style 的临界值
 const styleThreshold = 4;
@@ -31,6 +32,7 @@ interface IStyleAttrObj {
 	};
 }
 
+// TODO geometry property!!!
 const checkAttr = (node: ITag, dom: IDom, rmAttrEqDefault: boolean) => {
 	parseStyleTree(dom);
 	const attrObj: IStyleAttrObj = {}; // 存储所有样式和可以转为样式的属性
@@ -46,19 +48,31 @@ const checkAttr = (node: ITag, dom: IDom, rmAttrEqDefault: boolean) => {
 			for (let si = styleObj.length; si--;) {
 				const styleItem = styleObj[si];
 				const styleDefine = regularAttr[styleItem.fullname];
-				if (
-					!styleDefine.couldBeStyle // 不能做样式
-					||
-					styleUnique[styleItem.fullname] // 排重
-					||
-					!checkApply(styleDefine, node, dom) // 样式继承链上不存在可应用对象
-				) {
-					styleObj.slice(si, 1);
+
+				// 首先排重
+				if (styleUnique[styleItem.fullname]) {
+					styleObj.splice(si, 1);
+					continue;
+				}
+
+				// 移除掉不能识别的 CSS 属性
+				if (!knownCSS(styleItem.fullname) && !styleDefine.couldBeStyle) {
+					styleObj.splice(si, 1);
+					continue;
+				} else if (styleDefine.isUndef) {
+					// 不在 SVG attributes 列表里的标准 CSS 属性不再验证合法性，但仍然需要排重
+					styleUnique[styleItem.fullname] = true;
+					continue;
+				}
+
+				// 样式继承链上不存在可应用对象
+				if (!checkApply(styleDefine, node, dom)) {
+					styleObj.splice(si, 1);
 					continue;
 				}
 
 				// 标记一下是否存在不能和属性互转的样式
-				const onlyCss = styleDefine.cantTrans || cantTrans(tagDefine, styleItem.fullname);
+				const onlyCss = !styleDefine.couldBeStyle || cantTrans(tagDefine, styleItem.fullname);
 
 				// 如果存在同名属性，要把被覆盖的属性移除掉
 				// 之所以要判断 attrObj 是否存在 key，是为了保证只移除已遍历过的属性（此处不考虑同名属性，同名属性无法通过 xml-parser 的解析规则）
@@ -71,7 +85,7 @@ const checkAttr = (node: ITag, dom: IDom, rmAttrEqDefault: boolean) => {
 					const parentStyle = (node.parentNode as ITag).styles;
 					if (!styleDefine.inherited || !parentStyle || !hasProp(parentStyle, styleItem.fullname)) {
 						if (attrIsEqual(styleDefine, styleItem.value, node.nodeName)) {
-							styleObj.slice(si, 1);
+							styleObj.splice(si, 1);
 							continue;
 						}
 					}
@@ -91,13 +105,7 @@ const checkAttr = (node: ITag, dom: IDom, rmAttrEqDefault: boolean) => {
 				node.removeAttribute(attr.fullname);
 			}
 		} else if (attrDefine.couldBeStyle) {
-			if (
-				attrDefine.cantBeAttr // 有一些样式不能被设置为属性
-			) {
-				node.removeAttribute(attr.fullname);
-				continue;
-			}
-			if (attrDefine.cantTrans || cantTrans(tagDefine, attr.fullname)) { // 有一些元素的某些属性不能被转为 style，此类属性也不宜再按照 css 属性来验证
+			if (cantTrans(tagDefine, attr.fullname)) { // 有一些元素的某些属性不能被转为 style，此类属性也不宜再按照 css 属性来验证
 				continue;
 			}
 
@@ -158,7 +166,7 @@ const checkAttr = (node: ITag, dom: IDom, rmAttrEqDefault: boolean) => {
 	Object.keys(attrObj).forEach(key => {
 		const styleItem = attrObj[key];
 		const styleDefine = regularAttr[key];
-		if (!styleDefine.cantTrans && !legalValue(styleDefine, {
+		if (styleDefine.couldBeStyle && !legalValue(styleDefine, {
 			fullname: key,
 			value: styleItem.value,
 			name: '',
@@ -199,7 +207,6 @@ export const shortenStyleAttr = async (dom: IDom, {
 	const tags = dom.querySelectorAll(NodeType.Tag) as ITag[];
 	tags.forEach(node => {
 		const attrObj = checkAttr(node, dom, rmAttrEqDefault);
-		// TODO css all 属性命中后要清空样式
 		// TODO 连锁属性的判断
 		if (!hasStyleTag || exchangeStyle) {
 			// [warning] svg 的样式覆盖规则是 style 属性 > style 标签 > 属性，所以以下代码可能导致不正确的样式覆盖！

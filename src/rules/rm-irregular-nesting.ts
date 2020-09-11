@@ -1,5 +1,5 @@
 import { any, both, equals, not, prop } from 'ramda';
-import { IDocument, ITagNode } from 'svg-vdom';
+import { IDocument, IParentNode, ITagNode } from 'svg-vdom';
 import { IRuleOption } from '../../typings';
 import { regularTag } from '../const/regular-tag';
 import { isTag } from '../xml/is-tag';
@@ -10,33 +10,39 @@ export const rmIrregularNesting = async (dom: IDocument, {
 	const notIgnore = (node: ITagNode) => not(any(equals(prop('nodeName', node)), ignore as string[]));
 	const tags = dom.querySelectorAll(both(isTag, notIgnore)) as ITagNode[];
 
-	tags.forEach(node => {
-		let legalRule = regularTag[node.nodeName].legalChildElements;
+	for (let i = tags.length; i--;) {
+		const node = tags[i];
+		const parent = node.parentNode as IParentNode;
+		let legalRule = regularTag[parent.nodeName];
+
+		if (legalRule.isUndef) {
+			continue;
+		}
+
 		// noself 表示不允许嵌套自身
-		const noself = legalRule.noself;
+		if (legalRule.legalChildElements.noself && node.nodeName === parent.nodeName) {
+			node.remove();
+			continue;
+		}
 
 		// transparent 表示参照最近的非 switch 上级元素的规则
-		if (legalRule.transparent) {
-			const parent = (node.parentNode as ITagNode).closest(n => n.nodeName !== 'switch') as ITagNode;
-			legalRule = regularTag[parent.nodeName].legalChildElements;
-		}
-
-		for (let i = node.childNodes.length; i--;) {
-			const childNode = node.childNodes[i];
-			// 只针对 tag 类的子节点作处理
-			if (!isTag(childNode)) {
+		if (legalRule.legalChildElements.transparent) {
+			const ancestor = (parent.parentNode as IParentNode).closest(n => n.nodeName !== 'switch');
+			if (!ancestor || !isTag(ancestor)) {
 				continue;
 			}
-
-			if (noself && childNode.nodeName === node.nodeName) { // 不允许嵌套自身
-				childNode.remove();
-			} else if (legalRule.any) {
-				// any 表示可以任意嵌套
+			legalRule = regularTag[ancestor.nodeName];
+			if (legalRule.isUndef) {
 				continue;
-			} else if (legalRule.childElements && !legalRule.childElements.includes(childNode.nodeName)) { // 不在嵌套列表中的情况
-				childNode.remove();
-			}
+			}	
 		}
-	});
+
+		// any 表示可以任意嵌套
+		if (legalRule.legalChildElements.any) {
+			continue;
+		} else if (legalRule.legalChildElements.childElements && !legalRule.legalChildElements.childElements.includes(node.nodeName)) { // 不在嵌套列表中的情况
+			node.remove();
+		}
+	}
 	resolve();
 });

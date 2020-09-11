@@ -5,9 +5,6 @@ import { useEnum } from './use-enum';
 import { useFunc } from './use-func';
 import { useReg } from './use-reg';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const properties = require('known-css-properties').all as string[];
-
 export const legalValue = (attrDefine: IRegularAttr, attr: IAttr, nodeName = ''): boolean => {
 	if (attrDefine.legalValues.length) {
 		// 只要有一个规则命中就返回 true
@@ -54,5 +51,5 @@ export const legalValue = (attrDefine: IRegularAttr, attr: IAttr, nodeName = '')
 		return noMatchRule;
 	}
 	// 合法属性，或浏览器可识别的 css 属性
-	return !attrDefine.isUndef || properties.includes(attrDefine.name);
+	return !attrDefine.isUndef;
 };

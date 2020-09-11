@@ -15,6 +15,7 @@ export const graphicsElements = ['audio', 'canvas', 'circle', 'ellipse', 'foreig
 export const containerElements = ['a', 'clipPath', 'defs', 'g', 'marker', 'mask', 'pattern', 'svg', 'switch', 'symbol', 'unknown'];
 export const newViewportsElements = ['svg', 'symbol', 'foreignObject', 'video', 'audio', 'canvas', 'image', 'iframe'];
 export const unnecessaryElements = ['desc', 'discard', 'foreignObject', 'video', 'audio', 'iframe', 'canvas', 'metadata', 'script', 'style', 'title', 'unknown', 'image'];
+export const geometryElements = ['circle', 'ellipse', 'rect', 'image', 'foreignObject', 'svg'];
 
 // attributes group
 // https://www.w3.org/TR/SVG2/interact.html#EventAttributes
@@ -32,6 +33,4 @@ export const animationTimingAttributes = ['begin', 'dur', 'end', 'min', 'max', '
 export const animationValueAttributes = ['calcMode', 'values', 'keyTimes', 'keySplines', 'from', 'to', 'by'];
 export const rectAttributes = ['x', 'y', 'width', 'height'];
 export const transferFunctionElementAttributes = ['type', 'tableValues', 'slope', 'intercept', 'amplitude', 'exponent', 'offset'];
-
-export const validPseudoClass = ['hover', 'link', 'active', 'visited', 'focus', 'first-child', 'lang', 'not'];
-export const validPseudoElement = ['first-letter', 'first-line'];
+export const geometryProperties = rectAttributes.concat(['cx', 'cy', 'r', 'rx', 'ry']);

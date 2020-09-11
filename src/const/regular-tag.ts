@@ -232,7 +232,6 @@ const _regularTag: IRegularTagDefine = {
 	'radialGradient': {
 		legalChildElements: { childElements: gradientChildren },
 		ownAttributes: ['cx', 'cy', 'r', 'fx', 'fy', 'fr', 'gradientUnits', 'gradientTransform', 'spreadMethod', 'href'].concat(coreAttributes, deprecatedXlinkAttributes),
-		onlyAttr: ['cx', 'cy', 'r'], // radialGradient 的这三个属性在 css 中没有效果 https://www.w3.org/TR/SVG/pservers.html#RadialGradientAttributes
 	},
 	'rect': {
 		legalChildElements: { childElements: shapeChildren },
@@ -274,7 +273,6 @@ const _regularTag: IRegularTagDefine = {
 		containTextNode: true,
 		legalChildElements: { childElements: ['a', 'clipPath', 'marker', 'mask', 'style'].concat(animationElements, baseChildren, paintServerElements, textContentChildElements) },
 		ownAttributes: ['lengthAdjust', 'x', 'y', 'dx', 'dy', 'rotate', 'textLength'].concat(conditionAndCore),
-		onlyAttr: ['x', 'y'], // text 和 tspan 的 x 和 y 不能放到 style 中
 	},
 	'textPath': {
 		containTextNode: true,
@@ -290,7 +288,6 @@ const _regularTag: IRegularTagDefine = {
 		containTextNode: true,
 		legalChildElements: { childElements: [] },
 		ownAttributes: ['lengthAdjust', 'x', 'y', 'dx', 'dy', 'rotate', 'textLength'].concat(conditionAndCore),
-		onlyAttr: ['x', 'y'], // text 和 tspan 的 x 和 y 不能放到 style 中
 	},
 	'unknown': {
 		legalChildElements: { any: true, childElements: [] },
@@ -317,7 +314,7 @@ const undefTag: IRegularTag = {
 };
 
 export const regularTag = new Proxy(_regularTag, {
-	get(obj, prop: string): IRegularTag {
-		return prop in obj ? obj[prop] : undefTag;
+	get(obj, prop: string) {
+		return prop in obj ? obj[prop] : undefTag as IRegularTag;
 	},
 });
