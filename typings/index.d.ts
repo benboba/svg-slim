@@ -82,8 +82,6 @@ export interface IRegularAttr {
 	name: string;
 	isUndef?: boolean;
 	couldBeStyle?: boolean;
-	cantTrans?: boolean; // 不支持 css 和属性互转
-	cantBeAttr?: boolean; // 不能作为属性，只能放在 style 中
 	inherited?: boolean;
 	animatable?: boolean;
 	maybeColor?: boolean;

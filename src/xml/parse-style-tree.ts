@@ -13,6 +13,7 @@ interface IStyleItem {
 	nodes: ITag[];
 }
 
+// TODO !important
 const check = (dom: IDom, styleItems: IStyleItem[]) => {
 	const tagNodes = dom.querySelectorAll(NodeType.Tag) as ITag[];
 	tagNodes.forEach(node => {

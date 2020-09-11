@@ -146,7 +146,6 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 	},
 	'cx': {
 		name: 'cx',
-		couldBeStyle: true,
 		animatable: true,
 		maybeSizeNumber: true,
 		legalValues: [{
@@ -164,7 +163,6 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 	},
 	'cy': {
 		name: 'cy',
-		couldBeStyle: true,
 		animatable: true,
 		maybeSizeNumber: true,
 		legalValues: [{
@@ -400,7 +398,6 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 	},
 	'height': {
 		name: 'height',
-		couldBeStyle: true,
 		animatable: true,
 		maybeSizeNumber: true,
 		legalValues: [{
@@ -960,7 +957,6 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 	},
 	'r': {
 		name: 'r',
-		couldBeStyle: true,
 		animatable: true,
 		maybeSizeNumber: true,
 		legalValues: [{
@@ -1112,7 +1108,6 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 	},
 	'rx': {
 		name: 'rx',
-		couldBeStyle: true,
 		animatable: true,
 		maybeSizeNumber: true,
 		legalValues: [{
@@ -1127,7 +1122,6 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 	},
 	'ry': {
 		name: 'ry',
-		couldBeStyle: true,
 		animatable: true,
 		maybeSizeNumber: true,
 		legalValues: [{
@@ -1387,6 +1381,16 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		initValue: '',
 		applyTo: [],
 	},
+	'transform': {
+		name: 'transform',
+		animatable: true,
+		legalValues: [{
+			type: 'reg',
+			value: transformListFullMatch,
+		}],
+		initValue: '',
+		applyTo: useContainerGraphics,
+	},
 	'type': {
 		name: 'type',
 		animatable: true,
@@ -1465,7 +1469,6 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 	},
 	'width': {
 		name: 'width',
-		couldBeStyle: true,
 		animatable: true,
 		maybeSizeNumber: true,
 		legalValues: [{
@@ -1492,7 +1495,6 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 	},
 	'x': {
 		name: 'x',
-		couldBeStyle: true,
 		animatable: true,
 		maybeSizeNumber: true,
 		legalValues: [{
@@ -1626,7 +1628,6 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 	},
 	'y': {
 		name: 'y',
-		couldBeStyle: true,
 		animatable: true,
 		maybeSizeNumber: true,
 		legalValues: [{
@@ -2457,18 +2458,6 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		legalValues: [],
 		initValue: 'auto',
 		applyTo: ['text'],
-	},
-	'transform': {
-		name: 'transform',
-		animatable: true,
-		couldBeStyle: true,
-		cantTrans: true,
-		legalValues: [{
-			type: 'reg',
-			value: transformListFullMatch,
-		}],
-		initValue: '',
-		applyTo: useContainerGraphics,
 	},
 	'unicode-bidi': {
 		name: 'unicode-bidi',

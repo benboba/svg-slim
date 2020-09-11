@@ -14,7 +14,6 @@
 * 优化规则实现，现在不开启的规则会直接跳过，旧的逻辑中所有规则函数都会被执行
 * 调整了规则的参数顺序
 * 根据 env 配置项调整 geometry 类属性（x、y、width、height、r、rx、ry、cx、cy）转 style 的逻辑
-* 根据 env 配置项调整 xlink:href 转 href 的逻辑
 * 增加 property 类型属性的规则验证
 * shorten-defs 现在会移除掉已经不存在子元素的 defs 节点
 * 优化了数值的加减乘运算

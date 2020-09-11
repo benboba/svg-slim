@@ -1,8 +1,7 @@
 import { IDocument, ITagNode, NodeType } from 'svg-vdom';
-import { IAnimateAttr, IMatrixFunc, IRegularAttr, IRuleOption } from '../../typings';
+import { IAnimateAttr, IMatrixFunc, IRuleOption } from '../../typings';
 import { APOS_LEN, APOS_RX, APOS_RY, APOS_X, APOS_Y, DEFAULT_MATRIX_DIGIT } from '../const';
-import { transformAttributes } from '../const/definitions';
-import { regularAttr } from '../const/regular-attr';
+import { geometryProperties, transformAttributes } from '../const/definitions';
 import { pureNumOrWithPx, pureNumOrWithPxList } from '../const/syntax';
 import { multiply } from '../math/multiply';
 import { plus } from '../math/plus';
@@ -50,8 +49,7 @@ const checkAttr = (node: ITagNode, attrname: string, val: string) => {
 	if (val === '0') {
 		rmAttrs(node, [attrname]);
 	} else {
-		const attrDefine: IRegularAttr = regularAttr[attrname];
-		if (attrDefine.couldBeStyle && node.hasAttribute('style')) {
+		if (geometryProperties.includes(attrname) && node.hasAttribute('style')) {
 			const styleAttr = parseStyle(node.getAttribute('style') as string);
 			const hasStyle = styleAttr.some(sAttr => {
 				if (sAttr.fullname === attrname) {

@@ -1,11 +1,12 @@
 import { decode } from 'he';
-import { IAttr } from 'svg-vdom';
+import { IStyleAttr } from '../../typings/style';
 
 const cssReg = /([^:;]+):((?:[^;'"]*?(?:(?:'[^']*?'|"[^"]*?"|\/\*.*?\*\/))*[^;'"]*?)*)(?=;|$)/gim;
+const importantReg = /!important$/;
 
-export const parseStyle = (styleStr: string): IAttr[] => {
+export const parseStyle = (styleStr: string): IStyleAttr[] => {
 	// 此处使用数组，因为不能在解析器中排重，排重的工作要交给优化工具
-	const style: IAttr[] = [];
+	const style: IStyleAttr[] = [];
 	const str = decode(styleStr, {
 		isAttributeValue: true,
 	});
@@ -16,14 +17,20 @@ export const parseStyle = (styleStr: string): IAttr[] => {
 	while (match !== null) {
 		// 去除前导注释和空格
 		const name = match[1].replace(/^(?:\s*\/\*.+?\*\/\s*)*/g, '').trim().replace(/\s/g, '');
-		// 去除两端注释和冗余空格
-		const value = match[2].replace(/^(?:\s*\/\*.+?\*\/\s*)*|(?:\s*\/\*.+?\*\/\s*)*$/g, '').trim().replace(/\s+/, ' ');
+		// 去除两端注释、!important 和冗余空格
+		let value = match[2].replace(/^(?:\s*\/\*.+?\*\/\s*)*|(?:\s*\/\*.+?\*\/\s*)*$/g, '').trim().replace(/\s+/, ' ');
+		let important = false;
+		if (importantReg.test(value)) {
+			value = value.replace(importantReg, '');
+			important = true;
+		}
 		// 只保留非空
 		if (name && value) {
 			style.push({
 				fullname: name,
 				name,
 				value,
+				important,
 			});
 		}
 		match = cssReg.exec(str);

@@ -15,6 +15,7 @@ describe('rules/rm-attribute', () => {
 			version=""
 			width="100"
 			style="width:40"
+			animation-name="test"
 		>
 		<a x="1"/>
 		<circle stroke="none" cx="1" cy="0.0"/>
@@ -40,6 +41,7 @@ describe('rules/rm-attribute', () => {
 			aria-colspan="3"
 			onload="console.log(123)"
 			version=""
+			animation-name="test"
 		><text stroke="none"/><circle cx="1" cy="0"/></svg>`;
 		const dom = await parse(xml);
 		const config = createRuleConfig(mergeConfig({

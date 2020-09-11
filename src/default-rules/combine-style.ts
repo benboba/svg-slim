@@ -5,6 +5,7 @@ import { TUnique } from '../../typings';
 import { IDom } from '../../typings/node';
 import { regularAttr } from '../const/regular-attr';
 import { traversalObj } from '../utils/traversal-obj';
+import { knownCSS } from '../validate/known-css';
 import { legalValue } from '../validate/legal-value';
 import { combineText } from '../xml/combine-text';
 
@@ -122,11 +123,15 @@ export const combineStyle = async (dom: IDom): Promise<void> => new Promise(reso
 			// 只做基本验证
 			rule.declarations.forEach(styleItem => {
 				const styleDefine = regularAttr[styleItem.property as string];
-				if (!legalValue(styleDefine, {
-					fullname: styleItem.property as string,
-					value: styleItem.value as string,
-					name: '',
-				})) {
+				if (
+					!legalValue(styleDefine, {
+						fullname: styleItem.property as string,
+						value: styleItem.value as string,
+						name: '',
+					})
+					&&
+					!knownCSS(styleItem.property as string)
+				) {
 					styleItem.value = '';
 				}
 			});

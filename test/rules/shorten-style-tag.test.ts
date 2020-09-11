@@ -47,13 +47,13 @@ describe('rules/shorten-style-tag', () => {
 			fill: red;
 			fill: blue;
 			fill: yellow;
-			flex-wrap: wrap;
+			flex-rap: wrap;
 		}
 		text[id^=red] {
 			fill: red;
 			fill: blue;
 			fill: yellow;
-			flex-wrap: wrap;
+			flex-rap: wrap;
 		}
 		a::first-letter {
 			fill:blue;
@@ -86,14 +86,14 @@ describe('rules/shorten-style-tag', () => {
 			fill: red;
 			fill: blue;
 			fill: yellow;
-			flex-wrap: wrap;
+			flex-rap: wrap;
 		}
 		@import ('test.css');
 		text[id^=red], #redText, circle, a {
 			fill: red;
 			fill: blue;
 			fill: yellow;
-			flex-wrap: wrap;
+			flex-rap: wrap;
 			stroke: blue;
 			fill-rule: evenodd;
 		}
