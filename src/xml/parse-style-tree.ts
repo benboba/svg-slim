@@ -1,19 +1,19 @@
 import { Declaration, Rule, StyleRules } from 'css';
-import { IAttr, NodeType, parseSelector } from 'svg-vdom';
+import { NodeType, parseSelector } from 'svg-vdom';
 import { IDom, ITag } from '../../typings/node';
-import { ISeletorPriority, IStyleObj } from '../../typings/style';
+import { ISeletorPriority, IStyleAttr, IStyleObj } from '../../typings/style';
+import { importantReg } from '../const/regs';
 import { regularAttr } from '../const/regular-attr';
 import { parseStyle } from '../style/parse';
 import { getSelectorPriority, overrideAble } from '../style/seletor-priority';
 import { hasProp } from '../utils/has-prop';
 
 interface IStyleItem {
-	styles: IAttr[];
+	styles: IStyleAttr[];
 	selectorPriority: ISeletorPriority;
 	nodes: ITag[];
 }
 
-// TODO !important
 const check = (dom: IDom, styleItems: IStyleItem[]) => {
 	const tagNodes = dom.querySelectorAll(NodeType.Tag) as ITag[];
 	tagNodes.forEach(node => {
@@ -35,6 +35,7 @@ const check = (dom: IDom, styleItems: IStyleItem[]) => {
 					nodeStyle[style.name] = {
 						value: style.value,
 						from: 'inline',
+						important: style.important,
 					};
 				});
 			} else if (attr.name === 'href') {
@@ -57,11 +58,26 @@ const check = (dom: IDom, styleItems: IStyleItem[]) => {
 			if (styleItem.nodes.includes(node)) {
 				styleItem.styles.forEach(style => {
 					const styleDefine = nodeStyle[style.name];
-					if (!styleDefine || styleDefine.from === 'attr' || styleDefine.from === 'inherit' || (styleDefine.from === 'styletag' && styleDefine.selectorPriority && overrideAble(styleItem.selectorPriority, styleDefine.selectorPriority))) {
+					if (
+						!styleDefine || styleDefine.from === 'attr' || styleDefine.from === 'inherit'
+						||
+						(
+							styleDefine.from === 'styletag'
+							&&
+							(
+								(styleDefine.selectorPriority && overrideAble(styleItem.selectorPriority, styleDefine.selectorPriority) && styleDefine.important === style.important)
+								||
+								(!styleDefine.important && style.important)
+							)
+						)
+						||
+						(styleDefine.from === 'inline' && !styleDefine.important && style.important)
+					) {
 						nodeStyle[style.name] = {
 							value: style.value,
 							from: 'styletag',
 							selectorPriority: styleItem.selectorPriority,
+							important: style.important,
 						};
 					}
 				});
@@ -117,13 +133,14 @@ export const parseStyleTree = (dom: IDom) => {
 		(dom.stylesheet.stylesheet as StyleRules).rules.forEach((styleRule: Rule) => {
 			// 只针对规则类
 			if (styleRule.type === 'rule' && styleRule.declarations && styleRule.selectors) {
-				const styles: IAttr[] = [];
+				const styles: IStyleAttr[] = [];
 				styleRule.declarations.forEach((ruleItem: Declaration) => {
 					if (ruleItem.property && ruleItem.value) {
 						styles.push({
 							name: ruleItem.property,
 							fullname: ruleItem.property,
-							value: ruleItem.value,
+							value: ruleItem.value.replace(importantReg, ''),
+							important: importantReg.test(ruleItem.value),
 						});
 					}
 				});

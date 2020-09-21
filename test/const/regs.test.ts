@@ -1,55 +1,53 @@
-const chai = require('chai');
-const should = chai.should();
 import { idChar, classChar, attrChar, pseudoChar } from '../../src/const/regs';
 
 describe('const/regs', () => {
-	it('id', async () => {
+	test('id', async () => {
 		const reg = new RegExp(idChar);
-		reg.test('#abc').should.equal(true);
-		reg.test('##').should.equal(false);
-		reg.test('#').should.equal(false);
-		reg.test('#.').should.equal(false);
-		reg.test('123').should.equal(false);
+		expect(reg.test('#abc')).toBeFalsy;
+		expect(reg.test('##')).toBeFalsy;
+		expect(reg.test('#')).toBeFalsy;
+		expect(reg.test('#.')).toBeFalsy;
+		expect(reg.test('123')).toBeFalsy;
 	});
 
-	it('class', async () => {
+	test('class', async () => {
 		const reg = new RegExp(classChar);
-		reg.test('.abc').should.equal(true);
-		reg.test('.#').should.equal(false);
-		reg.test('.').should.equal(false);
-		reg.test('..').should.equal(false);
-		reg.test('123').should.equal(false);
+		expect(reg.test('.abc')).toBeTruthy;
+		expect(reg.test('.#')).toBeFalsy;
+		expect(reg.test('.')).toBeFalsy;
+		expect(reg.test('..')).toBeFalsy;
+		expect(reg.test('123')).toBeFalsy;
 	});
 
-	it('attr', async () => {
+	test('attr', async () => {
 		const reg = new RegExp(attrChar);
-		reg.test('[a]').should.equal(true);
-		reg.test('[a=b]').should.equal(true);
-		reg.test('[a=""]').should.equal(true);
-		reg.test('[a="\'"]').should.equal(true);
-		reg.test('[a="[]"]').should.equal(true);
-		reg.test('[a=\'b\']').should.equal(true);
-		reg.test('[a^=b]').should.equal(true);
-		reg.test('[a$=b]').should.equal(true);
-		reg.test('[a|=b]').should.equal(true);
-		reg.test('[a~=b]').should.equal(true);
-		reg.test('[a*=b]').should.equal(true);
-		reg.test('[a=]').should.equal(false);
-		reg.test('[=a]').should.equal(false);
-		reg.test('123').should.equal(false);
+		expect(reg.test('[a]')).toBeTruthy;
+		expect(reg.test('[a=b]')).toBeTruthy;
+		expect(reg.test('[a=""]')).toBeTruthy;
+		expect(reg.test('[a="\'"]')).toBeTruthy;
+		expect(reg.test('[a="[]"]')).toBeTruthy;
+		expect(reg.test('[a=\'b\']')).toBeTruthy;
+		expect(reg.test('[a^=b]')).toBeTruthy;
+		expect(reg.test('[a$=b]')).toBeTruthy;
+		expect(reg.test('[a|=b]')).toBeTruthy;
+		expect(reg.test('[a~=b]')).toBeTruthy;
+		expect(reg.test('[a*=b]')).toBeTruthy;
+		expect(reg.test('[a=]')).toBeFalsy;
+		expect(reg.test('[=a]')).toBeFalsy;
+		expect(reg.test('123')).toBeFalsy;
 	});
 
-	it('pseudo', async () => {
+	test('pseudo', async () => {
 		const reg = new RegExp(`^${pseudoChar}$`);
-		reg.test(':a').should.equal(true);
-		reg.test(':a(b)').should.equal(true);
-		reg.test('::a-b').should.equal(true);
-		reg.test('::a-b(c)').should.equal(true);
-		reg.test('::a-b(:d)').should.equal(true);
-		reg.test('::a-b(:d-e("f"))').should.equal(true);
-		reg.test(':a()').should.equal(false);
-		reg.test(':a(').should.equal(false);
-		reg.test(':123').should.equal(false);
-		reg.test('123').should.equal(false);
+		expect(reg.test(':a')).toBeTruthy;
+		expect(reg.test(':a(b)')).toBeTruthy;
+		expect(reg.test('::a-b')).toBeTruthy;
+		expect(reg.test('::a-b(c)')).toBeTruthy;
+		expect(reg.test('::a-b(:d)')).toBeTruthy;
+		expect(reg.test('::a-b(:d-e("f"))')).toBeTruthy;
+		expect(reg.test(':a()')).toBeFalsy;
+		expect(reg.test(':a(')).toBeFalsy;
+		expect(reg.test(':123')).toBeFalsy;
+		expect(reg.test('123')).toBeFalsy;
 	});
 });

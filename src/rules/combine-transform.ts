@@ -45,8 +45,10 @@ const applyNumberPairs = (fn: (n1: number, n2: number) => [number, number], numl
 	return shortenNumberList(numlist.map(shortenNumber).join(','));
 };
 
+// 检查一个属性是否合理
 const checkAttr = (node: ITagNode, attrname: string, val: string) => {
 	if (val === '0') {
+		// 属性为 0 可以直接移除
 		rmAttrs(node, [attrname]);
 	} else {
 		if (geometryProperties.includes(attrname) && node.hasAttribute('style')) {

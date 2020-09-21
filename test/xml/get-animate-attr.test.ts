@@ -1,28 +1,26 @@
-const chai = require('chai');
-const should = chai.should();
 import { checkAnimateAttr, findAnimateAttr, getAnimateAttr } from '../../src/xml/get-animate-attr';
 import { parse, ITagNode } from 'svg-vdom';
 
 describe('xml/get-animate-attr', () => {
-	it('get-animate-attr', async () => {
+	test('get-animate-attr', async () => {
 		const dom = await parse(`<svg>
 		<animate from="0" to="100" by="5" values=";   ;40;60;80;" attributeName="x"/>
 		</svg>`);
 		const animateAttr = getAnimateAttr(dom.childNodes[0] as ITagNode);
-		animateAttr[0].should.deep.include({
+		expect(animateAttr[0]).toMatchObject({
 			attributeName: 'x',
 			keys: ['from', 'to', 'by', 'values'],
 			values: ['0', '100', '5', '40', '60', '80'],
 		});
-		checkAnimateAttr(animateAttr, 'y').should.equal(false);
-		checkAnimateAttr(animateAttr, 'x', (v: string) => v === '15').should.equal(false);
-		checkAnimateAttr(animateAttr, 'x').should.equal(true);
-		checkAnimateAttr(animateAttr, 'x', (v: string) => parseFloat(v) > 90).should.equal(true);
-		findAnimateAttr(animateAttr, 'y').length.should.equal(0);
-		findAnimateAttr(animateAttr, 'x').length.should.equal(1);
+		expect(checkAnimateAttr(animateAttr, 'y')).toBeFalsy;
+		expect(checkAnimateAttr(animateAttr, 'x', (v: string) => v === '15')).toBeFalsy;
+		expect(checkAnimateAttr(animateAttr, 'x')).toBeTruthy;
+		expect(checkAnimateAttr(animateAttr, 'x', (v: string) => parseFloat(v) > 90)).toBeTruthy;
+		expect(findAnimateAttr(animateAttr, 'y').length).toBe(0);
+		expect(findAnimateAttr(animateAttr, 'x').length).toBe(1);
 	});
 
-	it('coverage', async () => {
+	test('coverage', async () => {
 		const dom = await parse(`<svg>
 		<animateTransform from="0" attributeName="tranform"/>
 		<animateTransform to="10" attributeName="patternTransform"/>
@@ -30,16 +28,16 @@ describe('xml/get-animate-attr', () => {
 		<animate by="5"/>
 		</svg>`);
 		const animateAttr = getAnimateAttr(dom.childNodes[0] as ITagNode);
-		animateAttr[0].should.deep.include({
+		expect(animateAttr[0]).toMatchObject({
 			attributeName: 'tranform',
 			keys: ['from'],
 			values: ['0'],
 		});
-		animateAttr[1].should.deep.include({
+		expect(animateAttr[1]).toMatchObject({
 			attributeName: 'patternTransform',
 			keys: ['to'],
 			values: ['10'],
 		});
-		animateAttr.length.should.equal(2);
+		expect(animateAttr.length).toBe(2);
 	});
 });

@@ -1,58 +1,56 @@
-const chai = require('chai');
-const should = chai.should();
 import { parseMatrix } from '../../src/matrix/parse';
 
 describe('matrix/parse', () => {
-	it('parse error', () => {
+	test('parse error', () => {
 		const m1 = parseMatrix('a(35)');
-		m1.should.deep.equal([]);
+		expect(m1).toEqual([]);
 		const m2 = parseMatrix('translate(35);');
-		m2.should.deep.equal([]);
+		expect(m2).toEqual([]);
 		const m3 = parseMatrix('scale(35,);');
-		m3.should.deep.equal([]);
+		expect(m3).toEqual([]);
 	});
 
-	it('parse translate error', () => {
+	test('parse translate error', () => {
 		const m1 = parseMatrix('translate()');
-		m1.should.deep.equal([]);
+		expect(m1).toEqual([]);
 		const m2 = parseMatrix('translate(3,3,3)');
-		m2.should.deep.equal([]);
+		expect(m2).toEqual([]);
 	});
 
-	it('parse scale error', () => {
+	test('parse scale error', () => {
 		const m1 = parseMatrix('scale()');
-		m1.should.deep.equal([]);
+		expect(m1).toEqual([]);
 		const m2 = parseMatrix('scale(3,3,3)');
-		m2.should.deep.equal([]);
+		expect(m2).toEqual([]);
 	});
 
-	it('parse rotate error', () => {
+	test('parse rotate error', () => {
 		const m1 = parseMatrix('rotate()');
-		m1.should.deep.equal([]);
+		expect(m1).toEqual([]);
 		const m2 = parseMatrix('rotate(3,3)');
-		m2.should.deep.equal([]);
+		expect(m2).toEqual([]);
 	});
 
-	it('parse skewX error', () => {
+	test('parse skewX error', () => {
 		const m1 = parseMatrix('skewX()');
-		m1.should.deep.equal([]);
+		expect(m1).toEqual([]);
 		const m2 = parseMatrix('skewX(3,3,3)');
-		m2.should.deep.equal([]);
+		expect(m2).toEqual([]);
 	});
 
-	it('parse skewY error', () => {
+	test('parse skewY error', () => {
 		const m1 = parseMatrix('skewY()');
-		m1.should.deep.equal([]);
+		expect(m1).toEqual([]);
 		const m2 = parseMatrix('skewY(3,3,3)');
-		m2.should.deep.equal([]);
+		expect(m2).toEqual([]);
 	});
 
-	it('parse matrix error', () => {
+	test('parse matrix error', () => {
 		const m1 = parseMatrix('matrix()');
-		m1.should.deep.equal([]);
+		expect(m1).toEqual([]);
 		const m2 = parseMatrix('matrix(3,3,3)');
-		m2.should.deep.equal([]);
+		expect(m2).toEqual([]);
 		const m3 = parseMatrix('matrix(3,3,3,3,3,3,3)');
-		m3.should.deep.equal([]);
+		expect(m3).toEqual([]);
 	});
 });

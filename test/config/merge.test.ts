@@ -1,28 +1,29 @@
-const chai = require('chai');
-const should = chai.should();
 import { mergeConfig } from '../../src/config/merge';
 
 describe('合并配置项', () => {
-	it('merge null', () => {
-		mergeConfig(null).should.have.all.keys({ 'browsers': 1, 'params': 1, 'rules': 1 });
+	test('merge null', () => {
+		const config = mergeConfig(null);
+		expect(config).toHaveProperty('browsers');
+		expect(config).toHaveProperty('params');
+		expect(config).toHaveProperty('rules');
 	});
 
-	it('merge params', () => {
-		mergeConfig({
+	test('merge params', () => {
+		expect(mergeConfig({
 			params: {
 				sizeDigit: null,
 				opacityDigit: NaN,
 			},
-		}).params.sizeDigit.should.eq(2);
+		}).params.sizeDigit).toBe(2);
 	});
 
-	it('merge rules', () => {
-		mergeConfig({
+	test('merge rules', () => {
+		expect(mergeConfig({
 			rules: {
 				'rm-unnecessary': [true, {
 					tags: 'title',
 				}],
 			},
-		}).rules['rm-unnecessary'].should.have.nested.property('1.tags');
+		}).rules['rm-unnecessary']).toHaveProperty([1, 'tags']);
 	});
 });

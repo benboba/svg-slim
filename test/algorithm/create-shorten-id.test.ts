@@ -1,18 +1,16 @@
-const chai = require('chai');
-const should = chai.should();
 import { createShortenID } from '../../src/algorithm/create-shorten-id';
 
 describe('短 ID 生成函数', () => {
-	it('simple', () => {
-		createShortenID(0).should.be.equal('a');
-		createShortenID(1).should.be.equal('b');
-		createShortenID(52).should.be.equal('_');
-		createShortenID(0).should.be.equal('a');
+	test('simple', () => {
+		expect(createShortenID(0)).toBe('a');
+		expect(createShortenID(1)).toBe('b');
+		expect(createShortenID(52)).toBe('_');
+		expect(createShortenID(0)).toBe('a');
 	});
 
-	it('long', () => {
-		createShortenID(100).should.be.equal('aV');
-		createShortenID(1000).should.be.equal('oZ');
-		createShortenID(220000).should.be.equal('_2R');
+	test('long', () => {
+		expect(createShortenID(100)).toBe('aV');
+		expect(createShortenID(1000)).toBe('oZ');
+		expect(createShortenID(220000)).toBe('_2R');
 	});
 });

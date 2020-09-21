@@ -4,7 +4,7 @@ import { Vector } from '../math/vector';
 import { complex } from './complex';
 
 // 曲线指令转直线指令
-export const straighten = (threshold: number, pathArr: IPathResultItem[]): IPathResultItem[] => {
+export const straighten = (threshold: number, pathArr: IPathResultItem[]) => {
 	// 必须逆序执行
 	outer: for (let pi = pathArr.length; pi--;) {
 		const pathItem = pathArr[pi];

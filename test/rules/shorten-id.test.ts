@@ -1,12 +1,10 @@
-const chai = require('chai');
-const should = chai.should();
 import { parse } from 'svg-vdom';
 import { combineStyle } from '../../src/default-rules/combine-style';
 import { shortenID } from '../../src/rules/shorten-id';
 import { createXML } from '../../src/xml/create';
 
 describe('rules/shorten-id', () => {
-	it('缩短 id', async () => {
+	test('缩短 id', async () => {
 		const xml = `<svg>
 		<style>
 		@import('test.css');
@@ -28,10 +26,10 @@ describe('rules/shorten-id', () => {
 		const dom = await parse(xml);
 		await combineStyle(dom);
 		await shortenID(dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><style>@import (\'test.css\');#a{fill:red}#a{fill:green;stroke:red}</style><rect id="a" width="100" height="100"/><circle/><rect width="100" height="100"/></svg>');
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><style>@import (\'test.css\');#a{fill:red}#a{fill:green;stroke:red}</style><rect id="a" width="100" height="100"/><circle/><rect width="100" height="100"/></svg>');
 	});
 
-	it('缩短 id 移除 style 的情况', async () => {
+	test('缩短 id 移除 style 的情况', async () => {
 		const xml = `<svg>
 		<style>
 		#red {
@@ -53,10 +51,10 @@ describe('rules/shorten-id', () => {
 		const dom = await parse(xml);
 		await combineStyle(dom);
 		await shortenID(dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><defs><pattern id="b"><path d="M 0 0 L 7 0 L 3.5 7 z"/></pattern><polygon id="c" points="46 0 46 52 0 52 0 0 46 0"/></defs><ellipse fill="url(#b)"/><mask fill="white" xlink:href="test"><use xlink:href="#c"/></mask><use href="#c" style="color:red"/></svg>');
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><defs><pattern id="b"><path d="M 0 0 L 7 0 L 3.5 7 z"/></pattern><polygon id="c" points="46 0 46 52 0 52 0 0 46 0"/></defs><ellipse fill="url(#b)"/><mask fill="white" xlink:href="test"><use xlink:href="#c"/></mask><use href="#c" style="color:red"/></svg>');
 	});
 
-	it('缩短 id 无法解析 style 的情况', async () => {
+	test('缩短 id 无法解析 style 的情况', async () => {
 		const xml = `<svg>
 		<style>test</style>
 		<rect fill="url(#test)" id="a" width="100" height="100"/>
@@ -64,15 +62,15 @@ describe('rules/shorten-id', () => {
 		const dom = await parse(xml);
 		await combineStyle(dom);
 		await shortenID(dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><rect width="100" height="100"/></svg>');
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><rect width="100" height="100"/></svg>');
 	});
 
-	it('缩短 id 无 style 的情况', async () => {
+	test('缩短 id 无 style 的情况', async () => {
 		const xml = `<svg>
 		<rect fill="url(#test)" width="100" height="100"/>
 		</svg>`;
 		const dom = await parse(xml);
 		await shortenID(dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><rect width="100" height="100"/></svg>');
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><rect width="100" height="100"/></svg>');
 	});
 });

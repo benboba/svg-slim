@@ -1,11 +1,9 @@
-const chai = require('chai');
-const should = chai.should();
 import { parse } from 'svg-vdom';
 import { rmHidden } from '../../src/rules/rm-hidden';
 import { createXML } from '../../src/xml/create';
 
 describe('rules/rm-hidden', () => {
-	it('移除隐藏对象', async () => {
+	test('移除隐藏对象', async () => {
 		const xml = `<svg>
 			<g display="none" style="display:none"><text>1</text></g>
 			<style></style>
@@ -21,10 +19,10 @@ describe('rules/rm-hidden', () => {
 		</svg>`;
 		const dom = await parse(xml);
 		await rmHidden(dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><mask width="auto"><text id="a">1<rect fill="none" stroke="none"/></text></mask><mask width="1"><circle r="5"/></mask><use href="#a"/></svg>');
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><mask width="auto"><text id="a">1<rect fill="none" stroke="none"/></text></mask><mask width="1"><circle r="5"/></mask><use href="#a"/></svg>');
 	});
 
-	it('textPath', async () => {
+	test('textPath', async () => {
 		const xml = `<svg>
 		<rect id="a"/>
 		<textPath id="b" path="M0,0L100H100z">123</textPath>
@@ -35,10 +33,10 @@ describe('rules/rm-hidden', () => {
 		</svg>`;
 		const dom = await parse(xml);
 		await rmHidden(dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><rect id="a"/><textPath id="b" path="M0,0L100H100z">123</textPath><textPath xlink:href="#a">123</textPath></svg>');
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><rect id="a"/><textPath id="b" path="M0,0L100H100z">123</textPath><textPath xlink:href="#a">123</textPath></svg>');
 	});
 
-	it('check animate', async () => {
+	test('check animate', async () => {
 		const xml = `<svg>
 			<rect display="none">
 				<animate from="block" attributeName="display"/>
@@ -53,6 +51,6 @@ describe('rules/rm-hidden', () => {
 		</svg>`;
 		const dom = await parse(xml);
 		await rmHidden(dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><rect display="none"><animate from="block" attributeName="display"/></rect></svg>');
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><rect display="none"><animate from="block" attributeName="display"/></rect></svg>');
 	});
 });

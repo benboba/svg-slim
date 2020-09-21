@@ -2,46 +2,17 @@ import { IDocument, ITagNode } from 'svg-vdom';
 import { IParamsOption, IPathResultItem, IRuleOption } from '../../typings';
 import { douglasPeucker } from '../algorithm/douglas-peucker';
 import { LineTypes } from '../const';
-import { plus } from '../math/plus';
 import { checkSubPath } from '../path/check-sub-paths';
 import { doCompute } from '../path/do-compute';
+import { itemMerge } from '../path/item-merge';
+import { lineNormalize } from '../path/line-normalize';
+import { mergePoints } from '../path/merge-points';
 import { parsePath } from '../path/parse';
 import { straighten as straightenPath } from '../path/straighten';
 import { stringifyPath } from '../path/stringify';
 import { checkAnimateAttr, findAnimateAttr, getAnimateAttr } from '../xml/get-animate-attr';
 import { getAttr } from '../xml/get-attr';
 import { parseStyleTree } from '../xml/parse-style-tree';
-
-const DPItemNormalize = (pathItem: IPathResultItem): IPathResultItem => {
-	switch (pathItem.type) {
-		case 'l':
-			pathItem.val[0] = plus(pathItem.val[0], pathItem.from[0]);
-			pathItem.val[1] = plus(pathItem.val[1], pathItem.from[1]);
-			break;
-		case 'H':
-			pathItem.val.push(pathItem.from[1]);
-			break;
-		case 'h':
-			pathItem.val[0] = plus(pathItem.val[0], pathItem.from[0]);
-			pathItem.val.push(pathItem.from[1]);
-			break;
-		case 'V':
-			pathItem.val.unshift(pathItem.from[0]);
-			break;
-		case 'v':
-			pathItem.val.unshift(pathItem.from[0]);
-			pathItem.val[1] = plus(pathItem.val[1], pathItem.from[1]);
-			break;
-		default:
-			break;
-	}
-	pathItem.type = 'L';
-	return pathItem;
-};
-
-const DPItemMerge = (lastItem: IPathResultItem, pathItem: IPathResultItem): void => {
-	lastItem.val = lastItem.val.concat(DPItemNormalize(pathItem).val);
-};
 
 const DPInit = (threshold: number, pathArr: IPathResultItem[]): IPathResultItem[] => {
 	const pathResult: IPathResultItem[] = [];
@@ -50,9 +21,9 @@ const DPInit = (threshold: number, pathArr: IPathResultItem[]): IPathResultItem[
 		if (LineTypes.includes(pathItem.type)) {
 			const lastItem = pathResult[len - 1];
 			if (lastItem.type === 'L') {
-				DPItemMerge(lastItem, pathItem);
+				itemMerge(lastItem, pathItem);
 			} else {
-				pathResult.push(DPItemNormalize(pathItem));
+				pathResult.push(lineNormalize(pathItem));
 				len++;
 			}
 		} else {
@@ -76,6 +47,7 @@ const processPath = (dVal: string, hasMarker: boolean, hasStroke: boolean, hasSt
 	sizeDigit,
 	angelDigit,
 	straighten,
+	mergePoint,
 }: IParamsOption) => {
 	// 先运算一次 doCompute，拿到每条指令的 from 坐标
 	let pathResult = doCompute(parsePath(dVal));
@@ -91,6 +63,11 @@ const processPath = (dVal: string, hasMarker: boolean, hasStroke: boolean, hasSt
 		if (thinning) {
 			// doCompute 必须执行
 			pathResult = doCompute(pathResult.map(p => DPInit(thinning, p)));
+		}
+		// 存在合并相邻节点规则
+		if (mergePoint) {
+			// doCompute 必须执行
+			pathResult = doCompute(pathResult.map(p => mergePoints(mergePoint, p)));
 		}
 		// 进行合并、指令转换等运算
 		pathResult = doCompute(checkSubPath(pathResult, hasStroke, hasStrokeCap, sizeDigit, angelDigit));

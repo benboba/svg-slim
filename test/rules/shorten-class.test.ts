@@ -1,12 +1,10 @@
-const chai = require('chai');
-const should = chai.should();
 import { parse } from 'svg-vdom';
 import { combineStyle } from '../../src/default-rules/combine-style';
 import { shortenClass } from '../../src/rules/shorten-class';
 import { createXML } from '../../src/xml/create';
 
 describe('rules/shorten-class', () => {
-	it('缩短 className', async () => {
+	test('缩短 className', async () => {
 		const xml = `<svg>
 		<style>
 		@import('test.css');
@@ -27,10 +25,10 @@ describe('rules/shorten-class', () => {
 		const dom = await parse(xml);
 		await combineStyle(dom);
 		await shortenClass(dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><style>@import (\'test.css\');.a{fill:red}.a{fill:green;stroke:red}</style><rect class="a" width="100" height="100"/><rect width="100" height="100"/></svg>');
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><style>@import (\'test.css\');.a{fill:red}.a{fill:green;stroke:red}</style><rect class="a" width="100" height="100"/><rect width="100" height="100"/></svg>');
 	});
 
-	it('缩短 className 移除 style 的情况', async () => {
+	test('缩短 className 移除 style 的情况', async () => {
 		const xml = `<svg>
 		<style>
 		.thisIsRed {
@@ -42,10 +40,10 @@ describe('rules/shorten-class', () => {
 		const dom = await parse(xml);
 		await combineStyle(dom);
 		await shortenClass(dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><rect width="100" height="100"/></svg>');
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><rect width="100" height="100"/></svg>');
 	});
 
-	it('缩短 className 无法解析 style 的情况', async () => {
+	test('缩短 className 无法解析 style 的情况', async () => {
 		const xml = `<svg>
 		<style>test</style>
 		<rect width="100" height="100"/>
@@ -53,16 +51,16 @@ describe('rules/shorten-class', () => {
 		const dom = await parse(xml);
 		await combineStyle(dom);
 		await shortenClass(dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><rect width="100" height="100"/></svg>');
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><rect width="100" height="100"/></svg>');
 	});
 
-	it('缩短 className 无 style 的情况', async () => {
+	test('缩短 className 无 style 的情况', async () => {
 		const xml = `<svg>
 		<rect width="100" height="100"/>
 		</svg>`;
 		const dom = await parse(xml);
 		await combineStyle(dom);
 		await shortenClass(dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><rect width="100" height="100"/></svg>');
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><rect width="100" height="100"/></svg>');
 	});
 });

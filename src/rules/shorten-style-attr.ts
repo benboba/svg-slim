@@ -169,7 +169,7 @@ const checkAttr = (node: ITag, dom: IDom, rmAttrEqDefault: boolean) => {
 		if (styleDefine.couldBeStyle && !legalValue(styleDefine, {
 			fullname: key,
 			value: styleItem.value,
-			name: '',
+			name: key,
 		})) {
 			styleItem.value = '';
 		}
