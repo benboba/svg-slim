@@ -1,16 +1,19 @@
 // 合并属性和样式完全相同的路径
 import { IAttr, IDocument, IParentNode, ITagNode } from 'svg-vdom';
-import { IRuleOption } from '../../typings';
+import { IRuleOption, TDynamicObj } from '../../typings';
 import { ITag } from '../../typings/node';
 import { IStyleObj } from '../../typings/style';
 import { parseColor } from '../color/parse';
+import { regularAttr } from '../const/regular-attr';
 import { parseAlpha } from '../math/parse-alpha';
 import { hasProp } from '../utils/has-prop';
+import { keysToKey } from '../utils/keys-to-key';
+import { valueIsEqual } from '../xml/attr-is-equal';
 import { getAttr } from '../xml/get-attr';
 import { isTag } from '../xml/is-tag';
+import { parseStyleTree } from '../xml/parse-style-tree';
 // import { doCompute } from '../path/do-compute';
 // import { parsePath } from '../path/parse';
-import { parseStyleTree } from '../xml/parse-style-tree';
 // import { plus } from '../math/plus';
 
 interface IPathChildrenItem {
@@ -123,45 +126,61 @@ const canbeCombine = (node1: ITag, node2: ITag, combineFill: boolean, combineOpa
 	}
 
 	// 属性必须相同
-	if (getAttrKey(node1) !== getAttrKey(node2)) {
+	if (!attrDiff(node1, node2)) {
 		return false;
 	}
 
 	const styles1 = node1.styles as IStyleObj;
 	const styles2 = node2.styles as IStyleObj;
 	// 计算后的样式必须相同
-	if (getStyleKey(styles1) !== getStyleKey(styles2)) {
+	if (!styleDiff(styles1, styles2)) {
 		return false;
 	}
 
-	const noOpacity: boolean = !hasProp(styles1, 'opacity') || parseAlpha(styles1.opacity.value) === 1;
-	const noStrokeOpacity: boolean = parseColor(hasProp(styles1, 'stroke') ? styles1.stroke.value : '').a === 1 && (!hasProp(styles1, 'stroke-opacity') || parseAlpha(styles1['stroke-opacity'].value) === 1);
-	const noFillOpacity: boolean = parseColor(hasProp(styles1, 'fill') ? styles1.fill.value : '').a === 1 && (!hasProp(styles1, 'fill-opacity') || parseAlpha(styles1['fill-opacity'].value) === 1);
-	// fill 为空
-	const noFill: boolean = hasProp(styles1, 'fill') && styles1.fill.value === 'none' && (combineOpacity || (noOpacity && noStrokeOpacity));
+	const noOpacity = !hasProp(styles1, 'opacity') || parseAlpha(styles1.opacity.value) === 1;
+	const noStrokeOpacity = parseColor(hasProp(styles1, 'stroke') ? styles1.stroke.value : '').a === 1 && (!hasProp(styles1, 'stroke-opacity') || parseAlpha(styles1['stroke-opacity'].value) === 1);
+	const noFillOpacity = parseColor(hasProp(styles1, 'fill') ? styles1.fill.value : '').a === 1 && (!hasProp(styles1, 'fill-opacity') || parseAlpha(styles1['fill-opacity'].value) === 1);
+	// fill 为空或允许合并
+	const noFill = (hasProp(styles1, 'fill') && styles1.fill.value === 'none') || combineFill;
 	// 填充规则不能是 evenodd 必须是 nonzero
-	const noEvenOdd: boolean = !hasProp(styles1, 'fill-rule') || styles1['fill-rule'].value !== 'evenodd';
+	const noEvenOdd = !hasProp(styles1, 'fill-rule') || styles1['fill-rule'].value !== 'evenodd';
 	// stroke 为空
-	const noStroke: boolean = (!hasProp(styles1, 'stroke') || styles1.stroke.value === 'none') && (combineOpacity || (noOpacity && noFillOpacity));
-	return noFill || (combineFill && noStroke && noEvenOdd)/* || noJoin(node1.getAttribute('d'), node2.getAttribute('d'))*/;
+	const noStroke = (!hasProp(styles1, 'stroke') || styles1.stroke.value === 'none');
+	// opacity 大于等于 1 或允许合并
+	const withoutOpacity = combineOpacity || (noOpacity && noFillOpacity && noStrokeOpacity);
+	return withoutOpacity && (noFill || noStroke) && noEvenOdd/* || noJoin(node1.getAttribute('d'), node2.getAttribute('d'))*/;
 };
 
-const getAttrKey = (node: ITagNode) => {
-	const keys: string[] = [];
-	node.attributes.forEach(({ value, fullname }) => {
+const attrDiff = (node1: ITagNode, node2: ITagNode) => {
+	const obj1: TDynamicObj<string> = {};
+	const obj2: TDynamicObj<string> = {};
+	let same = true;
+	node1.attributes.forEach(({ value, fullname }) => {
 		if (fullname !== 'd' && fullname !== 'style') {
-			keys.push(`${fullname}=${value}`);
+			obj1[fullname] = value;
 		}
 	});
-	return keys.sort().join('|');
+	node2.attributes.forEach(({ value, fullname }) => {
+		if (fullname !== 'd' && fullname !== 'style') {
+			obj2[fullname] = value;
+			const attrDefine = regularAttr[fullname];
+			if (!hasProp(obj1, fullname) || !valueIsEqual(attrDefine, value, obj1[fullname])) {
+				same = false;
+			}
+		}
+	});
+	return same && keysToKey(obj1) === keysToKey(obj2);
 };
 
-const getStyleKey = (styles: IStyleObj) => {
-	const keys: string[] = [];
-	Object.keys(styles).forEach(key => {
-		keys.push(`${key}=${styles[key].value}`);
+const styleDiff = (styles1: IStyleObj, styles2: IStyleObj) => {
+	let same = true;
+	Object.keys(styles1).forEach(key => {
+		const attrDefine = regularAttr[key];
+		if (!hasProp(styles2, key) || !valueIsEqual(attrDefine, styles1[key].value, styles2[key].value)) {
+			same = false;
+		}
 	});
-	return keys.sort().join('|');
+	return same && keysToKey(styles1) === keysToKey(styles2);
 };
 
 export const combinePath = async (dom: IDocument, {

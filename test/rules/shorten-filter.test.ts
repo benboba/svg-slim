@@ -1,11 +1,9 @@
-const chai = require('chai');
-const should = chai.should();
 import { parse } from 'svg-vdom';
 import { shortenFilter } from '../../src/rules/shorten-filter';
 import { createXML } from '../../src/xml/create';
 
 describe('rules/shorten-filter', () => {
-	it('shorten filter', async () => {
+	test('shorten filter', async () => {
 		const xml = `<svg>
 		<filter width="-1"/>
 		<filter/>
@@ -27,6 +25,6 @@ describe('rules/shorten-filter', () => {
 		</svg>`;
 		const dom = await parse(xml);
 		await shortenFilter(dom);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><defs><filter><feComponentTransfer><feFuncR type="identity"/><feFuncA amplitude="2"><animate attributeName="type" to="gamma"/><animate attributeName="type" to="gamma"/></feFuncA></feComponentTransfer></filter></defs></svg>');
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><defs><filter><feComponentTransfer><feFuncR type="identity"/><feFuncA amplitude="2"><animate attributeName="type" to="gamma"/><animate attributeName="type" to="gamma"/></feFuncA></feComponentTransfer></filter></defs></svg>');
 	});
 });

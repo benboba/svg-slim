@@ -1,5 +1,3 @@
-const chai = require('chai');
-const should = chai.should();
 import { parse } from 'svg-vdom';
 import { createRuleConfig } from '../../src/config/create-rule-config';
 import { mergeConfig } from '../../src/config/merge';
@@ -8,7 +6,7 @@ import { shortenColor } from '../../src/rules/shorten-color';
 import { createXML } from '../../src/xml/create';
 
 describe('rules/shorten-color', () => {
-	it('缩短颜色', async () => {
+	test('缩短颜色', async () => {
 		const xml = `<svg>
 		<style>
 		.a {
@@ -29,10 +27,10 @@ describe('rules/shorten-color', () => {
 			},
 		}), 'shorten-color');
 		await shortenColor(dom, config);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><style>.a{color:transparent;fill:currentColor;stroke:rgb(0,0,0,.5);x:100}</style><text fill="hsl(9,9%,9%,1%)" stroke="rgb(0,250,0,1%)" color="rgb(0,0,250,.1)">123</text><rect style="fill:red" stroke="#639" color="hsl(0,0%,100%,0)"/></svg>');
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><style>.a{color:transparent;fill:currentColor;stroke:rgb(0,0,0,.5);x:100}</style><text fill="hsl(9,9%,9%,1%)" stroke="rgb(0,250,0,1%)" color="rgb(0,0,250,.1)">123</text><rect style="fill:red" stroke="#639" color="hsl(0,0%,100%,0)"/></svg>');
 	});
 
-	it('rgba 及 style 无法解析', async () => {
+	test('rgba 及 style 无法解析', async () => {
 		const xml = `<svg>
 		<style>oops</style>
 		<rect width="100" style="fill:#ff000000;height:100" stroke="rgba(101,234,113,0.322)" color="transparent" />
@@ -47,6 +45,6 @@ describe('rules/shorten-color', () => {
 			},
 		}), 'shorten-color');
 		await shortenColor(dom, config);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg><rect width="100" style="fill:#f000;height:100" stroke="#65ea7152" color="#0000"/></svg>');
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><rect width="100" style="fill:#f000;height:100" stroke="#65ea7152" color="#0000"/></svg>');
 	});
 });

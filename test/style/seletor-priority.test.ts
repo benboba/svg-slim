@@ -1,11 +1,8 @@
-const chai = require('chai');
-const should = chai.should();
 import { getSelectorPriority, overrideAble } from '../../src/style/seletor-priority';
 
-
 describe('style/seletor-priority', () => {
-	it('获取权重', () => {
-		getSelectorPriority([{
+	test('获取权重', () => {
+		expect(getSelectorPriority([{
 			type: 'a',
 			id: ['a', 'b'],
 			class: ['a'],
@@ -14,28 +11,28 @@ describe('style/seletor-priority', () => {
 				func: 'hover',
 				isClass: true,
 			}],
-		}]).should.deep.equal({
+		}])).toEqual({
 			id: 2,
 			class: 2,
 			tag: 1
 		});
 
-		getSelectorPriority([{
+		expect(getSelectorPriority([{
 			id: [],
 			class: [],
 			attr: [{
 				key: 'x'
 			}],
 			pseudo: [],
-		}]).should.deep.equal({
+		}])).toEqual({
 			id: 0,
 			class: 1,
 			tag: 0
 		});
 	});
 
-	it('权重比较', () => {
-		overrideAble({
+	test('权重比较', () => {
+		expect(overrideAble({
 			id: 0,
 			class: 100,
 			tag: 100,
@@ -43,9 +40,9 @@ describe('style/seletor-priority', () => {
 			id: 1,
 			class: 0,
 			tag: 0
-		}).should.equal(false);
+		})).toBeFalsy;
 
-		overrideAble({
+		expect(overrideAble({
 			id: 0,
 			class: 0,
 			tag: 100,
@@ -53,9 +50,9 @@ describe('style/seletor-priority', () => {
 			id: 0,
 			class: 1,
 			tag: 0
-		}).should.equal(false);
+		})).toBeFalsy;
 
-		overrideAble({
+		expect(overrideAble({
 			id: 0,
 			class: 0,
 			tag: 1,
@@ -63,9 +60,9 @@ describe('style/seletor-priority', () => {
 			id: 0,
 			class: 0,
 			tag: 0
-		}).should.equal(true);
+		})).toBeTruthy;
 
-		overrideAble({
+		expect(overrideAble({
 			id: 0,
 			class: 0,
 			tag: 1,
@@ -73,6 +70,6 @@ describe('style/seletor-priority', () => {
 			id: 0,
 			class: 0,
 			tag: 1
-		}).should.equal(true);
+		})).toBeTruthy;
 	});
 });

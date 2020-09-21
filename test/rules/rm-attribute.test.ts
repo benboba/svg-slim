@@ -1,5 +1,3 @@
-const chai = require('chai');
-const should = chai.should();
 import { parse } from 'svg-vdom';
 import { createRuleConfig } from '../../src/config/create-rule-config';
 import { mergeConfig } from '../../src/config/merge';
@@ -7,7 +5,7 @@ import { rmAttribute } from '../../src/rules/rm-attribute';
 import { createXML } from '../../src/xml/create';
 
 describe('rules/rm-attribute', () => {
-	it('移除属性', async () => {
+	test('移除属性', async () => {
 		const xml = `<svg
 			data-test="100"
 			aria-colspan="3"
@@ -32,10 +30,10 @@ describe('rules/rm-attribute', () => {
 		const dom = await parse(xml);
 		const config = createRuleConfig(mergeConfig(null), 'rm-attribute');
 		await rmAttribute(dom, config);
-		createXML(dom).replace(/>\s+</g, '><').should.equal('<svg width="100" style="width:40"><a/><circle cx="1"/><g><rect/><g fill="none"><rect id="rect" fill="rgb(0,0,0,.5)" stroke="hsl(0,0%,0%)"/><use href="#b"/><use href="#b"/><use href="#b" width="1" height="1"/></g></g></svg>');
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg width="100" style="width:40"><a/><circle cx="1"/><g><rect/><g fill="none"><rect id="rect" fill="rgb(0,0,0,.5)" stroke="hsl(0,0%,0%)"/><use href="#b"/><use href="#b"/><use href="#b" width="1" height="1"/></g></g></svg>');
 	});
 
-	it('移除属性 - 反转规则', async () => {
+	test('移除属性 - 反转规则', async () => {
 		const xml = `<svg
 			data-test="100"
 			aria-colspan="3"
@@ -56,6 +54,6 @@ describe('rules/rm-attribute', () => {
 			}
 		}), 'rm-attribute');
 		await rmAttribute(dom, config);
-		createXML(dom).should.equal('<svg aria-colspan="3" onload="console.log(123)"><text stroke="none"/><circle cx="1" cy="0"/></svg>');
+		expect(createXML(dom)).toBe('<svg aria-colspan="3" onload="console.log(123)"><text stroke="none"/><circle cx="1" cy="0"/></svg>');
 	});
 });

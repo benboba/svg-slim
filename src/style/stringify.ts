@@ -1,3 +1,3 @@
-import { IAttr } from 'svg-vdom';
+import { IStyleAttr } from '../../typings/style';
 
-export const stringifyStyle = (style: IAttr[]) => style.map(attr => `${attr.name}:${attr.value}`).join(';');
+export const stringifyStyle = (style: IStyleAttr[]) => style.map(attr => `${attr.name}:${attr.value}${attr.important ? '!important' : ''}`).join(';');

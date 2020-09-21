@@ -1,68 +1,66 @@
-const chai = require('chai');
-const should = chai.should();
 import { legalValue } from '../../src/validate/legal-value';
 import { regularAttr } from '../../src/const/regular-attr';
 
 describe('validate/legal-value', () => {
-	it('value is legal', () => {
-		legalValue(regularAttr.x, {
+	test('value is legal', () => {
+		expect(legalValue(regularAttr.x, {
 			name: 'x',
 			fullname: 'x',
 			value: '10',
-		}).should.equal(true);
+		})).toBeTruthy;
 
-		legalValue(regularAttr.x, {
+		expect(legalValue(regularAttr.x, {
 			name: 'x',
 			fullname: 'x',
 			value: '10',
-		}, 'rect').should.equal(true);
+		}, 'rect')).toBeTruthy;
 
-		legalValue(regularAttr.x, {
+		expect(legalValue(regularAttr.x, {
 			name: 'x',
 			fullname: 'x',
 			value: '10',
-		}, 'g').should.equal(false);
+		}, 'g')).toBeFalsy;
 
-		legalValue(regularAttr.attributeName, {
+		expect(legalValue(regularAttr.attributeName, {
 			name: 'attributeName',
 			fullname: 'attributeName',
 			value: 'attributeName',
-		}, 'tspan').should.equal(false);
+		}, 'tspan')).toBeFalsy;
 
-		legalValue(regularAttr.attributeName, {
+		expect(legalValue(regularAttr.attributeName, {
 			name: 'attributeName',
 			fullname: 'attributeName',
 			value: 'x',
-		}, 'tspan').should.equal(true);
+		}, 'tspan')).toBeTruthy;
 
-		legalValue(regularAttr.origin, {
+		expect(legalValue(regularAttr.origin, {
 			name: 'origin',
 			fullname: 'origin',
 			value: 'default',
-		}, 'tspan').should.equal(false);
+		}, 'tspan')).toBeFalsy;
 
-		legalValue(regularAttr.accumulate, {
+		expect(legalValue(regularAttr.accumulate, {
 			name: 'accumulate',
 			fullname: 'accumulate',
 			value: 'sum',
-		}).should.equal(true);
+		})).toBeTruthy;
 
-		legalValue(regularAttr.accumulate, {
+		expect(legalValue(regularAttr.accumulate, {
 			name: 'accumulate',
 			fullname: 'accumulate',
 			value: 'some',
-		}).should.equal(false);
+		})).toBeFalsy;
 
-		legalValue(regularAttr.calcMode, {
+		expect(legalValue(regularAttr.calcMode, {
 			name: 'calcMode',
 			fullname: 'calcMode',
 			value: 'linear',
-		}).should.equal(true);
+		})).toBeTruthy;
 
-		legalValue(regularAttr.calcMode, {
+		expect(legalValue(regularAttr.calcMode, {
 			name: 'calcMode',
 			fullname: 'calcMode',
 			value: 'radiant',
-		}).should.equal(false);
+		})).toBeFalsy;
 	});
 });

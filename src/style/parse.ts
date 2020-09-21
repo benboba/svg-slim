@@ -1,8 +1,8 @@
 import { decode } from 'he';
 import { IStyleAttr } from '../../typings/style';
+import { importantReg } from '../const/regs';
 
 const cssReg = /([^:;]+):((?:[^;'"]*?(?:(?:'[^']*?'|"[^"]*?"|\/\*.*?\*\/))*[^;'"]*?)*)(?=;|$)/gim;
-const importantReg = /!important$/;
 
 export const parseStyle = (styleStr: string): IStyleAttr[] => {
 	// 此处使用数组，因为不能在解析器中排重，排重的工作要交给优化工具

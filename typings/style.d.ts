@@ -13,6 +13,7 @@ export interface IStyleObj {
 		value: string;
 		from: 'attr' | 'styletag' | 'inline' | 'inherit';
 		selectorPriority?: ISeletorPriority;
+		important?: boolean;
 	};
 }
 

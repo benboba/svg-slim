@@ -15,12 +15,11 @@ const getXlink = (
 ) => check(styleDefine, dom.querySelector(idStr) as ITag, dom, unique, fromStyleTag);
 
 // 定义一个特殊的遍历方法，只接收一个 condition 方法，只有该方法返回 true 才继续遍历子元素
-const traversal = (condition: (n: INode) => boolean, node: INode): void => {
-	if (!isTag(node)) return;
+const traversal = (condition: (n: INode) => boolean, node: ITag): void => {
 	// 此处不能用 forEach ，for 循环可以避免当前节点被移除导致下一个节点不会被遍历到的问题
 	for (const childNode of node.childNodes as INode[]) {
 		if (condition(childNode)) {
-			traversal(condition, childNode);
+			traversal(condition, childNode as ITag);
 		}
 	}
 };

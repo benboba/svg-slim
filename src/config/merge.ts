@@ -5,7 +5,7 @@ import { paramsConfig, rulesConfig } from './config';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const browserslist = require('browserslist') as () => string[];
 
-const parseBrowserConfig = () => {
+const browserConfig = (() => {
 	const browsers = browserslist();
 	const res: IFinalConfig['browsers'] = {};
 	browsers.forEach(val => {
@@ -20,7 +20,7 @@ const parseBrowserConfig = () => {
 		}
 	});
 	return res;
-};
+})();
 
 const mergeUserVal = (v: TRuleOptionVal, _v: unknown): TRuleOptionVal => {
 	if (Array.isArray(v)) {
@@ -78,7 +78,7 @@ export const mergeConfig = (userConfig: unknown): IFinalConfig => {
 	} = {
 		rules: {},
 		params: { ...paramsConfig },
-		browsers: parseBrowserConfig(),
+		browsers: browserConfig,
 	};
 	// 首先把默认规则深拷贝合并过来
 	for (const [key, [_switch, _option]] of Object.entries(rulesConfig)) {

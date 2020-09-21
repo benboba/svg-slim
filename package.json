@@ -8,23 +8,7 @@
   "scripts": {
     "build": "rm -rf dist && rollup -c",
     "lint": "eslint --ext .ts ./src",
-    "test": "cross-env TS_NODE_FILES=true TS_NODE_PROJECT=tsconfig.test.json nyc mocha"
-  },
-  "nyc": {
-    "include": [
-      "dist/*.js",
-      "src/**/*.ts"
-    ],
-    "extension": [
-      ".ts"
-    ],
-    "reporter": [
-      "text",
-      "html"
-    ],
-    "sourceMap": true,
-    "instrument": true,
-    "all": true
+    "test": "jest"
   },
   "keywords": [
     "svg",
@@ -46,14 +30,14 @@
     "ramda": "^0.25.0",
     "rxjs": "^6.6.2",
     "svg-path-contours": "^2.0.0",
-    "svg-vdom": "^1.0.5",
+    "svg-vdom": "^1.0.6",
     "triangulate-contours": "^1.0.2"
   },
   "devDependencies": {
     "@types/chai": "^4.2.0",
     "@types/css": "0.0.31",
     "@types/he": "^1.1.0",
-    "@types/mocha": "^5.2.7",
+    "@types/jest": "^26.0.14",
     "@types/node": "^12.12.18",
     "@types/ramda": "^0.25.36",
     "@typescript-eslint/eslint-plugin": "^3.9.0",
@@ -61,13 +45,12 @@
     "chai": "^4.1.2",
     "cross-env": "^3.2.4",
     "eslint": "^7.7.0",
+    "jest": "^26.4.2",
     "lodash": "^4.17.15",
-    "mocha": "^8.1.1",
-    "nyc": "^15.1.0",
     "rollup": "^2.26.2",
-    "rollup-plugin-copy": "^3.3.0",
     "rollup-plugin-typescript2": "^0.27.2",
     "source-map-support": "^0.5.13",
+    "ts-jest": "^26.3.0",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.7"
   }
