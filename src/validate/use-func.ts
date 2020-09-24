@@ -1,51 +1,49 @@
-import { trim } from 'ramda';
-import { IFnDef } from '../../typings';
+import { IFnDef, TArgDef } from '../../typings';
+import { createFullMatch } from '../const/regs';
 import { useEnum } from './use-enum';
+import { useReg } from './use-reg';
 
-const funcReg = new RegExp('^([^(]+)\\((.+)\\)$');
+const funcReg = createFullMatch('([^(]+)\\((.+)\\)');
+
+const checkArg = (argDef: TArgDef, val: string) => {
+	if (argDef.type === 'enum') {
+		return useEnum(argDef.value, val);
+	} else if (argDef.type === 'reg') {
+		return useReg(argDef.value, val);
+	} else {
+		return argDef.value === val;
+	}
+};
 
 export const useFunc = (fnDef: IFnDef, val: string): boolean => {
 	const fn = funcReg.exec(val);
-	if (fn) {
-		if (fn[1] !== fnDef.name) {
-			return false;
-		}
-		const values = fn[2].split(',').map(trim);
-		// 值的长度必须符合 an+b
-		if (fnDef.valueLen && (values.length - fnDef.valueLen[1]) % fnDef.valueLen[0]) {
-			return false;
-		}
-		// 值的长度必须位于合法区间
-		if (fnDef.valueLenArea && (values.length < fnDef.valueLenArea[0] || values.length > fnDef.valueLenArea[1])) {
-			return false;
-		}
-		for (let i = 0; i < values.length; i++) {
-			// 获取值的定义
-			const valueDef = fnDef.values[(i - fnDef.valueRepeat[1]) % fnDef.valueRepeat[0]];
-			if (valueDef.type === 'number' || valueDef.type === 'int') {
-				// 数值必须可以正确执行类型转换
-				const val = +values[i];
-				if (Number.isNaN(val)) {
-					return false;
-				}
-				if (valueDef.area) {
-					// 数值必须在正确的范围
-					if (val < valueDef.area[0] || val > valueDef.area[1]) {
-						return false;
-					}
-				}
-				if (valueDef.type === 'int') {
-					if (val !== Math.floor(val)) {
-						return false;
-					}
-				}
-			} else if (valueDef.type === 'enum') {
-				if (!useEnum(valueDef.enum, values[i])) {
-					return false;
-				}
+	// 不是函数
+	if (!fn) return false;
+
+	// 函数名对不上
+	if (fn[1] !== fnDef.name) return false;
+
+	const values = fn[2].split(',').map(s => s.trim());
+	// 函数参数超出上限
+	if (values.length > fnDef.args.length) {
+		return false;
+	}
+	for (let i = 0; i < values.length; i++) {
+		// 获取值的定义
+		const argDef = fnDef.args[i];
+		if (Array.isArray(argDef.def)) {
+			if (!argDef.def.some(adef => checkArg(adef, values[i]))) {
+				return false;
+			}
+		} else {
+			if (!checkArg(argDef.def, values[i])) {
+				return false;
 			}
 		}
-		return true;
-	} 
-	return false;
+	}
+	if (values.length < fnDef.args.length) {
+		const argDef = fnDef.args[values.length];
+		return !!argDef.optional;
+	}
+	return true;
 };

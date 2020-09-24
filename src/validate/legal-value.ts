@@ -1,9 +1,47 @@
 import { IAttr } from 'svg-vdom';
-import { IRegularAttr } from '../../typings';
+import { IRegularAttr, TLegalValueItem } from '../../typings';
+import { CSSDefault } from '../const/enum';
 import { regularAttr } from '../const/regular-attr';
 import { useEnum } from './use-enum';
 import { useFunc } from './use-func';
+import { useMix } from './use-mix';
 import { useReg } from './use-reg';
+
+const checkLegal = (legalRule: TLegalValueItem, value: string) => {
+	switch (legalRule.type) {
+		// 用正则判断
+		case 'reg':
+			if (useReg(legalRule.value, value)) {
+				return true;
+			}
+			break;
+		// 用枚举判断
+		case 'enum':
+			if (useEnum(legalRule.value, value)) {
+				return true;
+			}
+			break;
+		// 值应该是一个函数
+		case 'mix':
+			if (useMix(legalRule.value, value)) {
+				return true;
+			}
+			break;
+		// 值应该是一个函数
+		case 'func':
+			if (useFunc(legalRule.value, value)) {
+				return true;
+			}
+			break;
+		// 值应该是一个特定字符串
+		default:
+			if ((legalRule as { type: 'string', value: string }).value === value) {
+				return true;
+			}
+			break;
+	}
+	return false;
+};
 
 export const legalValue = (attrDefine: IRegularAttr, attr: IAttr, nodeName = ''): boolean => {
 	if (attrDefine.legalValues.length) {
@@ -14,37 +52,17 @@ export const legalValue = (attrDefine: IRegularAttr, attr: IAttr, nodeName = '')
 			const legalTag = !legalRule.tag || !nodeName || legalRule.tag.includes(nodeName);
 			if (legalTag) {
 				noMatchRule = false;
-				switch (legalRule.type) {
-					// 用正则判断
-					case 'reg':
-						if (useReg(legalRule.value, attr.value)) {
-							return true;
-						}
-						break;
-					// 用枚举判断
-					case 'enum':
-						if (useEnum(legalRule.value, attr.value)) {
-							return true;
-						}
-						break;
-					// 值应该是一个属性名，而且不允许循环引用
-					case 'attr':
-						if (!regularAttr[attr.value].isUndef && attr.fullname !== attr.value) {
-							return true;
-						}
-						break;
-					// 值应该是一个函数
-					case 'func':
-						if (useFunc(legalRule.value, attr.value)) {
-							return true;
-						}
-						break;
-					// 值应该是一个特定字符串
-					default:
-						if (legalRule.value === attr.value) {
-							return true;
-						}
-						break;
+				// 值应该是一个属性名，而且不允许循环引用
+				if (legalRule.type === 'attr')  {
+					if (!regularAttr[attr.value].isUndef && attr.fullname !== attr.value) {
+						return true;
+					}
+				} else if (checkLegal(legalRule, attr.value)) {
+					return true;
+				}
+				// 如果是 CSS 类的值，还要判断是否匹配 CSS Default keywords
+				if (regularAttr[attr.value].couldBeStyle && useEnum(CSSDefault, attr.value)) {
+					return true;
 				}
 			}
 		}

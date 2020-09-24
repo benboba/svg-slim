@@ -116,16 +116,17 @@ describe('rules/compute-path', () => {
 	});
 
 	test('mergePoints', async () => {
-		const xml = `<svg>
-		<path d="M0,0L4,4,1,0,0,2,3,5,5,2,2,7,7,6,2,1,1,9,9,-1"/>
+		const xml = `<svg stroke="red">
+		<path d="M0,0L4,4H6V6"/>
+		<path d="M0,0L4,4,6,6,20,10Z"/>
 		</svg>`;
 		const dom = await parse(xml);
 		const config = createRuleConfig(mergeConfig({
 			params: {
-				mergePoint: 10,
+				mergePoint: 3,
 			},
 		}), 'compute-path');
 		await computePath(dom, config);
-		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><path d="m0,0,2,3,5,4,6,2,1,1,9,9-1,2"/></svg>');
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg stroke="red"><path d="m0,0,5.5,5"/><path d="m0,0,5,5,15,5z"/></svg>');
 	});
 });

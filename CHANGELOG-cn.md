@@ -22,10 +22,9 @@
 * 所有 svg 的解析和遍历规则改为依赖 svg-vdom
 * 引入 browserslist，决定部分优化细节的取舍
 * 引入 known-css-properties 过滤未知 css 属性
-* 使用 jest 代替 mocha + chai + nyc
 * 测试用例的补全和修正
 
-### bug 与改进
+### bug 修复与改进
 
 * 修正了对于枚举类属性的验证规则，之前由于未进行全字匹配会存在一定的误判
 * 优化了 combine-path 的合并规则，现在会更合理地对 path 元素进行合并
@@ -38,6 +37,7 @@
 * 使用 rollup 代替 webpack 打包
 * 使用 eslint + typescript-eslint 代替 tslint
 * 增加 svg-slimming.mjs
+* 使用 jest 代替 mocha + chai + nyc
 * 调整了目录结构和部分模块的文件名
 
 ### 功能

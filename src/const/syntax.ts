@@ -1,4 +1,7 @@
 import { eventAttributes } from './definitions';
+import { colorKeyWords, systemColor, x11Colors } from './enum';
+
+export const createValList = (pattern: string, n: number, m: number) => `${pattern}(?:\\s*${pattern}){${n - 1},${m - 1}}`;
 
 // 符合官方定义的 token
 // https://drafts.csswg.org/css-syntax-3
@@ -39,14 +42,17 @@ export const cssNameSpaceSeparatedFullMatch = new RegExp(`^${cssName}(?:\\s+${cs
 // https://www.w3.org/TR/css3-values/#length-value
 // https://www.w3.org/TR/css-syntax-3/#number-token-diagram
 // https://www.w3.org/TR/css-syntax-3/#percentage-token-diagram
-export const numberPattern = '[+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?';
+const numberBase = '(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?';
+export const numberPattern = `[+-]?${numberBase}`;
+const zero = '[+-]?(?:0+\\.)?0+(?:[eE][+-]?\\d+)?';
+export const nonNegativeFullMatch = new RegExp(`^\\+?${numberBase}$`);
 export const numberSequence = `${numberPattern}(?:${commaWsp}${numberPattern})*`;
+export const numberFullMatch = new RegExp(`^${numberPattern}$`);
 const numberPair = `${numberPattern}${commaWsp}${numberPattern}`;
 const numberPairSequence = `${numberPair}(?:${commaWsp}${numberPair})*`;
 const numberPairDouble = `${numberPair}${commaWsp}${numberPair}`;
-const numberPairTriplet = `${numberPair}${commaWsp}${numberPair}${commaWsp}${numberPair}`;
+const numberPairTriplet = `${numberPair}(?:${commaWsp}${numberPair}){2}`;
 export const numberGlobal = new RegExp(numberPattern, 'g');
-export const numberFullMatch = new RegExp(`^${numberPattern}$`);
 export const numberOptionalFullMatch = new RegExp(`^${numberPattern}(?:\\s*${numberPattern})?$`);
 export const numberListFullMatch = new RegExp(`^${numberSequence}$`);
 export const numberSemiSepatatedFullMatch = new RegExp(`^${numberPattern}(?:${semi}${numberPattern})*(?:${semi})?$`);
@@ -64,9 +70,10 @@ export const controlPointsFullMatch = new RegExp(`^${controlPoint}(?:${semi}${co
 const Units = '(?:em|ex|ch|rem|vx|vw|vmin|vmax|cm|mm|Q|in|pt|pc|px)';
 export const percentageFullMatch = new RegExp(`^${numberPattern}%$`);
 const length = `${numberPattern}${Units}?`;
-const lengthPercentage = `(?:${length}|${numberPattern}%)`;
+export const lengthPercentage = `(?:${length}|${numberPattern}%)`;
 const lengthPair = `${length}${commaWsp}${length}`;
 
+export const lengthFullMatch = new RegExp(`^${length}$`);
 export const lengthPairFullMatch = new RegExp(`^${lengthPair}$`);
 export const lengthPairListFullMatch = new RegExp(`^${lengthPair}(?:${semi}${lengthPair})*$`);
 export const lengthPercentageFullMatch = new RegExp(`^${lengthPercentage}$`);
@@ -142,3 +149,35 @@ export const funcIRIFullMatch = new RegExp(`^${url}$`);
 export const IRIFullMatch = /^#(.+)$/;
 
 export const mediaTypeFullMatch = /^(?:image|audio|video|application|text|multipart|message)\/[^/]+$/;
+
+// properties 相关
+const lengthOrAuto = `(?:${length}|auto)`;
+export const clipPathRect = new RegExp(`^rect\\(\\s*${lengthOrAuto}${commaWsp}${lengthOrAuto}${commaWsp}${lengthOrAuto}${commaWsp}${lengthOrAuto}\\s*\\)$`);
+
+export const lengthPercentage1_4 = createValList(lengthPercentage, 1, 4);
+export const lengthPercentage1_4FullMatch = new RegExp(`^${lengthPercentage1_4}$`);
+export const borderRadiusFullMatch = new RegExp(`^${lengthPercentage1_4}\\s*\\/\\s*${lengthPercentage1_4}$`);
+
+// TODO 这个正则不够严谨，未来考虑 use-func
+export const basicShapeFullMatch = /^(?:inset|circle|ellipse|polygon)\([^()]+\)$/;
+
+// color
+const rgb = `rgba?${paren}(?:${numberPattern}${commaWsp}${numberPattern}${commaWsp}${numberPattern}${commaWsp}${numberPattern}%?|${numberPattern}%${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%?)${rParen}`;
+const hsl = `hsla?${paren}${numberPattern}${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%?${rParen}`;
+const hexColor = '#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})';
+export const colorFullMatch = new RegExp(`^(?:${rgb}|${hsl}|${hexColor})$`);
+const iccColor = `icc-color${paren}${Name}(?:${commaWsp}${numberPattern})+${rParen}`;
+export const stopColorFullMatch = new RegExp(`^(?:${rgb}|${hsl}|${hexColor}|${colorKeyWords}|${systemColor}|${x11Colors})(?:${iccColor})?$`, uModifier);
+
+const cursorStr = 'auto|default|none|context-menu|help|pointer|progress|wait|cell|crosshair|text|vertical-text|alias|copy|move|no-drop|not-allowed|grab|grabbing|e-resize|n-resize|ne-resize|nw-resize|s-resize|se-resize|sw-resize|w-resize|ew-resize|ns-resize|nesw-resize|nwse-resize|col-resize|row-resize|all-scroll|zoom-in|zoom-out';
+export const cursorFullMatch = new RegExp(`^(?:${url}\\s*(?:${numberPattern}\\s*${numberPattern})?${commaWsp})*(?:${cursorStr})$`);
+
+// filter
+const blur = `blur${paren}(?:${length})?${rParen}`;
+const filterFuncNumberPercentage = `(?:brightness|contrast|grayscale|invert|opacity|saturate|sepia)${paren}(?:${numberPattern}%?)?${rParen}`;
+const dropShadow = `drop-shadow${paren}(?:(?:${rgb}|${hsl}|${hexColor}|${colorKeyWords}|${systemColor}|${x11Colors})?${commaWsp}(?:${length}|${numberPattern}%){2,3})?${rParen}`;
+const hueRotate = `hue-rotate${paren}(?:${angel}|${zero})?${rParen}`;
+const filterFunc = `(?:${blur}|${filterFuncNumberPercentage}|${dropShadow}|${hueRotate})`;
+export const filterListFullMatch = new RegExp(`(?:(?:${filterFunc}|${url})${commaWsp})+`);
+
+export const strokeDasharrayFullMatch = new RegExp(`^${lengthPercentage}(?:${commaWsp}${lengthPercentage})+$`);

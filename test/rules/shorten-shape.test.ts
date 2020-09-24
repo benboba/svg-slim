@@ -74,6 +74,20 @@ describe('rules/shorten-shape', () => {
 		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><path d="M0,0,30,30"/><path d="M0,0,1e2,2e2,3e2,3e2,298,298z"/></svg>');
 	});
 
+	test('merge points', async () => {
+		const xml = `<svg>
+		<polyline points="0 0 10 10 11 12 30 30" />
+		</svg>`;
+		const dom = await parse(xml);
+		const config = createRuleConfig(mergeConfig({
+			params: {
+				mergePoint: 3,
+			}
+		}), 'shorten-shape');
+		await shortenShape(dom, config);
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><path d="M0,0,10.5,11,30,30"/></svg>');
+	});
+
 	test('check animate', async () => {
 		const xml = `<svg>
 		<line x2="100" stroke-width="0">

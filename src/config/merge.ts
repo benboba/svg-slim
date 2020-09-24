@@ -3,24 +3,27 @@ import { hasProp } from '../utils/has-prop';
 import { isObj } from '../utils/is-obj';
 import { paramsConfig, rulesConfig } from './config';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const browserslist = require('browserslist') as () => string[];
+const browserslist = require('browserslist') as (query?: string | string[]) => string[];
 
-const browserConfig = (() => {
-	const browsers = browserslist();
+const browserConfig = (query?: string | string[]) => {
+	const browsers = browserslist(query);
 	const res: IFinalConfig['browsers'] = {};
 	browsers.forEach(val => {
-		const [key, ver] = val.split(' ');
-		const v = parseFloat(ver);
-		if (!hasProp(res, key)) {
-			res[key] = v;
-		} else {
-			if (v < res[key]) {
-				res[key] = v;
+		const num = /\s\d/.exec(val);
+		if (num) {
+			const key = val.slice(0, num.index);
+			const ver = parseFloat(val.slice(num.index));
+			if (!hasProp(res, key)) {
+				res[key] = ver;
+			} else {
+				if (ver < res[key]) {
+					res[key] = ver;
+				}
 			}
 		}
 	});
 	return res;
-})();
+};
 
 const mergeUserVal = (v: TRuleOptionVal, _v: unknown): TRuleOptionVal => {
 	if (Array.isArray(v)) {
@@ -78,7 +81,7 @@ export const mergeConfig = (userConfig: unknown): IFinalConfig => {
 	} = {
 		rules: {},
 		params: { ...paramsConfig },
-		browsers: browserConfig,
+		browsers: browserConfig(),
 	};
 	// 首先把默认规则深拷贝合并过来
 	for (const [key, [_switch, _option]] of Object.entries(rulesConfig)) {
@@ -107,6 +110,9 @@ export const mergeConfig = (userConfig: unknown): IFinalConfig => {
 					finalConfig.params[k] = mergeUserVal(paramsConfig[k], uk) as never;
 				}
 			});
+		}
+		if (hasProp(uConfig, 'browsers') && (typeof uConfig.browsers === 'string' || Array.isArray(uConfig.browsers))) {
+			finalConfig.browsers = browserConfig(uConfig.browsers);
 		}
 	}
 	return finalConfig as IFinalConfig;

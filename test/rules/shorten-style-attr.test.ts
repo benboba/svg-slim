@@ -38,7 +38,7 @@ describe('rules/shorten-style-attr', () => {
 			<rect style="file:blue" x="1"/>
 		</g>
 		</g>
-		<rect stroke="red" fill="red" style="fill:blue"/>
+		<rect opacity="x" stroke="red" fill="red" style="fill:blue"/>
 		<text title="444" style="fill:red" fill="red" stroke="blue" font-family="Arial" font-weight="700" direction="ltr" fill-opacity="0.5">345</text>
 		<animate to="x" attributeName="opacity" from="0" fill="none"/>
 		</svg>`;
@@ -49,7 +49,7 @@ describe('rules/shorten-style-attr', () => {
 			}
 		}), 'shorten-style-attr');
 		await shortenStyleAttr(dom, config);
-		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><g transform-origin="bottom" style="transform:rotate(45deg)"><text title="123" font-family="&quot;微软雅黑&quot;" fill="rebeccapurple" stroke="blue">123</text><g fill="#fff"><rect x="1"/></g></g><rect stroke="red" fill="blue"/><text title="444" style="fill:red;stroke:blue;font-family:Arial;font-weight:700;fill-opacity:0.5">345</text><animate to="x" attributeName="opacity" from="0" fill="none"/></svg>');
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><g transform-origin="bottom" style="transform:rotate(45deg)"><text title="123" font-family="&quot;微软雅黑&quot;" fill="rebeccapurple" stroke="blue">123</text><g fill="#fff"><rect x="1"/></g></g><rect stroke="red" fill="blue"/><text title="444" style="fill:red;stroke:blue;font-family:Arial;font-weight:700;fill-opacity:0.5">345</text><animate attributeName="opacity" from="0" fill="none"/></svg>');
 	});
 
 	test('深度继承的情况', async () => {
@@ -90,6 +90,22 @@ describe('rules/shorten-style-attr', () => {
 		const dom = await parse(xml);
 		const config = createRuleConfig(mergeConfig(null), 'shorten-style-attr');
 		await shortenStyleAttr(dom, config);
-		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg width="100" display="b"><rect width="100"/><g fill="none"><circle fill="#000"/><circle fill="black"/><circle/></g><g><circle/><circle fill="red"/></g><set to="3" attributeName="zoomAndPan"/><set to=".5" attributeName="opacity"/></svg>');
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg width="100"><rect width="100"/><g fill="none"><circle fill="#000"/><circle fill="black"/><circle/></g><g><circle/><circle fill="red"/></g><set to="3" attributeName="zoomAndPan"/><set to=".5" attributeName="opacity"/></svg>');
+	});
+
+	test('geometry', async () => {
+		const xml = `<svg width="400" style="height:200">
+			<rect width="50" height="50" style="y:125;rx:10"></rect>
+		</svg>`;
+		const dom = await parse(xml);
+		const config1 = createRuleConfig(mergeConfig(null), 'shorten-style-attr');
+		await shortenStyleAttr(dom, config1);
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg width="400" style="height:200"><rect width="50" height="50" style="y:125;rx:10"/></svg>');
+
+		const config2 = createRuleConfig(mergeConfig({
+			browsers: ['> 0.5%', 'not ie 11', 'not firefox < 99', 'not and_ff < 99', 'android 81'],
+		}), 'shorten-style-attr');
+		await shortenStyleAttr(dom, config2);
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg width="400" style="height:200"><rect width="50" height="50" y="125" rx="10"/></svg>');
 	});
 });
