@@ -22,7 +22,6 @@ const rmCSSNode = (cssNode: Node, plist: Node[]) => {
 	}
 };
 
-// TODO geometry property!!!
 export const shortenStyleTag = async (dom: IDom, {
 	option: {
 		deepShorten,

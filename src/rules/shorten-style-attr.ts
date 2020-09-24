@@ -6,6 +6,7 @@ import { animationAttrElements, animationAttributes } from '../const/definitions
 import { regularAttr } from '../const/regular-attr';
 import { regularTag } from '../const/regular-tag';
 import { checkApply } from '../style/check-apply';
+import { checkGeometry } from '../style/check-geometry';
 import { parseStyle } from '../style/parse';
 import { shortenStyle } from '../style/shorten';
 import { stringifyStyle } from '../style/stringify';
@@ -32,8 +33,7 @@ interface IStyleAttrObj {
 	};
 }
 
-// TODO geometry property!!!
-const checkAttr = (node: ITag, dom: IDom, rmAttrEqDefault: boolean) => {
+const checkAttr = (node: ITag, dom: IDom, rmAttrEqDefault: boolean, browsers: Record<string, number>) => {
 	parseStyleTree(dom);
 	const attrObj: IStyleAttrObj = {}; // 存储所有样式和可以转为样式的属性
 	const tagDefine = regularTag[node.nodeName];
@@ -72,7 +72,11 @@ const checkAttr = (node: ITag, dom: IDom, rmAttrEqDefault: boolean) => {
 				}
 
 				// 标记一下是否存在不能和属性互转的样式
-				const onlyCss = !styleDefine.couldBeStyle || cantTrans(tagDefine, styleItem.fullname);
+				const onlyCss = (
+					!styleDefine.couldBeStyle // 标记在常规属性列表中
+					&&
+					!checkGeometry(node.nodeName, styleItem.fullname, browsers) // 并且当前环境不支持 geo 属性转换
+				) || cantTrans(tagDefine, styleItem.fullname); // 某些特定元素属性不能放在 style 中
 
 				// 如果存在同名属性，要把被覆盖的属性移除掉
 				// 之所以要判断 attrObj 是否存在 key，是为了保证只移除已遍历过的属性（此处不考虑同名属性，同名属性无法通过 xml-parser 的解析规则）
@@ -104,7 +108,7 @@ const checkAttr = (node: ITag, dom: IDom, rmAttrEqDefault: boolean) => {
 			} else {
 				node.removeAttribute(attr.fullname);
 			}
-		} else if (attrDefine.couldBeStyle) {
+		} else if (attrDefine.couldBeStyle || checkGeometry(node.nodeName, attr.fullname, browsers)) {
 			if (cantTrans(tagDefine, attr.fullname)) { // 有一些元素的某些属性不能被转为 style，此类属性也不宜再按照 css 属性来验证
 				continue;
 			}
@@ -200,13 +204,14 @@ export const shortenStyleAttr = async (dom: IDom, {
 	params: {
 		exchangeStyle,
 		rmAttrEqDefault,
-	}
+	},
+	browsers,
 }: IRuleOption): Promise<void> => new Promise(resolve => {
 	const hasStyleTag = !!dom.styletag;
 
 	const tags = dom.querySelectorAll(NodeType.Tag) as ITag[];
 	tags.forEach(node => {
-		const attrObj = checkAttr(node, dom, rmAttrEqDefault);
+		const attrObj = checkAttr(node, dom, rmAttrEqDefault, browsers);
 		// TODO 连锁属性的判断
 		if (!hasStyleTag || exchangeStyle) {
 			// [warning] svg 的样式覆盖规则是 style 属性 > style 标签 > 属性，所以以下代码可能导致不正确的样式覆盖！

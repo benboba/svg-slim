@@ -5,6 +5,7 @@ import { ITag } from '../../typings/node';
 import { douglasPeucker as DP } from '../algorithm/douglas-peucker';
 import { shapeElements } from '../const/definitions';
 import { numberGlobal, numberPattern, pureNumOrWithPx } from '../const/syntax';
+import { doMerge } from '../path/merge-points';
 import { getShorter } from '../utils/get-shorter';
 import { parseNumberList } from '../utils/parse-numberlist';
 import { shortenNumber } from '../utils/shorten-number';
@@ -129,7 +130,7 @@ const formatLine = (node: ITag) => {
 	}
 };
 
-const formatPoly = (thinning: number, node: ITag, addZ: boolean) => {
+const formatPoly = (thinning: number, mergePoint: number, node: ITag, addZ: boolean) => {
 	node.nodeName = 'path';
 	let d = '';
 	if (node.hasAttribute('points')) {
@@ -155,6 +156,11 @@ const formatPoly = (thinning: number, node: ITag, addZ: boolean) => {
 		}
 		if (thinning) {
 			points = DP(thinning, points);
+		}
+		// 存在合并相邻节点规则
+		if (mergePoint) {
+			// doCompute 必须执行
+			points = doMerge(mergePoint, points);
 		}
 		node.removeAttribute('points');
 
@@ -215,6 +221,7 @@ const formatCircle = (node: ITag) => {
 export const shortenShape = async (dom: IDocument, {
 	params: {
 		thinning,
+		mergePoint,
 	}
 }: IRuleOption): Promise<void> => new Promise(resolve => {
 	parseStyleTree(dom);
@@ -231,10 +238,10 @@ export const shortenShape = async (dom: IDocument, {
 				formatLine(cloneNode);
 				break;
 			case 'polyline':
-				formatPoly(thinning, cloneNode, false);
+				formatPoly(thinning, mergePoint, cloneNode, false);
 				break;
 			case 'polygon':
-				formatPoly(thinning, cloneNode, true);
+				formatPoly(thinning, mergePoint, cloneNode, true);
 				break;
 			case 'ellipse':
 				formatEllipse(cloneNode);

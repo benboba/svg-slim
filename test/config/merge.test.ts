@@ -26,4 +26,17 @@ describe('合并配置项', () => {
 			},
 		}).rules['rm-unnecessary']).toHaveProperty([1, 'tags']);
 	});
+
+	test('merge browsers', () => {
+		const config1 = mergeConfig({
+			browsers: '> 1%'
+		});
+		const config2 = mergeConfig({
+			browsers: ['> 0.5%', 'not ie 11', 'not firefox < 99']
+		});
+		expect(config1.browsers).toHaveProperty('ie');
+		expect(config1.browsers).toHaveProperty('firefox');
+		expect(config2.browsers).not.toHaveProperty('ie');
+		expect(config2.browsers).not.toHaveProperty('firefox');
+	});
 });

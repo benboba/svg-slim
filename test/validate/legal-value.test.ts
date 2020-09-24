@@ -62,5 +62,17 @@ describe('validate/legal-value', () => {
 			fullname: 'calcMode',
 			value: 'radiant',
 		})).toBeFalsy;
+
+		expect(legalValue(regularAttr.display, {
+			name: 'display',
+			fullname: 'display',
+			value: 'initial',
+		})).toBeTruthy;
+
+		expect(legalValue(regularAttr.opacity, {
+			name: 'opacity',
+			fullname: 'opacity',
+			value: 'inherit',
+		})).toBeTruthy;
 	});
 });

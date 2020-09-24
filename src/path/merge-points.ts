@@ -4,7 +4,7 @@ import { plus } from '../math/plus';
 import { itemMerge } from './item-merge';
 import { lineNormalize } from './line-normalize';
 
-const mergePoint = (threshold: number, vals: number[]) => {
+export const doMerge = (threshold: number, vals: number[]) => {
 	const result: number[] = [];
 	const prev = [vals[0], vals[1]];
 	for (let i = 2; i < vals.length; i += 2) {
@@ -38,7 +38,7 @@ export const mergePoints = (threshold: number, pathArr: IPathResultItem[]) => {
 		} else {
 			const lastItem = pathResult[len - 1];
 			if (len > 0 && lastItem.type === 'L') {
-				lastItem.val = mergePoint(threshold, lastItem.from.concat(lastItem.val));
+				lastItem.val = doMerge(threshold, lastItem.from.concat(lastItem.val));
 			}
 			pathResult.push(pathItem);
 			len++;
@@ -46,7 +46,7 @@ export const mergePoints = (threshold: number, pathArr: IPathResultItem[]) => {
 	}
 	if (pathResult[len - 1].type === 'L') {
 		const lastItem = pathResult[len - 1];
-		lastItem.val = mergePoint(threshold, lastItem.from.concat(lastItem.val));
+		lastItem.val = doMerge(threshold, lastItem.from.concat(lastItem.val));
 	}
 	return pathResult;
 };

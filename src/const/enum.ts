@@ -48,4 +48,58 @@ export const channel = 'R|G|B|A';
 
 export const isolationMode = 'auto|isolate';
 
+// 下面是 properties
+export const CSSDefault = 'initial|inherit|unset|revert';
+
 export const alignmentBaseline = 'auto|baseline|before-edge|text-before-edge|middle|central|after-edge|text-after-edge|ideographic|alphabetic|hanging|mathematical';
+
+export const baselineShift = 'baseline|sub|super';
+
+export const clipPath = 'border-box|padding-box|content-box|margin-box|fill-box|stroke-box|view-box';
+
+export const nonzeroEvenodd = 'nonzero|evenodd';
+
+export const colorKeyWords = 'currentColor|transparent';
+export const x11Colors = 'aliceblue|antiquewhite|aqua|aquamarine|azure|beige|bisque|black|blanchedalmond|blue|blueviolet|brown|burlywood|cadetblue|chartreuse|chocolate|coral|cornflowerblue|cornsilk|crimson|cyan|darkblue|darkcyan|darkgoldenrod|darkgray|darkgreen|darkgrey|darkkhaki|darkmagenta|darkolivegreen|darkorange|darkorchid|darkred|darksalmon|darkseagreen|darkslateblue|darkslategray|darkslategrey|darkturquoise|darkviolet|deeppink|deepskyblue|dimgray|dimgrey|dodgerblue|firebrick|floralwhite|forestgreen|fuchsia|gainsboro|ghostwhite|gold|goldenrod|gray|green|greenyellow|grey|honeydew|hotpink|indianred|indigo|ivory|khaki|lavender|lavenderblush|lawngreen|lemonchiffon|lightblue|lightcoral|lightcyan|lightgoldenrodyellow|lightgray|lightgreen|lightgrey|lightpink|lightsalmon|lightseagreen|lightskyblue|lightslategray|lightslategrey|lightsteelblue|lightyellow|lime|limegreen|linen|magenta|maroon|mediumaquamarine|mediumblue|mediumorchid|mediumpurple|mediumseagreen|mediumslateblue|mediumspringgreen|mediumturquoise|mediumvioletred|midnightblue|mintcream|mistyrose|moccasin|navajowhite|navy|oldlace|olive|olivedrab|orange|orangered|orchid|palegoldenrod|palegreen|paleturquoise|palevioletred|papayawhip|peachpuff|peru|pink|plum|powderblue|purple|rebeccapurple|red|rosybrown|royalblue|saddlebrown|salmon|sandybrown|seagreen|seashell|sienna|silver|skyblue|slateblue|slategray|slategrey|snow|springgreen|steelblue|tan|teal|thistle|tomato|turquoise|violet|wheat|white|whitesmoke|yellow|yellowgreen';
+export const systemColor = 'ActiveBorder|ActiveCaption|AppWorkspace|Background|ButtonFace|ButtonHighlight|ButtonShadow|ButtonText|CaptionText|GrayText|Highlight|HighlightText|InactiveBorder|InactiveCaption|InactiveCaptionText|InfoBackground|InfoText|Menu|MenuText|Scrollbar|ThreeDDarkShadow|ThreeDFace|ThreeDHighlight|ThreeDLightShadow|ThreeDShadow|Window|WindowFrame|WindowText';
+
+export const colorInterpolation = 'auto|sRGB|linearRGB';
+
+export const colorRendering = 'auto|optimizeSpeed|optimizeQuality';
+
+export const direction = 'ltr|rtl';
+
+export const display = 'inline|block|list-item|run-in|compact|marker|table|inline-table|table-row-group|table-header-group|table-footer-group|table-row|table-column-group|table-column|table-cell|table-caption|none';
+
+export const dominantBaseline = 'auto|use-script|no-change|reset-size|ideographic|alphabetic|hanging|mathematical|central|middle|text-after-edge|text-before-edge';
+
+export const paintKeywords = 'context-fill|context-stroke';
+
+export const absoluteSize = 'xx-small|x-small|small|medium|large|x-large|xx-large';
+export const relativeSize = 'larger|smaller';
+export const fontStretch = 'normal|ultra-condensed|extra-condensed|condensed|semi-condensed|semi-expanded|expanded|extra-expanded|ultra-expanded';
+export const fontStyle = 'normal|italic|oblique';
+
+// font variant
+export const commonLigValues = 'common-ligatures|no-common-ligatures';
+export const discretionaryLigValues = 'discretionary-ligatures|no-discretionary-ligatures';
+export const historicalLigValues = 'historical-ligatures|no-historical-ligatures';
+export const contextualAltValues = 'contextual|no-contextual';
+export const capsValues = 'small-caps|all-small-caps|petite-caps|all-petite-caps|unicase|titling-caps';
+export const numericFigureValues = 'lining-nums|oldstyle-nums';
+export const numericSpacingValues = 'proportional-nums|tabular-nums';
+export const numericFractionValues = 'diagonal-fractions|stacked-fractions';
+export const eastAsianVariantValues = 'jis78|jis83|jis90|jis04|simplified|traditional';
+export const eastAsianWidthValues = 'full-width|proportional-width';
+
+export const fontWeight = 'normal|bold|bolder|lighter|100|200|300|400|500|600|700|800|900';
+
+export const overflow = 'visible|hidden|scroll|auto';
+
+export const pointerEvents = 'bounding-box|visiblePainted|visibleFill|visibleStroke|visible|painted|fill|stroke|all|none';
+
+export const shapeRendering = 'auto|optimizeSpeed|crispEdges|geometricPrecision';
+
+export const strokeLinecap = 'butt|round|square';
+
+export const strokeLinejoin = 'miter|miter-clip|round|bevel|arcs';

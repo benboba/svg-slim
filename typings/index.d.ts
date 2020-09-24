@@ -57,6 +57,30 @@ export interface IRegularTag {
 	onlyAttr?: string[];
 }
 
+export type TArgDef = {
+	type: 'enum';
+	value: string;
+} | {
+	type: 'reg';
+	value: RegExp;
+} | {
+	type: 'string';
+	value: string;
+}
+
+export interface IFnDef {
+	name: string;
+	args: Array<{
+		optional?: boolean;
+		def: TArgDef | TArgDef[];
+	}>;
+}
+
+export interface IMix {
+	type: '|' | '&',
+	unit: string[],
+}
+
 export type TLegalValueItem = {
 	type: 'attr';
 	tag?: string[];
@@ -71,6 +95,10 @@ export type TLegalValueItem = {
 } | {
 	type: 'enum';
 	value: string;
+	tag?: string[];
+} | {
+	type: 'mix';
+	value: IMix;
 	tag?: string[];
 } | {
 	type: 'func';
@@ -121,24 +149,4 @@ export interface IAnimateAttr {
 	node: ITagNode,
 	keys: string[],
 	values: string[];
-}
-
-export type TFnValue = {
-	type: 'number' | 'int';
-	area?: [number, number];
-} | {
-	type: 'length';
-	unit?: string;
-	area?: [number, number];
-} | {
-	type: 'enum';
-	enum: string;
-}
-
-export interface IFnDef {
-	name: string;
-	values: TFnValue[];
-	valueLen?: [number, number]; // [a, b]，值的长度应符合 an+b 的规则，即 (value.length - b) % a = 0
-	valueLenArea?: [number, number]; // 值的长度的最小值和最大值
-	valueRepeat: [number, number]; // [a, b]，用于规定 values 规则的 an+b 重复逻辑
 }

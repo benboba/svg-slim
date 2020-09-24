@@ -1,13 +1,54 @@
-import { IRegularAttr, TDynamicObj } from '../../typings';
+import { IRegularAttr, TDynamicObj, TLegalValueItem } from '../../typings';
 import { hasProp } from '../utils/has-prop';
 import { containerElements, filterPrimitiveElements, gradientElements, graphicsElements, newViewportsElements, shapeElements, textContentElements } from './definitions';
-import { alignmentBaseline, alignX, alignY, animateTransformType, blendMode, calcMode, channel, crossOrigin, dur, edgeMode, feColorMatrixType, feFuncType, feTurbulenceType, inVal, isolationMode, lengthAdjust, markerUnit, method, operater, operater1, orient, referrer, restart, spreadMethod, target, units } from './enum';
-import { angelFullMatch, clockFullMatch, controlPointsFullMatch, cssNameFullMatch, cssNameSpaceSeparatedFullMatch, indentFullMatch, integerFullMatch, langFullMatch, lengthPairFullMatch, lengthPairListFullMatch, lengthPercentageFullMatch, lengthPercentageListFullMatch, mediaTypeFullMatch, nameFullMatch, numberFullMatch, numberListFullMatch, numberOptionalFullMatch, numberSemiSepatatedFullMatch, pathFullMatch, percentageFullMatch, preservAspectRatioFullMatch, timeListFullMatch, transformListFullMatch, URIFullMatch, viewBoxFullMatch } from './syntax';
+import { absoluteSize, alignmentBaseline, alignX, alignY, animateTransformType, baselineShift, blendMode, calcMode, capsValues, channel, clipPath, colorInterpolation, colorKeyWords, colorRendering, commonLigValues, contextualAltValues, crossOrigin, direction, discretionaryLigValues, display, dominantBaseline, dur, eastAsianVariantValues, eastAsianWidthValues, edgeMode, feColorMatrixType, feFuncType, feTurbulenceType, fontStretch, fontStyle, fontWeight, historicalLigValues, inVal, isolationMode, lengthAdjust, markerUnit, method, nonzeroEvenodd, numericFigureValues, numericFractionValues, numericSpacingValues, operater, operater1, orient, overflow, paintKeywords, pointerEvents, referrer, relativeSize, restart, shapeRendering, spreadMethod, strokeLinecap, strokeLinejoin, systemColor, target, units, x11Colors } from './enum';
+import { angelFullMatch, basicShapeFullMatch, clipPathRect, clockFullMatch, colorFullMatch, controlPointsFullMatch, cssNameFullMatch, cssNameSpaceSeparatedFullMatch, cursorFullMatch, filterListFullMatch, funcIRIFullMatch, indentFullMatch, integerFullMatch, langFullMatch, lengthFullMatch, lengthPairFullMatch, lengthPairListFullMatch, lengthPercentageFullMatch, lengthPercentageListFullMatch, mediaTypeFullMatch, nameFullMatch, nonNegativeFullMatch, numberFullMatch, numberListFullMatch, numberOptionalFullMatch, numberSemiSepatatedFullMatch, pathFullMatch, percentageFullMatch, preservAspectRatioFullMatch, stopColorFullMatch, strokeDasharrayFullMatch, timeListFullMatch, transformListFullMatch, URIFullMatch, viewBoxFullMatch } from './syntax';
 
 const shapeAndText = shapeElements.concat(textContentElements);
 const viewport = ['pattern', 'marker'].concat(newViewportsElements);
 const useContainerGraphics = ['use'].concat(containerElements, graphicsElements);
 const colorApply = ['animate'].concat(useContainerGraphics, gradientElements);
+
+const colorValue: TLegalValueItem[] = [{
+	type: 'reg',
+	value: colorFullMatch,
+}, {
+	type: 'enum',
+	value: systemColor,
+}, {
+	type: 'enum',
+	value: x11Colors,
+}, {
+	type: 'enum',
+	value: colorKeyWords,
+}];
+
+const paintValue = colorValue.concat(colorValue.concat([{
+	type: 'string',
+	value: 'none',
+}, {
+	type: 'enum',
+	value: paintKeywords,
+}, {
+	type: 'reg',
+	value: funcIRIFullMatch,
+}]));
+
+const opacityValue: TLegalValueItem[] = [{
+	type: 'reg',
+	value: percentageFullMatch,
+}, {
+	type: 'reg',
+	value: numberFullMatch,
+}];
+
+const markerValue: TLegalValueItem[] = [{
+	type: 'string',
+	value: 'none',
+}, {
+	type: 'reg',
+	value: funcIRIFullMatch,
+}];
 
 const _regularAttr: TDynamicObj<IRegularAttr> = {
 	'accumulate': {
@@ -1756,7 +1797,13 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		inherited: true,
 		animatable: true,
 		maybeSizeNumber: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			value: baselineShift,
+		}, {
+			type: 'reg',
+			value: lengthPercentageFullMatch,
+		}],
 		initValue: '0',
 		applyTo: ['tspan', 'textPath'],
 	},
@@ -1765,7 +1812,13 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		couldBeStyle: true,
 		animatable: true,
 		maybeSizeNumber: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'string',
+			value: 'auto',
+		}, {
+			type: 'reg',
+			value: clipPathRect,
+		}],
 		initValue: 'auto',
 		applyTo: viewport,
 	},
@@ -1774,7 +1827,19 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		couldBeStyle: true,
 		animatable: true,
 		maybeFuncIRI: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'string',
+			value: 'none',
+		}, {
+			type: 'reg',
+			value: funcIRIFullMatch,
+		}, {
+			type: 'reg',
+			value: basicShapeFullMatch,
+		}, {
+			type: 'enum',
+			value: clipPath,
+		}],
 		initValue: 'none',
 		applyTo: useContainerGraphics,
 	},
@@ -1783,7 +1848,10 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		couldBeStyle: true,
 		inherited: true,
 		animatable: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			value: nonzeroEvenodd,
+		}],
 		initValue: 'nonzero',
 		applyTo: ['use'].concat(graphicsElements),
 	},
@@ -1793,7 +1861,7 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		inherited: true,
 		animatable: true,
 		maybeColor: true,
-		legalValues: [],
+		legalValues: colorValue,
 		initValue: '',
 		applyTo: ['feFlood', 'feDiffuseLighting', 'feSpecularLighting', 'stop'].concat(shapeAndText),
 	},
@@ -1802,7 +1870,10 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		couldBeStyle: true,
 		inherited: true,
 		animatable: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			value: colorInterpolation,
+		}],
 		initValue: 'sRGB',
 		applyTo: colorApply,
 	},
@@ -1811,7 +1882,10 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		couldBeStyle: true,
 		inherited: true,
 		animatable: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			value: colorInterpolation,
+		}],
 		initValue: 'auto',
 		applyTo: ['feSpotLight'].concat(filterPrimitiveElements),
 	},
@@ -1820,7 +1894,10 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		couldBeStyle: true,
 		inherited: true,
 		animatable: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			value: colorRendering,
+		}],
 		initValue: 'auto',
 		applyTo: colorApply,
 	},
@@ -1830,7 +1907,10 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		inherited: true,
 		animatable: true,
 		maybeFuncIRI: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'reg',
+			value: cursorFullMatch,
+		}],
 		initValue: 'auto',
 		applyTo: useContainerGraphics,
 	},
@@ -1838,7 +1918,10 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		name: 'direction',
 		couldBeStyle: true,
 		inherited: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			value: direction,
+		}],
 		initValue: 'ltr',
 		applyTo: textContentElements,
 	},
@@ -1846,7 +1929,10 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		name: 'display',
 		couldBeStyle: true,
 		animatable: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			value: display,
+		}],
 		initValue: 'inline',
 		applyTo: ['svg', 'g', 'switch', 'a', 'foreignObject', 'use'].concat(graphicsElements),
 	},
@@ -1855,7 +1941,10 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		couldBeStyle: true,
 		inherited: true,
 		animatable: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			value: dominantBaseline,
+		}],
 		initValue: 'auto',
 		applyTo: textContentElements,
 	},
@@ -1866,7 +1955,7 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		animatable: true,
 		maybeColor: true,
 		maybeFuncIRI: true,
-		legalValues: [],
+		legalValues: paintValue,
 		initValue: [{
 			val: 'black',
 			tag: useContainerGraphics,
@@ -1882,7 +1971,7 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		inherited: true,
 		animatable: true,
 		maybeAlpha: true,
-		legalValues: [],
+		legalValues: opacityValue,
 		initValue: '1',
 		applyTo: shapeAndText,
 	},
@@ -1891,7 +1980,10 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		couldBeStyle: true,
 		inherited: true,
 		animatable: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			value: nonzeroEvenodd,
+		}],
 		initValue: 'nonzero',
 		applyTo: shapeAndText,
 	},
@@ -1900,7 +1992,13 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		couldBeStyle: true,
 		animatable: true,
 		maybeFuncIRI: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'string',
+			value: 'none',
+		}, {
+			type: 'reg',
+			value: filterListFullMatch,
+		}],
 		initValue: 'none',
 		applyTo: useContainerGraphics,
 	},
@@ -1909,7 +2007,7 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: true,
-		legalValues: [],
+		legalValues: colorValue,
 		initValue: 'black',
 		applyTo: ['feFlood'],
 	},
@@ -1917,19 +2015,9 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		name: 'flood-opacity',
 		couldBeStyle: true,
 		maybeAlpha: true,
-		legalValues: [],
+		legalValues: opacityValue,
 		initValue: '1',
 		applyTo: ['feFlood'],
-	},
-	'font': {
-		name: 'font',
-		couldBeStyle: true,
-		inherited: true,
-		animatable: true,
-		maybeSizeNumber: true,
-		legalValues: [],
-		initValue: '',
-		applyTo: textContentElements,
 	},
 	'font-family': {
 		name: 'font-family',
@@ -1945,7 +2033,16 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		inherited: true,
 		animatable: true,
 		maybeSizeNumber: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'reg',
+			value: lengthPercentageFullMatch,
+		}, {
+			type: 'enum',
+			value: absoluteSize,
+		}, {
+			type: 'enum',
+			value: relativeSize,
+		}],
 		initValue: 'medium',
 		applyTo: textContentElements,
 	},
@@ -1955,7 +2052,13 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		inherited: true,
 		animatable: true,
 		maybeSizeNumber: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'string',
+			value: 'none',
+		}, {
+			type: 'reg',
+			value: numberFullMatch,
+		}],
 		initValue: 'none',
 		applyTo: textContentElements,
 	},
@@ -1964,7 +2067,10 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		couldBeStyle: true,
 		inherited: true,
 		animatable: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			value: fontStretch,
+		}],
 		initValue: 'normal',
 		applyTo: textContentElements,
 	},
@@ -1972,7 +2078,10 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		name: 'font-style',
 		couldBeStyle: true,
 		inherited: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			value: fontStyle,
+		}],
 		initValue: 'normal',
 		applyTo: textContentElements,
 	},
@@ -1981,47 +2090,19 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		couldBeStyle: true,
 		inherited: true,
 		animatable: true,
-		legalValues: [],
-		initValue: 'normal',
-		applyTo: textContentElements,
-	},
-	'font-variant-ligatures': {
-		name: 'font-variant-ligatures',
-		couldBeStyle: true,
-		inherited: true,
-		legalValues: [],
-		initValue: 'normal',
-		applyTo: textContentElements,
-	},
-	'font-variant-position': {
-		name: 'font-variant-position',
-		couldBeStyle: true,
-		inherited: true,
-		legalValues: [],
-		initValue: 'normal',
-		applyTo: textContentElements,
-	},
-	'font-variant-caps': {
-		name: 'font-variant-caps',
-		couldBeStyle: true,
-		inherited: true,
-		legalValues: [],
-		initValue: 'normal',
-		applyTo: textContentElements,
-	},
-	'font-variant-numeric': {
-		name: 'font-variant-numeric',
-		couldBeStyle: true,
-		inherited: true,
-		legalValues: [],
-		initValue: 'normal',
-		applyTo: textContentElements,
-	},
-	'font-variant-east-asian': {
-		name: 'font-variant-east-asian',
-		couldBeStyle: true,
-		inherited: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'string',
+			value: 'normal',
+		}, {
+			type: 'string',
+			value: 'none',
+		}, {
+			type: 'mix',
+			value: {
+				type: '|',
+				unit: [commonLigValues, discretionaryLigValues, historicalLigValues, contextualAltValues, capsValues, numericFigureValues, numericSpacingValues, numericFractionValues, 'ordinal', 'slashed-zero', eastAsianVariantValues, eastAsianWidthValues, 'ruby', 'sub|super'],
+			},
+		}],
 		initValue: 'normal',
 		applyTo: textContentElements,
 	},
@@ -2030,7 +2111,10 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		couldBeStyle: true,
 		inherited: true,
 		animatable: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			value: fontWeight,
+		}],
 		initValue: 'normal',
 		applyTo: textContentElements,
 	},
@@ -2039,18 +2123,12 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		couldBeStyle: true,
 		inherited: true,
 		animatable: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			value: colorRendering,
+		}],
 		initValue: 'auto',
 		applyTo: ['image'],
-	},
-	'inline-size': {
-		name: 'inline-size',
-		couldBeStyle: true,
-		maybeSizeNumber: true,
-		animatable: true,
-		legalValues: [],
-		initValue: '0',
-		applyTo: ['text'],
 	},
 	'letter-spacing': {
 		name: 'letter-spacing',
@@ -2058,7 +2136,13 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		inherited: true,
 		animatable: true,
 		maybeSizeNumber: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'string',
+			value: 'normal'
+		}, {
+			type: 'reg',
+			value: lengthFullMatch,
+		}],
 		initValue: 'normal',
 		applyTo: textContentElements,
 	},
@@ -2067,7 +2151,7 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: true,
-		legalValues: [],
+		legalValues: colorValue,
 		initValue: 'white',
 		applyTo: ['feDiffuseLighting', 'feSpecularLighting'],
 	},
@@ -2078,7 +2162,13 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		animatable: true,
 		maybeColor: true,
 		maybeSizeNumber: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'string',
+			value: 'normal',
+		}, {
+			type: 'reg',
+			value: lengthPercentageFullMatch,
+		}],
 		initValue: 'normal',
 		applyTo: ['text'],
 	},
@@ -2088,7 +2178,7 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		inherited: true,
 		animatable: true,
 		maybeFuncIRI: true,
-		legalValues: [],
+		legalValues: markerValue,
 		initValue: 'none',
 		applyTo: shapeElements,
 	},
@@ -2098,7 +2188,7 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		inherited: true,
 		animatable: true,
 		maybeFuncIRI: true,
-		legalValues: [],
+		legalValues: markerValue,
 		initValue: 'none',
 		applyTo: shapeElements,
 	},
@@ -2108,7 +2198,7 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		inherited: true,
 		animatable: true,
 		maybeFuncIRI: true,
-		legalValues: [],
+		legalValues: markerValue,
 		initValue: 'none',
 		applyTo: shapeElements,
 	},
@@ -2118,7 +2208,7 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		inherited: true,
 		animatable: true,
 		maybeFuncIRI: true,
-		legalValues: [],
+		legalValues: markerValue,
 		initValue: 'none',
 		applyTo: shapeElements,
 	},
@@ -2127,73 +2217,8 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		couldBeStyle: true,
 		animatable: true,
 		maybeFuncIRI: true,
-		legalValues: [],
+		legalValues: [], // TODO
 		initValue: 'none',
-		applyTo: useContainerGraphics,
-	},
-	'mask-image': {
-		name: 'mask-image',
-		couldBeStyle: true,
-		animatable: true,
-		maybeFuncIRI: true,
-		legalValues: [],
-		initValue: 'none',
-		applyTo: useContainerGraphics,
-	},
-	'mask-mode': {
-		name: 'mask-mode',
-		couldBeStyle: true,
-		animatable: true,
-		legalValues: [],
-		initValue: 'match-source',
-		applyTo: useContainerGraphics,
-	},
-	'mask-repeat': {
-		name: 'mask-repeat',
-		couldBeStyle: true,
-		animatable: true,
-		legalValues: [],
-		initValue: 'repeat',
-		applyTo: useContainerGraphics,
-	},
-	'mask-position': {
-		name: 'mask-position',
-		couldBeStyle: true,
-		animatable: true,
-		legalValues: [],
-		initValue: '0% 0%',
-		applyTo: useContainerGraphics,
-	},
-	'mask-clip': { // https://drafts.fxtf.org/css-masking-1/#the-mask-clip
-		name: 'mask-clip',
-		couldBeStyle: true,
-		animatable: true,
-		legalValues: [],
-		initValue: 'border-box',
-		applyTo: useContainerGraphics,
-	},
-	'mask-origin': {
-		name: 'mask-origin',
-		couldBeStyle: true,
-		animatable: true,
-		legalValues: [],
-		initValue: 'border-box',
-		applyTo: useContainerGraphics,
-	},
-	'mask-size': {
-		name: 'mask-size',
-		couldBeStyle: true,
-		animatable: true,
-		legalValues: [],
-		initValue: 'auto',
-		applyTo: useContainerGraphics,
-	},
-	'mask-composite': {
-		name: 'mask-composite',
-		couldBeStyle: true,
-		animatable: true,
-		legalValues: [],
-		initValue: 'add',
 		applyTo: useContainerGraphics,
 	},
 	'opacity': {
@@ -2201,7 +2226,7 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		couldBeStyle: true,
 		animatable: true,
 		maybeAlpha: true,
-		legalValues: [],
+		legalValues: opacityValue,
 		initValue: '1',
 		applyTo: ['svg', 'g', 'symbol', 'marker', 'a', 'switch', 'use', 'unknown'].concat(graphicsElements),
 	},
@@ -2209,7 +2234,10 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		name: 'overflow',
 		couldBeStyle: true,
 		animatable: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			value: overflow,
+		}],
 		initValue: 'visible',
 		applyTo: viewport,
 	},
@@ -2218,7 +2246,16 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		couldBeStyle: true,
 		inherited: true,
 		animatable: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'string',
+			value: 'normal',
+		}, {
+			type: 'mix',
+			value: {
+				type: '|',
+				unit: ['fill', 'stroke', 'markers'],
+			}
+		}],
 		initValue: 'normal',
 		applyTo: shapeAndText,
 	},
@@ -2227,65 +2264,37 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		couldBeStyle: true,
 		inherited: true,
 		animatable: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			value: pointerEvents,
+		}],
 		initValue: 'visiblePainted',
 		applyTo: useContainerGraphics,
-	},
-	'shape-image-threshold': {
-		name: 'shape-image-threshold',
-		couldBeStyle: true,
-		animatable: true,
-		legalValues: [],
-		initValue: '0',
-		applyTo: ['text'],
-	},
-	'shape-inside': {
-		name: 'shape-inside',
-		couldBeStyle: true,
-		animatable: true,
-		legalValues: [],
-		initValue: 'auto',
-		applyTo: ['text'],
-	},
-	'shape-margin': {
-		name: 'shape-margin',
-		couldBeStyle: true,
-		animatable: true,
-		legalValues: [],
-		initValue: '0',
-		applyTo: ['text'],
-	},
-	'shape-padding': {
-		name: 'shape-padding',
-		couldBeStyle: true,
-		animatable: true,
-		legalValues: [],
-		initValue: '',
-		applyTo: ['text'],
 	},
 	'shape-rendering': {
 		name: 'shape-rendering',
 		couldBeStyle: true,
 		inherited: true,
 		animatable: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			value: shapeRendering,
+		}],
 		initValue: 'auto',
 		applyTo: shapeElements,
-	},
-	'shape-subtract': {
-		name: 'shape-subtract',
-		couldBeStyle: true,
-		animatable: true,
-		legalValues: [],
-		initValue: 'none',
-		applyTo: ['text'],
 	},
 	'stop-color': {
 		name: 'stop-color',
 		couldBeStyle: true,
 		animatable: true,
 		maybeColor: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'string',
+			value: 'currentColor',
+		}, {
+			type: 'reg',
+			value: stopColorFullMatch,
+		}],
 		initValue: 'black',
 		applyTo: ['stop'],
 	},
@@ -2294,7 +2303,7 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		couldBeStyle: true,
 		animatable: true,
 		maybeAlpha: true,
-		legalValues: [],
+		legalValues: opacityValue,
 		initValue: '1',
 		applyTo: ['stop'],
 	},
@@ -2305,7 +2314,7 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		animatable: true,
 		maybeColor: true,
 		maybeFuncIRI: true,
-		legalValues: [],
+		legalValues: paintValue,
 		initValue: 'none',
 		applyTo: shapeAndText,
 	},
@@ -2315,7 +2324,13 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		inherited: true,
 		animatable: true,
 		maybeSizeNumber: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'string',
+			value: 'none',
+		}, {
+			type: 'reg',
+			value: strokeDasharrayFullMatch,
+		}],
 		initValue: 'none',
 		applyTo: shapeAndText,
 	},
@@ -2325,7 +2340,10 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		inherited: true,
 		animatable: true,
 		maybeSizeNumber: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'reg',
+			value: lengthPercentageFullMatch,
+		}],
 		initValue: '0',
 		applyTo: shapeAndText,
 	},
@@ -2334,7 +2352,10 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		couldBeStyle: true,
 		inherited: true,
 		animatable: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			value: strokeLinecap,
+		}],
 		initValue: 'butt',
 		applyTo: shapeAndText,
 	},
@@ -2343,7 +2364,10 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		couldBeStyle: true,
 		inherited: true,
 		animatable: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			value: strokeLinejoin,
+		}],
 		initValue: 'miter',
 		applyTo: shapeAndText,
 	},
@@ -2353,7 +2377,10 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		inherited: true,
 		animatable: true,
 		maybeSizeNumber: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'reg',
+			value: nonNegativeFullMatch,
+		}],
 		initValue: '4',
 		applyTo: shapeAndText,
 	},
@@ -2363,7 +2390,7 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		inherited: true,
 		animatable: true,
 		maybeAlpha: true,
-		legalValues: [],
+		legalValues: opacityValue,
 		initValue: '1',
 		applyTo: shapeAndText,
 	},
@@ -2373,7 +2400,10 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		inherited: true,
 		animatable: true,
 		maybeSizeNumber: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'reg',
+			value: lengthPercentageFullMatch,
+		}],
 		initValue: '1',
 		applyTo: shapeAndText,
 	},
