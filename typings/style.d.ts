@@ -14,6 +14,7 @@ export interface IStyleObj {
 		from: 'attr' | 'styletag' | 'inline' | 'inherit';
 		selectorPriority?: ISeletorPriority;
 		important?: boolean;
+		override?: boolean;
 	};
 }
 

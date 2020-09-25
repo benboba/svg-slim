@@ -23,6 +23,7 @@
 * 引入 browserslist，决定部分优化细节的取舍
 * 引入 known-css-properties 过滤未知 css 属性
 * 测试用例的补全和修正
+* 增加 mix 和 func 两种属性值类型的验证逻辑
 
 ### bug 修复与改进
 
@@ -30,6 +31,7 @@
 * 优化了 combine-path 的合并规则，现在会更合理地对 path 元素进行合并
 * 在判断两个属性是否相同的逻辑中，追加了 opacity 类型百分比和浮点数的转换规则
 * 现在解析样式树的时候会考虑 important 的情况
+* 现在 shorten-style-attr 规则在移除与默认值相同的属性时，会判断当前属性是否是覆盖了 style 标签的同名属性，如果是，则不能移除
 
 ### 其它
 
@@ -39,8 +41,6 @@
 * 增加 svg-slimming.mjs
 * 使用 jest 代替 mocha + chai + nyc
 * 调整了目录结构和部分模块的文件名
-
-### 功能
 
 ## 2020.03.20 v1.5.3
 

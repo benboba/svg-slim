@@ -74,5 +74,11 @@ describe('validate/legal-value', () => {
 			fullname: 'opacity',
 			value: 'inherit',
 		})).toBeTruthy;
+
+		expect(legalValue(regularAttr.opacity, {
+			name: '',
+			fullname: 'opacity',
+			value: 'inherit',
+		})).toBeTruthy;
 	});
 });

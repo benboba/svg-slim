@@ -37,6 +37,8 @@ const checkAttr = (node: ITag, dom: IDom, rmAttrEqDefault: boolean, browsers: Re
 	parseStyleTree(dom);
 	const attrObj: IStyleAttrObj = {}; // 存储所有样式和可以转为样式的属性
 	const tagDefine = regularTag[node.nodeName];
+	const nodeStyle = node.styles;
+	// 标记覆盖了 styletag 中的属性
 	// 逆序循环，并从后向前移除属性
 	for (let i = node.attributes.length; i--;) {
 		const attr = node.attributes[i];
@@ -72,14 +74,18 @@ const checkAttr = (node: ITag, dom: IDom, rmAttrEqDefault: boolean, browsers: Re
 				}
 
 				// 标记一下是否存在不能和属性互转的样式
-				const onlyCss = (
+				const onlyCss = (nodeStyle && nodeStyle[styleItem.fullname] && nodeStyle[styleItem.fullname].override) // 属性覆盖了 styletag
+				||
+				(
 					!styleDefine.couldBeStyle // 标记在常规属性列表中
 					&&
 					!checkGeometry(node.nodeName, styleItem.fullname, browsers) // 并且当前环境不支持 geo 属性转换
-				) || cantTrans(tagDefine, styleItem.fullname); // 某些特定元素属性不能放在 style 中
+				)
+				||
+				cantTrans(tagDefine, styleItem.fullname); // 某些特定元素属性不能放在 style 中
 
 				// 如果存在同名属性，要把被覆盖的属性移除掉
-				// 之所以要判断 attrObj 是否存在 key，是为了保证只移除已遍历过的属性（此处不考虑同名属性，同名属性无法通过 xml-parser 的解析规则）
+				// 之所以要判断 attrObj 是否存在 key，是为了保证只移除已遍历过的属性（此处不考虑同名属性，同名属性无法通过 svg-vdom 的解析规则）
 				if (!onlyCss && has(styleItem.fullname, attrObj)) {
 					node.removeAttribute(styleItem.fullname);
 				}
@@ -87,8 +93,9 @@ const checkAttr = (node: ITag, dom: IDom, rmAttrEqDefault: boolean, browsers: Re
 				if (rmAttrEqDefault) {
 					// 如果父元素上有同名的样式类属性，则不能移除和默认值相同的属性
 					const parentStyle = (node.parentNode as ITag).styles;
+					// 当前样式不是覆盖的 styletag， 才可以移除
 					if (!styleDefine.inherited || !parentStyle || !hasProp(parentStyle, styleItem.fullname)) {
-						if (attrIsEqual(styleDefine, styleItem.value, node.nodeName)) {
+						if ((!nodeStyle || !nodeStyle[styleItem.fullname] || !nodeStyle[styleItem.fullname].override) && attrIsEqual(styleDefine, styleItem.value, node.nodeName)) {
 							styleObj.splice(si, 1);
 							continue;
 						}
@@ -117,7 +124,8 @@ const checkAttr = (node: ITag, dom: IDom, rmAttrEqDefault: boolean, browsers: Re
 				// 如果父元素上有同名的样式类属性，则不能移除和默认值相同的属性
 				const parentStyle = (node.parentNode as ITag).styles;
 				if (!attrDefine.inherited || !parentStyle || !hasProp(parentStyle, attr.fullname)) {
-					if (attrIsEqual(attrDefine, attr.value, node.nodeName)) {
+					// 当前样式不是覆盖的 styletag， 才可以移除
+					if ((!nodeStyle || !nodeStyle[attr.fullname] || !nodeStyle[attr.fullname].override) && attrIsEqual(attrDefine, attr.value, node.nodeName)) {
 						node.removeAttribute(attr.fullname);
 						continue;
 					}

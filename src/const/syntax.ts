@@ -162,8 +162,8 @@ export const borderRadiusFullMatch = new RegExp(`^${lengthPercentage1_4}\\s*\\/\
 export const basicShapeFullMatch = /^(?:inset|circle|ellipse|polygon)\([^()]+\)$/;
 
 // color
-const rgb = `rgba?${paren}(?:${numberPattern}${commaWsp}${numberPattern}${commaWsp}${numberPattern}${commaWsp}${numberPattern}%?|${numberPattern}%${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%?)${rParen}`;
-const hsl = `hsla?${paren}${numberPattern}${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%?${rParen}`;
+const rgb = `rgba?${paren}(?:${numberPattern}(%?)${commaWsp}${numberPattern}\\1${commaWsp}${numberPattern}\\1(?:${commaWsp}${numberPattern}%?)?)${rParen}`;
+const hsl = `hsla?${paren}${numberPattern}${commaWsp}${numberPattern}%${commaWsp}${numberPattern}%(?:${commaWsp}${numberPattern}%?)?${rParen}`;
 const hexColor = '#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})';
 export const colorFullMatch = new RegExp(`^(?:${rgb}|${hsl}|${hexColor})$`);
 const iccColor = `icc-color${paren}${Name}(?:${commaWsp}${numberPattern})+${rParen}`;
@@ -181,3 +181,5 @@ const filterFunc = `(?:${blur}|${filterFuncNumberPercentage}|${dropShadow}|${hue
 export const filterListFullMatch = new RegExp(`(?:(?:${filterFunc}|${url})${commaWsp})+`);
 
 export const strokeDasharrayFullMatch = new RegExp(`^${lengthPercentage}(?:${commaWsp}${lengthPercentage})+$`);
+
+export const vectorEffectFullMatch = /^(?:non-scaling-stroke|non-scaling-size|non-rotation|fixed-position)+(?:viewport|screen)?$/;

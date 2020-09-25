@@ -32,10 +32,19 @@ const check = (dom: IDom, styleItems: IStyleItem[]) => {
 				// 行内样式优先级最高
 				const styles = parseStyle(attr.value);
 				styles.forEach(style => {
+					let override = false;
+					if (nodeStyle[style.name] && nodeStyle[style.name].from === 'styletag') {
+						if (nodeStyle[style.name].important && !style.important) {
+							return;
+						}
+						// 标记覆盖了 styletag 中的属性
+						override = true;
+					}
 					nodeStyle[style.name] = {
 						value: style.value,
 						from: 'inline',
 						important: style.important,
+						override,
 					};
 				});
 			} else if (attr.name === 'href') {
@@ -79,6 +88,9 @@ const check = (dom: IDom, styleItems: IStyleItem[]) => {
 							selectorPriority: styleItem.selectorPriority,
 							important: style.important,
 						};
+					} else if (styleDefine && styleDefine.from === 'inline') {
+						// 标记覆盖了 styletag 中的属性
+						styleDefine.override = true;
 					}
 				});
 			}

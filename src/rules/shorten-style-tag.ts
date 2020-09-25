@@ -3,6 +3,7 @@ import { propEq } from 'ramda';
 import { parseSelector } from 'svg-vdom';
 import { IRuleOption, TUnique } from '../../typings';
 import { IDom, ITag } from '../../typings/node';
+import { importantReg } from '../const/regs';
 import { regularAttr } from '../const/regular-attr';
 import { checkApply } from '../style/check-apply';
 import { hasProp } from '../utils/has-prop';
@@ -70,8 +71,13 @@ export const shortenStyleTag = async (dom: IDom, {
 							for (let mi = declarations.length; mi--;) {
 								const ruleItem = declarations[mi];
 								const property = ruleItem.property as string;
+								const isImportant = importantReg.test(ruleItem.value as string);
 								// 判断每一条属性与每一个命中元素的匹配情况
-								if (matchNodes.some(matchNode => checkApply(regularAttr[property], matchNode, dom, true))) {
+								if (
+									(regularAttr[property].isUndef && knownCSS(property))
+									||
+									matchNodes.some(matchNode => checkApply(regularAttr[property], matchNode, dom, true, isImportant))
+								) {
 									// 只要有一条匹配存在，就证明该选择器有效
 									anyMatch = true;
 									// 同时标记该属性有效

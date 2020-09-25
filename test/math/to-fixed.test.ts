@@ -13,6 +13,8 @@ describe('数值按精度截取', () => {
 		expect(toFixed(7, 1.99901e-7)).toBe(2e-7);
 		expect(toFixed(6, 1.99901e-7)).toBe(0);
 		expect(toFixed(6, 9.99901e-7)).toBe(1e-6);
+		expect(toFixed(7, -1.99901e-7)).toBe(-2e-7);
+		expect(toFixed(6, -9.99901e-6)).toBe(-1e-5);
 	});
 
 	test('整数', () => {

@@ -6,13 +6,7 @@ import { parseStyle } from './parse';
 
 // TODO：目前只验证了 href 和 xlink:href，其它 IRI 或 funcIRI 属性是否也需要验证？
 // 遇到引用属性，还需要递归验证被引用对象是否可应用样式
-const getXlink = (
-	styleDefine: IRegularAttr,
-	idStr: string,
-	dom: IDocument,
-	unique: Set<INode>,
-	fromStyleTag: boolean,
-) => check(styleDefine, dom.querySelector(idStr) as ITag, dom, unique, fromStyleTag);
+const getXlink = (dom: IDocument, idStr: string) => dom.querySelector(idStr) as ITag;
 
 // 定义一个特殊的遍历方法，只接收一个 condition 方法，只有该方法返回 true 才继续遍历子元素
 const traversal = (condition: (n: INode) => boolean, node: ITag): void => {
@@ -24,7 +18,7 @@ const traversal = (condition: (n: INode) => boolean, node: ITag): void => {
 	}
 };
 
-const check = (styleDefine: IRegularAttr, node: ITag | null, dom: IDocument, unique: Set<INode>, fromStyleTag: boolean): boolean => {
+const check = (styleDefine: IRegularAttr, node: ITag | null, dom: IDocument, unique: Set<INode>, fromStyleTag: boolean, isImportant: boolean): boolean => {
 	if (!node) return false;
 
 	// 如果是检测 style 标签的样式，则只要遇到同名的 style 属性就返回 false
@@ -33,7 +27,9 @@ const check = (styleDefine: IRegularAttr, node: ITag | null, dom: IDocument, uni
 			const attr = node.attributes[i];
 			if (attr.fullname === 'style') {
 				const childStyle = parseStyle(attr.value);
-				if (childStyle.some(style => style.fullname === styleDefine.name)) {
+				if (childStyle.some(style => {
+					return style.fullname === styleDefine.name && (!isImportant || style.important);
+				})) {
 					return false;
 				}
 			}
@@ -52,9 +48,9 @@ const check = (styleDefine: IRegularAttr, node: ITag | null, dom: IDocument, uni
 	let result = false;
 
 	if (node.hasAttribute('href')) {
-		result = getXlink(styleDefine, node.getAttribute('href') as string, dom, unique, false);
+		result = check(styleDefine, getXlink(dom, node.getAttribute('href') as string), dom, unique, false, false);
 	} else if (node.hasAttribute('xlink:href')) {
-		result = getXlink(styleDefine, node.getAttribute('xlink:href') as string, dom, unique, false);
+		result = check(styleDefine, getXlink(dom, node.getAttribute('xlink:href') as string), dom, unique, false, false);
 	}
 
 	// 已经命中就不需要再继续了
@@ -92,12 +88,12 @@ const check = (styleDefine: IRegularAttr, node: ITag | null, dom: IDocument, uni
 		} else { // 否则继续遍历子元素
 			// 没有命中，但具有 IRI 引用，则继续
 			if (childNode.hasAttribute('href')) {
-				if (getXlink(styleDefine, childNode.getAttribute('href') as string, dom, unique, fromStyleTag)) {
+				if (check(styleDefine, getXlink(dom, childNode.getAttribute('href') as string), dom, unique, fromStyleTag, isImportant)) {
 					result = true;
 					return false;
 				}
 			} else if (childNode.hasAttribute('xlink:href')) {
-				if (getXlink(styleDefine, childNode.getAttribute('xlink:href') as string, dom, unique, fromStyleTag)) {
+				if (check(styleDefine, getXlink(dom, childNode.getAttribute('xlink:href') as string), dom, unique, fromStyleTag, isImportant)) {
 					result = true;
 					return false;
 				}
@@ -114,4 +110,5 @@ export const checkApply = (
 	node: ITag,
 	dom: IDocument,
 	fromStyleTag = false, // 标记是否为检测 style 标签的样式
-): boolean => check(styleDefine, node, dom, new Set<INode>(), fromStyleTag);
+	isImportant = false, // 标记是否为 !important
+): boolean => check(styleDefine, node, dom, new Set<INode>(), fromStyleTag, isImportant);

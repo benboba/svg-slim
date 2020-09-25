@@ -1,8 +1,8 @@
 import { IRegularAttr, TDynamicObj, TLegalValueItem } from '../../typings';
 import { hasProp } from '../utils/has-prop';
 import { containerElements, filterPrimitiveElements, gradientElements, graphicsElements, newViewportsElements, shapeElements, textContentElements } from './definitions';
-import { absoluteSize, alignmentBaseline, alignX, alignY, animateTransformType, baselineShift, blendMode, calcMode, capsValues, channel, clipPath, colorInterpolation, colorKeyWords, colorRendering, commonLigValues, contextualAltValues, crossOrigin, direction, discretionaryLigValues, display, dominantBaseline, dur, eastAsianVariantValues, eastAsianWidthValues, edgeMode, feColorMatrixType, feFuncType, feTurbulenceType, fontStretch, fontStyle, fontWeight, historicalLigValues, inVal, isolationMode, lengthAdjust, markerUnit, method, nonzeroEvenodd, numericFigureValues, numericFractionValues, numericSpacingValues, operater, operater1, orient, overflow, paintKeywords, pointerEvents, referrer, relativeSize, restart, shapeRendering, spreadMethod, strokeLinecap, strokeLinejoin, systemColor, target, units, x11Colors } from './enum';
-import { angelFullMatch, basicShapeFullMatch, clipPathRect, clockFullMatch, colorFullMatch, controlPointsFullMatch, cssNameFullMatch, cssNameSpaceSeparatedFullMatch, cursorFullMatch, filterListFullMatch, funcIRIFullMatch, indentFullMatch, integerFullMatch, langFullMatch, lengthFullMatch, lengthPairFullMatch, lengthPairListFullMatch, lengthPercentageFullMatch, lengthPercentageListFullMatch, mediaTypeFullMatch, nameFullMatch, nonNegativeFullMatch, numberFullMatch, numberListFullMatch, numberOptionalFullMatch, numberSemiSepatatedFullMatch, pathFullMatch, percentageFullMatch, preservAspectRatioFullMatch, stopColorFullMatch, strokeDasharrayFullMatch, timeListFullMatch, transformListFullMatch, URIFullMatch, viewBoxFullMatch } from './syntax';
+import { absoluteSize, alignmentBaseline, alignX, alignY, animateTransformType, baselineShift, blendMode, calcMode, capsValues, channel, clipPath, colorInterpolation, colorKeyWords, colorRendering, commonLigValues, contextualAltValues, crossOrigin, direction, discretionaryLigValues, display, dominantBaseline, dur, eastAsianVariantValues, eastAsianWidthValues, edgeMode, feColorMatrixType, feFuncType, feTurbulenceType, fontStretch, fontStyle, fontWeight, historicalLigValues, inVal, isolationMode, lengthAdjust, markerUnit, method, nonzeroEvenodd, numericFigureValues, numericFractionValues, numericSpacingValues, operater, operater1, orient, overflow, paintKeywords, pointerEvents, referrer, relativeSize, restart, shapeRendering, spreadMethod, strokeLinecap, strokeLinejoin, systemColor, target, textAnchor, textRendering, unicodeBidi, units, visibility, whiteSpace, writingMode, writingModeCSS3, x11Colors } from './enum';
+import { angelFullMatch, basicShapeFullMatch, clipPathRect, clockFullMatch, colorFullMatch, controlPointsFullMatch, cssNameFullMatch, cssNameSpaceSeparatedFullMatch, cursorFullMatch, filterListFullMatch, funcIRIFullMatch, indentFullMatch, integerFullMatch, langFullMatch, lengthFullMatch, lengthPairFullMatch, lengthPairListFullMatch, lengthPercentageFullMatch, lengthPercentageListFullMatch, mediaTypeFullMatch, nameFullMatch, nonNegativeFullMatch, numberFullMatch, numberListFullMatch, numberOptionalFullMatch, numberSemiSepatatedFullMatch, pathFullMatch, percentageFullMatch, preservAspectRatioFullMatch, stopColorFullMatch, strokeDasharrayFullMatch, timeListFullMatch, transformListFullMatch, URIFullMatch, vectorEffectFullMatch, viewBoxFullMatch } from './syntax';
 
 const shapeAndText = shapeElements.concat(textContentElements);
 const viewport = ['pattern', 'marker'].concat(newViewportsElements);
@@ -2412,7 +2412,10 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		couldBeStyle: true,
 		inherited: true,
 		animatable: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			value: textAnchor,
+		}],
 		initValue: 'start',
 		applyTo: textContentElements,
 	},
@@ -2420,64 +2423,17 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		name: 'text-decoration',
 		couldBeStyle: true,
 		animatable: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'string',
+			value: 'none',
+		}, {
+			type: 'mix',
+			value: {
+				type: '|',
+				unit: ['underline', 'overline', 'line-through', 'blink '],
+			},
+		}],
 		initValue: '',
-		applyTo: textContentElements,
-	},
-	'text-decoration-line': {
-		name: 'text-decoration-line',
-		couldBeStyle: true,
-		animatable: true,
-		legalValues: [],
-		initValue: 'none',
-		applyTo: textContentElements,
-	},
-	'text-decoration-style': {
-		name: 'text-decoration-style',
-		couldBeStyle: true,
-		animatable: true,
-		legalValues: [],
-		initValue: 'solid',
-		applyTo: textContentElements,
-	},
-	'text-decoration-color': {
-		name: 'text-decoration-color',
-		couldBeStyle: true,
-		animatable: true,
-		legalValues: [],
-		initValue: 'currentcolor',
-		applyTo: textContentElements,
-	},
-	'text-decoration-fill': {
-		name: 'text-decoration-fill',
-		couldBeStyle: true,
-		animatable: true,
-		legalValues: [],
-		initValue: '',
-		applyTo: textContentElements,
-	},
-	'text-decoration-stroke': {
-		name: 'text-decoration-stroke',
-		couldBeStyle: true,
-		animatable: true,
-		legalValues: [],
-		initValue: '',
-		applyTo: textContentElements,
-	},
-	'text-orientation': {
-		name: 'text-orientation',
-		couldBeStyle: true,
-		inherited: true,
-		legalValues: [],
-		initValue: 'mixed',
-		applyTo: textContentElements,
-	},
-	'text-overflow': {
-		name: 'text-overflow',
-		couldBeStyle: true,
-		animatable: true,
-		legalValues: [],
-		initValue: 'auto',
 		applyTo: textContentElements,
 	},
 	'text-rendering': {
@@ -2485,14 +2441,20 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		couldBeStyle: true,
 		inherited: true,
 		animatable: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			value: textRendering,
+		}],
 		initValue: 'auto',
 		applyTo: ['text'],
 	},
 	'unicode-bidi': {
 		name: 'unicode-bidi',
 		couldBeStyle: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			value: unicodeBidi,
+		}],
 		initValue: 'normal',
 		applyTo: textContentElements,
 	},
@@ -2500,7 +2462,13 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		name: 'vector-effect',
 		couldBeStyle: true,
 		animatable: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'string',
+			value: 'none',
+		}, {
+			type: 'reg',
+			value: vectorEffectFullMatch,
+		}],
 		initValue: 'none',
 		applyTo: ['use'].concat(graphicsElements),
 	},
@@ -2509,7 +2477,10 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		couldBeStyle: true,
 		inherited: true,
 		animatable: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			value: visibility,
+		}],
 		initValue: 'visible',
 		applyTo: ['use', 'a'].concat(graphicsElements),
 	},
@@ -2518,16 +2489,12 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		couldBeStyle: true,
 		inherited: true,
 		animatable: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			value: whiteSpace,
+		}],
 		initValue: 'normal',
 		applyTo: textContentElements,
-	},
-	'will-change': {
-		name: 'will-change',
-		couldBeStyle: true,
-		legalValues: [],
-		initValue: 'auto',
-		applyTo: useContainerGraphics,
 	},
 	'word-spacing': {
 		name: 'word-spacing',
@@ -2535,7 +2502,13 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		inherited: true,
 		animatable: true,
 		maybeSizeNumber: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'string',
+			value: 'normal',
+		}, {
+			type: 'reg',
+			value: lengthFullMatch,
+		}],
 		initValue: 'normal',
 		applyTo: textContentElements,
 	},
@@ -2543,7 +2516,13 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		name: 'writing-mode',
 		couldBeStyle: true,
 		inherited: true,
-		legalValues: [],
+		legalValues: [{
+			type: 'enum',
+			value: writingModeCSS3,
+		}, {
+			type: 'enum',
+			value: writingMode,
+		}],
 		initValue: [{
 			val: 'lr-tb',
 			tag: ['text'],

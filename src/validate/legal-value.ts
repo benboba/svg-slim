@@ -61,7 +61,7 @@ export const legalValue = (attrDefine: IRegularAttr, attr: IAttr, nodeName = '')
 					return true;
 				}
 				// 如果是 CSS 类的值，还要判断是否匹配 CSS Default keywords
-				if (regularAttr[attr.value].couldBeStyle && useEnum(CSSDefault, attr.value)) {
+				if (attrDefine.couldBeStyle && useEnum(CSSDefault, attr.value)) {
 					return true;
 				}
 			}
