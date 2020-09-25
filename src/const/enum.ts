@@ -103,3 +103,16 @@ export const shapeRendering = 'auto|optimizeSpeed|crispEdges|geometricPrecision'
 export const strokeLinecap = 'butt|round|square';
 
 export const strokeLinejoin = 'miter|miter-clip|round|bevel|arcs';
+
+export const textAnchor = 'start|middle|end';
+
+export const textRendering = 'auto|optimizeSpeed|optimizeLegibility|geometricPrecision';
+
+export const unicodeBidi = 'normal|embed|isolate|bidi-override|isolate-override|plaintext';
+
+export const visibility = 'visible|hidden|collapse';
+
+export const whiteSpace = 'normal|pre|nowrap|pre-wrap|break-spaces|pre-line';
+
+export const writingMode = 'lr|lr-tb|rl|rl-tb|tb|tb-rl';
+export const writingModeCSS3 = 'horizontal-tb|vertical-rl|vertical-lr';
