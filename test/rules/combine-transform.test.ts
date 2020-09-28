@@ -36,7 +36,7 @@ describe('rules/combine-transform', () => {
 
 	test('can"t apply transform', async () => {
 		const xml = `<svg>
-		<text transform="translate(1)" dx="2pt">3</text>
+		<text transform="translate(1)" x="2pt">3</text>
 		<rect transform="rotate(90)" marker-start="#a" rx="3" ry="2"/>
 		<rect transform="scale(1.5)" stroke="black"/>
 		<rect transform="rotate(-90)" ry="1rem"/>
@@ -65,7 +65,7 @@ describe('rules/combine-transform', () => {
 		const dom = await parse(xml);
 		const config = createRuleConfig(mergeConfig(null), 'combine-transform');
 		await combineTransform(dom, config);
-		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><text transform="translate(1)" dx="2pt">3</text><rect transform="rotate(90)" marker-start="#a" rx="3" ry="2"/><rect transform="scale(1.5)" stroke="black"/><rect transform="rotate(-90)" ry="1rem"/><rect transform="rotate(45)"/><rect transform="matrix(2,0,1,2,5,5)" x="3"/><rect transform="skewX(45)"/><line transform="rotate(-90)" y2="1rem"/><line transform="rotate(90)" marker-start="#a"/><line transform="skewX(45)"/><circle transform="rotate(90)" marker-start="#a"/><circle transform="translate(1)" cy="1pt"/><circle transform="matrix(2,0,1,2,5,5)" r="5"/><circle transform="skewX(45)"/><ellipse transform="rotate(90)" marker-start="#a"/><ellipse transform="rotate(15)" rx="2" ry="3"/><ellipse transform="translate(1)" cy="1pt" rx="2" ry="3"/><ellipse transform="matrix(2,0,1,2,5,5)" rx="2" ry="3"/><ellipse transform="skewX(45)" rx="2" ry="3"/><ellipse transform="rotate(90)" rx="2" ry="30%"/><polygon transform="scale(2)" stroke="red"/><polygon transform="rotate(90)" marker-start="#a"/><path transform="rotate(90)" marker-start="#a"/><path transform="scale(2)" stroke="red"/><path transform="skewX(90)" d="m0,0a5,5,1,0,1,10,10"/></svg>');
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><text transform="translate(1)" x="2pt">3</text><rect transform="rotate(90)" marker-start="#a" rx="3" ry="2"/><rect transform="scale(1.5)" stroke="black"/><rect transform="rotate(-90)" ry="1rem"/><rect transform="rotate(45)"/><rect transform="matrix(2,0,1,2,5,5)" x="3"/><rect transform="skewX(45)"/><line transform="rotate(-90)" y2="1rem"/><line transform="rotate(90)" marker-start="#a"/><line transform="skewX(45)"/><circle transform="rotate(90)" marker-start="#a"/><circle transform="translate(1)" cy="1pt"/><circle transform="matrix(2,0,1,2,5,5)" r="5"/><circle transform="skewX(45)"/><ellipse transform="rotate(90)" marker-start="#a"/><ellipse transform="rotate(15)" rx="2" ry="3"/><ellipse transform="translate(1)" cy="1pt" rx="2" ry="3"/><ellipse transform="matrix(2,0,1,2,5,5)" rx="2" ry="3"/><ellipse transform="skewX(45)" rx="2" ry="3"/><ellipse transform="rotate(90)" rx="2" ry="30%"/><polygon transform="scale(2)" stroke="red"/><polygon transform="rotate(90)" marker-start="#a"/><path transform="rotate(90)" marker-start="#a"/><path transform="scale(2)" stroke="red"/><path transform="skewX(90)" d="m0,0a5,5,1,0,1,10,10"/></svg>');
 	});
 
 	test('apply transform', async () => {
@@ -103,7 +103,7 @@ describe('rules/combine-transform', () => {
 		const dom = await parse(xml);
 		const config = createRuleConfig(mergeConfig(null), 'combine-transform');
 		await combineTransform(dom, config);
-		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><text dx="5" dy="6">1</text><text dx="8">2</text><rect ry="3" x="1"/><rect style="x:-60;y:100;width:50;height:100"/><rect width="2" height="1" rx="1" ry="2" x="-2"/><rect width="100" height="50" y="50"/><rect rx="2"/><rect width="6"/><rect rx="3" ry="6"/><rect x="11" y="5"/><rect rx="2" ry="1" x="5" y="5"/><line x1="1" x2="1"/><line y2="10"/><line x1="10"/><circle cy="1" cx="1"/><circle/><circle cx="10" cy="10"/><circle cx="6" r="10"/><ellipse cx="6" rx="10" ry="5"/><circle r="10" cx="5"/><ellipse cx="5" rx="10" ry="5"/><ellipse cy="1" rx="3" ry="5" cx="1"/><ellipse rx="5" ry="3"/><ellipse rx="3" ry="5" cy="20"/><ellipse rx="6" ry="10"/><circle r="4"/><ellipse rx="10" ry="4" cx="5"/><circle cx="5" r="4"/><circle style="fill:red" r="3" cx="1"/></svg>');
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><text x="5" y="6">1</text><text dx="3" x="5">2</text><rect ry="3" x="1"/><rect style="x:-60;y:100;width:50;height:100"/><rect width="2" height="1" rx="1" ry="2" x="-2"/><rect width="100" height="50" y="50"/><rect rx="2"/><rect width="6"/><rect rx="3" ry="6"/><rect x="11" y="5"/><rect rx="2" ry="1" x="5" y="5"/><line x1="1" x2="1"/><line y2="10"/><line x1="10"/><circle cy="1" cx="1"/><circle/><circle cx="10" cy="10"/><circle cx="6" r="10"/><ellipse cx="6" rx="10" ry="5"/><circle r="10" cx="5"/><ellipse cx="5" rx="10" ry="5"/><ellipse cy="1" rx="3" ry="5" cx="1"/><ellipse rx="5" ry="3"/><ellipse rx="3" ry="5" cy="20"/><ellipse rx="6" ry="10"/><circle r="4"/><ellipse rx="10" ry="4" cx="5"/><circle cx="5" r="4"/><circle style="fill:red" r="3" cx="1"/></svg>');
 	});
 
 	test('apply transform poly and path', async () => {

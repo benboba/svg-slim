@@ -36,13 +36,14 @@ const checkUse = (node: ITag, dom: IDocument) => {
 	} else {
 		const value = (node.getAttribute('href') || node.getAttribute('xlink:href')) as string;
 		if (IRIFullMatch.test(value)) {
+			const idStr = value.slice(1);
 			// 不允许引用自身或祖先元素
-			if (node.closest(value)) {
+			if (node.closest(n => n.nodeType === NodeType.Tag && (n as ITag).getAttribute('id') === idStr)) {
 				node.remove();
 				return;
 			}
 			// 引用了不存在的元素
-			if (!dom.querySelector(value)) {
+			if (!dom.querySelector(n => n.nodeType === NodeType.Tag && (n as ITag).getAttribute('id') === idStr)) {
 				node.remove();
 			}
 		} else {

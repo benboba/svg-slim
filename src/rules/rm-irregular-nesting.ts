@@ -41,7 +41,12 @@ export const rmIrregularNesting = async (dom: IDocument, {
 		if (legalRule.legalChildElements.any) {
 			continue;
 		} else if (legalRule.legalChildElements.childElements && !legalRule.legalChildElements.childElements.includes(node.nodeName)) { // 不在嵌套列表中的情况
-			node.remove();
+			// tspan 嵌套需要把文本节点拿出来放到父元素内
+			if (parent.nodeName === 'tspan' && node.nodeName === 'tspan') {
+				parent.replaceChild(node.childNodes, node);
+			} else {
+				node.remove();
+			}
 		}
 	}
 	resolve();

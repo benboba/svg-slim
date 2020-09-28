@@ -38,7 +38,7 @@ export const rmXMLNS = async (dom: IDocument): Promise<void> => new Promise(reso
 				} else if (attr.namespace) {
 					if (hasProp(xmlnsObj, attr.namespace)) {
 						xmlnsObj[attr.namespace].count++;
-					} else {
+					} else if (attr.fullname !== 'xml:space') { // 避免 xml:space 被意外移除
 						node.removeAttribute(attr.fullname);
 					}
 				}

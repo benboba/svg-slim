@@ -3,7 +3,6 @@
   "version": "2.0.0",
   "description": "svg slimming",
   "main": "dist/index.js",
-  "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "rm -rf dist && rollup -c",

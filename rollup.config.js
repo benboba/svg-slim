@@ -5,10 +5,6 @@ export default [{
     input: './src/index.ts',
     output: [
         {
-            file: pkg.module,
-            format: 'es',
-        },
-        {
             file: pkg.main,
             format: 'umd',
             name: 'svgSlimming',

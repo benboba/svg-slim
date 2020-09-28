@@ -1638,7 +1638,6 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 	},
 	'xml:space': {
 		name: 'xml:space',
-		isUndef: true, // 此属性与本优化工具有冲突，没有实际意义
 		legalValues: [{
 			type: 'string',
 			value: 'default',
@@ -2484,18 +2483,18 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		initValue: 'visible',
 		applyTo: ['use', 'a'].concat(graphicsElements),
 	},
-	'white-space': {
-		name: 'white-space',
-		couldBeStyle: true,
-		inherited: true,
-		animatable: true,
-		legalValues: [{
-			type: 'enum',
-			value: whiteSpace,
-		}],
-		initValue: 'normal',
-		applyTo: textContentElements,
-	},
+	// 'white-space': { // 经验证，chrome 85 下此规则在属性中无效
+	// 	name: 'white-space',
+	// 	couldBeStyle: true,
+	// 	inherited: true,
+	// 	animatable: true,
+	// 	legalValues: [{
+	// 		type: 'enum',
+	// 		value: whiteSpace,
+	// 	}],
+	// 	initValue: 'normal',
+	// 	applyTo: textContentElements,
+	// },
 	'word-spacing': {
 		name: 'word-spacing',
 		couldBeStyle: true,

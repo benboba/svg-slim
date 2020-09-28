@@ -72,18 +72,24 @@ const checkAttr = (node: ITagNode, attrname: string, val: string) => {
 // 应用
 const applyTextTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs: IAnimateAttr[]) => {
 	// todo 暂不支持 animate
-	if (matrix.type !== 'translate' || checkAnimateAttr(animateAttrs, 'dx') || checkAnimateAttr(animateAttrs, 'dy')) {
+	// text 需要用到 x 和 y，tspan 用到 dx 和 dy
+	const attrPrefix = node.nodeName === 'tspan' ? 'd' : '';
+	if (matrix.type !== 'translate' || checkAnimateAttr(animateAttrs, `${attrPrefix}x`) || checkAnimateAttr(animateAttrs, `${attrPrefix}y`)) {
 		return false;
 	}
-	const dx = node.getAttribute('dx') || '0';
-	const dy = node.getAttribute('dy') || '0';
+	// text 具有 tspan 子元素，并且至少一个具有 x 或 y 属性，不执行 transform
+	if (node.nodeName === 'text' && node.querySelectorAll('tspan[x],tspan[y]').length) {
+		return false;
+	}
+	const dx = node.getAttribute(`${attrPrefix}x`) || '0';
+	const dy = node.getAttribute(`${attrPrefix}y`) || '0';
 	// 必须是纯数值列表
 	if (pureNumOrWithPxList.test(dx) && pureNumOrWithPxList.test(dy)) {
 		const dxs = parseNumberList(dx);
-		checkAttr(node, 'dx', applyNumberList(plus, dxs, matrix.val[0]));
+		checkAttr(node, `${attrPrefix}x`, applyNumberList(plus, dxs, matrix.val[0]));
 		if (matrix.val[1]) {
 			const dys = parseNumberList(dy);
-			checkAttr(node, 'dy', applyNumberList(plus, dys, matrix.val[1]));
+			checkAttr(node, `${attrPrefix}y`, applyNumberList(plus, dys, matrix.val[1]));
 		}
 		node.removeAttribute('transform');
 		return true;

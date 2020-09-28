@@ -51,7 +51,6 @@ const processPath = (dVal: string, hasMarker: boolean, hasStroke: boolean, hasSt
 }: IParamsOption) => {
 	// 先运算一次 doCompute，拿到每条指令的 from 坐标
 	let pathResult = doCompute(parsePath(dVal));
-
 	// 如果存在 marker 引用，多余的优化都不能做
 	if (!hasMarker) {
 		// 存在小尺寸曲线转直线的规则
