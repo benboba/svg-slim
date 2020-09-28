@@ -5,6 +5,5 @@ coverage
 test
 src
 .eslintrc.js
-.mocharc.js
 rollup.config.js
-tsconfig.test.json
+jest.config.js

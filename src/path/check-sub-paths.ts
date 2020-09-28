@@ -23,10 +23,21 @@ const checkHV = (subPath: IPathResultItem[], index: number, hasStrokeCap: boolea
 // 如果控制点位于起始点和终点的连线中间位置，则 q 指令可以转 l 指令
 const checkQ = (pathItem: IPathResultItem, subPath: IPathResultItem[], index: number, hasStrokeCap: boolean) => {
 	// 简单指令转复杂指令
-	const complexItem = complex(pathItem, subPath[index - 1]);
+	const prevItem = subPath[index - 1];
+	const complexItem = complex(pathItem, prevItem);
 	const relVal = getRel(complexItem);
-	const sameLine = (relVal[0] * relVal[3] === relVal[1] * relVal[2]) && (relVal[0] * (relVal[2] - relVal[0]) >= 0);
-	if (sameLine) {
+
+	let sameLine = true;
+	if (relVal[1] !== 0 && relVal[0] !== 0) {
+		sameLine = Math.atan2(relVal[1], relVal[0]) === Math.atan2(relVal[3], relVal[2]);
+	}
+	const pointsIsSort = (
+		(relVal[0] >= 0 === relVal[2] >= 0 || relVal[0] <= 0 === relVal[2] <= 0) && (relVal[1] >= 0 === relVal[3] >= 0 || relVal[1] <= 0 === relVal[3] <= 0) // 都在起始点的同一侧
+		&&
+		Math.abs(relVal[2]) >= Math.abs(relVal[0]) && Math.abs(relVal[3]) >= Math.abs(relVal[1]) // 起始点、控制点、结束点是顺序排列的
+	);
+
+	if (sameLine && pointsIsSort) {
 		if (relVal.every(s => s === 0)) {
 			// 控制点及指令的相对值全部为 0 ，可以视情况移除或转 z 指令
 			if (!hasStrokeCap || hasBrother(subPath, index)) {
@@ -37,7 +48,7 @@ const checkQ = (pathItem: IPathResultItem, subPath: IPathResultItem[], index: nu
 			return;
 		}
 		// 如果前后都不是 q/t 节点，则可以转直线指令
-		if (subPath[index - 1].type.toLowerCase() !== 'q' && subPath[index - 1].type.toLowerCase() !== 't' && (index === subPath.length - 1 || subPath[index + 1].type.toLowerCase() !== 't')) {
+		if (!'qt'.includes(prevItem.type.toLowerCase()) && (index === subPath.length - 1 || subPath[index + 1].type.toLowerCase() !== 't')) {
 			pathItem.type = complexItem.type === 'q' ? 'l' : 'L';
 			pathItem.val = complexItem.val.slice(2);
 		}
@@ -46,13 +57,30 @@ const checkQ = (pathItem: IPathResultItem, subPath: IPathResultItem[], index: nu
 
 // 如果控制点位于起始点和终点的连线中间位置，则 c 指令可以转 l 指令
 const checkC = (pathItem: IPathResultItem, subPath: IPathResultItem[], index: number, hasStrokeCap: boolean) => {
-	const complexItem = complex(pathItem, subPath[index - 1]);
+	const prevItem = subPath[index - 1];
+	const complexItem = complex(pathItem, prevItem);
 	const relVal = getRel(complexItem);
-	const sameLine = (relVal[0] * relVal[5] === relVal[1] * relVal[4])
-		&& (relVal[0] * (relVal[4] - relVal[0]) >= 0)
-		&& (relVal[2] * relVal[5] === relVal[3] * relVal[4])
-		&& (relVal[2] * (relVal[4] - relVal[2]) >= 0);
-	if (sameLine) {
+
+	let sameLine = true; // 都在同一条直线上
+	let arc = NaN;
+	for (let i = 0; i < 6; i += 2) {
+		if (relVal[i] === 0 && relVal[i + 1] === 0) {
+			continue;
+		}
+		if (isNaN(arc)) {
+			arc = Math.atan2(relVal[i + 1], relVal[i]);
+		} else if (arc !== Math.atan2(relVal[i + 1], relVal[i])) {
+			sameLine = false;
+			break;
+		}
+	}
+	const pointsIsSort = (
+		(relVal[0] >= 0 === relVal[2] >= 0 || relVal[0] <= 0 === relVal[2] <= 0) && (relVal[1] >= 0 === relVal[3] >= 0 || relVal[1] <= 0 === relVal[3] <= 0) && (relVal[2] >= 0 === relVal[4] >= 0 || relVal[2] <= 0 === relVal[4] <= 0) && (relVal[3] >= 0 === relVal[5] >= 0 || relVal[3] <= 0 === relVal[5] <= 0) // 都在起始点的同一侧
+		&&
+		Math.abs(relVal[2]) >= Math.abs(relVal[0]) && Math.abs(relVal[3]) >= Math.abs(relVal[1]) && Math.abs(relVal[4]) >= Math.abs(relVal[2]) && Math.abs(relVal[5]) >= Math.abs(relVal[3]) // 起始点、控制点1、控制点2、结束点是顺序排列的
+	);
+
+	if (sameLine && pointsIsSort) {
 		if (relVal.every(s => s === 0)) {
 			// 控制点及指令的相对值全部为 0 ，可以视情况移除或转 z 指令
 			if (!hasStrokeCap || hasBrother(subPath, index)) {
@@ -62,9 +90,11 @@ const checkC = (pathItem: IPathResultItem, subPath: IPathResultItem[], index: nu
 			}
 			return;
 		}
-		// 可以直接转直线指令
-		pathItem.type = complexItem.type === 'c' ? 'l' : 'L';
-		pathItem.val = complexItem.val.slice(4);
+		// 如果前后都不是 q/t 节点，则可以转直线指令
+		if (!'cs'.includes(prevItem.type.toLowerCase()) && (index === subPath.length - 1 || subPath[index + 1].type.toLowerCase() !== 's')) {
+			pathItem.type = complexItem.type === 'c' ? 'l' : 'L';
+			pathItem.val = complexItem.val.slice(4);
+		}
 	}
 };
 

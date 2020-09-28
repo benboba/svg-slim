@@ -8,7 +8,7 @@ export const paramsConfig: IParamsOption = {
 	opacityDigit: OPACITY_DIGIT, // alpha 值的精度
 	thinning: 0, // 通过抽稀节点来优化路径，为 0 表示不进行抽稀
 	straighten: 0, // 小尺寸的曲线转直线，为 0 表示不进行此项优化
-	mergePoint: 0, // 合并路径中距离相近的点，为 0 表示不进行此项优化 TODO 尚未实现！
+	mergePoint: 0, // 合并路径中距离相近的点，为 0 表示不进行此项优化
 	rmAttrEqDefault: true, // 移除与默认值相同的样式
 	exchangeStyle: false, // 无视 style 标签的存在，强制进行 style 和属性的互转 （[warning] svg 的样式覆盖规则是 style 属性 > style 标签 > 属性，所以这个规则可能导致不正确的覆盖！）
 };

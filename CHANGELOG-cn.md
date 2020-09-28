@@ -1,10 +1,10 @@
 # 更新日志
 
-## 2020.09. v2.0.0
+## 2020.09.28 v2.0.0
 
-### 破坏性升级
+### 重大变化
 
-* 调整了主函数的 config 参数，增加 params 配置项，将规则统一移动到 rules 配置项下
+* 调整了主函数的 [config](docs/cn/config.md) 参数，增加 params 配置项，将规则统一移动到 rules 配置项下
 * 不再打包压缩文件 svg-slimming.min.js 和 xml-parser.min.js
 * 不再从 dist 目录发布项目，而是直接从根目录发布
 * 拆分项目，将 xml-parser 改名为 svg-vdom，并单独发布到 npm
@@ -20,8 +20,8 @@
 * 移除一些不再依赖的模块
 * 拆分部分规则，保证功能更加单一
 * 所有 svg 的解析和遍历规则改为依赖 svg-vdom
-* 引入 browserslist，决定部分优化细节的取舍
-* 引入 known-css-properties 过滤未知 css 属性
+* 引入 [browserslist](https://github.com/browserslist/browserslist#readme)，决定部分优化细节的取舍
+* 引入 [known-css-properties](https://github.com/known-css/known-css-properties#readme) 过滤未知 css 属性
 * 测试用例的补全和修正
 * 增加 mix 和 func 两种属性值类型的验证逻辑
 
@@ -32,13 +32,15 @@
 * 在判断两个属性是否相同的逻辑中，追加了 opacity 类型百分比和浮点数的转换规则
 * 现在解析样式树的时候会考虑 important 的情况
 * 现在 shorten-style-attr 规则在移除与默认值相同的属性时，会判断当前属性是否是覆盖了 style 标签的同名属性，如果是，则不能移除
+* 修复了 compute-path 中一处意外将 c/s 曲线转为直线的 bug
+* 优化了 compute-path 直线转曲线的算法，减少 badcase
+* 修复了文本节点的一个 [badcase](https://github.com/benboba/svg-slimming/issues/27)
 
 ### 其它
 
 * 使用 yarn 代替 npm
 * 使用 rollup 代替 webpack 打包
 * 使用 eslint + typescript-eslint 代替 tslint
-* 增加 svg-slimming.mjs
 * 使用 jest 代替 mocha + chai + nyc
 * 调整了目录结构和部分模块的文件名
 

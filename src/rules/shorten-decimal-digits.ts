@@ -22,6 +22,7 @@ export const shortenDecimalDigits = async (dom: IDom, {
 	params: {
 		sizeDigit,
 		angelDigit,
+		opacityDigit,
 	}
 }: IRuleOption): Promise<void> => new Promise(resolve => {
 	const fuzzyDigit = doShorten(sizeDigit);
@@ -32,7 +33,7 @@ export const shortenDecimalDigits = async (dom: IDom, {
 		if (define.maybeAlpha) { // alpha 值采用特殊处理逻辑
 			const alpha = parseAlpha(value);
 			if (typeof alpha === 'number') {
-				return shortenAlpha(angelDigit, alpha);
+				return shortenAlpha(opacityDigit, alpha);
 			}
 		} else if (define.maybeSizeNumber) { // 可以模糊处理的数字
 			return fuzzyDigit(value);

@@ -122,7 +122,7 @@ export const parseColor = (color: string, digit = OPACITY_DIGIT): IRGBColor => {
 	let _color = color.trim();
 	if (hasProp(keywords, _color)) {
 		// 关键字转为 16 位色
-		_color = keywords[_color as keyof typeof keywords];
+		_color = keywords[_color];
 	} else if (/^(?:rgb|hsl)a?\s*\(/.test(_color)) {
 		// 缩短函数类
 		_color = shortenFunc(_color);

@@ -1,4 +1,5 @@
-import { decode } from 'he';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { decode } = require('he');
 import { IStyleAttr } from '../../typings/style';
 import { importantReg } from '../const/regs';
 
