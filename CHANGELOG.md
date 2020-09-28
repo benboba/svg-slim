@@ -1,5 +1,49 @@
 # Change Log
 
+## 2020.09.28 v2.0.0
+
+### Breaking Changes
+
+* Adjusted the [config](docs/en/config.md) parameter of the main function, added the params configuration item, and moved the rules to the rules configuration item
+* The compressed files svg-slimming.min.js and xml-parser.min.js are no longer packaged
+* No longer publish projects from the dist directory, but directly publish from the root directory
+* Split the project, rename xml-parser to svg-vdom, and publish it to npm separately
+
+### Features
+
+* Optimize the implementation of the rules, the rules that are not turned on will be skipped directly, and all the rule functions in the old logic will be executed
+* Adjusted the parameter order of the rules
+* Adjust the logic of changing geometry attributes (x, y, width, height, r, rx, ry, cx, cy) to style according to env configuration items
+* Add rule verification for property type attributes
+* shorten-defs will now remove defs nodes that no longer have child elements
+* Optimized the addition, subtraction and multiplication of values
+* Remove some modules that are no longer dependent
+* Split some rules to ensure a single function
+* All svg parsing and traversal rules are changed to rely on svg-vdom
+* Introduce [browserslist](https://github.com/browserslist/browserslist#readme) to decide the choice of some optimization details
+* Introduce [known-css-properties](https://github.com/known-css/known-css-properties#readme) to filter unknown css properties
+* Completion and correction of test cases
+* Added verification logic for the two attribute value types of mix and func
+
+### Bug fixes and Improvements
+
+* Modified the verification rules for enumeration attributes. There was a certain misjudgment before the whole word match was not performed
+* Optimized the merging rules of combine-path, now it will merge path elements more reasonably
+* In the logic of judging whether the two attributes are the same, the conversion rules of opacity type percentage and floating point number are added
+* Now when parsing the style tree, important will be considered
+* Now when the shorten-style-attr rule removes the same attribute as the default value, it will determine whether the current attribute is an attribute with the same name that covers the style tag. If it is, it cannot be removed
+* Fixed a bug in compute-path where the c/s curve was accidentally converted to a straight line
+* Optimized the algorithm of compute-path straight to curve to reduce badcase
+* Fixed a [badcase](https://github.com/benboba/svg-slimming/issues/27) of the text node
+
+### Other
+
+* Use yarn instead of npm
+* Use rollup instead of webpack packaging
+* Use eslint + typescript-eslint instead of tslint
+* Use jest instead of mocha + chai + nyc
+* Adjusted the directory structure and file names of some modules
+
 ## 2020.03.20 v1.5.3
 
 ### svg-slimming
