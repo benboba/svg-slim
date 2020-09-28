@@ -1,4 +1,5 @@
-{   "name": "@benboba/svg-slimming",
+{
+  "name": "svg-slimming",
   "version": "2.0.0",
   "description": "svg slimming",
   "main": "dist/index.js",
