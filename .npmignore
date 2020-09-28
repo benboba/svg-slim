@@ -1,0 +1,9 @@
+.vscode
+.nyc_output
+node_modules
+coverage
+test
+src
+.eslintrc.js
+rollup.config.js
+jest.config.js
