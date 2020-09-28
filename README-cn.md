@@ -1,6 +1,6 @@
-# SVG瘦身工具【svg slimming】
+# SVG瘦身工具【svg slim】
 
-[![npm version](https://badge.fury.io/js/svg-slimming.svg)](https://badge.fury.io/js/svg-slimming)
+[![npm version](https://badge.fury.io/js/svg-slim.svg)](https://badge.fury.io/js/svg-slim)
 
 ## 更新日志
 
@@ -12,13 +12,13 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 
 ## 安装
 ```
-npm install svg-slimming
+npm install svg-slim
 ```
 
 ## 使用
 ```js
-const svgSlimming = require('svg-slimming');
-svgSlimming(svgcode[, config]).then(result => {
+const svgSlim = require('svg-slim');
+svgSlim(svgcode[, config]).then(result => {
 	console.log(result);
 });
 ```
@@ -29,15 +29,15 @@ svgSlimming(svgcode[, config]).then(result => {
 
 查看主条目[优化配置](docs/cn/config.md)
 
-### 使用 svg-slimming-loader
+### 使用 svg-slim-loader
 
-[svg-slimming-loader](https://github.com/benboba/svg-slimming-loader) 是 webpack 的 loader 插件，支持对 import 的 SVG 文件进行优化
+[svg-slim-loader](https://github.com/benboba/svg-slim-loader) 是 webpack 的 loader 插件，支持对 import 的 SVG 文件进行优化
 
-### 使用 postcss-svg-slimming
+### 使用 postcss-svg-slim
 
-[postcss-svg-slimming](https://github.com/benboba/postcss-svg-slimming) 是 postcss 的插件，支持优化 CSS 中内联的 SVG
+[postcss-svg-slim](https://github.com/benboba/postcss-svg-slim) 是 postcss 的插件，支持优化 CSS 中内联的 SVG
 
-## 为什么选择 svg-slimming？
+## 为什么选择 svg-slim？
 
 * 丰富而强大的功能，足够个性化的配置参数
 * 追求极致的优化效果
@@ -46,7 +46,7 @@ svgSlimming(svgcode[, config]).then(result => {
 
 ### vs svgo
 
-| 优化分类 | 优化项目 | svg-slimming | svgo |
+| 优化分类 | 优化项目 | svg-slim | svgo |
 | ---- | ---- | ---- | ---- |
 | 基本 | svg 解析 | [svg-vdom](https://www.npmjs.com/package/svg-vdom) | sax |
 | 基本 | 非 svg 的 xml 节点处理逻辑 | 报错(v2.0.0) | 报错 |
