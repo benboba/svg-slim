@@ -1,7 +1,7 @@
 {
   "name": "svg-slim",
-  "version": "2.0.0",
-  "description": "svg slimming",
+  "version": "2.0.1",
+  "description": "SVG compression tool",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -15,6 +15,7 @@
     "minimization",
     "parse",
     "svg-slimming",
+    "svg-slim",
     "javascript",
     "nodejs"
   ],
@@ -56,10 +57,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/benboba/svg-slimming.git"
+    "url": "git+https://github.com/benboba/svg-slim.git"
   },
   "bugs": {
-    "url": "https://github.com/benboba/svg-slimming/issues"
+    "url": "https://github.com/benboba/svg-slim/issues"
   },
-  "homepage": "https://github.com/benboba/svg-slimming#readme"
+  "homepage": "https://github.com/benboba/svg-slim#readme"
 }

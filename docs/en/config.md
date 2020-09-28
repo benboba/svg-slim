@@ -5,7 +5,7 @@ The optimized configuration is an object in JSON format and currently supports t
 Here is an example of using optimized configuration:
 
 ```ts
-const svgSlimming = require('svg-slimming');
+const svgSlim = require('svg-slim');
 const userConfig = {
 	"rules": {
 		"collapse-g": false,
@@ -22,7 +22,7 @@ const userConfig = {
 	},
 	"browsers": ["> 1%", "not ie 11", "not firefox < 99"]
 };
-svgSlimming(svgcode, userConfig);
+svgSlim(svgcode, userConfig);
 ```
 
 ## Params

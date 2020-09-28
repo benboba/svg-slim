@@ -1,6 +1,6 @@
-# svg-slimming
+# svg-slim
 
-[![npm version](https://badge.fury.io/js/svg-slimming.svg)](https://badge.fury.io/js/svg-slimming)
+[![npm version](https://badge.fury.io/js/svg-slim.svg)](https://badge.fury.io/js/svg-slim)
 
  [中文版](./README-cn.md)
 
@@ -10,17 +10,17 @@
 
 ## Introduction
 
-svg-slimming is an SVG compression tool that provides rich customization and follows the [W3C SVG specification](https://www.w3.org/TR/SVG/)
+svg-slim is an SVG compression tool that provides rich customization and follows the [W3C SVG specification](https://www.w3.org/TR/SVG/)
 
 ## Installation
 ```
-npm install svg-slimming
+npm install svg-slim
 ```
 
 ## Use
 ```js
-const svgSlimming = require('svg-slimming');
-svgSlimming(svgcode[, config]).then(result => {
+const svgSlim = require('svg-slim');
+svgSlim(svgcode[, config]).then(result => {
 	console.log(result);
 });
 ```
@@ -31,15 +31,15 @@ Where svgcode is svg text in string format and config is user-defined optimized 
 
 View the main item [Optimization Configuration](docs/en/config.md)
 
-### Use svg-slimming-loader
+### Use svg-slim-loader
 
-[svg-slimming-loader](https://github.com/benboba/svg-slimming-loader) is a loader plugin for webpack, which supports optimization of imported SVG files
+[svg-slim-loader](https://github.com/benboba/svg-slim-loader) is a loader plugin for webpack, which supports optimization of imported SVG files
 
-### Use postcss-svg-slimming
+### Use postcss-svg-slim
 
-[postcss-svg-slimming](https://github.com/benboba/postcss-svg-slimming) is a plugin for postcss that supports optimizing inline SVG in CSS
+[postcss-svg-slim](https://github.com/benboba/postcss-svg-slim) is a plugin for postcss that supports optimizing inline SVG in CSS
 
-## Why choose svg-slimming?
+## Why choose svg-slim?
 
 * Rich and powerful functions, enough personalized configuration parameters
 * Pursue the ultimate optimization effect
@@ -48,7 +48,7 @@ View the main item [Optimization Configuration](docs/en/config.md)
 
 ### vs svgo
 
-| Optimization classification | Optimization project | svg-slimming | svgo |
+| Optimization classification | Optimization project | svg-slim | svgo |
 | ---- | ---- | ---- | ---- |
 | Basic | svg parsing | Built-in parser xml-parser | sax |
 | Basic | Non-svg xml node processing logic | Remove | Report error |
