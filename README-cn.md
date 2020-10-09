@@ -101,5 +101,5 @@ svgSlim(svgcode[, config]).then(result => {
 | css | 缩短 className | √ | × |
 | css | style 转属性 | √ | √ |
 | css | 属性转 style | √ | × |
-| css | 移除 svg 不支持的 css 样式 | √（不完整） | × |
+| css | 移除 svg 不支持的 css 样式 | √ | × |
 | css | 直接把 style 内容应用到元素 | × | √ |
