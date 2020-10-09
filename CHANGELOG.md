@@ -4,6 +4,7 @@
 
 ### Breaking Changes
 
+* Change the project name from svg-slimming to svg-slim
 * Adjusted the [config](docs/en/config.md) parameter of the main function, added the params configuration item, and moved the rules to the rules configuration item
 * The compressed files svg-slimming.min.js and xml-parser.min.js are no longer packaged
 * No longer publish projects from the dist directory, but directly publish from the root directory
