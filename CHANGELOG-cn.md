@@ -1,15 +1,10 @@
 # 更新日志
 
-## 2020.09.28 v2.0.1
-
-### 其它
-
-* 修改项目名称为 svg-slim，并修改所有相应的文案和链接
-
 ## 2020.09.28 v2.0.0
 
 ### 重大变化
 
+* 将项目名称从 svg-slimming 修改为 svg-slim
 * 调整了主函数的 [config](docs/cn/config.md) 参数，增加 params 配置项，将规则统一移动到 rules 配置项下
 * 不再打包压缩文件 svg-slimming.min.js 和 xml-parser.min.js
 * 不再从 dist 目录发布项目，而是直接从根目录发布
