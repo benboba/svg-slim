@@ -62,10 +62,10 @@ Name | Configuration Item | Remarks
 [rm-comments](#rm-comments) | None | Remove comment
 [rm-doctype](#rm-doctype) | None | Remove DocType
 [rm-hidden](#rm-hidden) | None | Remove invisible content
-[rm-irregular-nesting](#rm-irregular-nesting) | { ignore: string[] } | Remove irregular nesting
-[rm-irregular-tag](#rm-irregular-tag) | { ignore: string[] } | Remove irregular tags
+[rm-irregular-nesting](#rm-irregular-nesting) | { ignore: string\[] } | Remove irregular nesting
+[rm-irregular-tag](#rm-irregular-tag) | { ignore: string\[] } | Remove irregular tags
 [rm-px](#rm-px) | None | Remove px unit
-[rm-unnecessary](#rm-unnecessary) | { tags: string[] } | Remove unnecessary svg elements
+[rm-unnecessary](#rm-unnecessary) | { tags: string\[] } | Remove unnecessary svg elements
 [rm-version](#rm-version) | None | Remove the version attribute of svg
 [rm-viewbox](#rm-viewbox) | None | Optimize or remove the viewbox attribute of svg
 [rm-xml-decl](#rm-xml-decl) | None | Remove xml declaration node
@@ -79,7 +79,7 @@ Name | Configuration Item | Remarks
 [shorten-id](#shorten-id) | None | Optimization ID
 [shorten-shape](#shorten-shape) | None | Optimize graphic elements
 [shorten-style-attr](#shorten-style-attr) | None | Optimize the style attribute
-[shorten-style-tag](#shorten-style-tag) | None | Optimize style tag
+[shorten-style-tag](#shorten-style-tag) | { deepShorten: boolean } | Optimize style tag
 
 ### collapse-g
 

@@ -62,10 +62,10 @@ browsers 配置依赖 [browserslist](https://github.com/browserslist/browserslis
 [rm-comments](#rm-comments) | 无 | 移除注释
 [rm-doctype](#rm-doctype) | 无 | 移除 DocType
 [rm-hidden](#rm-hidden) | 无 | 移除不可见的内容
-[rm-irregular-nesting](#rm-irregular-nesting) | { ignore: string[] } | 移除不规则的嵌套
-[rm-irregular-tag](#rm-irregular-tag) | { ignore: string[] } | 移除不规范的标签
+[rm-irregular-nesting](#rm-irregular-nesting) | { ignore: string\[] } | 移除不规则的嵌套
+[rm-irregular-tag](#rm-irregular-tag) | { ignore: string\[] } | 移除不规范的标签
 [rm-px](#rm-px) | 无 | 移除 px 单位
-[rm-unnecessary](#rm-unnecessary) | { tags: string[] } | 移除不必要的 svg 元素
+[rm-unnecessary](#rm-unnecessary) | { tags: string\[] } | 移除不必要的 svg 元素
 [rm-version](#rm-version) | 无 | 移除 svg 的 version 属性
 [rm-viewbox](#rm-viewbox) | 无 | 优化或移除 svg 的 viewbox 属性
 [rm-xml-decl](#rm-xml-decl) | 无 | 移除 xml 声明节点
@@ -79,7 +79,7 @@ browsers 配置依赖 [browserslist](https://github.com/browserslist/browserslis
 [shorten-id](#shorten-id) | 无 | 优化 ID
 [shorten-shape](#shorten-shape) | 无 | 优化图形类元素
 [shorten-style-attr](#shorten-style-attr) | 无 | 优化 style 属性
-[shorten-style-tag](#shorten-style-tag) | 无 | 优化 style 标签
+[shorten-style-tag](#shorten-style-tag) | { deepShorten: boolean } | 优化 style 标签
 
 ### collapse-g
 
