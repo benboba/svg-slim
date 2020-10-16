@@ -50,7 +50,7 @@ View the main item [Optimization Configuration](docs/en/config.md)
 
 | Optimization classification | Optimization project | svg-slim | svgo |
 | ---- | ---- | ---- | ---- |
-| Basic | svg parsing | Built-in parser xml-parser | sax |
+| Basic | svg parsing | [svg-vdom](https://www.npmjs.com/package/svg-vdom) | sax |
 | Basic | Non-svg xml node processing logic | Report error(v2.0.0) | Report error |
 | Basic | Oversized svg processing | 1.5.3 | √ |
 | Basic | Compressing Redundant Blanks | √ | √ |
@@ -104,4 +104,4 @@ View the main item [Optimization Configuration](docs/en/config.md)
 | css | style to attributes | √ | √ |
 | css | attribute to style | √ | × |
 | css | remove css styles not supported by svg | √ | × |
-| css | Apply style content directly to elements | × | √ |
+| css | Apply style content directly to elements | v2.0.1 | √ |

@@ -63,14 +63,11 @@ export const rmAttribute = async (dom: IDocument, {
 				}
 			}
 
+			// 此处只优化非 style 类的属性，style 类的属性在 shorten-style-attr 中处理
 			if (rmAttrEqDefault) {
-				// 如果父元素上有同名的样式类属性，则不能移除和默认值相同的属性
-				const parentStyle = (node.parentNode as ITag).styles;
-				if (attrDefine.inherited && parentStyle && hasProp(parentStyle, attr.fullname)) {
-					continue;
-				}
-				if (attrIsEqual(attrDefine, value, node.nodeName)) {
+				if (!attrDefine.couldBeStyle && attrIsEqual(attrDefine, attr.value, node.nodeName)) {
 					node.removeAttribute(attr.fullname);
+					continue;
 				}
 			}
 

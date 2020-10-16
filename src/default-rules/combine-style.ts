@@ -1,6 +1,4 @@
-import { Declaration, KeyFrames, Media, Node, Rule } from 'css';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { parse: cssParse } = require('css');
+import { Declaration, KeyFrames, Media, Node, Rule, parse as cssParse } from 'css';
 import { has } from 'ramda';
 import { ITagNode, ITextNode, NodeType } from 'svg-vdom';
 import { TUnique } from '../../typings';
