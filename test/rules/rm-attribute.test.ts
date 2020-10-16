@@ -2,6 +2,7 @@ import { parse } from 'svg-vdom';
 import { createRuleConfig } from '../../src/config/create-rule-config';
 import { mergeConfig } from '../../src/config/merge';
 import { rmAttribute } from '../../src/rules/rm-attribute';
+import { shortenStyleAttr } from '../../src/rules/shorten-style-attr';
 import { createXML } from '../../src/xml/create';
 
 describe('rules/rm-attribute', () => {
@@ -30,7 +31,8 @@ describe('rules/rm-attribute', () => {
 		const dom = await parse(xml);
 		const config = createRuleConfig(mergeConfig(null), 'rm-attribute');
 		await rmAttribute(dom, config);
-		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg width="100" style="width:40"><a/><circle cx="1"/><g><rect/><g fill="none"><rect id="rect" fill="rgb(0,0,0,.5)" stroke="hsl(0,0%,0%)"/><use href="#b"/><use href="#b"/><use href="#b" width="1" height="1"/></g></g></svg>');
+		await shortenStyleAttr(dom, config);
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg width="100" style="width:40"><a/><circle cx="1"/><g><rect/><g><rect id="rect" fill="rgb(0,0,0,.5)" stroke="hsl(0,0%,0%)"/><use href="#b"/><use href="#b"/><use href="#b" width="1" height="1"/></g></g></svg>');
 	});
 
 	test('移除属性 - 反转规则', async () => {

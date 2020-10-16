@@ -34,3 +34,6 @@ export const animationValueAttributes = ['calcMode', 'values', 'keyTimes', 'keyS
 export const rectAttributes = ['x', 'y', 'width', 'height'];
 export const transferFunctionElementAttributes = ['type', 'tableValues', 'slope', 'intercept', 'amplitude', 'exponent', 'offset'];
 export const geometryProperties = rectAttributes.concat(['cx', 'cy', 'r', 'rx', 'ry']);
+
+// todo 待验证
+export const needUnitInStyleTag = ['font-size'];

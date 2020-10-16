@@ -89,4 +89,6 @@ export const rulesConfig: TRuleOption = {
 	'shorten-style-tag': [true, {
 		deepShorten: true,
 	}],
+	// 多个元素具有相同的 style 属性，则改为创建公共的 class
+	'style-to-class': [true],
 };

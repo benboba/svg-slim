@@ -1,5 +1,16 @@
 # 更新日志
 
+## 2020. v2.0.1
+
+### 重大变化
+
+* shorten-style-tag 不再依赖 deepShorten 配置项，原有基本优化的功能拆分到 shorten-style-tag 中，只保留了深度优化的功能
+
+### 功能
+
+* 新增了一个优化规则 shorten-style-tag，默认开启，用于优化不合法的 style 属性或值
+
+
 ## 2020.09.28 v2.0.0
 
 ### 重大变化
