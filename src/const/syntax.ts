@@ -10,7 +10,7 @@ export const createValList = (pattern: string, n: number, m: number) => `${patte
 let supportUnicode = true;
 try {
 	supportUnicode = /\u{20BB7}/u.test('𠮷');
-} catch (e) {
+} catch {
 	supportUnicode = false;
 }
 

@@ -112,7 +112,7 @@ export const combineStyle = async (dom: IDom): Promise<void> => new Promise(reso
 				} else {
 					firstStyle.remove();
 				}
-			} catch (e) {
+			} catch {
 				firstStyle.remove();
 			}
 		}
