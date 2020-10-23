@@ -2,14 +2,19 @@
 
 ## 2020. v2.0.1
 
-### 重大变化
-
-* shorten-style-tag 不再依赖 deepShorten 配置项，原有基本优化的功能拆分到 shorten-style-tag 中，只保留了深度优化的功能
-
 ### 功能
 
-* 新增了一个优化规则 shorten-style-tag，默认开启，用于优化不合法的 style 属性或值
+* 新增了一个优化规则 [style-to-class](docs/cn/rules/style-to-class.md)，默认开启，为多个 style 属性相同的标签创建统一的 className
+* 新增了一个优化规则 [apply-style](docs/cn/rules/apply-style.md)，默认开启，当某一条样式只命中了一个目标元素，移除这条样式，并直接应用于元素
+* 新增了一个优化规则 [rm-illegal-style](docs/cn/rules/rm-illegal-style.md)，默认开启，移除不合法的 style 属性
+* 新增了一个优化规则 [exchange-style](docs/cn/rules/exchange-style.md)，默认开启，进行 style 和属性的互转
+* [shorten-style-tag](docs/cn/rules/shorten-style-tag.md) 规则不再依赖 deepShorten 配置项
+* [shorten-style-attr](docs/cn/rules/shorten-style-attr.md) 规则不再依赖 exchangeStyle 配置项
 
+### bug 修复与改进
+
+* 调整文档的目录结构
+* 现在 font-size 在 style 标签中会强制保留 px 单位，在 ie11 下会始终保留 px 单位
 
 ## 2020.09.28 v2.0.0
 

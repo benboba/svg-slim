@@ -14,6 +14,7 @@ export const paramsConfig: IParamsOption = {
 };
 
 export const rulesConfig: TRuleOption = {
+	'apply-style': [true],
 	// 合并 g 标签
 	'collapse-g': [true],
 	// 塌陷无意义的文本节点
@@ -38,6 +39,7 @@ export const rulesConfig: TRuleOption = {
 	'rm-doctype': [true],
 	// 移除隐藏对象
 	'rm-hidden': [true],
+	'rm-illegal-style': [true],
 	// 移除不规范嵌套的标签
 	'rm-irregular-nesting': [true, {
 		ignore: [], // 配置忽略的标签列表
