@@ -28,6 +28,10 @@ export const valueIsEqual = (attrDefine: IRegularAttr, value1: string, value2: s
 		if (nums2.length > 0 && equals(parseNumberList(value1), nums2)) {
 			return true;
 		}
+		// 特殊的，带单位的 0 和 0 是等价的
+		if (value2 === '0' && /^0[a-z]+$/i.test(value1)) {
+			return true;
+		}
 	}
 
 	// 不透明度类型（例如 50%、0.5、.5 都是等价的）

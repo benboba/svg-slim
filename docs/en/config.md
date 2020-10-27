@@ -39,7 +39,8 @@ thinning | number | 0 | Optimize the path by thinning out nodes, 0 means no thin
 straighten | number | 0 | Convert a small-size curve to a straight line, 0 means no optimization is performed, and greater than 0 means the threshold of the curve to a straight line
 mergePoint | number | 0 | Whether to merge points with similar distances in the path, 0 means that this optimization is not performed
 rmAttrEqDefault | boolean | true | Whether to remove the same style as the default value
-exchangeStyle | boolean | false | Whether to ignore the existence of the style tag and force the conversion between styles and attributes (**warning!** svg's style coverage rule is style attribute> style tag> attribute, so enabling this configuration item may lead to incorrect coverage!)
+exchangeStyle | boolean | false | Whether to ignore the existence of the style tag and force the conversion between styles and attributes (**Warning!** svg's style coverage rule is style attribute> style tag> attribute, so enabling this configuration item may lead to incorrect coverage!)
+ignoreKnownCSS | boolean | false | Whether to keep CSS attributes not in [standard](https://www.w3.org/TR/SVG/propidx.html) (**Warning!**, many CSS3 attributes are not in this list, but they are still valid for SVG elements in some modern browsers)
 
 ## Browsers
 

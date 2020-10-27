@@ -1,6 +1,6 @@
 import { Declaration, Rule, StyleRules } from 'css';
 import { parseSelector } from 'svg-vdom';
-import { TUnique } from '../../typings';
+import { IRuleOption } from '../../typings';
 import { IDom, ITag } from '../../typings/node';
 import { importantReg } from '../const/regs';
 import { regularAttr } from '../const/regular-attr';
@@ -13,12 +13,15 @@ interface ICSSUnique {
 	[propName: string]: Rule;
 }
 
-export const shortenStyleTag = async (dom: IDom): Promise<void> => new Promise(resolve => {
+export const shortenStyleTag = async (dom: IDom, {
+	params: {
+		ignoreKnownCSS,
+	},
+}: IRuleOption): Promise<void> => new Promise(resolve => {
 	if (dom.stylesheet) {
 		const cssRules: StyleRules = dom.stylesheet.stylesheet as StyleRules;
 
 		// TODO 连锁属性的判断
-		// 深度优化
 		const selectorUnique: ICSSUnique = {};
 		const declareUnique: ICSSUnique = {};
 		for (let i = 0, l = cssRules.rules.length; i < l; i++) {
@@ -28,7 +31,7 @@ export const shortenStyleTag = async (dom: IDom): Promise<void> => new Promise(r
 				const theSelectors = styleRule.selectors as string[];
 				const declarations = styleRule.declarations as Declaration[];
 				// 记录命中对象但存在无效属性的情况
-				const usedRule: TUnique = {};
+				const usedRule = new Set<string>();
 				// 移除无效的选择器
 				for (let si = theSelectors.length; si--;) {
 					const matchNodes = dom.querySelectorAll(parseSelector(theSelectors[si])) as ITag[];
@@ -42,14 +45,14 @@ export const shortenStyleTag = async (dom: IDom): Promise<void> => new Promise(r
 							const isImportant = importantReg.test(ruleItem.value as string);
 							// 判断每一条属性与每一个命中元素的匹配情况
 							if (
-								(regularAttr[property].isUndef && knownCSS(property))
+								(regularAttr[property].isUndef && knownCSS(property) && !ignoreKnownCSS)
 								||
 								matchNodes.some(matchNode => checkApply(regularAttr[property], matchNode, dom, true, isImportant))
 							) {
 								// 只要有一条匹配存在，就证明该选择器有效
 								anyMatch = true;
 								// 同时标记该属性有效
-								usedRule[property] = true;
+								usedRule.add(property);
 							}
 						}
 						if (!anyMatch) {
@@ -60,7 +63,7 @@ export const shortenStyleTag = async (dom: IDom): Promise<void> => new Promise(r
 
 				// 验证属性的有效性，移除无效的属性
 				for (let ci = declarations.length; ci--;) {
-					if (!usedRule[declarations[ci].property as string]) {
+					if (!usedRule.has(declarations[ci].property as string)) {
 						declarations.splice(ci, 1);
 					}
 				}
@@ -80,12 +83,13 @@ export const shortenStyleTag = async (dom: IDom): Promise<void> => new Promise(r
 				if (hasProp(selectorUnique, selectorKey)) {
 					const uDeclarations = (selectorUnique[selectorKey].declarations as Declaration[]).concat(styleRule.declarations as Declaration[]);
 					// 合并之后依然要排重
-					const declared: TUnique = {};
+					const declared = new Set<string>();
 					for (let j = uDeclarations.length; j--;) {
-						if (declared[uDeclarations[j].property as string]) {
+						const prop = uDeclarations[j].property as string;
+						if (declared.has(prop)) {
 							uDeclarations.splice(j, 1);
 						} else {
-							declared[uDeclarations[j].property as string] = true;
+							declared.add(prop);
 						}
 					}
 					selectorUnique[selectorKey].declarations = uDeclarations;
@@ -102,12 +106,12 @@ export const shortenStyleTag = async (dom: IDom): Promise<void> => new Promise(r
 				const declareKey = (styleRule.declarations as Declaration[]).map((d: Declaration) => `${d.property}:${d.value}`).join(';');
 				if (hasProp(declareUnique, declareKey)) {
 					const selectors: string[] = (declareUnique[declareKey].selectors as string[]).concat(styleRule.selectors);
-					const selected: TUnique = {};
+					const selected = new Set<string>();
 					for (let j = selectors.length; j--;) {
-						if (selected[selectors[j]]) {
+						if (selected.has(selectors[j])) {
 							selectors.splice(j, 1);
 						} else {
-							selected[selectors[j]] = true;
+							selected.add(selectors[j]);
 						}
 					}
 					declareUnique[declareKey].selectors = selectors;

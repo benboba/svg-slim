@@ -20,19 +20,20 @@ describe('rules/rm-attribute', () => {
 		<circle stroke="none" cx="1" cy="0.0"/>
 		<g fill="#000">
 			<rect fill="black" stroke=""/>
-			<g fill="none">
+			<g>
 				<rect id="rect" fill="rgb(0,0,0,.5)" stroke="hsl(0,0%,0%)"/>
 				<use href="#b" xlink:href="#rect"/>
 				<use href="#b" width="-1" height="-1"/>
 				<use href="#b" width="1" height="1"/>
 			</g>
 		</g>
+		<marker orient="0deg"/>
 		</svg>`;
 		const dom = await parse(xml);
 		const config = createRuleConfig(mergeConfig(null), 'rm-attribute');
 		await rmAttribute(dom, config);
 		await shortenStyleAttr(dom, config);
-		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg width="100" style="width:40"><a/><circle cx="1"/><g><rect/><g><rect id="rect" fill="rgb(0,0,0,.5)" stroke="hsl(0,0%,0%)"/><use href="#b"/><use href="#b"/><use href="#b" width="1" height="1"/></g></g></svg>');
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg width="100" style="width:40"><a/><circle cx="1"/><g><rect/><g><rect id="rect" fill="rgb(0,0,0,.5)" stroke="hsl(0,0%,0%)"/><use href="#b"/><use href="#b"/><use href="#b" width="1" height="1"/></g></g><marker/></svg>');
 	});
 
 	test('移除属性 - 反转规则', async () => {
