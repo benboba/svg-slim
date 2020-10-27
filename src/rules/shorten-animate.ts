@@ -29,7 +29,8 @@ export const shortenAnimate = async (dom: IDocument, { option: { remove } }: IRu
 		if (animationAttrElements.includes(node.nodeName)) {
 			// 先取出来 attributeName 属性
 			const attributeName = node.getAttribute('attributeName') || '';
-			if (!attributeName || !regularAttr[attributeName].animatable) {
+			const animateDefine = regularAttr[attributeName];
+			if (!attributeName || !animateDefine.animatable) {
 				// attributeName 指定了不能实现动画的属性，视为无效
 				node.remove();
 				return;
@@ -37,7 +38,7 @@ export const shortenAnimate = async (dom: IDocument, { option: { remove } }: IRu
 
 			// attributeName 和父元素不匹配
 			const parentName = (node.parentNode as ITagNode).nodeName;
-			if (!regularAttr[attributeName].applyTo.includes(parentName) && !regularTag[parentName].ownAttributes.includes(attributeName)) {
+			if (!animateDefine.applyTo.includes(parentName) && !regularTag[parentName].ownAttributes.includes(attributeName)) {
 				node.remove();
 				return;
 			}
@@ -53,13 +54,13 @@ export const shortenAnimate = async (dom: IDocument, { option: { remove } }: IRu
 				// 对动画属性 from、to、by、values 的值进行合法性验证
 				if (animationAttributes.includes(attr.fullname)) {
 					// 动画属性不合法
-					if ((attr.fullname !== 'values' && !legalValue(regularAttr[attributeName], attr))) {
+					if ((attr.fullname !== 'values' && !legalValue(animateDefine, attr))) {
 						node.removeAttribute(attr.fullname);
 						continue;
 					}
 					// values 是以分号分隔的，需要分隔后对每一项进行合法性验证
 					const values = attr.value.split(';');
-					if (values.every(val => !legalValue(regularAttr[attributeName], {
+					if (values.every(val => !legalValue(animateDefine, {
 						name: 'values',
 						fullname: 'values',
 						namespace: '',
@@ -70,7 +71,7 @@ export const shortenAnimate = async (dom: IDocument, { option: { remove } }: IRu
 				}
 			}
 
-			if (node.nodeName === 'set' && !node.getAttribute('to')) {
+			if (node.nodeName === 'set' && !node.hasAttribute('to')) {
 				node.remove();
 				return;
 			}

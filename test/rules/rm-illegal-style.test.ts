@@ -79,4 +79,25 @@ describe('rules/rm-illegal-style', () => {
 		await rmIllegalStyle(dom, config);
 		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><rect/></svg>');
 	});
+
+	test('ignore known css', async () => {
+		const xml = `<svg>
+		<style>
+		rect {
+			text-align: center;
+		}
+		</style>
+		<rect style="fill:black;flex-grow:1"/>
+		</svg>`;
+		const dom = await parse(xml);
+		await combineStyle(dom);
+		const config = createRuleConfig(mergeConfig({
+			params: {
+				ignoreKnownCSS: true,
+				rmAttrEqDefault: false,
+			}
+		}), 'rm-illegal-style');
+		await rmIllegalStyle(dom, config);
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><rect style="fill:black"/></svg>');
+	});
 });

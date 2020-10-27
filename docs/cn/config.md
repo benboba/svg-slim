@@ -40,6 +40,7 @@ straighten | number | 0 | 把小尺寸的曲线转为直线，为 0 表示不进
 mergePoint | number | 0 | Merging straight nodes with similar distances in the path, 0 means that this optimization is not performed, and greater than 0 means the threshold of merged nodes
 rmAttrEqDefault | boolean | true | 是否移除与默认值相同的样式
 exchangeStyle | boolean | false | 是否无视 style 标签的存在，强制进行 style 和属性的互转 （**注意！** svg 的样式覆盖规则是 style 属性 > style 标签 > 属性，所以开启这个配置项可能导致不正确的覆盖！）
+ignoreKnownCSS | boolean | false | 是否保留不在[标准](https://www.w3.org/TR/SVG/propidx.html)中的 CSS 属性（**注意！**，很多 CSS3 的属性不在这个列表中，但在部分现代浏览器中仍然对 SVG 元素有效）
 
 ## Browsers
 

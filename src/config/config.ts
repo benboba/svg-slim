@@ -11,6 +11,7 @@ export const paramsConfig: IParamsOption = {
 	mergePoint: 0, // 合并路径中距离相近的点，为 0 表示不进行此项优化
 	rmAttrEqDefault: true, // 移除与默认值相同的样式
 	exchangeStyle: false, // 无视 style 标签的存在，强制进行 style 和属性的互转 （[warning] svg 的样式覆盖规则是 style 属性 > style 标签 > 属性，所以这个规则可能导致不正确的覆盖！）
+	ignoreKnownCSS: false, // 如果此选项打开，则只保留 regular-attr 列表中的属性
 };
 
 export const rulesConfig: TRuleOption = {
