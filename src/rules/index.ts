@@ -50,7 +50,7 @@ export const rules: TRulesItem[] = [
 	[false, rmViewBox, 'rm-viewbox'],
 	[false, shortenAnimate, 'shorten-animate'], // 必须在所有依赖 getAnimateAttr 的规则之前
 	[false, shortenFilter, 'shorten-filter'],
-	[false, collapseTextwrap, 'collapse-textwrap'], // 可能需要在 rmHidden 之前
+	[false, collapseTextwrap, 'collapse-textwrap'], // 可能需要在 rmHidden 之前，需要在 rm-illegal-style 之前
 	[false, rmHidden, 'rm-hidden'], // 必须在 shorten-style-attr 之前
 	[false, rmIllegalStyle, 'rm-illegal-style'], // 必须在 collpase-g、shorten-shape 和 compute-path 之前，必须在 rm-attribute 之前
 	[false, rmPx, 'rm-px'], // 必须在 shorten-style-attr 之后

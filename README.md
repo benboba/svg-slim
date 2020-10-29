@@ -105,3 +105,11 @@ View the main item [Optimization Configuration](docs/en/config.md)
 | css | attribute to style | √ | × |
 | css | remove css styles not supported by svg | √ | × |
 | css | Apply style content directly to elements | v2.0.1 | √ |
+
+# Sponsor me
+
+If you think this project is helpful to you, sponsors are welcome.
+
+[<img src="docs/assets/paypal.png" width="420">](https://www.paypal.com/paypalme/benboba)
+<p><img src="docs/assets/alipay.png" width="420"></p>
+<p><img src="docs/assets/wechat.png" width="420"></p>

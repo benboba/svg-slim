@@ -3932,10 +3932,10 @@ svg-path-contours@^2.0.0:
     normalize-svg-path "^0.1.0"
     vec2-copy "^1.0.0"
 
-svg-vdom@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/svg-vdom/-/svg-vdom-1.0.7.tgz#94497f448ad523dc199efc06b9daed84d2e76dba"
-  integrity sha512-klLb8bcFfjO83lOQiCEnqThjWnCHLfDuExVeF0bc1O349dnEtVqmiOTUPILa3Ictz0GfqI04kotRGz8Y1OkElQ==
+svg-vdom@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/svg-vdom/-/svg-vdom-1.0.8.tgz#a48df378285b56de10e0d5e25e805d5cf633a3e9"
+  integrity sha512-x4Er103jC7sqRqqrmfLi9uI6ugddCJXCQMiHUmttgKkfdED3Oe6H4FR8CiErJUeZ79dOddtLPN2mRrV4gwbqPQ==
 
 symbol-tree@^3.2.4:
   version "3.2.4"

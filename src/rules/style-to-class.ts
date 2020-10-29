@@ -4,7 +4,7 @@ import { NodeType, TagNode, TextNode } from 'svg-vdom';
 import { IStyleObj } from 'typings/style';
 import { TDynamicObj } from '../../typings';
 import { IDom, ITag } from '../../typings/node';
-import { needUnitInStyleTag } from '../const/definitions';
+import { needUnitInStyle } from '../const/definitions';
 import { numberFullMatch } from '../const/syntax';
 import { parseStyle } from '../style/parse';
 import { stringifyStyle } from '../style/stringify';
@@ -15,7 +15,7 @@ const TRANSLATE_THRESHOLD = 10;
 
 const createKey = (name: string, value: string, important?: boolean) => {
 	let val = value;
-	if (needUnitInStyleTag.includes(name) && numberFullMatch.test(val)) {
+	if (needUnitInStyle.includes(name) && numberFullMatch.test(val) && val !== '0') {
 		val += 'px';
 	}
 	return `${name}:${val}${important ? '!important' : ''}`;
@@ -56,7 +56,7 @@ export const styleToClass = async (dom: IDom): Promise<void> => new Promise(reso
 	}
 
 	// 条件是 tags 和 keys 的乘积要大于 10
-	const caches = Object.entries(keyCache).filter(([key, cache]) => cache.tags.length * cache.keys.length >= TRANSLATE_THRESHOLD);
+	const caches = Object.entries(keyCache).filter(([, cache]) => cache.tags.length * cache.keys.length >= TRANSLATE_THRESHOLD);
 	if (caches.length) {
 		// 如果没有 style 标签，需要创建一个
 		let styleContent = '';

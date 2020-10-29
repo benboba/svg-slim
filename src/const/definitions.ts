@@ -35,5 +35,5 @@ export const rectAttributes = ['x', 'y', 'width', 'height'];
 export const transferFunctionElementAttributes = ['type', 'tableValues', 'slope', 'intercept', 'amplitude', 'exponent', 'offset'];
 export const geometryProperties = rectAttributes.concat(['cx', 'cy', 'r', 'rx', 'ry']);
 
-// todo 待验证
-export const needUnitInStyleTag = ['font-size'];
+// 部分 key，在作为属性时可以省略 px 单位，在 css 中不能省略
+export const needUnitInStyle = ['font-size', 'letter-spacing', 'word-spacing'];

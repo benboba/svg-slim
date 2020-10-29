@@ -114,6 +114,20 @@ describe('svg-slim 入口', () => {
 			</text>
 		</svg>`;
 		const dom = await slim(xml);
-		expect(dom).toBe('<svg xmlns="http://www.w3.org/2000/svg" width="8e2" height="6e2"><text xml:space="preserve" style="font-size:24;font-weight:700;letter-spacing:0;word-spacing:0;font-family:sans-serif;text-align:start" transform="translate(2e2,2e2)"> <tspan x="0" y="0"> fixme </tspan> </text></svg>');
+		expect(dom).toBe('<svg xmlns="http://www.w3.org/2000/svg" width="8e2" height="6e2"><text xml:space="preserve" style="font-size:24px;font-weight:700;letter-spacing:0;word-spacing:0;font-family:sans-serif;text-align:start" transform="translate(2e2,2e2)"> <tspan dx="0" dy="0" y="0" x="0" font-size="24" font-weight="700" font-family="sans-serif">fixme</tspan> </text></svg>');
+	});
+
+	test('check badcase 9', async () => {
+		const xml = `<svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="900" height="150">
+		<text>
+		   <tspan x="0" y="20" style="fill:#060;flex-grow:1;stroke:yellow">
+			  <tspan x="100" fill="blue">
+				  <tspan fill="red" style="stroke:none">fixme</tspan>
+			  </tspan>
+		   </tspan>
+		</text>
+	  </svg>`;
+	  const dom = await slim(xml);
+	  expect(dom).toBe('<svg xmlns="http://www.w3.org/2000/svg" width="9e2" height="150"><text> <tspan style="fill:red;flex-grow:1" y="20" x="1e2">fixme</tspan> </text></svg>');
 	});
 });

@@ -286,7 +286,7 @@ const _regularTag: IRegularTagDefine = {
 	},
 	'tspan': {
 		containTextNode: true,
-		legalChildElements: { childElements: [] },
+		legalChildElements: { childElements: ['tspan'] },
 		ownAttributes: ['lengthAdjust', 'x', 'y', 'dx', 'dy', 'rotate', 'textLength'].concat(conditionAndCore),
 	},
 	'unknown': {
