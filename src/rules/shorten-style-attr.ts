@@ -8,9 +8,21 @@ import { parseStyle } from '../style/parse';
 import { styleToValue } from '../style/style-to-value';
 import { hasProp } from '../utils/has-prop';
 import { parseStyleTree } from '../xml/parse-style-tree';
+import { needUnitInStyle } from '../const/definitions';
+import { numberFullMatch } from '../const/syntax';
 
 // 属性转 style 的临界值
-const styleThreshold = 4;
+const STYLE_LEN = 8;
+const checkTrans = (attrObj: IStyleAttrObj) => {
+	let stylelen = STYLE_LEN;
+	Object.entries(attrObj).forEach(([key, val]) => {
+		// 如果不是需要追加 px 的情况，则长度可以缩短 2
+		if (!needUnitInStyle.includes(key) || !numberFullMatch.test(val.value) || val.value === '0') {
+			stylelen -= 2;
+		}
+	});
+	return stylelen;
+};
 
 // 一些元素的某些属性不能被转为 style
 const cantTrans = (define: IRegularTag, attrName: string) => define.onlyAttr && define.onlyAttr.includes(attrName);
@@ -23,7 +35,7 @@ interface IStyleAttrObj {
 	};
 }
 
-const checkAttr = (node: ITag, dom: IDom, rmAttrEqDefault: boolean, browsers: Record<string, number>) => {
+const checkAttr = (node: ITag, dom: IDom, browsers: Record<string, number>) => {
 	parseStyleTree(dom);
 	const attrObj: IStyleAttrObj = {}; // 存储所有样式和可以转为样式的属性
 	const tagDefine = regularTag[node.nodeName];
@@ -78,7 +90,6 @@ const checkAttr = (node: ITag, dom: IDom, rmAttrEqDefault: boolean, browsers: Re
 
 export const shortenStyleAttr = async (dom: IDom, {
 	params: {
-		rmAttrEqDefault,
 		exchangeStyle,
 	},
 	browsers,
@@ -86,12 +97,13 @@ export const shortenStyleAttr = async (dom: IDom, {
 	const hasStyleTag = !!dom.styletag;
 	const tags = dom.querySelectorAll(NodeType.Tag) as ITag[];
 	tags.forEach(node => {
-		const attrObj = checkAttr(node, dom, rmAttrEqDefault, browsers);
+		const attrObj = checkAttr(node, dom, browsers);
 		// TODO 连锁属性的判断
 		if (!hasStyleTag || exchangeStyle) {
 			// [warning] svg 的样式覆盖规则是 style 属性 > style 标签 > 属性，所以以下代码可能导致不正确的样式覆盖！
 			// 如果存在只能放在 css 中的属性，则强制属性转 style @v1.5.0+
-			if (Object.values(attrObj).some(val => val.onlyCss) || Object.keys(attrObj).length > styleThreshold) {
+			const transLen = checkTrans(attrObj);
+			if (Object.values(attrObj).some(val => val.onlyCss) || transLen < 0) {
 
 				// 属性转 style
 				Object.entries(attrObj).forEach(([key, val]) => {
@@ -101,10 +113,15 @@ export const shortenStyleAttr = async (dom: IDom, {
 				});
 				// 执行一次 reverse 把顺序反转过来
 				node.setAttribute('style', styleToValue(Object.keys(attrObj).reverse().map(key => {
+					let value = attrObj[key].value;
+					// 特殊情况，转后需要追加 px 单位
+					if (needUnitInStyle.includes(key) && numberFullMatch.test(value) && value !== '0') {
+						value += 'px';
+					}
 					return {
 						name: key,
 						fullname: key,
-						value: attrObj[key].value,
+						value,
 					};
 				})));
 
@@ -113,7 +130,12 @@ export const shortenStyleAttr = async (dom: IDom, {
 				node.removeAttribute('style');
 				// 执行一次 reverse 把顺序反转过来
 				Object.keys(attrObj).reverse().forEach(name => {
-					node.setAttribute(name, attrObj[name].value);
+					let value = attrObj[name].value;
+					// 反转后可以移除 px 单位
+					if (needUnitInStyle.includes(name) && !numberFullMatch.test(value)) {
+						value = value.replace(/(?<=\d)px$/, '');
+					}
+					node.setAttribute(name, value);
 				});
 			}
 		}

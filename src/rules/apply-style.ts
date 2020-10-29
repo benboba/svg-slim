@@ -1,15 +1,17 @@
 import { Declaration, Rule, StyleRules } from 'css';
 import { parseSelector } from 'svg-vdom';
+import { IStyleObj } from 'typings/style';
 import { IDom, ITag } from '../../typings/node';
-import { IStyleObj } from '../../typings/style';
 import { importantReg } from '../const/regs';
 import { regularAttr } from '../const/regular-attr';
 import { parseStyle } from '../style/parse';
 import { stringifyStyle } from '../style/stringify';
 import { valueIsEqual } from '../xml/attr-is-equal';
+import { parseStyleTree } from '../xml/parse-style-tree';
 
 export const applyStyle = async (dom: IDom): Promise<void> => new Promise(resolve => {
 	if (dom.stylesheet) {
+		parseStyleTree(dom);
 		const cssRules: StyleRules = dom.stylesheet.stylesheet as StyleRules;
 
 		for (let i = cssRules.rules.length; i--;) {

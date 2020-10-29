@@ -9,4 +9,11 @@ describe('rules/collapse-textwrap', () => {
 		await collapseTextwrap(dom);
 		expect(createXML(dom)).toBe('<svg><text>1</text><text><tspan tx="1">2</tspan></text><text>3</text></svg>');
 	});
+
+	test('some case', async () => {
+		const xml = '<svg><text>123<style>text{fill:red}</style></text></svg>';
+		const dom = await parse(xml);
+		await collapseTextwrap(dom);
+		expect(createXML(dom)).toBe('<svg><text>123<style>text{fill:red}</style></text></svg>');
+	});
 });

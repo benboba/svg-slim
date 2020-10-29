@@ -1,5 +1,5 @@
 import { any, both, equals, not, prop } from 'ramda';
-import { IDocument, IParentNode, ITagNode } from 'svg-vdom';
+import { IDocument, ITagNode } from 'svg-vdom';
 import { IRuleOption } from '../../typings';
 import { regularTag } from '../const/regular-tag';
 import { isTag } from '../xml/is-tag';
@@ -12,7 +12,10 @@ export const rmIrregularNesting = async (dom: IDocument, {
 
 	for (let i = tags.length; i--;) {
 		const node = tags[i];
-		const parent = node.parentNode as IParentNode;
+		const parent = node.parentNode;
+		if (!parent) {
+			continue;
+		}
 		let legalRule = regularTag[parent.nodeName];
 
 		if (legalRule.isUndef) {
@@ -27,7 +30,7 @@ export const rmIrregularNesting = async (dom: IDocument, {
 
 		// transparent 表示参照最近的非 switch 上级元素的规则
 		if (legalRule.legalChildElements.transparent) {
-			const ancestor = (parent.parentNode as IParentNode).closest(n => n.nodeName !== 'switch');
+			const ancestor = (parent.parentNode as ITagNode).closest(n => n.nodeName !== 'switch');
 			if (!ancestor || !isTag(ancestor)) {
 				continue;
 			}
@@ -41,12 +44,7 @@ export const rmIrregularNesting = async (dom: IDocument, {
 		if (legalRule.legalChildElements.any) {
 			continue;
 		} else if (legalRule.legalChildElements.childElements && !legalRule.legalChildElements.childElements.includes(node.nodeName)) { // 不在嵌套列表中的情况
-			// tspan 嵌套需要把文本节点拿出来放到父元素内
-			if (parent.nodeName === 'tspan' && node.nodeName === 'tspan') {
-				parent.replaceChild(node.childNodes, node);
-			} else {
-				node.remove();
-			}
+			node.remove();
 		}
 	}
 	resolve();
