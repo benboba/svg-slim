@@ -1,6 +1,5 @@
 import { IDocument, IParentNode, ITagNode } from 'svg-vdom';
 import { regularAttr } from '../const/regular-attr';
-import { regularTag } from '../const/regular-tag';
 import { parseStyle } from '../style/parse';
 import { styleToValue } from '../style/style-to-value';
 

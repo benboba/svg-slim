@@ -133,4 +133,15 @@ describe('rules/shorten-style-attr', () => {
 		await shortenStyleAttr(dom, config1);
 		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg width="400" style="height:200"><rect width="50" height="50" y="125" rx="10"/></svg>');
 	});
+
+	test('check trans', async () => {
+		const xml = `<svg>
+		<text font-family="Arial" font-size="13.31" font-stretch="Normal" font-weight="400!important" font-style="italic" fill="red">80</text>
+		<rect fill="blue" style="fill:red"/>
+		</svg>`;
+		const dom = await parse(xml);
+		const config = createRuleConfig(mergeConfig(null), 'shorten-style-attr');
+		await shortenStyleAttr(dom, config);
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><text style="font-family:Arial;font-size:13.31px;font-stretch:Normal;font-weight:400!important;font-style:italic;fill:red">80</text><rect fill="red"/></svg>');
+	});
 });
