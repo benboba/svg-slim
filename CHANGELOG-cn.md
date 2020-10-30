@@ -7,7 +7,7 @@
 * 新增了一个优化规则 [style-to-class](docs/cn/rules/style-to-class.md)，默认开启，为多个 style 属性相同的标签创建统一的 className
 * 新增了一个优化规则 [apply-style](docs/cn/rules/apply-style.md)，默认开启，当某一条样式只命中了一个目标元素，移除这条样式，并直接应用于元素
 * 新增了一个优化规则 [rm-illegal-style](docs/cn/rules/rm-illegal-style.md)，默认开启，移除不合法的 style 属性
-* 新增了一个优化规则 [rm-important](docs/cn/rules/rm-important.md)，默认开启，优化 CSS 样式表中不必要的 !important
+* 新增了一个优化规则 [rm-important](docs/cn/rules/rm-important.md)，默认开启，自动移除 CSS 样式表中不必要的 !important
 * [config](docs/cn/config.md) 的 params 中增加了一个 ignoreKnownCSS 的配置项，默认关闭，如果打开，将移除掉所有不能作为[属性](https://www.w3.org/TR/SVG/propidx.html)的 CSS 样式
 
 ### bug 修复与改进

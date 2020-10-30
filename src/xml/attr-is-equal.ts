@@ -29,7 +29,7 @@ export const valueIsEqual = (attrDefine: IRegularAttr, value1: string, value2: s
 			return true;
 		}
 		// 特殊的，带单位的 0 和 0 是等价的
-		if (value2 === '0' && /^0[a-z]+$/i.test(value1)) {
+		if (/^0[a-z]*$/i.test(value1) && /^0[a-z]*$/i.test(value2)) {
 			return true;
 		}
 	}

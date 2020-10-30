@@ -15,6 +15,7 @@ import { rmAttribute } from './rm-attribute';
 import { rmComments } from './rm-comments';
 import { rmDocType } from './rm-doctype';
 import { rmHidden } from './rm-hidden';
+import { rmImportant } from './rm-important';
 import { rmIllegalStyle } from './rm-illegal-style';
 import { rmIrregularNesting } from './rm-irregular-nesting';
 import { rmIrregularTag } from './rm-irregular-tag';
@@ -61,6 +62,7 @@ export const rules: TRulesItem[] = [
 	[false, combinePath, 'combine-path'], // 必须在 rm-hidden 和 compute-path 之前
 	[false, computePath, 'compute-path'],
 	[false, shortenStyleTag, 'shorten-style-tag'], // 最好在 combine-path、shorten-shape、collapse-g 等规则之后
+	[false, rmImportant, 'rm-important'],
 	[false, applyStyle, 'apply-style'], // 最好在 shorten-style-tag 之后，在 exchange-style 之前
 	[false, shortenStyleAttr, 'shorten-style-attr'], // 必须在 apply-style 之后
 	[false, collapseG, 'collapse-g'], // 最好在 combine-path、shorten-shape、compute-path 之后

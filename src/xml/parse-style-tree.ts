@@ -36,6 +36,7 @@ const check = (dom: IDom, styleItems: IStyleItem[]) => {
 						value: style.value,
 						from: 'inline',
 						important: style.important,
+						overrideList: [],
 					};
 				});
 			} else if (attr.name === 'href') {
@@ -48,6 +49,7 @@ const check = (dom: IDom, styleItems: IStyleItem[]) => {
 					nodeStyle[attr.fullname] = {
 						value: attr.value,
 						from: 'attr',
+						overrideList: [],
 					};
 				}
 			}
@@ -73,15 +75,51 @@ const check = (dom: IDom, styleItems: IStyleItem[]) => {
 						||
 						(styleDefine.from === 'inline' && !styleDefine.important && style.important)
 					) {
+						const overrideList: IStyleObj[string]['overrideList'] = [];
+						if (styleDefine) {
+							overrideList.push(...styleDefine.overrideList);
+							if (
+								styleDefine.from === 'styletag'
+								&&
+								(
+									(styleDefine.selectorPriority && overrideAble(styleItem.selectorPriority, styleDefine.selectorPriority) && styleDefine.important === style.important)
+									||
+									(!styleDefine.important && style.important)
+								)
+							) {
+								overrideList.push({
+									from: 'styletag',
+									selectorPriority: styleDefine.selectorPriority as ISeletorPriority,
+									important: styleDefine.important,
+									value: styleDefine.value,
+								});
+							} else if (
+								styleDefine.from === 'inline' && !styleDefine.important && style.important
+							) {
+								overrideList.push({
+									from: 'inline',
+									value: styleDefine.value,
+								});
+							}
+						}
 						nodeStyle[style.name] = {
 							value: style.value,
 							from: 'styletag',
 							selectorPriority: styleItem.selectorPriority,
 							important: style.important,
+							overrideList,
 						};
-					} else if (styleDefine && styleDefine.from === 'inline') {
-						// 标记覆盖了 styletag 中的属性
-						styleDefine.override = true;
+					} else {
+						if (styleDefine && styleDefine.from === 'inline') {
+							// 标记覆盖了 styletag 中的属性
+							styleDefine.override = true;
+						}
+						styleDefine.overrideList.push({
+							from: 'styletag',
+							important: style.important,
+							selectorPriority: styleItem.selectorPriority,
+							value: style.value,
+						});
 					}
 				});
 			}
@@ -95,6 +133,7 @@ const check = (dom: IDom, styleItems: IStyleItem[]) => {
 					nodeStyle[key] = {
 						value: (parentNode.styles as IStyleObj)[key].value,
 						from: 'inherit',
+						overrideList: [],
 					};
 				}
 			});
@@ -112,6 +151,7 @@ const check = (dom: IDom, styleItems: IStyleItem[]) => {
 					styleObj[key] = {
 						value: nodeStyle[key].value,
 						from: 'inherit',
+						overrideList: [],
 					};
 				}
 			});

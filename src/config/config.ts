@@ -40,6 +40,9 @@ export const rulesConfig: TRuleOption = {
 	'rm-doctype': [true],
 	// 移除隐藏对象
 	'rm-hidden': [true],
+	// 移除不必要的 !important
+	'rm-important': [true],
+	// 移除不合法的 style 属性
 	'rm-illegal-style': [true],
 	// 移除不规范嵌套的标签
 	'rm-irregular-nesting': [true, {
