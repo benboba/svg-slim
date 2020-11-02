@@ -5,9 +5,6 @@ export type TDynamicObj<T> = Record<string, T>;
 // k, v 都是字符串的动态类型
 export type TAttrObj = TDynamicObj<string>;
 
-// 通过关键字排重
-export type TUnique = TDynamicObj<boolean>;
-
 export type TBaseObj = Record<never, unknown>;
 
 export type TRuleOptionVal = number | boolean | string[];
@@ -30,6 +27,7 @@ export interface IParamsOption {
 	mergePoint: number;
 	rmAttrEqDefault: boolean;
 	exchangeStyle: boolean;
+	ignoreKnownCSS: boolean;
 }
 
 export interface IRuleOption {

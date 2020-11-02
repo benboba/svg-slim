@@ -1,9 +1,6 @@
-import { Declaration, KeyFrames, Media, Node, Rule } from 'css';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { parse: cssParse } = require('css');
+import { Declaration, KeyFrames, Media, Node, Rule, parse as cssParse } from 'css';
 import { has } from 'ramda';
 import { ITagNode, ITextNode, NodeType } from 'svg-vdom';
-import { TUnique } from '../../typings';
 import { IDom } from '../../typings/node';
 import { regularAttr } from '../const/regular-attr';
 import { traversalObj } from '../utils/traversal-obj';
@@ -69,15 +66,15 @@ export const combineStyle = async (dom: IDom): Promise<void> => new Promise(reso
 									rmCSSNode(cssRule, parents[parents.length - 1] as Node[]);
 									return;
 								}
-								const declared: TUnique = {};
+								const declared = new Set<string>();
 								for (let i = cssRule.declarations.length; i--;) {
 									const ruleItem = cssRule.declarations[i] as Declaration;
 									// 1、移除不存在属性名或属性值的项
 									// 2、排重
-									if (!ruleItem.property || !ruleItem.value || declared[ruleItem.property]) {
+									if (!ruleItem.property || !ruleItem.value || declared.has(ruleItem.property)) {
 										cssRule.declarations.splice(i, 1);
 									} else {
-										declared[ruleItem.property] = true;
+										declared.add(ruleItem.property);
 									}
 								}
 								if (!cssRule.declarations.length) {
@@ -114,7 +111,7 @@ export const combineStyle = async (dom: IDom): Promise<void> => new Promise(reso
 				} else {
 					firstStyle.remove();
 				}
-			} catch (e) {
+			} catch {
 				firstStyle.remove();
 			}
 		}

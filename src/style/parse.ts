@@ -18,9 +18,10 @@ export const parseStyle = (styleStr: string): IStyleAttr[] => {
 	while (match !== null) {
 		// 去除前导注释和空格
 		const name = match[1].replace(/^(?:\s*\/\*.+?\*\/\s*)*/g, '').trim().replace(/\s/g, '');
-		// 去除两端注释、!important 和冗余空格
+		// 去除两端注释和冗余空格
 		let value = match[2].replace(/^(?:\s*\/\*.+?\*\/\s*)*|(?:\s*\/\*.+?\*\/\s*)*$/g, '').trim().replace(/\s+/, ' ');
 		let important = false;
+		// 验证 !important
 		if (importantReg.test(value)) {
 			value = value.replace(importantReg, '');
 			important = true;
