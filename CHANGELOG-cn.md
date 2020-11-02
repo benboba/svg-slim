@@ -1,6 +1,6 @@
 # 更新日志
 
-## 2020.11.03 v2.0.1
+## 2020.11.02 v2.0.1
 
 ### 功能
 
@@ -14,7 +14,7 @@
 
 * 调整文档的目录结构
 * 重新优化了规则的顺序，以保证更好的优化效果
-* 现在 font-size、letter-spacing、word-spacing 在 style 标签和 style 属性中会强制保留 px 单位
+* 现在 font-size、letter-spacing、word-spacing 在 style 标签和 style 属性中会强制保留 px 单位，如果值为纯数值且不为 0，属性将被移除
 * [shorten-style-tag](docs/cn/rules/shorten-style-tag.md) 规则不再依赖 deepShorten 配置项
 * 解决了 tspan 嵌套的一个 [badcase](https://github.com/benboba/svg-slimming/issues/32)，现在合并 tspan 嵌套时会正确合并所有的属性
 * 修改了 [collapse-textwrap](docs/cn/rules/collapse-textwrap.md) 的规则，现在只对 tspan 生效

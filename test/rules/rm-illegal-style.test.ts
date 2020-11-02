@@ -35,6 +35,7 @@ describe('rules/rm-illegal-style', () => {
 			fill: blue;
 			fill: yellow;
 			flex-rap: wrap;
+			letter-spacing:1.23;
 		}
 		text[id^=red] {
 			fill: red;
@@ -46,15 +47,13 @@ describe('rules/rm-illegal-style', () => {
 			fill:blue;
 		}
 		</style>
-		<a><text id="redText">123</text></a>
+		<a><text id="redText" style="letter-spacing:1.23">123</text></a>
 		</svg>`;
 		const dom = await parse(xml);
 		await combineStyle(dom);
 		const config = createRuleConfig(mergeConfig({
 			rules: {
-				'shorten-style-tag': [true, {
-					deepShorten: false,
-				}],
+				'shorten-style-tag': [true],
 			},
 			params: {
 				rmAttrEqDefault: false,

@@ -1,6 +1,6 @@
 # Change Log
 
-## 2020.11.03 v2.0.1
+## 2020.11.02 v2.0.1
 
 ### Features
 
@@ -14,7 +14,7 @@
 
 * Adjust the directory structure of the document
 * Re-optimized the order of the rules to ensure better optimization results
-* Now font-size, letter-spacing, word-spacing will force the retention of px units in the style tag and style attribute
+* Now font-size, letter-spacing, word-spacing will force the retention of px units in the style tag and style attribute, if the value is pure and not 0, the attribute will be removed
 * [shorten-style-tag](docs/cn/rules/shorten-style-tag.md) rules no longer rely on the deepShorten configuration item
 * Solved a [badcase](https://github.com/benboba/svg-slimming/issues/32) of tspan nesting, now when merging tspan nesting, all attributes will be merged correctly
 * The rules of [collapse-textwrap](docs/cn/rules/collapse-textwrap.md) have been modified, and now only take effect for tspan

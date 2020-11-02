@@ -3,8 +3,10 @@ import { has, propEq } from 'ramda';
 import { NodeType } from 'svg-vdom';
 import { IRegularTag, IRuleOption } from '../../typings';
 import { IDom, ITag } from '../../typings/node';
+import { needUnitInStyle } from '../const/definitions';
 import { regularAttr } from '../const/regular-attr';
 import { regularTag } from '../const/regular-tag';
+import { numberFullMatch } from '../const/syntax';
 import { checkApply } from '../style/check-apply';
 import { checkGeometry } from '../style/check-geometry';
 import { parseStyle } from '../style/parse';
@@ -26,6 +28,9 @@ const rmCSSNode = (cssNode: Node, plist: Node[]) => {
 
 // 一些元素的某些属性不能被转为 style
 const cantTrans = (define: IRegularTag, attrName: string) => define.onlyAttr && define.onlyAttr.includes(attrName);
+
+// 需要 px 单位但拿到了非 0 的纯数值
+const checkUnit = (name: string, value: string) => needUnitInStyle.includes(name) && numberFullMatch.test(value) && +value !== 0;
 
 interface IStyleAttrObj {
 	[prop: string]: {
@@ -76,6 +81,12 @@ const checkAttr = (node: ITag, dom: IDom, rmAttrEqDefault: boolean, ignoreKnownC
 				}
 		
 				if (!legalValue(styleDefine, styleItem)) {
+					styleObj.splice(si, 1);
+					continue;
+				}
+
+				// 需要 px 单位，但是没有加 px
+				if (checkUnit(styleItem.fullname, styleItem.value)) {
 					styleObj.splice(si, 1);
 					continue;
 				}
@@ -164,7 +175,7 @@ export const rmIllegalStyle = async (dom: IDom, {
 		// 遍历 style 解析对象，取得包含 css 定义的值
 		traversalObj<Declaration>(propEq('type', 'declaration'), (cssNode, parents) => {
 			const attrDefine = regularAttr[cssNode.property as string];
-			if (!attrDefine.couldBeStyle && (!knownCSS(cssNode.property as string) || ignoreKnownCSS)) {
+			if (!attrDefine.couldBeStyle && (!knownCSS(cssNode.property as string) || ignoreKnownCSS) || checkUnit(cssNode.property as string, cssNode.value as string)) {
 				rmCSSNode(cssNode, parents[parents.length - 1] as Rule[]);
 			} else if (rmAttrEqDefault) {
 				// 仅验证只有一种默认值的情况
