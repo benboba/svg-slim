@@ -64,6 +64,7 @@ browsers 配置依赖 [browserslist](https://github.com/browserslist/browserslis
 [rm-comments](rules/rm-comments.md) | 无 | 移除注释
 [rm-doctype](rules/rm-doctype.md) | 无 | 移除 DocType
 [rm-hidden](rules/rm-hidden.md) | 无 | 移除不可见的内容
+[rm-important](rules/rm-important.md) | 无 | 移除样式表中不必要的 !important
 [rm-illegal-style](rules/rm-illegal-style.md) | 无 | 移除不规范的 style 属性
 [rm-irregular-nesting](rules/rm-irregular-nesting.md) | { ignore: string\[] } | 移除不规则的嵌套
 [rm-irregular-tag](rules/rm-irregular-tag.md) | { ignore: string\[] } | 移除不规范的标签
@@ -82,5 +83,5 @@ browsers 配置依赖 [browserslist](https://github.com/browserslist/browserslis
 [shorten-id](rules/shorten-id.md) | 无 | 优化 ID
 [shorten-shape](rules/shorten-shape.md) | 无 | 优化图形类元素
 [shorten-style-attr](rules/shorten-style-attr.md) | 无 | 优化 style 属性
-[shorten-style-tag](rules/shorten-style-tag.md) | { deepShorten: boolean } | 优化 style 标签
+[shorten-style-tag](rules/shorten-style-tag.md) | 无 | 优化 style 标签
 [style-to-class](rules/style-to-class.md) | 无 | 为重复的 style 属性创建 className

@@ -109,7 +109,7 @@ describe('svg-slim 入口', () => {
 		<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.0" width="800" height="600" id="svg2020">
 			<text xml:space="preserve" style="font-size:24.000000px;font-style:normal;font-variant:normal;font-weight:700;font-stretch:Normal;line-height:125.000000%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:sans-serif;text-align:start;text-anchor:start;" transform="matrix(1.000000,-0.000000,0.000000,1.000000,200,200)" x="0.000000" y="0.000000" id="text2018">
 				<tspan x="0.000000" y="0.000000" id="tspan2016">
-					<tspan dx="0.000000" dy="0.000000" style="fill:#000000;font-size:24.000000px;font-style:normal;font-variant:normal;font-weight:700;font-stretch:Normal;font-family: sans-serif;" id="tspan2014">fixme</tspan>
+					<tspan dx="0.000000" dy="0.000000" style="fill:#000000;font-size:24.000000px!important;font-style:normal;font-variant:normal;font-weight:700;font-stretch:Normal;font-family: sans-serif;" id="tspan2014">fixme</tspan>
 				</tspan>
 			</text>
 		</svg>`;
