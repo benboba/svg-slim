@@ -1,7 +1,7 @@
 import { Declaration, Rule, StyleRules } from 'css';
 import { NodeType, parseSelector } from 'svg-vdom';
 import { IDom, ITag } from '../../typings/node';
-import { IStyleObj, ISeletorPriority } from '../../typings/style';
+import { IStyleObj } from '../../typings/style';
 import { importantReg } from '../const/regs';
 import { regularAttr } from '../const/regular-attr';
 import { parseStyle } from '../style/parse';
@@ -9,7 +9,6 @@ import { getSelectorPriority, overrideAble } from '../style/seletor-priority';
 import { styleToValue } from '../style/style-to-value';
 import { valueIsEqual } from '../xml/attr-is-equal';
 import { parseStyleTree } from '../xml/parse-style-tree';
-
 
 export const rmImportant = async (dom: IDom): Promise<void> => new Promise(resolve => {
 	parseStyleTree(dom);
@@ -36,43 +35,44 @@ export const rmImportant = async (dom: IDom): Promise<void> => new Promise(resol
 						const nodes = dom.querySelectorAll(selector) as ITag[];
 						if (nodes.length) {
 							nodes.forEach(node => {
-								if (node.styles) {
-									for (const key of importantMap.keys()) {
-										// 当前样式被成功应用
-										const decl = importantMap.get(key) as Declaration;
-										if (node.styles[key].from === 'styletag' && node.styles[key].value === decl.value) {
-											if (
-												node.styles[key].overrideList.some( // 列举一些 !important 不能被移除的情况
-													ovr => 
-														ovr.from === 'inline' // 覆盖的目标是行内样式
-														||
+								const nodeStyles = node.styles as IStyleObj;
+								for (const [key, decl] of importantMap) {
+									// 当前样式被成功应用
+									if (nodeStyles[key].from === 'styletag' && valueIsEqual(regularAttr[key], nodeStyles[key].value, (decl.value as string).replace(importantReg, ''))) {
+										if (
+											nodeStyles[key].overrideList.some( // 列举一些 !important 不能被移除的情况
+												ovr => 
+													ovr.from === 'inline' // 覆盖的目标是行内样式
+													||
+													(
 														(
-															(
-																ovr.important // 覆盖的目标具有 !important
-																||
-																overrideAble(ovr.selectorPriority, selectorPriority) // 覆盖目标的选择器优先级高于当前选择器
-															)
-															&&
-															!valueIsEqual(regularAttr[key], ovr.value, decl.value as string) // 且 value 不相等
+															ovr.important // 覆盖的目标具有 !important
+															||
+															overrideAble(ovr.selectorPriority, selectorPriority) // 覆盖目标的选择器优先级高于当前选择器
 														)
-												)
-											) {
-												// 如果当前样式的优先级依赖了 !important，则不能移除，需要从缓存中移除
-												importantMap.delete(key);
-											}
+														&&
+														!valueIsEqual(regularAttr[key], ovr.value, decl.value as string) // 且 value 不相等
+													)
+											)
+										) {
+											// 如果当前样式的优先级依赖了 !important，则不能移除，需要从缓存中移除
+											importantMap.delete(key);
 										}
 									}
 								}
 							});
 						}
 					}
-					importantMap.forEach(decl => {
-						decl.value = decl.value?.replace(importantReg, '');
-					});
+					for (const decl of importantMap.values()) {
+						decl.value = (decl.value as string).replace(importantReg, '');
+					}
 				}
 			}
 		});
 	}
+
+	// styletag 优化后需要再次解析样式树
+	parseStyleTree(dom);
 
 	const tags = dom.querySelectorAll(NodeType.Tag) as ITag[];
 	tags.forEach(node => {

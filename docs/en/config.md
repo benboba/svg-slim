@@ -64,6 +64,7 @@ Name | Configuration Item | Remarks
 [rm-comments](rules/rm-comments.md) | None | Remove comment
 [rm-doctype](rules/rm-doctype.md) | None | Remove DocType
 [rm-hidden](rules/rm-hidden.md) | None | Remove invisible content
+[rm-important](rules/rm-important.md) | None | Remove unnecessary !important in the style sheet
 [rm-illegal-style](rules/rm-illegal-style.md) | None | Remove the irregular style attribute
 [rm-irregular-nesting](rules/rm-irregular-nesting.md) | { ignore: string\[] } | Remove irregular nesting
 [rm-irregular-tag](rules/rm-irregular-tag.md) | { ignore: string\[] } | Remove irregular tags
@@ -82,5 +83,5 @@ Name | Configuration Item | Remarks
 [shorten-id](rules/shorten-id.md) | None | Optimization ID
 [shorten-shape](rules/shorten-shape.md) | None | Optimize graphic elements
 [shorten-style-attr](rules/shorten-style-attr.md) | None | Optimize the style attribute
-[shorten-style-tag](rules/shorten-style-tag.md) | { deepShorten: boolean } | Optimize style tag
+[shorten-style-tag](rules/shorten-style-tag.md) | None | Optimize style tag
 [style-to-class](rules/style-to-class.md) | None | Create className for repeated style attributes
