@@ -1,4 +1,4 @@
-import { IDocument, ITagNode, NodeType } from 'svg-vdom';
+import { IDocument, NodeType } from 'svg-vdom';
 import { IRegularAttr, IRegularTag, IRuleOption } from '../../typings';
 import { ITag } from '../../typings/node';
 import { ariaAttributes, eventAttributes } from '../const/definitions';
@@ -19,7 +19,7 @@ export const rmAttribute = async (dom: IDocument, {
 		rmAttrEqDefault,
 	},
 }: IRuleOption): Promise<void> => new Promise(resolve => {
-	const tags = dom.querySelectorAll(NodeType.Tag) as ITagNode[];
+	const tags = dom.querySelectorAll(NodeType.Tag) as ITag[];
 	tags.forEach(node => {
 		const tagDefine: IRegularTag = regularTag[node.nodeName];
 
@@ -64,13 +64,22 @@ export const rmAttribute = async (dom: IDocument, {
 			}
 
 			if (rmAttrEqDefault) {
-				// 如果父元素上有同名的样式类属性，则不能移除和默认值相同的属性
-				const parentStyle = (node.parentNode as ITag).styles;
-				if (attrDefine.inherited && parentStyle && hasProp(parentStyle, attr.fullname)) {
-					continue;
-				}
-				if (attrIsEqual(attrDefine, value, node.nodeName)) {
-					node.removeAttribute(attr.fullname);
+				if (attrDefine.couldBeStyle && (!tagDefine.onlyAttr || !tagDefine.onlyAttr.includes(attr.fullname))) {
+					// 作为样式类的属性
+					const parentStyle = (node.parentNode as ITag).styles;
+					// 如果父元素上有同名的样式类属性，则不能移除和默认值相同的属性
+					if (!attrDefine.inherited || !parentStyle || !hasProp(parentStyle, attr.fullname)) {
+						// 当前样式不是覆盖的 styletag， 才可以移除
+						if (attrIsEqual(attrDefine, attr.value, node.nodeName)) {
+							node.removeAttribute(attr.fullname);
+							continue;
+						}
+					}
+				} else {
+					if (attrIsEqual(attrDefine, attr.value, node.nodeName)) {
+						node.removeAttribute(attr.fullname);
+						continue;
+					}
 				}
 			}
 

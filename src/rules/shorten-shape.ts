@@ -218,6 +218,7 @@ const formatCircle = (node: ITag) => {
 	}
 };
 
+// TODO：应该验证样式表命中的情况
 export const shortenShape = async (dom: IDocument, {
 	params: {
 		thinning,

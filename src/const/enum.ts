@@ -48,6 +48,8 @@ export const channel = 'R|G|B|A';
 
 export const isolationMode = 'auto|isolate';
 
+export const animateFill = 'freeze|remove';
+
 // 下面是 properties
 export const CSSDefault = 'initial|inherit|unset|revert';
 

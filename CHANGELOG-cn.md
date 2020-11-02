@@ -1,5 +1,25 @@
 # 更新日志
 
+## 2020.11.02 v2.0.1
+
+### 功能
+
+* 新增了一个优化规则 [style-to-class](docs/cn/rules/style-to-class.md)，默认开启，为多个 style 属性相同的标签创建统一的 className
+* 新增了一个优化规则 [apply-style](docs/cn/rules/apply-style.md)，默认开启，当某一条样式只命中了一个目标元素，移除这条样式，并直接应用于元素
+* 新增了一个优化规则 [rm-illegal-style](docs/cn/rules/rm-illegal-style.md)，默认开启，移除不合法的 style 属性
+* 新增了一个优化规则 [rm-important](docs/cn/rules/rm-important.md)，默认开启，自动移除 CSS 样式表中不必要的 !important
+* [config](docs/cn/config.md) 的 params 中增加了一个 ignoreKnownCSS 的配置项，默认关闭，如果打开，将移除掉所有不能作为[属性](https://www.w3.org/TR/SVG/propidx.html)的 CSS 样式
+
+### bug 修复与改进
+
+* 调整文档的目录结构
+* 重新优化了规则的顺序，以保证更好的优化效果
+* 现在 font-size、letter-spacing、word-spacing 在 style 标签和 style 属性中会强制保留 px 单位，如果值为纯数值且不为 0，属性将被移除
+* [shorten-style-tag](docs/cn/rules/shorten-style-tag.md) 规则不再依赖 deepShorten 配置项
+* 解决了 tspan 嵌套的一个 [badcase](https://github.com/benboba/svg-slimming/issues/32)，现在合并 tspan 嵌套时会正确合并所有的属性
+* 修改了 [collapse-textwrap](docs/cn/rules/collapse-textwrap.md) 的规则，现在只对 tspan 生效
+* 现在 [shorten-style-attr](docs/cn/rules/shorten-style-attr.md) 规则在进行属性和 style 互转时，会根据情况追加或移除 font-size、letter-spacing、word-spacing 的 px 单位
+
 ## 2020.09.28 v2.0.0
 
 ### 重大变化
