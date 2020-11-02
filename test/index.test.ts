@@ -29,7 +29,6 @@ describe('svg-slim 入口', () => {
 			}],
 			'shorten-style-tag': [true, {
 				haha: null,
-				deepShorten: true,
 			}],
 			rules: {
 				'rm-unnecessary': [true, {

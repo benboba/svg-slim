@@ -15,6 +15,7 @@ export const paramsConfig: IParamsOption = {
 };
 
 export const rulesConfig: TRuleOption = {
+	// 应用样式到元素
 	'apply-style': [true],
 	// 合并 g 标签
 	'collapse-g': [true],
@@ -88,13 +89,10 @@ export const rulesConfig: TRuleOption = {
 	'shorten-id': [true],
 	// 缩短 shape 类型的节点
 	'shorten-shape': [true],
-	// 缩短 style 属性
+	// 根据情况进行 style 和属性的互转
 	'shorten-style-attr': [true],
-	// 缩短 style 标签的内容（合并相同规则、移除无效样式）
 	// 深度分析，移除无效选择器、合并相同的选择器、合并相同规则
-	'shorten-style-tag': [true, {
-		deepShorten: true,
-	}],
+	'shorten-style-tag': [true],
 	// 多个元素具有相同的 style 属性，则改为创建公共的 class
 	'style-to-class': [true],
 };

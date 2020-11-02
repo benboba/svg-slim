@@ -32,7 +32,6 @@ describe('dist', () => {
 			}],
 			'shorten-style-tag': [true, {
 				haha: null,
-				deepShorten: true,
 			}],
 		});
 		expect(dom).toBe('<svg width="1e2" height="1e2"><text> 1 abc 2 </text><script>console.log(1);console.log(2)</script></svg>');

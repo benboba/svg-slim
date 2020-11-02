@@ -17,7 +17,7 @@ const checkTrans = (attrObj: IStyleAttrObj) => {
 	let stylelen = STYLE_LEN;
 	Object.entries(attrObj).forEach(([key, val]) => {
 		// 如果不是需要追加 px 的情况，则长度可以缩短 2
-		if (!needUnitInStyle.includes(key) || !numberFullMatch.test(val.value) || val.value === '0') {
+		if (!needUnitInStyle.includes(key) || !numberFullMatch.test(val.value) || +val.value === 0) {
 			stylelen -= 2;
 		}
 	});
@@ -115,7 +115,7 @@ export const shortenStyleAttr = async (dom: IDom, {
 				node.setAttribute('style', styleToValue(Object.keys(attrObj).reverse().map(key => {
 					let value = attrObj[key].value;
 					// 特殊情况，转后需要追加 px 单位
-					if (needUnitInStyle.includes(key) && numberFullMatch.test(value) && value !== '0') {
+					if (needUnitInStyle.includes(key) && numberFullMatch.test(value) && +value !== 0) {
 						value += 'px';
 					}
 					return {

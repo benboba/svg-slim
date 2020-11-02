@@ -15,7 +15,7 @@ const TRANSLATE_THRESHOLD = 10;
 
 const createKey = (name: string, value: string, important?: boolean) => {
 	let val = value;
-	if (needUnitInStyle.includes(name) && numberFullMatch.test(val) && val !== '0') {
+	if (needUnitInStyle.includes(name) && numberFullMatch.test(val) && +val !== 0) {
 		val += 'px';
 	}
 	return `${name}:${val}${important ? '!important' : ''}`;
