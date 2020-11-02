@@ -1,7 +1,7 @@
 // 用于验证的正则表达式
 
 // style 属性中是否包含 important
-export const importantReg = /!important$/;
+export const importantReg = /\s*!important$/;
 
 // css 选择器相关字符
 export const idChar = '#[^#\\.\\[\\*:\\s]+';

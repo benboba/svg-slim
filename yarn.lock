@@ -656,13 +656,6 @@
     jest-diff "^25.2.1"
     pretty-format "^25.2.1"
 
-"@types/jquery@^3.5.1":
-  version "3.5.1"
-  resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-3.5.1.tgz#cebb057acf5071c40e439f30e840c57a30d406c3"
-  integrity sha512-Tyctjh56U7eX2b9udu3wG853ASYP0uagChJcQJXLUXEU6C/JiW5qt5dl8ao01VRj1i5pgXPAf8f1mq4+FDLRQg==
-  dependencies:
-    "@types/sizzle" "*"
-
 "@types/json-schema@^7.0.3":
   version "7.0.5"
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.5.tgz#dcce4430e64b443ba8945f0290fb564ad5bac6dd"
@@ -692,11 +685,6 @@
   version "0.25.51"
   resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.25.51.tgz#d5421d0e190c56c64c112a761a85782fc971409d"
   integrity sha512-xcmtfHIgF9SYjhGdsZR1nQslxG4hu0cIpFfLQ4CWdw3KzHvl7ki1AzFLQUkbDTG42ZN3ZsQfdRzXRlkAvbIy5Q==
-
-"@types/sizzle@*":
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/@types/sizzle/-/sizzle-2.3.2.tgz#a811b8c18e2babab7d542b3365887ae2e4d9de47"
-  integrity sha512-7EJYyKTL7tFR8+gDbB6Wwz/arpGa0Mywk1TJbNzKzHtzbwVmY4HR9WqS5VV7dsBUKQmPNr192jHr/VpBluj/hg==
 
 "@types/stack-utils@^1.0.1":
   version "1.0.1"
@@ -3944,10 +3932,10 @@ svg-path-contours@^2.0.0:
     normalize-svg-path "^0.1.0"
     vec2-copy "^1.0.0"
 
-svg-vdom@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/svg-vdom/-/svg-vdom-1.0.6.tgz#667f9d2d6d6ca7cb94dedd1265d6769b320585e7"
-  integrity sha512-REZaZiRCexA0KVuSSCI3YMzpEa5hU2/dwivHGdS149fKt6dDb3ZdGyKdwY/97+/8Nn81GUgyVgS/Yv9Lpk880Q==
+svg-vdom@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/svg-vdom/-/svg-vdom-1.0.8.tgz#a48df378285b56de10e0d5e25e805d5cf633a3e9"
+  integrity sha512-x4Er103jC7sqRqqrmfLi9uI6ugddCJXCQMiHUmttgKkfdED3Oe6H4FR8CiErJUeZ79dOddtLPN2mRrV4gwbqPQ==
 
 symbol-tree@^3.2.4:
   version "3.2.4"

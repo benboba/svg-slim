@@ -104,6 +104,7 @@ interface IPathChildren {
 // 	return true;
 // }
 
+// TODO：应该验证样式表命中的情况，且遇到了 :nth-child 的坑
 const canbeCombine = (node1: ITag, node2: ITag, combineFill: boolean, combineOpacity: boolean): boolean => {
 	// 允许路径合并的条件：
 	// 1、所有属性和样式（包括继承样式）相同

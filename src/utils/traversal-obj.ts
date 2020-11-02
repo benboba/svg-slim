@@ -10,11 +10,11 @@
 import { TBaseObj } from '../../typings';
 import { isObj } from './is-obj';
 
-const traversal = <T extends TBaseObj>(condition: (o: T | T[]) => boolean, cb: (o: T, p: Array<T | T[]>) => void, obj: T | T[], path: Array<T | T[]>, visited: Array<T | T[]>, deep: boolean) => {
-	if (visited.includes(obj)) {
+const traversal = <T extends TBaseObj>(condition: (o: T | T[]) => boolean, cb: (o: T, p: Array<T | T[]>) => void, obj: T | T[], path: Array<T | T[]>, visited: Set<T | T[]>, deep: boolean) => {
+	if (visited.has(obj)) {
 		return;
 	}
-	visited.push(obj);
+	visited.add(obj);
 	if (!deep) {
 		if (condition(obj)) {
 			cb(obj as T, path);
@@ -47,5 +47,5 @@ const traversal = <T extends TBaseObj>(condition: (o: T | T[]) => boolean, cb: (
 };
 
 export const traversalObj = <T extends TBaseObj>(condition: (o: T | T[]) => boolean, cb: (o: T, p: Array<T | T[]>) => void, obj: T | T[], deep = false) => {
-	traversal<T>(condition, cb, obj, [], [], deep);
+	traversal<T>(condition, cb, obj, [], new Set<T | T[]>(), deep);
 };

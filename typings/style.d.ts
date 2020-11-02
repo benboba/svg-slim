@@ -15,6 +15,15 @@ export interface IStyleObj {
 		selectorPriority?: ISeletorPriority;
 		important?: boolean;
 		override?: boolean;
+		overrideList: Array<{
+			from: 'styletag';
+			selectorPriority: ISeletorPriority;
+			important?: boolean;
+			value: string;
+		} | {
+			from: 'inline';
+			value: string;
+		}>;
 	};
 }
 

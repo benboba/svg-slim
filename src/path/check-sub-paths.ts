@@ -164,7 +164,7 @@ export const checkSubPath = (pathResult: IPathResultItem[][], hasStroke: boolean
 				if (!shapes.cells.length) {
 					continue;
 				}
-			} catch (e) {
+			} catch {
 				// empty
 			}
 		}
