@@ -11,9 +11,12 @@ export const paramsConfig: IParamsOption = {
 	mergePoint: 0, // 合并路径中距离相近的点，为 0 表示不进行此项优化
 	rmAttrEqDefault: true, // 移除与默认值相同的样式
 	exchangeStyle: false, // 无视 style 标签的存在，强制进行 style 和属性的互转 （[warning] svg 的样式覆盖规则是 style 属性 > style 标签 > 属性，所以这个规则可能导致不正确的覆盖！）
+	ignoreKnownCSS: false, // 如果此选项打开，则只保留 regular-attr 列表中的属性
 };
 
 export const rulesConfig: TRuleOption = {
+	// 应用样式到元素
+	'apply-style': [true],
 	// 合并 g 标签
 	'collapse-g': [true],
 	// 塌陷无意义的文本节点
@@ -38,6 +41,10 @@ export const rulesConfig: TRuleOption = {
 	'rm-doctype': [true],
 	// 移除隐藏对象
 	'rm-hidden': [true],
+	// 移除不必要的 !important
+	'rm-important': [true],
+	// 移除不合法的 style 属性
+	'rm-illegal-style': [true],
 	// 移除不规范嵌套的标签
 	'rm-irregular-nesting': [true, {
 		ignore: [], // 配置忽略的标签列表
@@ -82,11 +89,10 @@ export const rulesConfig: TRuleOption = {
 	'shorten-id': [true],
 	// 缩短 shape 类型的节点
 	'shorten-shape': [true],
-	// 缩短 style 属性
+	// 根据情况进行 style 和属性的互转
 	'shorten-style-attr': [true],
-	// 缩短 style 标签的内容（合并相同规则、移除无效样式）
 	// 深度分析，移除无效选择器、合并相同的选择器、合并相同规则
-	'shorten-style-tag': [true, {
-		deepShorten: true,
-	}],
+	'shorten-style-tag': [true],
+	// 多个元素具有相同的 style 属性，则改为创建公共的 class
+	'style-to-class': [true],
 };

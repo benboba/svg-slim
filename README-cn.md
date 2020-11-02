@@ -102,4 +102,12 @@ svgSlim(svgcode[, config]).then(result => {
 | css | style 转属性 | √ | √ |
 | css | 属性转 style | √ | × |
 | css | 移除 svg 不支持的 css 样式 | √ | × |
-| css | 直接把 style 内容应用到元素 | × | √ |
+| css | 直接把 style 内容应用到元素 | v2.0.1 | √ |
+
+# 捐助项目
+
+如果你觉得这个项目对你有帮助，欢迎提供赞助。
+
+[<img src="docs/assets/paypal.png" width="420">](https://www.paypal.com/paypalme/benboba)
+<p><img src="docs/assets/alipay.png" width="420"></p>
+<p><img src="docs/assets/wechat.png" width="420"></p>

@@ -1,7 +1,7 @@
 import { IRegularAttr, TDynamicObj, TLegalValueItem } from '../../typings';
 import { hasProp } from '../utils/has-prop';
 import { containerElements, filterPrimitiveElements, gradientElements, graphicsElements, newViewportsElements, shapeElements, textContentElements } from './definitions';
-import { absoluteSize, alignmentBaseline, alignX, alignY, animateTransformType, baselineShift, blendMode, calcMode, capsValues, channel, clipPath, colorInterpolation, colorKeyWords, colorRendering, commonLigValues, contextualAltValues, crossOrigin, direction, discretionaryLigValues, display, dominantBaseline, dur, eastAsianVariantValues, eastAsianWidthValues, edgeMode, feColorMatrixType, feFuncType, feTurbulenceType, fontStretch, fontStyle, fontWeight, historicalLigValues, inVal, isolationMode, lengthAdjust, markerUnit, method, nonzeroEvenodd, numericFigureValues, numericFractionValues, numericSpacingValues, operater, operater1, orient, overflow, paintKeywords, pointerEvents, referrer, relativeSize, restart, shapeRendering, spreadMethod, strokeLinecap, strokeLinejoin, systemColor, target, textAnchor, textRendering, unicodeBidi, units, visibility, whiteSpace, writingMode, writingModeCSS3, x11Colors } from './enum';
+import { absoluteSize, alignmentBaseline, alignX, alignY, animateFill, animateTransformType, baselineShift, blendMode, calcMode, capsValues, channel, clipPath, colorInterpolation, colorKeyWords, colorRendering, commonLigValues, contextualAltValues, crossOrigin, direction, discretionaryLigValues, display, dominantBaseline, dur, eastAsianVariantValues, eastAsianWidthValues, edgeMode, feColorMatrixType, feFuncType, feTurbulenceType, fontStretch, fontStyle, fontWeight, historicalLigValues, inVal, isolationMode, lengthAdjust, markerUnit, method, nonzeroEvenodd, numericFigureValues, numericFractionValues, numericSpacingValues, operater, operater1, orient, overflow, paintKeywords, pointerEvents, referrer, relativeSize, restart, shapeRendering, spreadMethod, strokeLinecap, strokeLinejoin, systemColor, target, textAnchor, textRendering, unicodeBidi, units, visibility, writingMode, writingModeCSS3, x11Colors } from './enum';
 import { angelFullMatch, basicShapeFullMatch, clipPathRect, clockFullMatch, colorFullMatch, controlPointsFullMatch, cssNameFullMatch, cssNameSpaceSeparatedFullMatch, cursorFullMatch, filterListFullMatch, funcIRIFullMatch, indentFullMatch, integerFullMatch, langFullMatch, lengthFullMatch, lengthPairFullMatch, lengthPairListFullMatch, lengthPercentageFullMatch, lengthPercentageListFullMatch, mediaTypeFullMatch, nameFullMatch, nonNegativeFullMatch, numberFullMatch, numberListFullMatch, numberOptionalFullMatch, numberSemiSepatatedFullMatch, pathFullMatch, percentageFullMatch, preservAspectRatioFullMatch, stopColorFullMatch, strokeDasharrayFullMatch, timeListFullMatch, transformListFullMatch, URIFullMatch, vectorEffectFullMatch, viewBoxFullMatch } from './syntax';
 
 const shapeAndText = shapeElements.concat(textContentElements);
@@ -1954,7 +1954,11 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		animatable: true,
 		maybeColor: true,
 		maybeFuncIRI: true,
-		legalValues: paintValue,
+		legalValues: paintValue.concat([{
+			type: 'enum',
+			value: animateFill,
+			tag: ['animate', 'animateMotion', 'animateTransform', 'set'],
+		}]),
 		initValue: [{
 			val: 'black',
 			tag: useContainerGraphics,

@@ -1,5 +1,4 @@
 import { IDocument, ITagNode } from 'svg-vdom';
-import { TUnique } from '../../typings';
 import { filterPrimitiveElements, transferFunctionElements } from '../const/definitions';
 import { hasProp } from '../utils/has-prop';
 import { getAnimateAttr } from '../xml/get-animate-attr';
@@ -53,15 +52,15 @@ export const shortenFilter = async (dom: IDocument): Promise<void> => new Promis
 
 		// feComponentTransfer 的同一个类型的 transferFunctionElement 子元素不允许多次出现
 		if (node.nodeName === 'feComponentTransfer') {
-			const funcUnique: TUnique = {};
+			const funcUnique = new Set<string>();
 			for (let i = node.childNodes.length; i--;) {
 				const childNode = node.childNodes[i];
-				if (funcUnique[childNode.nodeName]) {
+				if (funcUnique.has(childNode.nodeName)) {
 					childNode.remove();
 					continue;
 				}
 				if (transferFunctionElements.includes(childNode.nodeName)) {
-					funcUnique[childNode.nodeName] = true;
+					funcUnique.add(childNode.nodeName);
 				}
 			}
 		}
