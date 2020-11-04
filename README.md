@@ -31,6 +31,10 @@ Where svgcode is svg text in string format and config is user-defined optimized 
 
 View the main item [Optimization Configuration](docs/en/config.md)
 
+### Use online
+
+[svg-slim-web](https://benboba.github.io/svg-slim-web/)
+
 ### Use svg-slim-loader
 
 [svg-slim-loader](https://github.com/benboba/svg-slim-loader) is a loader plugin for webpack, which supports optimization of imported SVG files

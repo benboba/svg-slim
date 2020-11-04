@@ -29,6 +29,10 @@ svgSlim(svgcode[, config]).then(result => {
 
 查看主条目[优化配置](docs/cn/config.md)
 
+### 在线使用
+
+[svg-slim-web](https://benboba.github.io/svg-slim-web/)
+
 ### 使用 svg-slim-loader
 
 [svg-slim-loader](https://github.com/benboba/svg-slim-loader) 是 webpack 的 loader 插件，支持对 import 的 SVG 文件进行优化
