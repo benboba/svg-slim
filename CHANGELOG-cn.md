@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2020.11. v2.0.2
+
+### bug 修复与改进
+
+* 重新优化了规则的顺序，部分规则采用两次执行的方式，以保证更好的优化效果
+* 现在对样式树进行解析时会忽略选择器中包含某些 伪类/伪元素 的情况
+* 现在 [shorten-shape](docs/cn/rules/shorten-shape.md) ，在 CSS 标签中的选择器命中时，不会进行 shape 到路径的转换
+* 现在 [combine-transform](docs/cn/rules/combine-transform.md) ，在 CSS 标签中的选择器命中时，不会进行 circle 和 ellipse 的互转
+
 ## 2020.11.02 v2.0.1
 
 ### 功能
