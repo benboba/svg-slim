@@ -107,7 +107,7 @@ export type TLegalValueItem = {
 export interface IRegularAttr {
 	name: string;
 	isUndef?: boolean;
-	couldBeStyle?: boolean;
+	couldBeStyle?: boolean; // 用于标记该属性是否支持 style 到 attr 的互转
 	inherited?: boolean;
 	animatable?: boolean;
 	maybeColor?: boolean;

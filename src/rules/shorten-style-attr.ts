@@ -94,11 +94,11 @@ export const shortenStyleAttr = async (dom: IDom, {
 	},
 	browsers,
 }: IRuleOption): Promise<void> => new Promise(resolve => {
-	const hasStyleTag = !!dom.styletag;
+	const hasStyleTag = !!dom.stylesheet?.stylesheet?.rules.length;
 	const tags = dom.querySelectorAll(NodeType.Tag) as ITag[];
 	tags.forEach(node => {
 		const attrObj = checkAttr(node, dom, browsers);
-		// TODO 连锁属性的判断
+		// TODO 可以不必判断 hasStyleTag，应具体情况具体分析
 		if (!hasStyleTag || exchangeStyle) {
 			// [warning] svg 的样式覆盖规则是 style 属性 > style 标签 > 属性，所以以下代码可能导致不正确的样式覆盖！
 			// 如果存在只能放在 css 中的属性，则强制属性转 style @v1.5.0+

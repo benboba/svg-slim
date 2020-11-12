@@ -1541,7 +1541,7 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		legalValues: [{
 			type: 'reg',
 			value: lengthPercentageFullMatch,
-			tag: filterPrimitiveElements.concat(['filter', 'mask', 'pattern', 'svg', 'rect', 'image', 'foreignObject']),
+			tag: filterPrimitiveElements.concat(['filter', 'mask', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'use']),
 		}, {
 			type: 'reg',
 			value: numberFullMatch,
@@ -1673,7 +1673,7 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 		legalValues: [{
 			type: 'reg',
 			value: lengthPercentageFullMatch,
-			tag: filterPrimitiveElements.concat(['filter', 'mask', 'pattern', 'svg', 'rect', 'image', 'foreignObject']),
+			tag: filterPrimitiveElements.concat(['filter', 'mask', 'pattern', 'svg', 'rect', 'image', 'foreignObject', 'use']),
 		}, {
 			type: 'reg',
 			value: lengthPercentageListFullMatch,

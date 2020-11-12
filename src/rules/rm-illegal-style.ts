@@ -140,7 +140,7 @@ const checkAttr = (node: ITag, dom: IDom, rmAttrEqDefault: boolean, ignoreKnownC
 
 			// 如果样式无法应用到当前元素，且所有子元素都无法应用或已覆盖，则可以移除
 			if (!attrDefine.applyTo.includes(node.nodeName) && attrDefine.inherited) {
-				const subTags = node.childNodes.filter(subNode => isTag(subNode) && subNode.styles) as Required<ITag>[];
+				const subTags = node.children as Required<ITag>[];
 				if (subTags.length && subTags.every(subTag => subTag.styles[attr.fullname].from !== 'inherit' || !checkApply(attrDefine, subTag, dom))) {
 					node.removeAttribute(attr.fullname);
 					continue;

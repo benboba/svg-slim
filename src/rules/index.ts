@@ -52,7 +52,6 @@ export const rules: TRulesItem[] = [
 	[false, shortenAnimate, 'shorten-animate'], // 必须在所有依赖 getAnimateAttr 的规则之前
 	[false, shortenFilter, 'shorten-filter'],
 	[false, collapseTextwrap, 'collapse-textwrap'], // 可能需要在 rmHidden 之前，需要在 rm-illegal-style 之前
-	[false, rmHidden, 'rm-hidden'], // 必须在 shorten-style-attr 之前
 	[false, rmIllegalStyle, 'rm-illegal-style'], // 必须在 collpase-g、shorten-shape 和 compute-path 之前，必须在 rm-attribute 之前
 	[false, rmPx, 'rm-px'], // 必须在 shorten-style-attr 之后
 	[false, rmAttribute, 'rm-attribute'], // 必须在 collpase-g、shorten-shape 和 compute-path 之前
@@ -60,12 +59,12 @@ export const rules: TRulesItem[] = [
 	[false, shortenID, 'shorten-id'], // 必须在 shorten-defs 之后，collapse-g、combine-path 之前
 	[false, shortenShape, 'shorten-shape'], // 必须在 rm-hidden 和 compute-path 之前
 	[false, combinePath, 'combine-path'], // 必须在 rm-hidden 和 compute-path 之前
-	[false, computePath, 'compute-path'],
+	[false, computePath, 'compute-path'], // 必须在 collapse-g 之前
+	[false, rmHidden, 'rm-hidden'], // 必须在 shorten-style-attr 之前，必须在 shorten-id 之后
+	[false, collapseG, 'collapse-g'], // 最好在 combine-path、shorten-shape、compute-path、rm-hidden 之后
 	[false, shortenStyleTag, 'shorten-style-tag'], // 最好在 combine-path、shorten-shape、collapse-g 等规则之后
 	[false, rmImportant, 'rm-important'],
 	[false, applyStyle, 'apply-style'], // 最好在 shorten-style-tag 之后，在 exchange-style 之前
-	[false, shortenStyleAttr, 'shorten-style-attr'], // 必须在 apply-style 之后
-	[false, collapseG, 'collapse-g'], // 最好在 combine-path、shorten-shape、compute-path 之后
 	[false, combineTransform, 'combine-transform'], // 必须在 collpase-g 之后
 	[false, shortenDecimalDigits, 'shorten-decimal-digits'], // 最后再优化数值
 	[false, shortenColor, 'shorten-color'], // 最后再优化颜色
@@ -73,4 +72,9 @@ export const rules: TRulesItem[] = [
 	[false, shortenClass, 'shorten-class'], // 必须在 apply-style 和 style-to-class 之后
 	[true, combineTextNode],
 	[false, rmXMLNS, 'rm-xmlns'],
+	[false, shortenStyleAttr, 'shorten-style-attr'], // 必须在 apply-style 之后
+	// 部分规则执行两次，以获得更好的优化效果
+	[false, rmIllegalStyle, 'rm-illegal-style'], // 二次执行
+	[false, rmAttribute, 'rm-attribute'], // 二次执行
+	[false, computePath, 'compute-path'], // 二次执行
 ];
