@@ -29,7 +29,10 @@ const mergeTspan = (node: ITagNode, parent: ITagNode) => {
 			}
 		}
 	}
-	(parent.parentNode as ITagNode).replaceChild(parent.childNodes, parent);
+	const index = parent.childNodes.indexOf(node);
+	node.appendChild(parent.childNodes.slice(index + 1));
+	node.insertBefore(parent.childNodes.slice(0, index), node.childNodes[0]);
+	(parent.parentNode as ITagNode).replaceChild(node, parent);
 };
 
 export const collapseTextwrap = async (dom: IDocument): Promise<void> => new Promise(resolve => {

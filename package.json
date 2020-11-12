@@ -1,6 +1,6 @@
 {
   "name": "svg-slim",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "SVG compression tool",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -30,7 +30,7 @@
     "ramda": "^0.25.0",
     "rxjs": "^6.6.2",
     "svg-path-contours": "^2.0.0",
-    "svg-vdom": "^1.0.8",
+    "svg-vdom": "^1.0.9",
     "triangulate-contours": "^1.0.2"
   },
   "devDependencies": {

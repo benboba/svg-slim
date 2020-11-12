@@ -6,6 +6,7 @@ import { douglasPeucker as DP } from '../algorithm/douglas-peucker';
 import { shapeElements } from '../const/definitions';
 import { numberGlobal, numberPattern, pureNumOrWithPx } from '../const/syntax';
 import { doMerge } from '../path/merge-points';
+import { checkTypeSelector } from '../style/check-type-selector';
 import { getShorter } from '../utils/get-shorter';
 import { parseNumberList } from '../utils/parse-numberlist';
 import { shortenNumber } from '../utils/shorten-number';
@@ -55,6 +56,11 @@ const formatRect = (node: ITag) => {
 
 	// 如果不是 px 单位，不能转换为 path
 	if (!pureNumOrWithPx.test(width) || !pureNumOrWithPx.test(height) || !pureNumOrWithPx.test(x) || !pureNumOrWithPx.test(y)) {
+		return;
+	}
+
+	// 如果被依赖了标签选择器的样式命中，不能进行转化
+	if (checkTypeSelector(node)) {
 		return;
 	}
 
@@ -112,7 +118,6 @@ const formatLine = (node: ITag) => {
 		if (value && startWithNumber.test(value)) {
 			shapeAttr[key as keyof typeof shapeAttr] = value;
 		}
-		node.removeAttribute(key);
 	});
 
 	// 是否存在 stroke-linecap
@@ -123,15 +128,20 @@ const formatLine = (node: ITag) => {
 		return;
 	}
 
+	// 如果被依赖了标签选择器的样式命中，不能进行转化
+	if (checkTypeSelector(node)) {
+		return;
+	}
+
 	// 如果不是 px 单位，不能转换为 path
 	if (pureNumOrWithPx.test(shapeAttr.x1) && pureNumOrWithPx.test(shapeAttr.y1) && pureNumOrWithPx.test(shapeAttr.x2) && pureNumOrWithPx.test(shapeAttr.y2)) {
 		node.nodeName = 'path';
+		rmAttrs(node, ['x1', 'y1', 'x2', 'y2']);
 		node.setAttribute('d', shortenNumberList(`M${+shapeAttr.x1},${+shapeAttr.y1},${+shapeAttr.x2},${+shapeAttr.y2}`));
 	}
 };
 
 const formatPoly = (thinning: number, mergePoint: number, node: ITag, addZ: boolean) => {
-	node.nodeName = 'path';
 	let d = '';
 	if (node.hasAttribute('points')) {
 		let points = parseNumberList(node.getAttribute('points') as string);
@@ -162,17 +172,24 @@ const formatPoly = (thinning: number, mergePoint: number, node: ITag, addZ: bool
 			// doCompute 必须执行
 			points = doMerge(mergePoint, points);
 		}
-		node.removeAttribute('points');
 
-		// 有两个以上节点，或者具有 marker 或者是具有 stroke-linecap 的 polygon
-		if (points.length > 2 || hasMarker || (hasStroke && hasStrokeCap && addZ)) {
-			d = shortenNumberList(`M${points.map(shortenNumber).join(',')}`);
-			if (addZ) {
-				d += 'z';
+		// 如果被依赖了标签选择器的样式命中，不能进行转化
+		if (checkTypeSelector(node)) {
+			node.setAttribute('points', shortenNumberList(`${points.map(shortenNumber).join(',')}`));
+			return;
+		} else {
+			// 有两个以上节点，或者具有 marker 或者是具有 stroke-linecap 的 polygon
+			if (points.length > 2 || hasMarker || (hasStroke && hasStrokeCap && addZ)) {
+				d = shortenNumberList(`M${points.map(shortenNumber).join(',')}`);
+				if (addZ) {
+					d += 'z';
+				}
 			}
 		}
 	}
 	if (d) {
+		node.nodeName = 'path';
+		node.removeAttribute('points');
 		node.setAttribute('d', d);
 	} else {
 		// 没有节点或者没有 points 属性，直接移除当前 node
@@ -205,7 +222,8 @@ const formatEllipse = (node: ITag) => {
 		return;
 	}
 
-	if (rx === ry) {
+	// 如果被依赖了标签选择器的样式命中，不能进行转化
+	if (rx === ry && !checkTypeSelector(node)) {
 		ellipseToCircle(node, rx);
 	}
 };
@@ -218,7 +236,6 @@ const formatCircle = (node: ITag) => {
 	}
 };
 
-// TODO：应该验证样式表命中的情况
 export const shortenShape = async (dom: IDocument, {
 	params: {
 		thinning,
@@ -258,7 +275,7 @@ export const shortenShape = async (dom: IDocument, {
 
 		if (cloneNode.nodeName === 'remove') {
 			node.remove();
-		} else if (cloneNode.nodeName !== node.nodeName && cloneNode.toString().length <= node.toString().length) {
+		} else if (cloneNode.toString().length <= node.toString().length) {
 			Object.assign(node, cloneNode);
 		}
 	}, dom);

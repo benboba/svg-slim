@@ -1,17 +1,20 @@
 import { Declaration, Rule, StyleRules } from 'css';
-import { NodeType, parseSelector } from 'svg-vdom';
+import { NodeType, parseSelector, ISelector } from 'svg-vdom';
 import { IDom, ITag } from '../../typings/node';
 import { ISeletorPriority, IStyleAttr, IStyleObj } from '../../typings/style';
 import { importantReg } from '../const/regs';
 import { regularAttr } from '../const/regular-attr';
+import { checkStatusPseudo } from '../style/check-status-pseudo';
 import { parseStyle } from '../style/parse';
 import { getSelectorPriority, overrideAble } from '../style/seletor-priority';
 import { hasProp } from '../utils/has-prop';
 
 interface IStyleItem {
 	styles: IStyleAttr[];
+	selector: ISelector[];
 	selectorPriority: ISeletorPriority;
 	nodes: ITag[];
+	statusPseudo: boolean;
 }
 
 const check = (dom: IDom, styleItems: IStyleItem[]) => {
@@ -58,6 +61,21 @@ const check = (dom: IDom, styleItems: IStyleItem[]) => {
 		// 判断 style 标签内的样式，优先级高于 attr 和 inehrit
 		styleItems.forEach(styleItem => {
 			if (styleItem.nodes.includes(node)) {
+				if (styleItem.statusPseudo) {
+					styleItem.styles.forEach(style => {
+						if (nodeStyle[style.name]) {
+							nodeStyle[style.name].statusPseudo = true;
+						} else {
+							nodeStyle[style.name] = {
+								statusPseudo: true,
+								from: 'inherit',
+								value: '',
+								overrideList: [],
+							};
+						}
+					});
+					return;
+				}
 				styleItem.styles.forEach(style => {
 					const styleDefine = nodeStyle[style.name];
 					if (
@@ -76,8 +94,10 @@ const check = (dom: IDom, styleItems: IStyleItem[]) => {
 						(styleDefine.from === 'inline' && !styleDefine.important && style.important)
 					) {
 						const overrideList: IStyleObj[string]['overrideList'] = [];
+						let statusPseudo: boolean | undefined;
 						if (styleDefine) {
 							overrideList.push(...styleDefine.overrideList);
+							statusPseudo = styleDefine.statusPseudo;
 							if (
 								styleDefine.from === 'styletag'
 								&&
@@ -89,6 +109,7 @@ const check = (dom: IDom, styleItems: IStyleItem[]) => {
 							) {
 								overrideList.push({
 									from: 'styletag',
+									selector: styleDefine.selector as ISelector[],
 									selectorPriority: styleDefine.selectorPriority as ISeletorPriority,
 									important: styleDefine.important,
 									value: styleDefine.value,
@@ -105,9 +126,11 @@ const check = (dom: IDom, styleItems: IStyleItem[]) => {
 						nodeStyle[style.name] = {
 							value: style.value,
 							from: 'styletag',
+							selector: styleItem.selector,
 							selectorPriority: styleItem.selectorPriority,
 							important: style.important,
 							overrideList,
+							statusPseudo,
 						};
 					} else {
 						if (styleDefine && styleDefine.from === 'inline') {
@@ -116,6 +139,7 @@ const check = (dom: IDom, styleItems: IStyleItem[]) => {
 						}
 						styleDefine.overrideList.push({
 							from: 'styletag',
+							selector: styleItem.selector,
 							important: style.important,
 							selectorPriority: styleItem.selectorPriority,
 							value: style.value,
@@ -195,7 +219,9 @@ export const parseStyleTree = (dom: IDom) => {
 					if (nodes.length) {
 						styleItems.push({
 							styles,
+							selector,
 							selectorPriority,
+							statusPseudo: checkStatusPseudo(selector),
 							nodes,
 						});
 					}
