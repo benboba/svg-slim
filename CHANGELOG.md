@@ -1,5 +1,17 @@
 # Change Log
 
+## 2020.11.12 v2.0.2
+
+### Bug fixes and Improvements
+
+* The order of the rules has been re-optimized, and some rules are executed twice to ensure better optimization results
+* Now when parsing the style tree, it will ignore certain pseudo-classes/elements in the selector
+* Now [shorten-shape](docs/en/rules/shorten-shape.md) will not convert shape to path when the tag selector in the CSS hits
+* Now [combine-transform](docs/en/rules/combine-transform.md), when the tag selector in the CSS hits, the circle and ellipse will not be converted
+* Fixed the problem that [collapse-textwrap](docs/en/rules/collapse-textwrap.md) may cause missing spaces when merging nodes
+* Fixed a bug where the x and y attributes of use could be accidentally removed
+* Fixed some link errors in the documentation
+
 ## 2020.11.02 v2.0.1
 
 ### Features
