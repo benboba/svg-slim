@@ -15,15 +15,21 @@ SVG瘦身工具是一款提供了丰富自定义功能的 SVG 压缩工具，遵
 npm install svg-slim
 ```
 
+或者
+
+```
+yarn add svg-slim
+```
+
 ## 使用
 ```js
-const svgSlim = require('svg-slim');
+import svgSlim from 'svg-slim';
 svgSlim(svgcode[, config]).then(result => {
 	console.log(result);
 });
 ```
 
-其中 svgcode 为字符串格式的 svg 文本，config 为用户自定义的优化配置
+其中 svgcode 为字符串格式的 svg 文本，config 为用户自定义的[优化配置](docs/cn/config.md)
 
 ### 优化配置
 

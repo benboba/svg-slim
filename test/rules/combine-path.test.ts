@@ -9,7 +9,7 @@ describe('rules/combine-path', () => {
 		const xml = `<svg>
 		<path style="opacity:1" fill="none" stroke-opacity="0.5" d="M0,0h100V100H0Z"/>
 		<path style="opacity:50%" fill="none" stroke-opacity="50%" d="M110,0l100,0,0,100,-100,0Z"/>
-		<path/><path d=""/><path d="M110,0l100,0,0,100,-100,0Z"/><path d=""/>
+		<path d="M110,0l100,0,0,100,-100,0Z"/>
 		<rect />
 		<path fill="none" d="M100.5.5H100Z" /><path fill="none" d="M200.5.5H100Z" />
 		<path fill="none" stroke="none" d="M100.5.5H100Z" style="opacity:1;" /><path fill="none" stroke="none" d="M200.5.5H100Z" style="opacity:1;" />

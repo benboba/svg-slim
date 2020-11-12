@@ -37,3 +37,7 @@ export const geometryProperties = rectAttributes.concat(['cx', 'cy', 'r', 'rx', 
 
 // 部分 key，在作为属性时可以省略 px 单位，在 css 中不能省略
 export const needUnitInStyle = ['font-size', 'letter-spacing', 'word-spacing'];
+
+// 这些伪类和伪元素只是在某些状态下生效，在解析样式树时要标出来
+export const statusPseudoClass = ['target', 'link', 'visited', 'hover', 'active', 'focus'];
+export const statusPseudoElement = ['first-letter', 'first-line', 'selection'];

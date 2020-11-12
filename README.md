@@ -17,19 +17,25 @@ svg-slim is an SVG compression tool that provides rich customization and follows
 npm install svg-slim
 ```
 
+or
+
+```
+yarn add svg-slim
+```
+
 ## Use
 ```js
-const svgSlim = require('svg-slim');
+import svgSlim from 'svg-slim';
 svgSlim(svgcode[, config]).then(result => {
 	console.log(result);
 });
 ```
 
-Where svgcode is svg text in string format and config is user-defined optimized configuration
+Where svgcode is svg text in string format and config is user-defined [optimized configuration](docs/en/config.md)
 
 ### Optimized Configuration
 
-View the main item [Optimization Configuration](docs/en/config.md)
+View the main item [optimized configuration](docs/en/config.md)
 
 ### Use online
 

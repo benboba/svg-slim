@@ -14,6 +14,7 @@ import { stringify } from '../matrix/stringify';
 import { doCompute } from '../path/do-compute';
 import { parsePath } from '../path/parse';
 import { stringifyPath } from '../path/stringify';
+import { checkTypeSelector } from '../style/check-type-selector';
 import { parseStyle } from '../style/parse';
 import { stringifyStyle } from '../style/stringify';
 import { getShorter } from '../utils/get-shorter';
@@ -313,13 +314,18 @@ const applyCircleTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs:
 			}
 			const sx = matrix.val[0];
 			const sy = matrix.val.length === 2 ? matrix.val[1] : matrix.val[0];
-			checkAttr(node, 'cx', applyNumber(multiply, cx, sx));
-			checkAttr(node, 'cy', applyNumber(multiply, cy, sy));
 			if (sx === sy) {
+				// 不需要转椭圆的情况不影响
+				checkAttr(node, 'cx', applyNumber(multiply, cx, sx));
+				checkAttr(node, 'cy', applyNumber(multiply, cy, sy));
 				checkAttr(node, 'r', applyNumber(multiply, r, sx));
+			} else if (checkTypeSelector(node)) {
+				return false;
 			} else {
-				// 转成椭圆
+				// 只有未被标签选择器命中才能转成椭圆
 				node.nodeName = 'ellipse';
+				checkAttr(node, 'cx', applyNumber(multiply, cx, sx));
+				checkAttr(node, 'cy', applyNumber(multiply, cy, sy));
 				checkAttr(node, 'rx', applyNumber(multiply, r, sx));
 				checkAttr(node, 'ry', applyNumber(multiply, r, sy));
 				rmAttrs(node, ['r']);
@@ -335,13 +341,18 @@ const applyCircleTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs:
 				// 仅验证缩放 + 平移的情况
 				const msx = matrix.val[0];
 				const msy = matrix.val[3];
-				checkAttr(node, 'cx', applyNumber(plus, applyNumber(multiply, cx, msx), matrix.val[4]));
-				checkAttr(node, 'cy', applyNumber(plus, applyNumber(multiply, cy, msy), matrix.val[5]));
 				if (msx === msy) {
+					// 不需要转椭圆的情况不影响
+					checkAttr(node, 'cx', applyNumber(plus, applyNumber(multiply, cx, msx), matrix.val[4]));
+					checkAttr(node, 'cy', applyNumber(plus, applyNumber(multiply, cy, msy), matrix.val[5]));
 					checkAttr(node, 'r', applyNumber(multiply, r, msx));
+				} else if (checkTypeSelector(node)) {
+					return false;
 				} else {
-					// 转成椭圆
+					// 只有未被标签选择器命中才能转成椭圆
 					node.nodeName = 'ellipse';
+					checkAttr(node, 'cx', applyNumber(plus, applyNumber(multiply, cx, msx), matrix.val[4]));
+					checkAttr(node, 'cy', applyNumber(plus, applyNumber(multiply, cy, msy), matrix.val[5]));
 					checkAttr(node, 'rx', applyNumber(multiply, r, msx));
 					checkAttr(node, 'ry', applyNumber(multiply, r, msy));
 					rmAttrs(node, ['r']);
@@ -375,7 +386,8 @@ const applyEllipseTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs
 	if (matrix.type !== 'translate' && hasMarker) {
 		return false;
 	}
-	if (rx === ry && !checkAnimateAttr(animateAttrs, 'rx') && !checkAnimateAttr(animateAttrs, 'ry')) {
+	// 未被标签选择命中才能转圆形
+	if (rx === ry && !checkAnimateAttr(animateAttrs, 'rx') && !checkAnimateAttr(animateAttrs, 'ry') && !checkTypeSelector(node)) {
 		node.nodeName = 'circle';
 		rmAttrs(node, ['rx', 'ry']);
 		checkAttr(node, 'r', rx);
@@ -426,11 +438,11 @@ const applyEllipseTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs
 			}
 			const sx = matrix.val[0];
 			const sy = matrix.val.length === 2 ? matrix.val[1] : matrix.val[0];
-			checkAttr(node, 'cx', applyNumber(multiply, cx, sx));
-			checkAttr(node, 'cy', applyNumber(multiply, cy, sy));
 			rx = applyNumber(multiply, rx, sx);
 			ry = applyNumber(multiply, ry, sy);
-			if (rx === ry) {
+			checkAttr(node, 'cx', applyNumber(multiply, cx, sx));
+			checkAttr(node, 'cy', applyNumber(multiply, cy, sy));
+			if (rx === ry && !checkTypeSelector(node)) {
 				// 转成正圆
 				node.nodeName = 'circle';
 				rmAttrs(node, ['rx', 'ry']);
@@ -450,11 +462,11 @@ const applyEllipseTransform = (node: ITagNode, matrix: IMatrixFunc, animateAttrs
 				// 仅验证缩放 + 平移的情况
 				const msx = matrix.val[0];
 				const msy = matrix.val[3];
-				checkAttr(node, 'cx', applyNumber(plus, applyNumber(multiply, cx, msx), matrix.val[4]));
-				checkAttr(node, 'cy', applyNumber(plus, applyNumber(multiply, cy, msy), matrix.val[5]));
 				rx = applyNumber(multiply, rx, msx);
 				ry = applyNumber(multiply, ry, msy);
-				if (rx === ry) {
+				checkAttr(node, 'cx', applyNumber(plus, applyNumber(multiply, cx, msx), matrix.val[4]));
+				checkAttr(node, 'cy', applyNumber(plus, applyNumber(multiply, cy, msy), matrix.val[5]));
+				if (rx === ry && !checkTypeSelector(node)) {
 					// 转成正圆
 					node.nodeName = 'circle';
 					rmAttrs(node, ['rx', 'ry']);
