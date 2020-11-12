@@ -21,7 +21,6 @@ export const shortenStyleTag = async (dom: IDom, {
 	if (dom.stylesheet) {
 		const cssRules: StyleRules = dom.stylesheet.stylesheet as StyleRules;
 
-		// TODO 连锁属性的判断
 		const selectorUnique: ICSSUnique = {};
 		const declareUnique: ICSSUnique = {};
 		for (let i = 0, l = cssRules.rules.length; i < l; i++) {

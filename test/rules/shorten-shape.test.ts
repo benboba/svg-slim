@@ -1,6 +1,7 @@
 import { parse } from 'svg-vdom';
 import { createRuleConfig } from '../../src/config/create-rule-config';
 import { mergeConfig } from '../../src/config/merge';
+import { combineStyle } from '../../src/default-rules/combine-style';
 import { shortenShape } from '../../src/rules/shorten-shape';
 import { createXML } from '../../src/xml/create';
 
@@ -32,7 +33,7 @@ describe('rules/shorten-shape', () => {
 		const dom = await parse(xml);
 		const config = createRuleConfig(mergeConfig(null), 'shorten-shape');
 		await shortenShape(dom, config);
-		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><path style="fill:red" d="M0,0v.5h1e2v-.5z"/><path d="M0,0h1e3v1e2h-1e3z"/><rect rx="5" width="1" height="1"/><rect ry="5" width="1" height="1"/><rect rx="5" ry="5" width="1" height="1"/><rect rx="-5" ry="5" width="1" height="1"/><rect width="1em" height="1em"/><line stroke="red" x2="1em"/><path stroke="red" d="M0,0,100,300"/><path fill="red" d="M0,0,1e2,1e2,2e2-2e2z"/><path stroke="red" stroke-linecap="square" d="M10,10z"/><path d="M0,0"/></svg>');
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><path style="fill:red" d="M0,0v.5h1e2v-.5z"/><path d="M0,0h1e3v1e2h-1e3z"/><rect rx="5" width="1" height="1"/><rect ry="5" width="1" height="1"/><rect rx="5" width="1" height="1"/><rect rx="-5" ry="5" width="1" height="1"/><rect width="1em" height="1em"/><line stroke="red" x2="1em"/><path stroke="red" d="M0,0,100,300"/><path fill="red" d="M0,0,1e2,1e2,2e2-2e2z"/><path stroke="red" stroke-linecap="square" d="M10,10z"/><path d="M0,0"/></svg>');
 	});
 
 	test('转换形状为路径 - circle & ellipse', async () => {
@@ -107,5 +108,28 @@ describe('rules/shorten-shape', () => {
 		}), 'shorten-shape');
 		await shortenShape(dom, config);
 		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg></svg>');
+	});
+
+	test('标签选择器', async () => {
+		const xml = `<svg>
+		<style>
+		rect, ellipse, polygon {
+			fill: red;
+		}
+		line, polyline, [x1] {
+			stroke: red;
+		}
+		</style>
+		<ellipse rx="100" ry="100"/>
+		<rect width="100" height="100"/>
+		<line x1="100"/>
+		<polyline points="0, 0, 1000, 1000, 500, 0, 5"/>
+		<polygon points="0, 0, 1000, 1000, 500, 0, 5"/>
+		</svg>`;
+		const dom = await parse(xml);
+		await combineStyle(dom);
+		const config = createRuleConfig(mergeConfig(null), 'shorten-shape');
+		await shortenShape(dom, config);
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><style>rect,ellipse,polygon{fill:red}line,polyline,[x1]{stroke:red}</style><ellipse rx="100" ry="100"/><rect width="100" height="100"/><line x1="100"/><polyline points="0,0,1e3,1e3,5e2,0"/><polygon points="0,0,1e3,1e3,5e2,0"/></svg>');
 	});
 });

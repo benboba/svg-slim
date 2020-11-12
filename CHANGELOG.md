@@ -1,24 +1,36 @@
 # Change Log
 
+## 2020.11.12 v2.0.2
+
+### Bug fixes and Improvements
+
+* The order of the rules has been re-optimized, and some rules are executed twice to ensure better optimization results
+* Now when parsing the style tree, it will ignore certain pseudo-classes/elements in the selector
+* Now [shorten-shape](docs/en/rules/shorten-shape.md) will not convert shape to path when the tag selector in the CSS hits
+* Now [combine-transform](docs/en/rules/combine-transform.md), when the tag selector in the CSS hits, the circle and ellipse will not be converted
+* Fixed the problem that [collapse-textwrap](docs/en/rules/collapse-textwrap.md) may cause missing spaces when merging nodes
+* Fixed a bug where the x and y attributes of use could be accidentally removed
+* Fixed some link errors in the documentation
+
 ## 2020.11.02 v2.0.1
 
 ### Features
 
-* Added an optimization rule [style-to-class](docs/cn/rules/style-to-class.md), which is enabled by default to create a unified className for multiple tags with the same style attribute
-* Added an optimization rule [apply-style](docs/cn/rules/apply-style.md), which is enabled by default. When a style hits only one target element, remove this style and apply it directly element
-* Added an optimization rule [rm-illegal-style](docs/cn/rules/rm-illegal-style.md), enabled by default, and removed illegal style attributes
-* Added an optimization rule [rm-important](docs/cn/rules/rm-important.md), which is enabled by default, and automatically removes unnecessary !important in CSS style sheets
-* [config](docs/cn/config.md) adds an ignoreKnownCSS configuration item to the params, which is closed by default. If it is turned on, it will remove everything that cannot be used as [property](https://www.w3.org /TR/SVG/propidx.html) CSS style
+* Added an optimization rule [style-to-class](docs/en/rules/style-to-class.md), which is enabled by default to create a unified className for multiple tags with the same style attribute
+* Added an optimization rule [apply-style](docs/en/rules/apply-style.md), which is enabled by default. When a style hits only one target element, remove this style and apply it directly element
+* Added an optimization rule [rm-illegal-style](docs/en/rules/rm-illegal-style.md), enabled by default, and removed illegal style attributes
+* Added an optimization rule [rm-important](docs/en/rules/rm-important.md), which is enabled by default, and automatically removes unnecessary !important in CSS style sheets
+* [config](docs/en/config.md) adds an ignoreKnownCSS configuration item to the params, which is closed by default. If it is turned on, it will remove everything that cannot be used as [property](https://www.w3.org /TR/SVG/propidx.html) CSS style
 
 ### Bug fixes and Improvements
 
 * Adjust the directory structure of the document
 * Re-optimized the order of the rules to ensure better optimization results
 * Now font-size, letter-spacing, word-spacing will force the retention of px units in the style tag and style attribute, if the value is pure and not 0, the attribute will be removed
-* [shorten-style-tag](docs/cn/rules/shorten-style-tag.md) rules no longer rely on the deepShorten configuration item
+* [shorten-style-tag](docs/en/rules/shorten-style-tag.md) rules no longer rely on the deepShorten configuration item
 * Solved a [badcase](https://github.com/benboba/svg-slimming/issues/32) of tspan nesting, now when merging tspan nesting, all attributes will be merged correctly
-* The rules of [collapse-textwrap](docs/cn/rules/collapse-textwrap.md) have been modified, and now only take effect for tspan
-* Now [shorten-style-attr](docs/cn/rules/shorten-style-attr.md) will add or remove font-size, letter-spacing, word-spacing's px unit, according to the situation when converting between attributes and styles.
+* The rules of [collapse-textwrap](docs/en/rules/collapse-textwrap.md) have been modified, and now only take effect for tspan
+* Now [shorten-style-attr](docs/en/rules/shorten-style-attr.md) will add or remove font-size, letter-spacing, word-spacing's px unit, according to the situation when converting between attributes and styles.
 
 ## 2020.09.28 v2.0.0
 

@@ -29,16 +29,16 @@ export const collapseG = async (dom: IDocument): Promise<void> => new Promise(re
 	const gTags = dom.querySelectorAll('g') as ITagNode[];
 	for (let i = gTags.length; i--;) {
 		const node = gTags[i];
-		const childNodes = node.childNodes;
-		if (!childNodes.length) {
+		const children = node.children;
+		if (!children.length) {
 			node.remove();
 		} else if (!cantCollapse(node)) {
-			if (childNodes.length === 1) { // 只有一个子节点
-				const childNode = childNodes[0] as ITagNode;
+			if (children.length === 1) { // 只有一个子节点
+				const childNode = children[0] as ITagNode;
 				collapseAttributes(childNode, node);
 				(node.parentNode as IParentNode).replaceChild(childNode, node);
 			} else if (!node.attributes.length) { // 没有属性
-				(node.parentNode as IParentNode).replaceChild(childNodes, node);
+				(node.parentNode as IParentNode).replaceChild(children, node);
 			}
 		}
 	}

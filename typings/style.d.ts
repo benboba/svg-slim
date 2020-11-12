@@ -1,5 +1,5 @@
 import { Rule } from 'css';
-import { IAttr } from 'svg-vdom';
+import { IAttr, ISelector } from 'svg-vdom';
 
 // 选择器权重
 export interface ISeletorPriority {
@@ -12,11 +12,14 @@ export interface IStyleObj {
 	[propName: string]: {
 		value: string;
 		from: 'attr' | 'styletag' | 'inline' | 'inherit';
+		selector?: ISelector[];
 		selectorPriority?: ISeletorPriority;
 		important?: boolean;
 		override?: boolean;
+		statusPseudo?: boolean;
 		overrideList: Array<{
 			from: 'styletag';
+			selector: ISelector[];
 			selectorPriority: ISeletorPriority;
 			important?: boolean;
 			value: string;

@@ -37,6 +37,9 @@ describe('xml/parse-style-tree', () => {
 		mask {
 			fill: red!important;
 		}
+		mask:hover {
+			fill: grey;
+		}
 		</style>
 		<defs>
 			<pattern id="TrianglePattern">
@@ -48,7 +51,7 @@ describe('xml/parse-style-tree', () => {
 		<mask style="stroke: none;fill: blue;" font-family="Arial" id="mask-2"><use xlink:href="#path-1"/></mask>
 		<mask style="stroke: none;fill: white;" font-family="Arial" id="mask-3" xlink:href="#mask-3"/>
 		<mask xlink:href="#use"><use id="use"/></mask>
-		<mask xlink:href="#ell"/>
+		<mask fill="yellow" xlink:href="#ell"/>
 		<g style="stroke:none;fill: blue;" fill="red"><text>123</text></g>
 		</svg>`);
 		await combineStyle(dom);

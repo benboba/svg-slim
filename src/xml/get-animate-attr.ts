@@ -1,13 +1,12 @@
 import { ITagNode } from 'svg-vdom';
 import { IAnimateAttr } from '../../typings';
 import { animationAttrElements } from '../const/definitions';
-import { isTag } from './is-tag';
 
 // 如果子对象包含动画元素，获取这些动画元素影响了哪些属性
 export const getAnimateAttr = (node: ITagNode) => {
 	const result: IAnimateAttr[] = [];
-	node.childNodes.forEach(childNode => {
-		if (isTag(childNode) && animationAttrElements.includes(childNode.nodeName)) {
+	node.children.forEach(childNode => {
+		if (animationAttrElements.includes(childNode.nodeName)) {
 			const attributeName = childNode.getAttribute('attributeName');
 			if (attributeName) {
 				if (childNode.nodeName !== 'animateTransform' || attributeName === 'tranform' || attributeName === 'patternTransform') {
