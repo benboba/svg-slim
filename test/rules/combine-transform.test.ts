@@ -1,8 +1,9 @@
+import { parse } from 'svg-vdom';
 import { createRuleConfig } from '../../src/config/create-rule-config';
 import { mergeConfig } from '../../src/config/merge';
+import { combineStyle } from '../../src/default-rules/combine-style';
 import { combineTransform } from '../../src/rules/combine-transform';
 import { createXML } from '../../src/xml/create';
-import { parse } from 'svg-vdom';
 
 describe('rules/combine-transform', () => {
 	test('合并 Transform', async () => {
@@ -185,5 +186,22 @@ describe('rules/combine-transform', () => {
 		const config = createRuleConfig(mergeConfig(null), 'combine-transform');
 		await combineTransform(dom, config);
 		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><rect transform="translate(1,2)" stroke-width="0"><animate attributeName="y" to="5"/><animate attributeName="stroke" to="red"/><animate attributeName="stroke-width" to="3"/></rect><rect transform="rotate(90)"><animate attributeName="ry" to="5"/></rect><line transform="translate(1)"><animate attributeName="y2" to="5"/></line><circle transform="translate(1)"><animate attributeName="cx" to="5"/></circle><circle transform="scale(2)"><animate attributeName="r" to="5"/></circle><circle transform="matrix(2,0,0,2,5,5)" r="5"><animate attributeName="r" to="5"/></circle><ellipse transform="translate(1)"><animate attributeName="cx" to="5"/></ellipse><ellipse transform="scale(2)" rx="1" ry="2"><animate attributeName="ry" to="5"/></ellipse><ellipse transform="matrix(2,0,0,2,5,5)" rx="1" ry="2"><animate attributeName="ry" to="5"/></ellipse><polyline transform="translate(1)"><animate attributeName="points" to="5,5"/></polyline><path transform="translate(1)"><animate attributeName="d" to="5,5"/></path><path transform="scale(2)"><animate attributeName="marker-start" to="5,5"/></path><path transform="scale(2)"><animate attributeName="marker-mid" to="5,5"/></path><path transform="scale(2)"><animate attributeName="marker-end" to="5,5"/></path></svg>');
+	});
+
+	test('覆盖率补齐', async () => {
+		const xml = `<svg>
+		<style>circle{fill:red}ellipse{fill:blue}</style>
+		<text><tspan transform="translate(1,1)">1</tspan></text>
+		<ellipse rx="100" ry="100"/>
+		<circle r="5" transform="scale(2,1)"/>
+		<circle r="5" transform="matrix(2,0,0,1,5,7)"/>
+		<ellipse rx="2" ry="1" transform="scale(1,2)"/>
+		<ellipse rx="2" ry="1" transform="matrix(1,0,0,2,5,7)"/>
+		</svg>`;
+		const dom = await parse(xml);
+		await combineStyle(dom);
+		const config = createRuleConfig(mergeConfig(null), 'combine-transform');
+		await combineTransform(dom, config);
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><style>circle{fill:red}ellipse{fill:blue}</style><text><tspan dx="1" dy="1">1</tspan></text><ellipse rx="100" ry="100"/><circle r="5" transform="scale(2,1)"/><circle r="5" transform="matrix(2,0,0,1,5,7)"/><ellipse rx="2" ry="2"/><ellipse rx="2" ry="2" cx="5" cy="7"/></svg>');
 	});
 });

@@ -116,7 +116,7 @@ const canbeCombine = (node1: ITag, node2: ITag, combineFill: boolean, combineOpa
 	// TODO 路径没有相交或包含
 
 	// 不能存在任何子节点
-	if (node1.childNodes.length || node2.childNodes.length) {
+	if (node1.children.length || node2.children.length) {
 		return false;
 	}
 
@@ -194,19 +194,18 @@ export const combinePath = async (dom: IDocument, {
 	parseStyleTree(dom);
 	const pathTags = dom.querySelectorAll('path') as ITagNode[];
 
-	outer: for (let i = pathTags.length - 1; i > 0; i--) {
+	for (let i = pathTags.length - 1; i > 0; i--) {
 		const pathItem = pathTags[i];
 		const prevItem = pathTags[i - 1];
 		const parent = pathItem.parentNode as IParentNode;
 		// 两个 path 节点的父节点必须相同
 		if (prevItem.parentNode === parent) {
-			const index = parent.childNodes.indexOf(pathItem);
-			const pIndex = parent.childNodes.indexOf(prevItem);
+			const siblings = parent.children;
+			const index = siblings.indexOf(pathItem);
+			const pIndex = siblings.indexOf(prevItem);
 			// 两个 path 节点必须相邻，否则跳过
-			for (let j = pIndex + 1; j < index; j++) {
-				if (isTag(parent.childNodes[j])) {
-					continue outer;
-				}
+			if (pIndex !== index - 1) {
+				break;
 			}
 			if (canbeCombine(pathItem, prevItem, disregardFill as boolean, disregardOpacity as boolean)) {
 				const prevD = prevItem.getAttribute('d') || '';

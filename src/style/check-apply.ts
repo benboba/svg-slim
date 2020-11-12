@@ -1,7 +1,6 @@
 import { IDocument, INode } from 'svg-vdom';
 import { IRegularAttr } from '../../typings';
 import { ITag } from '../../typings/node';
-import { isTag } from '../xml/is-tag';
 import { parseStyle } from './parse';
 
 // TODO：目前只验证了 href 和 xlink:href，其它 IRI 或 funcIRI 属性是否也需要验证？
@@ -9,11 +8,11 @@ import { parseStyle } from './parse';
 const getXlink = (dom: IDocument, idStr: string) => dom.querySelector(idStr) as ITag;
 
 // 定义一个特殊的遍历方法，只接收一个 condition 方法，只有该方法返回 true 才继续遍历子元素
-const traversal = (condition: (n: INode) => boolean, node: ITag): void => {
+const traversal = (condition: (n: ITag) => boolean, node: ITag): void => {
 	// 此处不能用 forEach ，for 循环可以避免当前节点被移除导致下一个节点不会被遍历到的问题
-	for (const childNode of node.childNodes as INode[]) {
+	for (const childNode of node.children) {
 		if (condition(childNode)) {
-			traversal(condition, childNode as ITag);
+			traversal(condition, childNode);
 		}
 	}
 };
@@ -57,12 +56,9 @@ const check = (styleDefine: IRegularAttr, node: ITag | null, dom: IDocument, uni
 	if (result) return true;
 
 	// 逻辑在判断函数里做，不在回调函数里做
-	traversal((childNode: INode) => {
+	traversal((childNode: ITag) => {
 		// 已经命中就不再继续
 		if (result) return false;
-
-		// 只验证元素节点
-		if (!isTag(childNode)) return false;
 
 		// 因为递归可能存在循环引用，所以需要排重
 		if (unique.has(childNode)) return false;

@@ -23,11 +23,6 @@ export const rmAttribute = async (dom: IDocument, {
 	tags.forEach(node => {
 		const tagDefine: IRegularTag = regularTag[node.nodeName];
 
-		// 需要判断 parentNode.styles，而 parentNode.styles 可能在之前被修改过，因此必须在每个 tag 被遍历到的时候重新解析，虽然这有点影响性能…… TODO 设法优化一下？
-		if (rmAttrEqDefault) {
-			parseStyleTree(dom);
-		}
-
 		// href 和 xlink:href 不能并存，如果并存，应该移除后者
 		if (node.hasAttribute('href') && node.hasAttribute('xlink:href')) {
 			node.removeAttribute('xlink:href');
@@ -64,6 +59,8 @@ export const rmAttribute = async (dom: IDocument, {
 			}
 
 			if (rmAttrEqDefault) {
+				// 需要判断 parentNode.styles，而 parentNode.styles 可能在之前被修改过，因此必须在每个 tag 被遍历到的时候重新解析，虽然这有点影响性能…… TODO 设法优化一下？
+				parseStyleTree(dom);
 				if (attrDefine.couldBeStyle && (!tagDefine.onlyAttr || !tagDefine.onlyAttr.includes(attr.fullname))) {
 					// 作为样式类的属性
 					const parentStyle = (node.parentNode as ITag).styles;
