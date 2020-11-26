@@ -1988,7 +1988,7 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 			value: nonzeroEvenodd,
 		}],
 		initValue: 'nonzero',
-		applyTo: shapeAndText,
+		applyTo: ['path', 'polygon', 'polyline'].concat(textContentElements),
 	},
 	'filter': {
 		name: 'filter',
