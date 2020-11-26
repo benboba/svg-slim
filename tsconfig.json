@@ -1,0 +1,24 @@
+{
+	"compilerOptions": {
+		"target": "es2019",
+		"module": "esnext",
+		"moduleResolution": "node",
+		"lib": ["es2019"],
+		"baseUrl": ".",
+		"strict": true,
+		"allowSyntheticDefaultImports": true,
+		"paths": {
+			"ramda": [
+				"location-of-types/npm-ramda-package/index"
+			]
+		},
+		"declaration": true
+	},
+	"include": [
+		"src/**/*",
+		"typings/*"
+	],
+	"exclude": [
+		"node_modules"
+	]
+}

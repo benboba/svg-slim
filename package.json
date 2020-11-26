@@ -1,0 +1,66 @@
+{
+  "name": "svg-slim",
+  "version": "2.0.2",
+  "description": "SVG compression tool",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rm -rf dist && rollup -c",
+    "lint": "eslint --ext .ts ./src",
+    "test": "jest"
+  },
+  "keywords": [
+    "svg",
+    "optimization",
+    "minimization",
+    "parse",
+    "svg-slimming",
+    "svg-slim",
+    "javascript",
+    "nodejs"
+  ],
+  "author": "Wang Feng <benboba@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@types/browserslist": "^4.8.0",
+    "browserslist": "^4.14.1",
+    "css": "^2.2.3",
+    "he": "^1.2.0",
+    "known-css-properties": "^0.19.0",
+    "ramda": "^0.25.0",
+    "rxjs": "^6.6.2",
+    "svg-path-contours": "^2.0.0",
+    "svg-vdom": "^1.0.9",
+    "triangulate-contours": "^1.0.2"
+  },
+  "devDependencies": {
+    "@types/css": "0.0.31",
+    "@types/he": "^1.1.0",
+    "@types/jest": "^26.0.14",
+    "@types/node": "^12.12.18",
+    "@types/ramda": "^0.25.36",
+    "@typescript-eslint/eslint-plugin": "^3.9.0",
+    "@typescript-eslint/parser": "^3.9.0",
+    "cross-env": "^3.2.4",
+    "eslint": "^7.7.0",
+    "jest": "^26.4.2",
+    "lodash": "^4.17.15",
+    "rollup": "^2.26.2",
+    "rollup-plugin-typescript2": "^0.27.2",
+    "ts-jest": "^26.3.0",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.7"
+  },
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benboba/svg-slim.git"
+  },
+  "bugs": {
+    "url": "https://github.com/benboba/svg-slim/issues"
+  },
+  "homepage": "https://github.com/benboba/svg-slim#readme"
+}
