@@ -29,7 +29,7 @@ describe('合并配置项', () => {
 
 	test('merge browsers', () => {
 		const config1 = mergeConfig({
-			browsers: '> 1%'
+			browsers: ['> 1%', 'ie 11', 'firefox 88']
 		});
 		const config2 = mergeConfig({
 			browsers: ['> 0.5%', 'not ie 11', 'not firefox < 99']

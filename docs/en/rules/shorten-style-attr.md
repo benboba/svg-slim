@@ -9,7 +9,7 @@
 }
 ```
 * Explanation:
-	* If the style tag does not exist in the svg, or [params](../config.md#params) has exchangeStyle enabled, the conversion of style and attributes will be performed
+	* Convert styles and attributes as appropriate
 
 The first case (attribute to style):
 ```xml

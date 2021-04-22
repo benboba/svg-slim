@@ -10,7 +10,6 @@ import { hasProp } from '../utils/has-prop';
 import { keysToKey } from '../utils/keys-to-key';
 import { valueIsEqual } from '../xml/attr-is-equal';
 import { getAttr } from '../xml/get-attr';
-import { isTag } from '../xml/is-tag';
 import { parseStyleTree } from '../xml/parse-style-tree';
 // import { doCompute } from '../path/do-compute';
 // import { parsePath } from '../path/parse';

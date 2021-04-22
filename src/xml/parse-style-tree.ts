@@ -33,8 +33,8 @@ const check = (dom: IDom, styleItems: IStyleItem[]) => {
 		node.attributes.forEach(attr => {
 			if (attr.fullname === 'style') {
 				// 行内样式优先级最高
-				const styles = parseStyle(attr.value);
-				styles.forEach(style => {
+				const styleList = parseStyle(attr.value);
+				styleList.forEach(style => {
 					nodeStyle[style.name] = {
 						value: style.value,
 						from: 'inline',

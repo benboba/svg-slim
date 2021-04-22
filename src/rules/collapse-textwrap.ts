@@ -1,4 +1,4 @@
-import { IDocument, IParentNode, ITagNode } from 'svg-vdom';
+import { IDocument, IParentNode, ITagNode, ITextNode, NodeType } from 'svg-vdom';
 import { regularAttr } from '../const/regular-attr';
 import { parseStyle } from '../style/parse';
 import { styleToValue } from '../style/style-to-value';
@@ -39,13 +39,25 @@ export const collapseTextwrap = async (dom: IDocument): Promise<void> => new Pro
 	const textWraps = dom.querySelectorAll('tspan') as ITagNode[];
 
 	textWraps.forEach(node => {
-		// 只要有一个非空属性，就不执行塌陷
 		if (node.attributes.every(({ value }) => !value)) {
+			// 没有属性，或所有属性为空，可以进行塌陷
 			(node.parentNode as IParentNode).replaceChild(node.childNodes, node);
 		} else {
 			// tspan 嵌套需要把文本节点拿出来放到父元素内
-			// 暂时只处理单一子元素的情况，多子元素可能因为复制属性和样式导致“反优化”
-			if (node.querySelectorAll('>tspan').length === 1) {
+			if (
+				// 暂时只处理单一子元素的情况，多子元素可能因为复制属性和样式导致“反优化”
+				node.querySelectorAll('>tspan').length === 1
+				&&
+				// 注意如果存在非空文本节点，不能进行塌陷
+				node.childNodes.filter(
+					childNode => 
+						// text 或 cdata 类型
+						(childNode.nodeType === NodeType.Text || childNode.nodeType === NodeType.CDATA)
+						&&
+						// 内容非空
+						(childNode as ITextNode).textContent
+				).length === 0
+			) {
 				mergeTspan(node.querySelector('>tspan') as ITagNode, node);
 			}
 		}

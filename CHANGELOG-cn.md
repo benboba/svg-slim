@@ -1,5 +1,16 @@
 # 更新日志
 
+## 2021.04.22 v2.0.3
+
+### bug 修复与改进
+
+* 现在会移除 rect、circle、ellipse、line 的 fill-rule 属性（因为对这些元素而言，fill-rule 没有意义）
+* 修复了 [shorten-id](docs/cn/rules/shorten-id.md) 当多个属性引用同一个 ID 时，只会移除第一个的 bug
+* 现在 [shorten-style-attr](docs/cn/rules/shorten-style-attr.md) 不再依赖 exchangeStyle 参数
+* 修复了当开启 rmAttrEqDefault 时，会意外移除颜色值为 currentColor/transparent 的 bug
+* 现在 [collpase-g](docs/cn/rules/collapse-g.md) 当 g 元素的所有 style 属性都对 g 元素自身无效，且只对某一个子元素生效时，会将属性转移到对应的子元素
+* 现在 [collpase-textwrap](docs/cn/rules/collapse-textwrap.md) 当遇到非空文本节点时，不会进行塌陷
+
 ## 2020.11.12 v2.0.2
 
 ### bug 修复与改进

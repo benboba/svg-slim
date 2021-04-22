@@ -26,7 +26,6 @@ export interface IParamsOption {
 	straighten: number;
 	mergePoint: number;
 	rmAttrEqDefault: boolean;
-	exchangeStyle: boolean;
 	ignoreKnownCSS: boolean;
 }
 

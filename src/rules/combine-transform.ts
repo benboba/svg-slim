@@ -53,8 +53,8 @@ const checkAttr = (node: ITagNode, attrname: string, val: string) => {
 		rmAttrs(node, [attrname]);
 	} else {
 		if (geometryProperties.includes(attrname) && node.hasAttribute('style')) {
-			const styleAttr = parseStyle(node.getAttribute('style') as string);
-			const hasStyle = styleAttr.some(sAttr => {
+			const styleList = parseStyle(node.getAttribute('style') as string);
+			const hasStyle = styleList.some(sAttr => {
 				if (sAttr.fullname === attrname) {
 					sAttr.value = val;
 					return true;
@@ -62,7 +62,7 @@ const checkAttr = (node: ITagNode, attrname: string, val: string) => {
 				return false;
 			});
 			if (hasStyle) {
-				node.setAttribute('style', stringifyStyle(styleAttr));
+				node.setAttribute('style', stringifyStyle(styleList));
 				return;
 			}
 		}

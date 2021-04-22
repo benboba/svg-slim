@@ -16,7 +16,7 @@ const style2value = pipe(stringifyStyle, shortenStyle);
 
 // [原始 id]: [短 id, 所属节点, 唯一 key]
 interface IIDCache {
-	[propName: string]: [string, ITagNode, string | null];
+	[propName: string]: [string, [ITagNode, string | null][]];
 }
 
 export const shortenID = async (dom: IDom): Promise<void> => new Promise(resolve => {
@@ -24,10 +24,11 @@ export const shortenID = async (dom: IDom): Promise<void> => new Promise(resolve
 	const IDList: IIDCache = {};
 	const shorten = (node: ITagNode, attrname: string | null, key: string) => {
 		if (hasProp(IDList, key)) {
+			IDList[key][1].push([node, attrname]);
 			return IDList[key][0];
 		}
 		const sid = createShortenID(si++);
-		IDList[key] = [sid, node, attrname];
+		IDList[key] = [sid, [[node, attrname]]];
 		return sid;
 	};
 
@@ -61,8 +62,8 @@ export const shortenID = async (dom: IDom): Promise<void> => new Promise(resolve
 					attr.value = `#${shorten(node, attr.fullname, iri[1])}`;
 				}
 			} else if (attr.fullname === 'style') {
-				const styleObj = parseStyle(attr.value);
-				styleObj.forEach(styleItem => {
+				const styleList = parseStyle(attr.value);
+				styleList.forEach(styleItem => {
 					if (regularAttr[styleItem.fullname].maybeFuncIRI) {
 						const firi = funcIRIToID.exec(styleItem.value);
 						if (firi) {
@@ -70,7 +71,7 @@ export const shortenID = async (dom: IDom): Promise<void> => new Promise(resolve
 						}
 					}
 				});
-				attr.value = style2value(styleObj);
+				attr.value = style2value(styleList);
 			}
 		});
 	});
@@ -91,34 +92,35 @@ export const shortenID = async (dom: IDom): Promise<void> => new Promise(resolve
 
 	// 最后移除不存在的 ID 引用
 	Object.values(IDList).forEach(item => {
-		const attrName = item[2];
-		if (typeof attrName === 'string') {
-			if (attrName.startsWith('style|')) {
-				const styleObj = parseStyle(item[1].getAttribute('style') as string).filter(styleItem => styleItem.fullname !== attrName.slice(6));
-				if (styleObj.length) {
-					item[1].setAttribute('style', style2value(styleObj));
+		for (const [node, attrName] of item[1]) {
+			if (typeof attrName === 'string') {
+				if (attrName.startsWith('style|')) {
+					const styleList = parseStyle(node.getAttribute('style') as string).filter(styleItem => styleItem.fullname !== attrName.slice(6));
+					if (styleList.length) {
+						node.setAttribute('style', style2value(styleList));
+					} else {
+						node.removeAttribute('style');
+					}
 				} else {
-					item[1].removeAttribute('style');
+					node.removeAttribute(attrName);
 				}
 			} else {
-				item[1].removeAttribute(attrName);
-			}
-		} else {
-			const reg = new RegExp(`#${item[0]}(?=[,\\*#>+~:{\\s\\[\\.]|$)`);
-			traversalObj(has('selectors'), (ruleItem: Rule, path) => {
-				const selectors = ruleItem.selectors;
-				if (selectors) {
-					for (let i = selectors.length; i--;) {
-						if (reg.test(selectors[i])) {
-							selectors.splice(i, 1);
+				const reg = new RegExp(`#${item[0]}(?=[,\\*#>+~:{\\s\\[\\.]|$)`);
+				traversalObj(has('selectors'), (ruleItem: Rule, path) => {
+					const selectors = ruleItem.selectors;
+					if (selectors) {
+						for (let i = selectors.length; i--;) {
+							if (reg.test(selectors[i])) {
+								selectors.splice(i, 1);
+							}
+						}
+						if (!selectors.length) {
+							const parent = path[path.length - 1] as Rule[];
+							parent.splice(parent.indexOf(ruleItem), 1);
 						}
 					}
-					if (!selectors.length) {
-						const parent = path[path.length - 1] as Rule[];
-						parent.splice(parent.indexOf(ruleItem), 1);
-					}
-				}
-			}, cssRules.rules);
+				}, cssRules.rules);
+			}
 		}
 	});
 	resolve();
