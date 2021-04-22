@@ -4,8 +4,9 @@
 
 ### bug 修复与改进
 
-* 现在会移除 rect、circle、ellipse、line 的 fill-rule 属性
-* 现在当 g 元素的样式只能影响一个子元素时，会将该样式转移到子元素上
+* 现在会移除 rect、circle、ellipse、line 的 fill-rule 属性（因为对这些元素而言，fill-rule 没有意义）
+* 修复了 [shorten-id](docs/cn/rules/shorten-id.md) 当多个属性引用同一个 ID 时，只会移除第一个的 bug
+* 现在 [shorten-style-attr](docs/cn/rules/shorten-style-attr.md) 不再依赖 exchangeStyle 参数
 
 ## 2020.11.12 v2.0.2
 

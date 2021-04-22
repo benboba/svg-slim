@@ -22,16 +22,11 @@ const check = (styleDefine: IRegularAttr, node: ITag | null, dom: IDocument, uni
 
 	// 如果是检测 style 标签的样式，则只要遇到同名的 style 属性就返回 false
 	if (fromStyleTag) {
-		for (let i = node.attributes.length; i--;) {
-			const attr = node.attributes[i];
-			if (attr.fullname === 'style') {
-				const childStyle = parseStyle(attr.value);
-				if (childStyle.some(style => {
-					return style.fullname === styleDefine.name && (!isImportant || style.important);
-				})) {
-					return false;
-				}
-			}
+		const childStyleList = parseStyle(node.getAttribute('style') ?? '');
+		if (childStyleList.some(style => {
+			return style.fullname === styleDefine.name && (!isImportant || style.important);
+		})) {
+			return false;
 		}
 	}
 
@@ -47,9 +42,9 @@ const check = (styleDefine: IRegularAttr, node: ITag | null, dom: IDocument, uni
 	let result = false;
 
 	if (node.hasAttribute('href')) {
-		result = check(styleDefine, getXlink(dom, node.getAttribute('href') as string), dom, unique, false, false);
+		result = check(styleDefine, getXlink(dom, node.getAttribute('href') as string), dom, unique, fromStyleTag, false);
 	} else if (node.hasAttribute('xlink:href')) {
-		result = check(styleDefine, getXlink(dom, node.getAttribute('xlink:href') as string), dom, unique, false, false);
+		result = check(styleDefine, getXlink(dom, node.getAttribute('xlink:href') as string), dom, unique, fromStyleTag, false);
 	}
 
 	// 已经命中就不需要再继续了
@@ -68,8 +63,8 @@ const check = (styleDefine: IRegularAttr, node: ITag | null, dom: IDocument, uni
 		for (let i = childNode.attributes.length; i--;) {
 			const attr = childNode.attributes[i];
 			if (attr.fullname === 'style') {
-				const childStyle = parseStyle(attr.value);
-				if (childStyle.some(style => style.fullname === styleDefine.name)) {
+				const childStyleList = parseStyle(attr.value);
+				if (childStyleList.some(style => style.fullname === styleDefine.name)) {
 					return false;
 				}
 			} else if (attr.fullname === styleDefine.name) {
@@ -84,12 +79,12 @@ const check = (styleDefine: IRegularAttr, node: ITag | null, dom: IDocument, uni
 		} else { // 否则继续遍历子元素
 			// 没有命中，但具有 IRI 引用，则继续
 			if (childNode.hasAttribute('href')) {
-				if (check(styleDefine, getXlink(dom, childNode.getAttribute('href') as string), dom, unique, fromStyleTag, isImportant)) {
+				if (check(styleDefine, getXlink(dom, childNode.getAttribute('href') as string), dom, unique, fromStyleTag, false)) {
 					result = true;
 					return false;
 				}
 			} else if (childNode.hasAttribute('xlink:href')) {
-				if (check(styleDefine, getXlink(dom, childNode.getAttribute('xlink:href') as string), dom, unique, fromStyleTag, isImportant)) {
+				if (check(styleDefine, getXlink(dom, childNode.getAttribute('xlink:href') as string), dom, unique, fromStyleTag, false)) {
 					result = true;
 					return false;
 				}

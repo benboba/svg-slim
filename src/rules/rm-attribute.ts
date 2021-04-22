@@ -66,7 +66,6 @@ export const rmAttribute = async (dom: IDocument, {
 					const parentStyle = (node.parentNode as ITag).styles;
 					// 如果父元素上有同名的样式类属性，则不能移除和默认值相同的属性
 					if (!attrDefine.inherited || !parentStyle || !hasProp(parentStyle, attr.fullname)) {
-						// 当前样式不是覆盖的 styletag， 才可以移除
 						if (attrIsEqual(attrDefine, attr.value, node.nodeName)) {
 							node.removeAttribute(attr.fullname);
 							continue;

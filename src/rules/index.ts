@@ -64,7 +64,7 @@ export const rules: TRulesItem[] = [
 	[false, collapseG, 'collapse-g'], // 最好在 combine-path、shorten-shape、compute-path、rm-hidden 之后
 	[false, shortenStyleTag, 'shorten-style-tag'], // 最好在 combine-path、shorten-shape、collapse-g 等规则之后
 	[false, rmImportant, 'rm-important'],
-	[false, applyStyle, 'apply-style'], // 最好在 shorten-style-tag 之后，在 exchange-style 之前
+	[false, applyStyle, 'apply-style'], // 最好在 shorten-style-tag 之后，在 shorten-style-attr 之前
 	[false, combineTransform, 'combine-transform'], // 必须在 collpase-g 之后
 	[false, shortenDecimalDigits, 'shorten-decimal-digits'], // 最后再优化数值
 	[false, shortenColor, 'shorten-color'], // 最后再优化颜色

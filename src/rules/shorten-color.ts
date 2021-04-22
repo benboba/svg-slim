@@ -208,13 +208,13 @@ export const shortenColor = async (dom: IDom, {
 			if (regularAttr[attr.fullname].maybeColor) {
 				attr.value = formatColor(rrggbbaa as boolean, attr.value, digit);
 			} else if (attr.fullname === 'style') {
-				const style = parseStyle(attr.value);
-				style.forEach(s => {
+				const styleList = parseStyle(attr.value);
+				styleList.forEach(s => {
 					if (regularAttr[s.fullname].maybeColor) {
 						s.value = formatColor(rrggbbaa as boolean, s.value, digit);
 					}
 				});
-				attr.value = stringifyStyle(style);
+				attr.value = stringifyStyle(styleList);
 			}
 		});
 	});

@@ -16,4 +16,17 @@ describe('rules/collapse-g', () => {
 		await collapseG(dom);
 		expect(createXML(dom)).toBe('<svg><text fill="blue" transform="scale(1) rotate(30)">1</text></svg>');
 	});
+
+	test('style 塌陷', async () => {
+		const xml = `<svg>
+		<g style="fill:red"><text>0</text></g>
+		<g style="fill:red"><text style="stroke:blue">1</text></g>
+		<g style="fill:red"><text style="fill:blue">2</text></g>
+		<g style="fill:red"><text>3</text><text>4</text></g>
+		<g style="transform:scale(1)"><text>5</text></g>
+		</svg>`;
+		const dom = await parse(xml);
+		await collapseG(dom);
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><text style="fill:red">0</text><text style="stroke:blue;fill:red">1</text><text style="fill:blue">2</text><g style="fill:red"><text>3</text><text>4</text></g><g style="transform:scale(1)"><text>5</text></g></svg>');
+	});
 });

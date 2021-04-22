@@ -78,8 +78,8 @@ export const rmImportant = async (dom: IDom): Promise<void> => new Promise(resol
 	tags.forEach(node => {
 		if (node.hasAttribute('style')) {
 			const nodeStyles = node.styles as IStyleObj;
-			const styleAttrs = parseStyle(node.getAttribute('style') as string);
-			styleAttrs.forEach(style => {
+			const styleList = parseStyle(node.getAttribute('style') as string);
+			styleList.forEach(style => {
 				if (style.important) {
 					if ((nodeStyles[style.fullname].overrideList as Array<{
 						important?: boolean;
@@ -89,7 +89,7 @@ export const rmImportant = async (dom: IDom): Promise<void> => new Promise(resol
 					}
 				}
 			});
-			node.setAttribute('style', styleToValue(styleAttrs));
+			node.setAttribute('style', styleToValue(styleList));
 		}
 	});
 	resolve();

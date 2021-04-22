@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 import { parse as cssParse, stringify } from 'css';
 import { NodeType, TagNode, TextNode } from 'svg-vdom';
-import { IStyleObj } from 'typings/style';
+import { IStyleObj } from '../../typings/style';
 import { TDynamicObj } from '../../typings';
 import { IDom, ITag } from '../../typings/node';
 import { needUnitInStyle } from '../const/definitions';
@@ -84,14 +84,14 @@ export const styleToClass = async (dom: IDom): Promise<void> => new Promise(reso
 			// 移除 style 属性中的对应样式
 			val.tags.forEach(tag => {
 				const styleAttr = tag.getAttribute('style') as string;
-				const styleObj = parseStyle(styleAttr);
-				for (let i = styleObj.length; i--;) {
-					if (val.keys.includes(createKey(styleObj[i].fullname, styleObj[i].value, styleObj[i].important))) {
-						styleObj.splice(i, 1);
+				const styleList = parseStyle(styleAttr);
+				for (let i = styleList.length; i--;) {
+					if (val.keys.includes(createKey(styleList[i].fullname, styleList[i].value, styleList[i].important))) {
+						styleList.splice(i, 1);
 					}
 				}
-				if (styleObj.length) {
-					tag.setAttribute('style', stringifyStyle(styleObj));
+				if (styleList.length) {
+					tag.setAttribute('style', stringifyStyle(styleList));
 				} else {
 					tag.removeAttribute('style');
 				}

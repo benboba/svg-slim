@@ -63,12 +63,12 @@ export const shortenDecimalDigits = async (dom: IDom, {
 					attr.value = shortenValue(attributeName, attr.value);
 				}
 			} else if (attr.fullname === 'style') { // css 样式处理，和属性类似
-				const style = parseStyle(attr.value);
-				style.forEach(s => {
+				const styleList = parseStyle(attr.value);
+				styleList.forEach(s => {
 					numberGlobal.lastIndex = 0;
 					s.value = shortenValue(s.fullname, s.value);
 				});
-				attr.value = stringifyStyle(style);
+				attr.value = stringifyStyle(styleList);
 			} else {
 				attr.value = shortenValue(attr.fullname, attr.value);
 			}

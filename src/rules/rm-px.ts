@@ -16,8 +16,8 @@ export const rmPx = async (dom: IDom): Promise<void> => new Promise(resolve => {
 	tags.forEach(node => {
 		node.attributes.forEach(attr => {
 			if (attr.fullname === 'style') {
-				const style = parseStyle(attr.value);
-				style.forEach(s => {
+				const styleList = parseStyle(attr.value);
+				styleList.forEach(s => {
 					if (regularAttr[s.fullname].maybeSizeNumber || regularAttr[s.fullname].maybeAccurateNumber) {
 						// 移除 px ，同时移除 0 值的单位
 						pxReg.lastIndex = 0;
@@ -29,7 +29,7 @@ export const rmPx = async (dom: IDom): Promise<void> => new Promise(resolve => {
 						s.value = s.value.replace(/(?<=^|\D)0[a-z]+?(?=$|\)|\s|,|;|})/gi, '0');
 					}
 				});
-				attr.value = stringifyStyle(style);
+				attr.value = stringifyStyle(styleList);
 			} else {
 				if (regularAttr[attr.fullname].maybeSizeNumber || regularAttr[attr.fullname].maybeAccurateNumber) {
 					pxReg.lastIndex = 0;

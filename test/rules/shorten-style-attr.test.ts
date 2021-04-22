@@ -38,7 +38,7 @@ describe('rules/shorten-style-attr', () => {
 		await rmAttribute(dom, config2);
 		const config = createRuleConfig(mergeConfig(null), 'shorten-style-attr');
 		await shortenStyleAttr(dom, config);
-		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg width="100" style="fill-rule:evenodd;stroke:blue;stroke-width:2;width:50px"><rect fill="blue"/></svg>');
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg width="100" style="stroke:blue;stroke-width:2;width:50px"><rect fill="blue"/></svg>');
 	});
 
 	test('缩短 style 属性', async () => {
@@ -60,11 +60,7 @@ describe('rules/shorten-style-attr', () => {
 		await rmIllegalStyle(dom, config1);
 		const config2 = createRuleConfig(mergeConfig(null), 'rm-attribute');
 		await rmAttribute(dom, config2);
-		const config = createRuleConfig(mergeConfig({
-			params: {
-				exchangeStyle: true,
-			}
-		}), 'shorten-style-attr');
+		const config = createRuleConfig(mergeConfig(null), 'shorten-style-attr');
 		await shortenStyleAttr(dom, config);
 		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><g style="transform:rotate(45deg);content:\';///\'"><text font-family="&quot;微软雅黑&quot;" fill="rebeccapurple" stroke="blue">123</text><g fill="#fff"><rect x="1"/></g></g><rect stroke="red" fill="blue"/><text style="fill:red;stroke:blue;font-family:Arial;font-weight:700;fill-opacity:0.5">345</text><animate attributeName="opacity" from="0"/></svg>');
 	});
@@ -89,11 +85,7 @@ describe('rules/shorten-style-attr', () => {
 		const dom = await parse(xml);
 		const config1 = createRuleConfig(mergeConfig(null), 'rm-illegal-style');
 		await rmIllegalStyle(dom, config1);
-		const config = createRuleConfig(mergeConfig({
-			params: {
-				exchangeStyle: true,
-			}
-		}), 'shorten-style-attr');
+		const config = createRuleConfig(mergeConfig(null), 'shorten-style-attr');
 		await shortenStyleAttr(dom, config);
 		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><defs><pattern id="TrianglePattern"><path d="M 0 0 L 7 0 L 3.5 7 z" xlink:href="#ell"/><path d="M 0 0 L 7 0 L 3.5 7 z" href="#ell"/><path d="M 0 0 L 7 0 L 3.5 7 z"/></pattern><polygon id="path-1" points="46 0 46 52 0 52 0 0 46 0"/><polygon id="path-3" points="46 0 46 52 0 52 0 0 46 0"/></defs><ellipse id="ell" fill="url(#TrianglePattern)"/><ellipse fill="red" xlink:href="#path-1"/><ellipse fill="red" href="#path-3"/><mask id="mask-2" fill="white"><use xlink:href="#path-1"/><use xlink:href="#path-2"/></mask><mask id="mask-3" fill="white"><use href="#path-3"/><use href="#path-4"/></mask></svg>');
 	});
@@ -127,7 +119,7 @@ describe('rules/shorten-style-attr', () => {
 		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg width="400" style="height:200"><rect width="50" height="50" style="y:125;rx:10"/></svg>');
 
 		const config1 = createRuleConfig(mergeConfig({
-			browsers: ['> 0.5%', 'not ie 11', 'not firefox < 99', 'not and_ff < 99', 'android 81'],
+			browsers: ['> 0.5%', 'not ie 11', 'not firefox < 99', 'not and_ff < 99'],
 		}), 'rm-illegal-style');
 		await rmIllegalStyle(dom, config1);
 		await shortenStyleAttr(dom, config1);

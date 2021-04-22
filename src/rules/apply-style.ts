@@ -1,6 +1,6 @@
 import { Declaration, Rule, StyleRules } from 'css';
 import { parseSelector } from 'svg-vdom';
-import { IStyleObj } from 'typings/style';
+import { IStyleObj } from '../../typings/style';
 import { IDom, ITag } from '../../typings/node';
 import { importantReg } from '../const/regs';
 import { regularAttr } from '../const/regular-attr';
