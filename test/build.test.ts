@@ -100,14 +100,10 @@ describe('dist', () => {
 	test('check badcase 8', async () => {
 		const xml = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 		<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.0" width="800" height="600" id="svg2020">
-			<text xml:space="preserve" style="font-size:24.000000px;font-style:normal;font-variant:normal;font-weight:700;font-stretch:Normal;line-height:125.000000%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:sans-serif;text-align:start;text-anchor:start;" transform="matrix(1.000000,-0.000000,0.000000,1.000000,200,200)" x="0.000000" y="0.000000" id="text2018">
-				<tspan x="0.000000" y="0.000000" id="tspan2016">
-					<tspan dx="0.000000" dy="0.000000" style="fill:#000000;font-size:24.000000px!important;font-style:normal;font-variant:normal;font-weight:700;font-stretch:Normal;font-family: sans-serif;" id="tspan2014">fixme</tspan>
-				</tspan>
-			</text>
+			<text xml:space="preserve" style="font-size:24.000000px;font-style:normal;font-variant:normal;font-weight:700;font-stretch:Normal;line-height:125.000000%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:sans-serif;text-align:start;text-anchor:start;" transform="matrix(1.000000,-0.000000,0.000000,1.000000,200,200)" x="0.000000" y="0.000000" id="text2018"><tspan x="0.000000" y="0.000000" id="tspan2016"><tspan dx="0.000000" dy="0.000000" style="fill:#000000;font-size:24.000000px!important;font-style:normal;font-variant:normal;font-weight:700;font-stretch:Normal;font-family: sans-serif;" id="tspan2014"> fixme </tspan></tspan></text>
 		</svg>`;
 		const dom = await slim(xml);
-		expect(dom).toBe('<svg xmlns="http://www.w3.org/2000/svg" width="8e2" height="6e2"><text xml:space="preserve" style="font-size:24px;font-weight:700;letter-spacing:0;word-spacing:0;font-family:sans-serif;text-align:start" transform="translate(2e2,2e2)"> <tspan dx="0" dy="0" y="0" x="0" font-size="24" font-weight="700" font-family="sans-serif"> fixme </tspan> </text></svg>');
+		expect(dom).toBe('<svg xmlns="http://www.w3.org/2000/svg" width="8e2" height="6e2"><text xml:space="preserve" style="font-size:24px;font-weight:700;line-height:125%;letter-spacing:0;word-spacing:0;font-family:sans-serif;text-align:start" transform="translate(2e2,2e2)"><tspan dx="0" dy="0" y="0" x="0" font-size="24" font-weight="700" font-family="sans-serif"> fixme </tspan></text></svg>');
 	});
 
 	test('check badcase 9', async () => {
@@ -121,7 +117,7 @@ describe('dist', () => {
 			</text>
 		</svg>`;
 		const dom = await slim(xml);
-		expect(dom).toBe('<svg xmlns="http://www.w3.org/2000/svg" width="9e2" height="150"><text> <tspan style="fill:red;flex-grow:1" y="20" x="1e2"> fixme </tspan> </text></svg>');
+		expect(dom).toBe('<svg xmlns="http://www.w3.org/2000/svg" width="9e2" height="150"><text> <tspan x="0" y="20" style="fill:#060;flex-grow:1;stroke:#ff0"> <tspan x="1e2" fill="#00f"> <tspan fill="red" stroke="none"> fixme </tspan> </tspan> </tspan> </text></svg>');
 	});
 
 	test('check badcase 10', async () => {
@@ -145,5 +141,17 @@ describe('dist', () => {
 		const xml = `<svg xmlns="http://www.w3.org/2000/svg"> <style> path:nth-of-type(2) { fill: blue; } </style> <path d="m0,0h50v50H0z"/><path d="m55,0h50v50H55z"/><path d="m110,0h50v50h-50z"/> </svg>`;
 		const dom = await slim(xml);
 		expect(dom).toBe('<svg xmlns="http://www.w3.org/2000/svg"><path d="m0,0h50v50H0z"/><path d="m55,0h50v50H55z" fill="#00f"/><path d="m110,0h50v50h-50z"/></svg>');
+	});
+
+	test('check badcase 12', async () => {
+		const xml = `<?xml version="1.0" encoding="UTF-8"?>
+		<svg width="7px" height="14px" viewBox="0 0 7 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+			<title>向左icon</title>
+			<g id="向左icon" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+				<polyline id="路径备份" stroke="currentColor" points="6 13 1 6.74135516 6 1"></polyline>
+			</g>
+		</svg>`;
+		const dom = await slim(xml);
+		expect(dom).toBe('<svg width="7" height="14" xmlns="http://www.w3.org/2000/svg"><path d="m6,13L1,6.74,6,1" style="stroke:currentColor;fill:none;fill-rule:evenodd;stroke-linecap:round;stroke-linejoin:round"/></svg>');
 	});
 });

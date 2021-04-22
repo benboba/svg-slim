@@ -1,12 +1,13 @@
 # 更新日志
 
-## 2020. v2.0.3
+## 2021. v2.0.3
 
 ### bug 修复与改进
 
 * 现在会移除 rect、circle、ellipse、line 的 fill-rule 属性（因为对这些元素而言，fill-rule 没有意义）
 * 修复了 [shorten-id](docs/cn/rules/shorten-id.md) 当多个属性引用同一个 ID 时，只会移除第一个的 bug
 * 现在 [shorten-style-attr](docs/cn/rules/shorten-style-attr.md) 不再依赖 exchangeStyle 参数
+* 修复了当开启 rmAttrEqDefault 时，会意外移除颜色值为 currentColor/transparent 的 bug
 
 ## 2020.11.12 v2.0.2
 
