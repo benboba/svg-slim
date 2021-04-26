@@ -12,6 +12,7 @@ const browserConfig = (query?: string | string[]) => {
 		const num = /\s\d/.exec(val);
 		if (num) {
 			const key = val.slice(0, num.index);
+			// 此处必须用 parseFloat 因为可能存在 14.0-14.5 这种版本号
 			const ver = parseFloat(val.slice(num.index));
 			if (!hasProp(res, key)) {
 				res[key] = ver;

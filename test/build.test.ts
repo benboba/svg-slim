@@ -58,7 +58,7 @@ describe('dist', () => {
 	test('check badcase 2', async () => {
 		const xml = '<?xml version="1.0" encoding="UTF-8"?> <svg width="61px" height="51px" viewBox="0 0 61 51" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch --> <title>分享</title> <desc>Created with Sketch.</desc> <defs></defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="分享" transform="translate(2.000000, -1.000000)"> <path d="M29.9942595,3 L1,3 C0.45441393,3 0,3.45208409 0,4 L0,49 C0,49.5428943 0.45846425,50 1,50 L54,50 C54.5441868,50 55,49.5467078 55,49 L55,36.6615737 L55,36.6615737" id="Rectangle" stroke="#666666" stroke-width="4"></path> <circle id="Oval" fill="#666666" fill-rule="nonzero" cx="30" cy="3" r="2"></circle> <circle id="Oval-Copy" fill="#666666" fill-rule="nonzero" cx="55" cy="36" r="2"></circle> <path d="M24.3284695,32.5 C24.3284695,32.5 20.81188,11.7486572 51.6187744,11.7486572" id="Path-2" stroke="#666666" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"></path> <g id="Group-2" transform="translate(48.603553, 12.250000) rotate(-45.000000) translate(-48.603553, -12.250000) translate(40.103553, 3.750000)" fill-rule="nonzero" fill="#666666"> <rect id="Rectangle-29" x="11.55" y="-5.68434188e-13" width="4.95" height="16.5" rx="2.475"></rect> <rect id="Rectangle-29-Copy" transform="translate(8.250000, 14.025000) rotate(-90.000000) translate(-8.250000, -14.025000) " x="5.775" y="5.775" width="4.95" height="16.5" rx="2.475"></rect> </g> </g> </g> </svg>';
 		const dom = await slim(xml);
-		expect(dom).toBe('<svg width="61" height="51" xmlns="http://www.w3.org/2000/svg"><g transform="translate(2-1)" fill="none" fill-rule="evenodd"><path d="m29.99,3H1c-.55,0-1,.45-1,1v45c0,.54.46,1,1,1h53c.54,0,1-.45,1-1V36.66" stroke="#666" stroke-width="4"/><circle fill="#666" fill-rule="nonzero" cx="30" cy="3" r="2"/><circle fill="#666" fill-rule="nonzero" cx="55" cy="36" r="2"/><path d="m24.33,32.5s-3.52-20.75,27.29-20.75" stroke="#666" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><g transform="rotate(315,33.08-38.03)" fill-rule="nonzero" fill="#666"><rect x="11.55" width="4.95" height="16.5" rx="2.48"/><rect x=".01" y="11.55" width="16.5" height="4.95" rx="2.48"/></g></g></svg>');
+		expect(dom).toBe('<svg width="61" height="51" xmlns="http://www.w3.org/2000/svg"><g transform="translate(2-1)" fill="none" fill-rule="evenodd"><path d="m29.99,3H1c-.55,0-1,.45-1,1v45c0,.54.46,1,1,1h53c.54,0,1-.45,1-1V36.66" stroke="#666" stroke-width="4"/><circle fill="#666" cx="30" cy="3" r="2"/><circle fill="#666" cx="55" cy="36" r="2"/><path d="m24.33,32.5s-3.52-20.75,27.29-20.75" stroke="#666" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><g transform="rotate(315,33.08-38.03)" fill="#666"><rect x="11.55" width="4.95" height="16.5" rx="2.48"/><rect x=".01" y="11.55" width="16.5" height="4.95" rx="2.48"/></g></g></svg>');
 	});
 
 	test('check badcase 3', async () => {
@@ -100,14 +100,10 @@ describe('dist', () => {
 	test('check badcase 8', async () => {
 		const xml = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 		<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.0" width="800" height="600" id="svg2020">
-			<text xml:space="preserve" style="font-size:24.000000px;font-style:normal;font-variant:normal;font-weight:700;font-stretch:Normal;line-height:125.000000%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:sans-serif;text-align:start;text-anchor:start;" transform="matrix(1.000000,-0.000000,0.000000,1.000000,200,200)" x="0.000000" y="0.000000" id="text2018">
-				<tspan x="0.000000" y="0.000000" id="tspan2016">
-					<tspan dx="0.000000" dy="0.000000" style="fill:#000000;font-size:24.000000px!important;font-style:normal;font-variant:normal;font-weight:700;font-stretch:Normal;font-family: sans-serif;" id="tspan2014">fixme</tspan>
-				</tspan>
-			</text>
+			<text xml:space="preserve" style="font-size:24.000000px;font-style:normal;font-variant:normal;font-weight:700;font-stretch:Normal;line-height:125.000000%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:sans-serif;text-align:start;text-anchor:start;" transform="matrix(1.000000,-0.000000,0.000000,1.000000,200,200)" x="0.000000" y="0.000000" id="text2018"><tspan x="0.000000" y="0.000000" id="tspan2016"><tspan dx="0.000000" dy="0.000000" style="fill:#000000;font-size:24.000000px!important;font-style:normal;font-variant:normal;font-weight:700;font-stretch:Normal;font-family: sans-serif;" id="tspan2014"> fixme </tspan></tspan></text>
 		</svg>`;
 		const dom = await slim(xml);
-		expect(dom).toBe('<svg xmlns="http://www.w3.org/2000/svg" width="8e2" height="6e2"><text xml:space="preserve" style="font-size:24px;font-weight:700;letter-spacing:0;word-spacing:0;font-family:sans-serif;text-align:start" transform="translate(2e2,2e2)"> <tspan dx="0" dy="0" y="0" x="0" font-size="24" font-weight="700" font-family="sans-serif"> fixme </tspan> </text></svg>');
+		expect(dom).toBe('<svg xmlns="http://www.w3.org/2000/svg" width="8e2" height="6e2"><text xml:space="preserve" style="font-size:24px;font-weight:700;line-height:125%;letter-spacing:0;word-spacing:0;font-family:sans-serif;text-align:start" transform="translate(2e2,2e2)"><tspan dx="0" dy="0" y="0" x="0" font-size="24" font-weight="700" font-family="sans-serif"> fixme </tspan></text></svg>');
 	});
 
 	test('check badcase 9', async () => {
@@ -121,7 +117,7 @@ describe('dist', () => {
 			</text>
 		</svg>`;
 		const dom = await slim(xml);
-		expect(dom).toBe('<svg xmlns="http://www.w3.org/2000/svg" width="9e2" height="150"><text> <tspan style="fill:red;flex-grow:1" y="20" x="1e2"> fixme </tspan> </text></svg>');
+		expect(dom).toBe('<svg xmlns="http://www.w3.org/2000/svg" width="9e2" height="150"><text> <tspan x="0" y="20" style="fill:#060;flex-grow:1;stroke:#ff0"> <tspan x="1e2" fill="#00f"> <tspan fill="red" stroke="none"> fixme </tspan> </tspan> </tspan> </text></svg>');
 	});
 
 	test('check badcase 10', async () => {
@@ -145,5 +141,17 @@ describe('dist', () => {
 		const xml = `<svg xmlns="http://www.w3.org/2000/svg"> <style> path:nth-of-type(2) { fill: blue; } </style> <path d="m0,0h50v50H0z"/><path d="m55,0h50v50H55z"/><path d="m110,0h50v50h-50z"/> </svg>`;
 		const dom = await slim(xml);
 		expect(dom).toBe('<svg xmlns="http://www.w3.org/2000/svg"><path d="m0,0h50v50H0z"/><path d="m55,0h50v50H55z" fill="#00f"/><path d="m110,0h50v50h-50z"/></svg>');
+	});
+
+	test('check badcase 12', async () => {
+		const xml = `<?xml version="1.0" encoding="UTF-8"?>
+		<svg width="7px" height="14px" viewBox="0 0 7 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+			<title>向左icon</title>
+			<g id="向左icon" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+				<polyline id="路径备份" stroke="currentColor" points="6 13 1 6.74135516 6 1"></polyline>
+			</g>
+		</svg>`;
+		const dom = await slim(xml);
+		expect(dom).toBe('<svg width="7" height="14" xmlns="http://www.w3.org/2000/svg"><path d="m6,13L1,6.74,6,1" style="stroke:currentColor;fill:none;fill-rule:evenodd;stroke-linecap:round;stroke-linejoin:round"/></svg>');
 	});
 });

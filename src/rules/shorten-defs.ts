@@ -80,23 +80,23 @@ const checkDefsApply = (item: IIDCacheITem, dom: IDocument) => {
 			}
 			const useTag = item.tag as ITag;
 			(node.parentNode as ITag).replaceChild(useTag, node);
-			const styleArray: IAttr[] = useTag.hasAttribute('style') ? parseStyle(useTag.getAttribute('style') as string) : [];
+			const styleList: IAttr[] = useTag.hasAttribute('style') ? parseStyle(useTag.getAttribute('style') as string) : [];
 			for (const [key, val] of Object.entries(originAttr)) {
-				if (!useTag.hasAttribute(key) && !styleArray.some(sItem => sItem.fullname === key)) {
+				if (!useTag.hasAttribute(key) && !styleList.some(sItem => sItem.fullname === key)) {
 					useTag.setAttribute(key, val);
 				}
 			}
 			for (const [key, val] of Object.entries(originStyle)) {
-				if (!useTag.hasAttribute(key) && !styleArray.some(sItem => sItem.fullname === key)) {
-					styleArray.push({
+				if (!useTag.hasAttribute(key) && !styleList.some(sItem => sItem.fullname === key)) {
+					styleList.push({
 						name: key,
 						fullname: key,
 						value: val,
 					});
 				}
 			}
-			if (styleArray.length) {
-				useTag.setAttribute('style', stringifyStyle(styleArray));
+			if (styleList.length) {
+				useTag.setAttribute('style', stringifyStyle(styleList));
 			}
 			return;
 		}

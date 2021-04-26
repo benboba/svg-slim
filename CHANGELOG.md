@@ -1,5 +1,16 @@
 # Change Log
 
+## 2021.04.22 v2.0.3
+
+### Bug fixes and Improvements
+
+* Now the fill-rule attributes of rect, circle, ellipse, and line will be removed (because fill-rule has no meaning for these elements)
+* Fixed [shorten-id](docs/cn/rules/shorten-id.md) when multiple attributes refer to the same ID, only the first bug will be removed
+* Now [shorten-style-attr](docs/cn/rules/shorten-style-attr.md) no longer depends on the exchangeStyle parameter
+* Fixed a bug where the color value of currentColor/transparent was accidentally removed when rmAttrEqDefault was turned on
+* Now [collpase-g](docs/cn/rules/collapse-g.md) When all the style attributes of the g element are invalid for the g element itself and only take effect for a certain child element, the attributes will be transferred to the corresponding Child element
+* Now [collpase-textwrap](docs/cn/rules/collapse-textwrap.md) will not collapse when encountering non-empty text nodes
+
 ## 2020.11.12 v2.0.2
 
 ### Bug fixes and Improvements

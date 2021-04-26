@@ -80,5 +80,17 @@ describe('validate/legal-value', () => {
 			fullname: 'opacity',
 			value: 'inherit',
 		})).toBeTruthy;
+
+		expect(legalValue(regularAttr.fill, {
+			name: '',
+			fullname: 'fill',
+			value: 'currentColor',
+		})).toBeTruthy;
+
+		expect(legalValue(regularAttr.fill, {
+			name: '',
+			fullname: 'fill',
+			value: 'transparent',
+		})).toBeTruthy;
 	});
 });

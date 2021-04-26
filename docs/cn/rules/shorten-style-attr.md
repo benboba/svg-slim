@@ -9,7 +9,7 @@
 }
 ```
 * 说明：
-	* 如果 svg 中不存在 style 标签，或 [params](../config.md#params) 开启了 exchangeStyle，将进行 style 和属性的互转
+	* 视情况进行 style 和属性的互转
 
 第一种情况（属性转 style）：
 ```xml

@@ -15,6 +15,10 @@ export const valueIsEqual = (attrDefine: IRegularAttr, value1: string, value2: s
 	if (attrDefine.maybeColor) {
 		const color1 = parseColor(value1);
 		const color2 = parseColor(value2);
+
+		// 如果有一个颜色无法解析，则返回 false（否则会出现将 none 等价于 currentColor 的 bug）
+		if (!color1.valid || !color2.valid) return false;
+
 		color1.origin = '';
 		color2.origin = '';
 		if (equals(color1, color2)) {

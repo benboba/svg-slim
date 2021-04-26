@@ -47,6 +47,10 @@ svgSlim(svgcode[, config]).then(result => {
 
 [postcss-svg-slim](https://github.com/benboba/postcss-svg-slim) 是 postcss 的插件，支持优化 CSS 中内联的 SVG
 
+### 使用 rollup-plugin-svg-slim
+
+[rollup-plugin-svg-slim](https://github.com/benboba/rollup-plugin-svg-slim) 是 rollup 的插件，支持在 rollup 中优化 SVG
+
 ## 为什么选择 svg-slim？
 
 * 丰富而强大的功能，足够个性化的配置参数

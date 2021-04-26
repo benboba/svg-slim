@@ -3,13 +3,13 @@ import { parseStyle } from '../style/parse';
 import { stringifyStyle } from '../style/stringify';
 
 export const rmAttrs = (node: ITagNode, attrs: string[]) => {
-	let styleVal = parseStyle(node.getAttribute('style') || '');
+	let styleList = parseStyle(node.getAttribute('style') || '');
 	for (const key of attrs) {
 		node.removeAttribute(key);
-		styleVal = styleVal.filter(attr => attr.fullname !== key);
+		styleList = styleList.filter(attr => attr.fullname !== key);
 	}
-	if (styleVal.length) {
-		node.setAttribute('style', stringifyStyle(styleVal));
+	if (styleList.length) {
+		node.setAttribute('style', stringifyStyle(styleList));
 	} else {
 		node.removeAttribute('style');
 	}

@@ -73,4 +73,21 @@ describe('rules/shorten-id', () => {
 		await shortenID(dom);
 		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><rect width="100" height="100"/></svg>');
 	});
+
+	test('id 被多次引用的情况', async () => {
+		const xml = `<svg>
+		<style>
+		#red {
+			fill: red;
+		}
+		</style>
+		<mask xlink:href="#red">
+			<use xlink:href="#red"/>
+		</mask>
+		</svg>`;
+		const dom = await parse(xml);
+		await combineStyle(dom);
+		await shortenID(dom);
+		expect(createXML(dom).replace(/>\s+</g, '><')).toBe('<svg><mask><use/></mask></svg>');
+	});
 });

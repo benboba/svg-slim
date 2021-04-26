@@ -49,6 +49,10 @@ View the main item [optimized configuration](docs/en/config.md)
 
 [postcss-svg-slim](https://github.com/benboba/postcss-svg-slim) is a plugin for postcss that supports optimizing inline SVG in CSS
 
+### Use rollup-plugin-svg-slim
+
+[rollup-plugin-svg-slim](https://github.com/benboba/rollup-plugin-svg-slim) is a rollup plugin that supports SVG optimization in rollup
+
 ## Why choose svg-slim?
 
 * Rich and powerful functions, enough personalized configuration parameters

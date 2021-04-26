@@ -1,12 +1,13 @@
 import { Declaration, Node, Rule, StyleRules } from 'css';
 import { has, propEq } from 'ramda';
 import { NodeType } from 'svg-vdom';
-import { IRegularTag, IRuleOption } from '../../typings';
+import { IRuleOption } from '../../typings';
 import { IDom, ITag } from '../../typings/node';
 import { needUnitInStyle } from '../const/definitions';
 import { regularAttr } from '../const/regular-attr';
 import { regularTag } from '../const/regular-tag';
 import { numberFullMatch } from '../const/syntax';
+import { cantTrans } from '../style/cant-trans';
 import { checkApply } from '../style/check-apply';
 import { checkGeometry } from '../style/check-geometry';
 import { parseStyle } from '../style/parse';
@@ -16,7 +17,6 @@ import { traversalObj } from '../utils/traversal-obj';
 import { knownCSS } from '../validate/known-css';
 import { legalValue } from '../validate/legal-value';
 import { attrIsEqual, valueIsEqual } from '../xml/attr-is-equal';
-import { isTag } from '../xml/is-tag';
 import { parseStyleTree } from '../xml/parse-style-tree';
 
 const rmCSSNode = (cssNode: Node, plist: Node[]) => {
@@ -25,9 +25,6 @@ const rmCSSNode = (cssNode: Node, plist: Node[]) => {
 		plist.splice(index, 1);
 	}
 };
-
-// 一些元素的某些属性不能被转为 style
-const cantTrans = (define: IRegularTag, attrName: string) => define.onlyAttr && define.onlyAttr.includes(attrName);
 
 // 需要 px 单位但拿到了非 0 的纯数值
 const checkUnit = (name: string, value: string) => needUnitInStyle.includes(name) && numberFullMatch.test(value) && +value !== 0;
@@ -50,44 +47,45 @@ const checkAttr = (node: ITag, dom: IDom, rmAttrEqDefault: boolean, ignoreKnownC
 		const attr = node.attributes[i];
 		const attrDefine = regularAttr[attr.fullname];
 		if (attr.fullname === 'style') {
-			const styleObj = parseStyle(attr.value);
+			const styleList = parseStyle(attr.value);
 			const styleUnique = new Set<string>();
 			// 逆序循环，因为 CSS 的优先级是从后往前覆盖的
-			for (let si = styleObj.length; si--;) {
-				const styleItem = styleObj[si];
+			for (let si = styleList.length; si--;) {
+				const styleItem = styleList[si];
 				const styleDefine = regularAttr[styleItem.fullname];
 		
 				// 首先排重
 				if (styleUnique.has(styleItem.fullname)) {
-					styleObj.splice(si, 1);
+					styleList.splice(si, 1);
 					continue;
 				}
 		
 				// 移除掉不能识别的 CSS 属性
 				if (!styleDefine.couldBeStyle) {
 					if (!knownCSS(styleItem.fullname) || ignoreKnownCSS) {
-						styleObj.splice(si, 1);
+						styleList.splice(si, 1);
 					} else {
 						styleUnique.add(styleItem.fullname);
 						// 不在 SVG attributes 列表里的标准 CSS 属性不再验证合法性，但仍然需要排重
 					}
 					continue;
 				}
-		
-				// 样式继承链上不存在可应用对象
-				if (!checkApply(styleDefine, node, dom)) {
-					styleObj.splice(si, 1);
-					continue;
-				}
-		
+
+				// 非法值
 				if (!legalValue(styleDefine, styleItem)) {
-					styleObj.splice(si, 1);
+					styleList.splice(si, 1);
 					continue;
 				}
 
 				// 需要 px 单位，但是没有加 px
 				if (checkUnit(styleItem.fullname, styleItem.value)) {
-					styleObj.splice(si, 1);
+					styleList.splice(si, 1);
+					continue;
+				}
+
+				// 样式无法应用
+				if (!checkApply(styleDefine, node, dom)) {
+					styleList.splice(si, 1);
 					continue;
 				}
 
@@ -98,12 +96,12 @@ const checkAttr = (node: ITag, dom: IDom, rmAttrEqDefault: boolean, ignoreKnownC
 					// 当前样式不是覆盖的 styletag， 才可以移除
 					if (!styleDefine.inherited || !parentStyle || !hasProp(parentStyle, styleItem.fullname)) {
 						if ((!nodeStyle || !nodeStyle[styleItem.fullname] || !nodeStyle[styleItem.fullname].override) && attrIsEqual(styleDefine, styleItem.value, node.nodeName)) {
-							styleObj.splice(si, 1);
+							styleList.splice(si, 1);
 							continue;
 						}
 					}
 				}
-		
+
 				styleUnique.add(styleItem.fullname);
 				// 标记一下是否存在不能和属性互转的样式
 				const onlyCss = (nodeStyle && nodeStyle[styleItem.fullname] && nodeStyle[styleItem.fullname].override) // 属性覆盖了 styletag
@@ -128,23 +126,14 @@ const checkAttr = (node: ITag, dom: IDom, rmAttrEqDefault: boolean, ignoreKnownC
 				};
 			}
 
-			if (styleObj.length) {
-				node.setAttribute('style', styleToValue(styleObj));
+			if (styleList.length) {
+				node.setAttribute('style', styleToValue(styleList));
 			} else {
 				node.removeAttribute('style');
 			}
 		} else if (attrDefine.couldBeStyle || checkGeometry(node.nodeName, attr.fullname, browsers)) {
 			if (cantTrans(tagDefine, attr.fullname)) { // 有一些元素的某些属性不能被转为 style，此类属性也不宜再按照 css 属性来验证
 				continue;
-			}
-
-			// 如果样式无法应用到当前元素，且所有子元素都无法应用或已覆盖，则可以移除
-			if (!attrDefine.applyTo.includes(node.nodeName) && attrDefine.inherited) {
-				const subTags = node.children as Required<ITag>[];
-				if (subTags.length && subTags.every(subTag => subTag.styles[attr.fullname].from !== 'inherit' || !checkApply(attrDefine, subTag, dom))) {
-					node.removeAttribute(attr.fullname);
-					continue;
-				}
 			}
 
 			if (

@@ -51,6 +51,7 @@ export const rules: TRulesItem[] = [
 	[false, rmViewBox, 'rm-viewbox'],
 	[false, shortenAnimate, 'shorten-animate'], // 必须在所有依赖 getAnimateAttr 的规则之前
 	[false, shortenFilter, 'shorten-filter'],
+	[false, applyStyle, 'apply-style'], // 在所有修改 dom 树的样式之前执行一次
 	[false, collapseTextwrap, 'collapse-textwrap'], // 可能需要在 rmHidden 之前，需要在 rm-illegal-style 之前
 	[false, rmIllegalStyle, 'rm-illegal-style'], // 必须在 collpase-g、shorten-shape 和 compute-path 之前，必须在 rm-attribute 之前
 	[false, rmPx, 'rm-px'], // 必须在 shorten-style-attr 之后
@@ -63,8 +64,8 @@ export const rules: TRulesItem[] = [
 	[false, rmHidden, 'rm-hidden'], // 必须在 shorten-style-attr 之前，必须在 shorten-id 之后
 	[false, collapseG, 'collapse-g'], // 最好在 combine-path、shorten-shape、compute-path、rm-hidden 之后
 	[false, shortenStyleTag, 'shorten-style-tag'], // 最好在 combine-path、shorten-shape、collapse-g 等规则之后
+	[false, applyStyle, 'apply-style'], // 在所有修改 dom 树的样式之后，优化样式的规则之前执行一次
 	[false, rmImportant, 'rm-important'],
-	[false, applyStyle, 'apply-style'], // 最好在 shorten-style-tag 之后，在 exchange-style 之前
 	[false, combineTransform, 'combine-transform'], // 必须在 collpase-g 之后
 	[false, shortenDecimalDigits, 'shorten-decimal-digits'], // 最后再优化数值
 	[false, shortenColor, 'shorten-color'], // 最后再优化颜色

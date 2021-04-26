@@ -23,7 +23,7 @@ const colorValue: TLegalValueItem[] = [{
 	value: colorKeyWords,
 }];
 
-const paintValue = colorValue.concat(colorValue.concat([{
+const paintValue = colorValue.concat([{
 	type: 'string',
 	value: 'none',
 }, {
@@ -32,7 +32,7 @@ const paintValue = colorValue.concat(colorValue.concat([{
 }, {
 	type: 'reg',
 	value: funcIRIFullMatch,
-}]));
+}]);
 
 const opacityValue: TLegalValueItem[] = [{
 	type: 'reg',
@@ -1988,7 +1988,7 @@ const _regularAttr: TDynamicObj<IRegularAttr> = {
 			value: nonzeroEvenodd,
 		}],
 		initValue: 'nonzero',
-		applyTo: shapeAndText,
+		applyTo: ['path', 'polygon', 'polyline'].concat(textContentElements),
 	},
 	'filter': {
 		name: 'filter',
