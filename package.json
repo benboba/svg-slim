@@ -7,7 +7,7 @@
   "scripts": {
     "build": "rm -rf dist && rollup -c",
     "lint": "eslint --ext .ts ./src",
-    "test": "jest test/index.test.ts"
+    "test": "jest"
   },
   "keywords": [
     "svg",
