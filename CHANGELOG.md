@@ -1,5 +1,11 @@
 # Change Log
 
+## 2022.04.06 v2.0.4
+
+### Bug fixes and Improvements
+
+* Fixed a bug in [shorten-defs](docs/cn/rules/shorten-defs.md) that could accidentally remove all style tags
+
 ## 2021.04.22 v2.0.3
 
 ### Bug fixes and Improvements
