@@ -12,7 +12,7 @@ export const createXML = (dom?: IDom | null): string => {
 		const cssText = shortenTag(stringify(dom.stylesheet, { compress: true }));
 		const styleTag = dom.styletag as ITagNode;
 		if (cssText) {
-			((dom.styletag as ITagNode).childNodes[0] as ITextNode).textContent = cssText;
+			(styleTag.childNodes[0] as ITextNode).textContent = cssText;
 		} else {
 			styleTag.remove();
 		}
