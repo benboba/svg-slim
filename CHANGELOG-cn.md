@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2022.04.06 v2.0.4
+
+### Bug 修复与改进
+
+* 修复了 [shorten-defs](docs/cn/rules/shorten-defs.md) 的一个可能导致意外移除 style 标签的 bug
+
 ## 2021.04.22 v2.0.3
 
 ### bug 修复与改进

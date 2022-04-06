@@ -1,6 +1,6 @@
 {
   "name": "svg-slim",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "SVG compression tool",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
