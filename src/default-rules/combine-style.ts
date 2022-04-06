@@ -55,6 +55,9 @@ export const combineStyle = async (dom: IDom): Promise<void> => new Promise(reso
 				if (parsedCss.stylesheet) {
 					dom.stylesheet = parsedCss;
 					dom.styletag = firstStyle;
+					// style 标签强制移到 svg 标签下
+					const svg = dom.querySelector('svg') as ITagNode;
+					svg.insertBefore(firstStyle, svg.childNodes[0]);
 					traversalObj<Node>(has('type'), (cssNode, parents) => {
 						switch (cssNode.type) {
 							case 'rule':

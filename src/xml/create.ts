@@ -10,10 +10,11 @@ export const createXML = (dom?: IDom | null): string => {
 	}
 	if (dom.stylesheet) {
 		const cssText = shortenTag(stringify(dom.stylesheet, { compress: true }));
+		const styleTag = dom.styletag as ITagNode;
 		if (cssText) {
 			((dom.styletag as ITagNode).childNodes[0] as ITextNode).textContent = cssText;
 		} else {
-			(dom.styletag as ITagNode).remove();
+			styleTag.remove();
 		}
 	}
 	return dom.toString();
